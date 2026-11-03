@@ -307,8 +307,9 @@ scripts and the fonts are reachable, and every drawn state can be forced from ou
 [B-05](../backlog/B-05-pixel-references-and-floor.md).
 
 **Hypothesis H2.** The commonMain generator port gives the JVM's results on Kotlin/Native and wasm
-(doubles, `Int` overflow in mulberry32, `ushr`). Settled in
-[B-03](../backlog/B-03-generator-port-and-numeric-parity.md).
+(doubles, `Int` overflow in mulberry32, `ushr`). **Held, 2026-11-03**: 10 000 compositions and 400
+rapports equal the JS's on the JVM, the iOS simulator and wasm
+([B-03](../backlog/B-03-generator-port-and-numeric-parity.md)).
 
 **Hypothesis H3.** A per-pixel raskat comparison over a 120 dp circle at density 2.75 (≈ 330 × 330
 px, 109 k comparisons) fits in 2 ms per frame on a Pixel 6a, and ten cards cascading with texture and

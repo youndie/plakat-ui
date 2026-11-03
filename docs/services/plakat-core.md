@@ -40,6 +40,8 @@ Packages are `io.github.youndie.plakat.*` (research D1).
 | `plakat-core/src/desktopTest/kotlin/io/github/youndie/plakat/ComposeSmokeTest.kt` | the smoke test the visual suite stands on |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/type/PlakatFonts.kt` | the display and body families |
 | `plakat-core/src/commonMain/composeResources/font/` | Rubik Mono One and the static Golos Text 400 and 600, with their OFL texts in `files/licences/` |
+| `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/agit/PlakatGen.kt` | the composition and rapport generator, ported from the design's JS |
+| `scripts/gen-goldens.mjs` | the generator's goldens, emitted by the vendored JS; `--check` runs in `make check` |
 | `scripts/fonts.py` | fetches the fonts at a pinned google/fonts commit and cuts the Golos statics (`scripts/fonts.lock`) |
 
 ## 3. How it is built
@@ -71,6 +73,7 @@ Nothing is published or deployed. Publishing is B-37, the last item.
 
 ```bash
 export JAVA_HOME=$(/usr/libexec/java_home -v 25)
+make check          # needs Node 20+ for the goldens check
 ./gradlew check
 ./gradlew :sample:run
 ```
@@ -98,4 +101,7 @@ not run it, because the output is committed and pinned by the metrics test.
 - `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/PlakatCore.kt` holds one internal
   placeholder constant. ktlint refuses an empty file, and without a main source the iOS, wasm and
   Android compilations are `NO-SOURCE`, which proves nothing. B-08 replaces it.
+- Common test names must not contain a comma: Kotlin/Native refuses the name, JVM accepts it.
+- The klib ABI dump lists the compose compiler's `$stableprop` of internal classes too; adding an
+  internal class changes it and needs `updateKotlinAbi`.
 - The sample's paper colour is written once as a literal until the tokens exist (B-08).
