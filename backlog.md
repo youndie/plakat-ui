@@ -55,11 +55,10 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 <!-- BEGIN INDEX -->
 
-## Open (43)
+## Open (42)
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-08](docs/backlog/B-08-token-generator.md) `[~]` | Tokens: generate PlakatTokens from plakat-tokens.json, --check in the gate | P0 | S | B-01 |
 | [B-09](docs/backlog/B-09-theme-and-reduce-motion.md) `[ ]` | Theme: PlakatTheme for paper and black paper, reduce motion as a property, print switches | P0 | S | B-08 |
 | [B-10](docs/backlog/B-10-print-primitives.md) `[ ]` | Print primitives: cut corner, registration, hatch, wipes, hard-stop and stepped curves, non-print mask | P0 | M | B-08, B-05 |
 | [B-07](docs/backlog/B-07-textures.md) `[ ]` | Textures: render the three truncated tiles by a script, seamless, beside the five delivered | P1 | M | B-01 |
@@ -103,7 +102,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 | [B-06](docs/backlog/B-06-frame-cost-measurement.md) `[ ]` | Frame cost on a Pixel 6a: raskat roll, ten cards cascading with texture and registration | P3 | M | B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50, B-51 |
 | [B-37](docs/backlog/B-37-public-repository-and-publishing.md) `[ ]` | Public repository and publishing to Reposilite on every main — last | P3 | S | B-06, B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50 |
 
-## Closed (8)
+## Closed (9)
 
 **Goldens and references regenerate deterministically; the generator and raskat ports match them on every target; the floor and the frame cost have measured numbers**
 
@@ -112,6 +111,10 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 - [B-03](docs/backlog/B-03-generator-port-and-numeric-parity.md) `[x]` - Generator: commonMain port of generate/rapport held to Node goldens on every target
 - [B-04](docs/backlog/B-04-raskat-port.md) `[x]` - Raskat: port the JS field to the CPU, goldens from Node, the roll animation
 - [B-05](docs/backlog/B-05-pixel-references-and-floor.md) `[x]` - Pixel references rendered from the spec pages in headless Chrome; the parity floor
+
+**Tokens generated and checked; the theme, print primitives and icons match their cells**
+
+- [B-08](docs/backlog/B-08-token-generator.md) `[x]` - Tokens: generate PlakatTokens from plakat-tokens.json, --check in the gate
 
 **The owner's questions answered; the design re-imported when it changes**
 
