@@ -1,7 +1,7 @@
 ---
 id: B-08
 title: "Tokens: generate PlakatTokens from plakat-tokens.json, --check in the gate"
-status: open
+status: wip
 priority: P0
 size: S
 stage: stage-1-materials

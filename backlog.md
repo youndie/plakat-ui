@@ -59,7 +59,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-08](docs/backlog/B-08-token-generator.md) `[ ]` | Tokens: generate PlakatTokens from plakat-tokens.json, --check in the gate | P0 | S | B-01 |
+| [B-08](docs/backlog/B-08-token-generator.md) `[~]` | Tokens: generate PlakatTokens from plakat-tokens.json, --check in the gate | P0 | S | B-01 |
 | [B-09](docs/backlog/B-09-theme-and-reduce-motion.md) `[ ]` | Theme: PlakatTheme for paper and black paper, reduce motion as a property, print switches | P0 | S | B-08 |
 | [B-10](docs/backlog/B-10-print-primitives.md) `[ ]` | Print primitives: cut corner, registration, hatch, wipes, hard-stop and stepped curves, non-print mask | P0 | M | B-08, B-05 |
 | [B-07](docs/backlog/B-07-textures.md) `[ ]` | Textures: render the three truncated tiles by a script, seamless, beside the five delivered | P1 | M | B-01 |
