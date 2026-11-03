@@ -1,0 +1,4 @@
+# Vendored and generated binaries and texts are kept byte for byte: the font script and its lock
+# compare bytes, and an upstream licence text with CRLF line ends must not be rewritten.
+plakat-core/src/commonMain/composeResources/** -text
+reference/** -text
