@@ -1,0 +1,137 @@
+public final class io/github/youndie/plakat/tokens/PlakatColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJJJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getConcrete-0d7_KjU ()J
+	public final fun getDanger-0d7_KjU ()J
+	public final fun getInfo-0d7_KjU ()J
+	public final fun getInk-0d7_KjU ()J
+	public final fun getInkMuted-0d7_KjU ()J
+	public final fun getOcher-0d7_KjU ()J
+	public final fun getOnRed-0d7_KjU ()J
+	public final fun getPaper-0d7_KjU ()J
+	public final fun getPrimary-0d7_KjU ()J
+	public final fun getRed-0d7_KjU ()J
+	public final fun getSlate-0d7_KjU ()J
+	public final fun getSuccess-0d7_KjU ()J
+	public final fun getWarning-0d7_KjU ()J
+}
+
+public final class io/github/youndie/plakat/tokens/PlakatDurations {
+	public static final field $stable I
+	public static final field CASCADE I
+	public static final field INSTANCE Lio/github/youndie/plakat/tokens/PlakatDurations;
+	public static final field NORMAL I
+	public static final field QUICK I
+	public static final field SCENE I
+	public static final field SCREEN_MAX I
+	public static final field SNAP I
+}
+
+public final class io/github/youndie/plakat/tokens/PlakatEasings {
+	public static final field $stable I
+	public static final field INSTANCE Lio/github/youndie/plakat/tokens/PlakatEasings;
+	public final fun getHardStop ()Landroidx/compose/animation/core/Easing;
+	public final fun getLinear ()Landroidx/compose/animation/core/Easing;
+	public final fun stepped (I)Landroidx/compose/animation/core/Easing;
+}
+
+public final class io/github/youndie/plakat/tokens/PlakatFamily : java/lang/Enum {
+	public static final field Body Lio/github/youndie/plakat/tokens/PlakatFamily;
+	public static final field Display Lio/github/youndie/plakat/tokens/PlakatFamily;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lio/github/youndie/plakat/tokens/PlakatFamily;
+	public static fun values ()[Lio/github/youndie/plakat/tokens/PlakatFamily;
+}
+
+public final class io/github/youndie/plakat/tokens/PlakatGrid {
+	public static final field $stable I
+	public static final field INSTANCE Lio/github/youndie/plakat/tokens/PlakatGrid;
+	public final fun getGutter-D9Ej5fM ()F
+	public final fun getMargin-D9Ej5fM ()F
+	public final fun getStep-D9Ej5fM ()F
+}
+
+public final class io/github/youndie/plakat/tokens/PlakatLines {
+	public static final field $stable I
+	public static final field INSTANCE Lio/github/youndie/plakat/tokens/PlakatLines;
+	public final fun getBar-D9Ej5fM ()F
+	public final fun getHair-D9Ej5fM ()F
+	public final fun getRule-D9Ej5fM ()F
+}
+
+public final class io/github/youndie/plakat/tokens/PlakatPalettes {
+	public static final field $stable I
+	public static final field INSTANCE Lio/github/youndie/plakat/tokens/PlakatPalettes;
+	public final fun getBlackPaper ()Lio/github/youndie/plakat/tokens/PlakatColors;
+	public final fun getPaper ()Lio/github/youndie/plakat/tokens/PlakatColors;
+}
+
+public final class io/github/youndie/plakat/tokens/PlakatPrint {
+	public static final field $stable I
+	public static final field HALFTONE_ANGLE F
+	public static final field INSTANCE Lio/github/youndie/plakat/tokens/PlakatPrint;
+	public static final field NONPRINT_ON Z
+	public static final field NONPRINT_OPACITY F
+	public static final field PAPER_TEXTURE_ON Z
+	public static final field PAPER_TEXTURE_OPACITY F
+	public static final field RASKAT_ON Z
+	public static final field RASKAT_PER_SCREEN I
+	public static final field REGISTRATION_ON Z
+	public final fun getHalftonePitch-D9Ej5fM ()F
+	public final fun getNonprintTile-D9Ej5fM ()F
+	public final fun getPaperTextureTile-D9Ej5fM ()F
+	public final fun getRaskatAngle ()Lkotlin/ranges/ClosedFloatingPointRange;
+	public final fun getRaskatGrainDp ()Lkotlin/ranges/ClosedFloatingPointRange;
+	public final fun getRaskatHard ()Lkotlin/ranges/ClosedFloatingPointRange;
+	public final fun getRaskatT0 ()Lkotlin/ranges/ClosedFloatingPointRange;
+	public final fun getRegistrationX-D9Ej5fM ()F
+	public final fun getRegistrationY-D9Ej5fM ()F
+}
+
+public final class io/github/youndie/plakat/tokens/PlakatShape {
+	public static final field $stable I
+	public static final field AXIS F
+	public static final field INSTANCE Lio/github/youndie/plakat/tokens/PlakatShape;
+	public final fun getCutHeight-D9Ej5fM ()F
+	public final fun getCutWidth-D9Ej5fM ()F
+	public final fun getRadius-D9Ej5fM ()F
+}
+
+public final class io/github/youndie/plakat/tokens/PlakatSizes {
+	public static final field $stable I
+	public static final field INSTANCE Lio/github/youndie/plakat/tokens/PlakatSizes;
+	public final fun getButton-D9Ej5fM ()F
+	public final fun getCheckbox-D9Ej5fM ()F
+	public final fun getChip-D9Ej5fM ()F
+	public final fun getField-D9Ej5fM ()F
+	public final fun getSwitchCarriageHeight-D9Ej5fM ()F
+	public final fun getSwitchCarriageWidth-D9Ej5fM ()F
+	public final fun getSwitchWidth-D9Ej5fM ()F
+	public final fun getTouch-D9Ej5fM ()F
+}
+
+public final class io/github/youndie/plakat/tokens/PlakatTypeRole {
+	public static final field $stable I
+	public fun <init> (Lio/github/youndie/plakat/tokens/PlakatFamily;FFIFZ)V
+	public final fun getFamily ()Lio/github/youndie/plakat/tokens/PlakatFamily;
+	public final fun getLineHeight ()F
+	public final fun getSize ()F
+	public final fun getTracking ()F
+	public final fun getUpperCase ()Z
+	public final fun getWeight ()I
+}
+
+public final class io/github/youndie/plakat/tokens/PlakatTypeScale {
+	public static final field $stable I
+	public static final field INSTANCE Lio/github/youndie/plakat/tokens/PlakatTypeScale;
+	public final fun getBodyL ()Lio/github/youndie/plakat/tokens/PlakatTypeRole;
+	public final fun getBodyM ()Lio/github/youndie/plakat/tokens/PlakatTypeRole;
+	public final fun getBodyS ()Lio/github/youndie/plakat/tokens/PlakatTypeRole;
+	public final fun getButton ()Lio/github/youndie/plakat/tokens/PlakatTypeRole;
+	public final fun getDisplayL ()Lio/github/youndie/plakat/tokens/PlakatTypeRole;
+	public final fun getDisplayM ()Lio/github/youndie/plakat/tokens/PlakatTypeRole;
+	public final fun getHeadline ()Lio/github/youndie/plakat/tokens/PlakatTypeRole;
+	public final fun getLabel ()Lio/github/youndie/plakat/tokens/PlakatTypeRole;
+	public final fun getTitle ()Lio/github/youndie/plakat/tokens/PlakatTypeRole;
+}
+
