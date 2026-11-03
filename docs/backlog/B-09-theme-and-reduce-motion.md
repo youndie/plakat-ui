@@ -1,7 +1,7 @@
 ---
 id: B-09
 title: "Theme: PlakatTheme for paper and black paper, reduce motion as a property, print switches"
-status: open
+status: wip
 priority: P0
 size: S
 stage: stage-1-materials
