@@ -191,6 +191,9 @@ the same field with the same integer hash, caches it per shape size, and per fra
 profile with it — one comparison per pixel. Goldens: the field's `T` and `M` arrays and the final
 colours from Node, for a fixed set of shapes and seeds.
 
+**Held, 2026-11-03** ([B-04](../backlog/B-04-raskat-port.md)): eleven cases, the field's bits and the
+roll at every millisecond equal the JS's on the JVM, the iOS simulator and wasm.
+
 Rejected: the AGSL sketch. It draws a different noise (§1.3), Compose has no common runtime shader,
 and on Android it needs API 33. The price is CPU time per frame during the 320 ms roll, measured in
 [B-06](../backlog/B-06-frame-cost-measurement.md) (H3).
