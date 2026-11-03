@@ -38,6 +38,9 @@ Packages are `io.github.youndie.plakat.*` (research D1).
 | `gradle/libs.versions.toml` | the sborka version and the Android SDK levels; the compiler and Compose come from `wip` |
 | `gradle.properties` | the coordinates and licence sborka reads (`sborka.*`) |
 | `plakat-core/src/desktopTest/kotlin/io/github/youndie/plakat/ComposeSmokeTest.kt` | the smoke test the visual suite stands on |
+| `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/type/PlakatFonts.kt` | the display and body families |
+| `plakat-core/src/commonMain/composeResources/font/` | Rubik Mono One and the static Golos Text 400 and 600, with their OFL texts in `files/licences/` |
+| `scripts/fonts.py` | fetches the fonts at a pinned google/fonts commit and cuts the Golos statics (`scripts/fonts.lock`) |
 
 ## 3. How it is built
 
@@ -56,6 +59,7 @@ each met this once.
 | Kind | Name | What for |
 |---|---|---|
 | Library | Compose runtime, foundation, ui (from `wip`) | everything drawn |
+| Library | compose resources (`compose.components.resources`) | the bundled fonts, package `io.github.youndie.plakat.resources` |
 | Build | sborka 0.4.0.111 | conventions and the `wip` catalog, the same build as toon-ui |
 | Test | Compose ui-test, `compose.desktop.currentOs` (desktopTest only) | off-screen composition on the host's Skia |
 
@@ -79,6 +83,9 @@ is not committed.
 ## 7. Configuration
 
 None at runtime.
+
+Regenerating the fonts needs Python with fontTools (`.venv/bin/pip install fonttools`); the gate does
+not run it, because the output is committed and pinned by the metrics test.
 
 ## 8. Quirks
 

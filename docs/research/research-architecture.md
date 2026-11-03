@@ -99,6 +99,7 @@ fontTools.
 | Golos Text 2.004: OFL 1.1, **variable**, one axis `wght` 400…900, default 400, 184 292 bytes; cap height 700, x-height 530 | `google/fonts@2fe1e8c6b137fb13041a7cfca6fdcd8a910ea4dc!/ofl/golostext/GolosText[wght].ttf` |
 | Neither licence declares a Reserved Font Name | `google/fonts@2fe1e8c6b137fb13041a7cfca6fdcd8a910ea4dc!/ofl/rubikmonoone/OFL.txt`, `google/fonts@2fe1e8c6b137fb13041a7cfca6fdcd8a910ea4dc!/ofl/golostext/OFL.txt` |
 | Both cover А–я, Ё, ё in full | the same files' `cmap` |
+| Golos Text keeps one advance across weights: `Н` is 760/1000 at 400 and at 600, so a weight change moves no layout | `plakat-core/src/desktopTest/kotlin/io/github/youndie/plakat/type/PlakatFontMetricsTest.kt` (B-02) |
 | Of the non-ASCII characters the pages use, Golos lacks `■`, `●` and `₀`, Rubik Mono One lacks `■`, `●`, `→`, `↗`, `↑`. In the kit's own components only the Счётчик legends use them: «■ = 5 статей», «● = день, красный — сегодня» | the same files' `cmap` against the text of every `*.dc.html`; `reference/design-system/plakat-ui Компоненты.dc.html` |
 | The kit's pages use Golos at 400 and 600 and Rubik Mono One only; Oswald, Unbounded and weights 500/700/800/900 appear only on the Направления page (the rejected treatments) | a count of `font-family` and `font-weight` over every page |
 
