@@ -17,6 +17,20 @@ final enum class io.github.youndie.plakat.tokens/PlakatFamily : kotlin/Enum<io.g
     final fun values(): kotlin/Array<io.github.youndie.plakat.tokens/PlakatFamily> // io.github.youndie.plakat.tokens/PlakatFamily.values|values#static(){}[0]
 }
 
+final class io.github.youndie.plakat.print/PlakatCutShape : androidx.compose.ui.graphics/Shape { // io.github.youndie.plakat.print/PlakatCutShape|null[0]
+    constructor <init>(androidx.compose.ui.unit/Dp = ..., androidx.compose.ui.unit/Dp = ...) // io.github.youndie.plakat.print/PlakatCutShape.<init>|<init>(androidx.compose.ui.unit.Dp;androidx.compose.ui.unit.Dp){}[0]
+
+    final val cutHeight // io.github.youndie.plakat.print/PlakatCutShape.cutHeight|{}cutHeight[0]
+        final fun <get-cutHeight>(): androidx.compose.ui.unit/Dp // io.github.youndie.plakat.print/PlakatCutShape.cutHeight.<get-cutHeight>|<get-cutHeight>(){}[0]
+    final val cutWidth // io.github.youndie.plakat.print/PlakatCutShape.cutWidth|{}cutWidth[0]
+        final fun <get-cutWidth>(): androidx.compose.ui.unit/Dp // io.github.youndie.plakat.print/PlakatCutShape.cutWidth.<get-cutWidth>|<get-cutWidth>(){}[0]
+
+    final fun createOutline(androidx.compose.ui.geometry/Size, androidx.compose.ui.unit/LayoutDirection, androidx.compose.ui.unit/Density): androidx.compose.ui.graphics/Outline // io.github.youndie.plakat.print/PlakatCutShape.createOutline|createOutline(androidx.compose.ui.geometry.Size;androidx.compose.ui.unit.LayoutDirection;androidx.compose.ui.unit.Density){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // io.github.youndie.plakat.print/PlakatCutShape.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // io.github.youndie.plakat.print/PlakatCutShape.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // io.github.youndie.plakat.print/PlakatCutShape.toString|toString(){}[0]
+}
+
 final class io.github.youndie.plakat.theme/PlakatPrintSwitches { // io.github.youndie.plakat.theme/PlakatPrintSwitches|null[0]
     constructor <init>(kotlin/Boolean = ..., kotlin/Boolean = ..., kotlin/Boolean = ..., kotlin/Boolean = ...) // io.github.youndie.plakat.theme/PlakatPrintSwitches.<init>|<init>(kotlin.Boolean;kotlin.Boolean;kotlin.Boolean;kotlin.Boolean){}[0]
 
@@ -133,6 +147,39 @@ final class io.github.youndie.plakat.tokens/PlakatTypeRole { // io.github.youndi
         final fun <get-upperCase>(): kotlin/Boolean // io.github.youndie.plakat.tokens/PlakatTypeRole.upperCase.<get-upperCase>|<get-upperCase>(){}[0]
     final val weight // io.github.youndie.plakat.tokens/PlakatTypeRole.weight|{}weight[0]
         final fun <get-weight>(): kotlin/Int // io.github.youndie.plakat.tokens/PlakatTypeRole.weight.<get-weight>|<get-weight>(){}[0]
+}
+
+sealed class io.github.youndie.plakat.print/PlakatWipe { // io.github.youndie.plakat.print/PlakatWipe|null[0]
+    final class Diagonal : io.github.youndie.plakat.print/PlakatWipe { // io.github.youndie.plakat.print/PlakatWipe.Diagonal|null[0]
+        constructor <init>(androidx.compose.ui.unit/Dp) // io.github.youndie.plakat.print/PlakatWipe.Diagonal.<init>|<init>(androidx.compose.ui.unit.Dp){}[0]
+
+        final val slant // io.github.youndie.plakat.print/PlakatWipe.Diagonal.slant|{}slant[0]
+            final fun <get-slant>(): androidx.compose.ui.unit/Dp // io.github.youndie.plakat.print/PlakatWipe.Diagonal.slant.<get-slant>|<get-slant>(){}[0]
+
+        final fun component1(): androidx.compose.ui.unit/Dp // io.github.youndie.plakat.print/PlakatWipe.Diagonal.component1|component1(){}[0]
+        final fun copy(androidx.compose.ui.unit/Dp = ...): io.github.youndie.plakat.print/PlakatWipe.Diagonal // io.github.youndie.plakat.print/PlakatWipe.Diagonal.copy|copy(androidx.compose.ui.unit.Dp){}[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.github.youndie.plakat.print/PlakatWipe.Diagonal.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.github.youndie.plakat.print/PlakatWipe.Diagonal.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.github.youndie.plakat.print/PlakatWipe.Diagonal.toString|toString(){}[0]
+    }
+
+    final object Bottom : io.github.youndie.plakat.print/PlakatWipe { // io.github.youndie.plakat.print/PlakatWipe.Bottom|null[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.github.youndie.plakat.print/PlakatWipe.Bottom.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.github.youndie.plakat.print/PlakatWipe.Bottom.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.github.youndie.plakat.print/PlakatWipe.Bottom.toString|toString(){}[0]
+    }
+
+    final object Left : io.github.youndie.plakat.print/PlakatWipe { // io.github.youndie.plakat.print/PlakatWipe.Left|null[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.github.youndie.plakat.print/PlakatWipe.Left.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.github.youndie.plakat.print/PlakatWipe.Left.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.github.youndie.plakat.print/PlakatWipe.Left.toString|toString(){}[0]
+    }
+
+    final object Top : io.github.youndie.plakat.print/PlakatWipe { // io.github.youndie.plakat.print/PlakatWipe.Top|null[0]
+        final fun equals(kotlin/Any?): kotlin/Boolean // io.github.youndie.plakat.print/PlakatWipe.Top.equals|equals(kotlin.Any?){}[0]
+        final fun hashCode(): kotlin/Int // io.github.youndie.plakat.print/PlakatWipe.Top.hashCode|hashCode(){}[0]
+        final fun toString(): kotlin/String // io.github.youndie.plakat.print/PlakatWipe.Top.toString|toString(){}[0]
+    }
 }
 
 final object io.github.youndie.plakat.theme/PlakatTheme { // io.github.youndie.plakat.theme/PlakatTheme|null[0]
@@ -290,6 +337,12 @@ final object io.github.youndie.plakat.tokens/PlakatTypeScale { // io.github.youn
 final val io.github.youndie.plakat.agit/io_github_youndie_plakat_agit_PlakatShape_Circle$stableprop // io.github.youndie.plakat.agit/io_github_youndie_plakat_agit_PlakatShape_Circle$stableprop|#static{}io_github_youndie_plakat_agit_PlakatShape_Circle$stableprop[0]
 final val io.github.youndie.plakat.agit/io_github_youndie_plakat_agit_PlakatShape_Poly$stableprop // io.github.youndie.plakat.agit/io_github_youndie_plakat_agit_PlakatShape_Poly$stableprop|#static{}io_github_youndie_plakat_agit_PlakatShape_Poly$stableprop[0]
 final val io.github.youndie.plakat.agit/io_github_youndie_plakat_agit_PlakatShape_Rect$stableprop // io.github.youndie.plakat.agit/io_github_youndie_plakat_agit_PlakatShape_Rect$stableprop|#static{}io_github_youndie_plakat_agit_PlakatShape_Rect$stableprop[0]
+final val io.github.youndie.plakat.print/io_github_youndie_plakat_print_PlakatCutShape$stableprop // io.github.youndie.plakat.print/io_github_youndie_plakat_print_PlakatCutShape$stableprop|#static{}io_github_youndie_plakat_print_PlakatCutShape$stableprop[0]
+final val io.github.youndie.plakat.print/io_github_youndie_plakat_print_PlakatWipe$stableprop // io.github.youndie.plakat.print/io_github_youndie_plakat_print_PlakatWipe$stableprop|#static{}io_github_youndie_plakat_print_PlakatWipe$stableprop[0]
+final val io.github.youndie.plakat.print/io_github_youndie_plakat_print_PlakatWipe_Bottom$stableprop // io.github.youndie.plakat.print/io_github_youndie_plakat_print_PlakatWipe_Bottom$stableprop|#static{}io_github_youndie_plakat_print_PlakatWipe_Bottom$stableprop[0]
+final val io.github.youndie.plakat.print/io_github_youndie_plakat_print_PlakatWipe_Diagonal$stableprop // io.github.youndie.plakat.print/io_github_youndie_plakat_print_PlakatWipe_Diagonal$stableprop|#static{}io_github_youndie_plakat_print_PlakatWipe_Diagonal$stableprop[0]
+final val io.github.youndie.plakat.print/io_github_youndie_plakat_print_PlakatWipe_Left$stableprop // io.github.youndie.plakat.print/io_github_youndie_plakat_print_PlakatWipe_Left$stableprop|#static{}io_github_youndie_plakat_print_PlakatWipe_Left$stableprop[0]
+final val io.github.youndie.plakat.print/io_github_youndie_plakat_print_PlakatWipe_Top$stableprop // io.github.youndie.plakat.print/io_github_youndie_plakat_print_PlakatWipe_Top$stableprop|#static{}io_github_youndie_plakat_print_PlakatWipe_Top$stableprop[0]
 final val io.github.youndie.plakat.resources/io_github_youndie_plakat_resources_Res_array$stableprop // io.github.youndie.plakat.resources/io_github_youndie_plakat_resources_Res_array$stableprop|#static{}io_github_youndie_plakat_resources_Res_array$stableprop[0]
 final val io.github.youndie.plakat.resources/io_github_youndie_plakat_resources_Res_drawable$stableprop // io.github.youndie.plakat.resources/io_github_youndie_plakat_resources_Res_drawable$stableprop|#static{}io_github_youndie_plakat_resources_Res_drawable$stableprop[0]
 final val io.github.youndie.plakat.resources/io_github_youndie_plakat_resources_Res_font$stableprop // io.github.youndie.plakat.resources/io_github_youndie_plakat_resources_Res_font$stableprop|#static{}io_github_youndie_plakat_resources_Res_font$stableprop[0]
@@ -312,9 +365,21 @@ final val io.github.youndie.plakat.tokens/io_github_youndie_plakat_tokens_Plakat
 final val io.github.youndie.plakat.tokens/io_github_youndie_plakat_tokens_PlakatTypeRole$stableprop // io.github.youndie.plakat.tokens/io_github_youndie_plakat_tokens_PlakatTypeRole$stableprop|#static{}io_github_youndie_plakat_tokens_PlakatTypeRole$stableprop[0]
 final val io.github.youndie.plakat.tokens/io_github_youndie_plakat_tokens_PlakatTypeScale$stableprop // io.github.youndie.plakat.tokens/io_github_youndie_plakat_tokens_PlakatTypeScale$stableprop|#static{}io_github_youndie_plakat_tokens_PlakatTypeScale$stableprop[0]
 
+final fun (androidx.compose.ui/Modifier).io.github.youndie.plakat.print/plakatHatch(androidx.compose.ui.graphics/Color, androidx.compose.ui.graphics/Color, androidx.compose.ui.unit/Dp = ...): androidx.compose.ui/Modifier // io.github.youndie.plakat.print/plakatHatch|plakatHatch@androidx.compose.ui.Modifier(androidx.compose.ui.graphics.Color;androidx.compose.ui.graphics.Color;androidx.compose.ui.unit.Dp){}[0]
+final fun (androidx.compose.ui/Modifier).io.github.youndie.plakat.print/plakatPrintLayer(androidx.compose.ui.graphics/ImageBitmap, androidx.compose.ui.unit/Dp, kotlin/Float, androidx.compose.ui.graphics/BlendMode): androidx.compose.ui/Modifier // io.github.youndie.plakat.print/plakatPrintLayer|plakatPrintLayer@androidx.compose.ui.Modifier(androidx.compose.ui.graphics.ImageBitmap;androidx.compose.ui.unit.Dp;kotlin.Float;androidx.compose.ui.graphics.BlendMode){}[0]
+final fun (androidx.compose.ui/Modifier).io.github.youndie.plakat.print/plakatWipe(io.github.youndie.plakat.print/PlakatWipe, kotlin/Function0<kotlin/Float>): androidx.compose.ui/Modifier // io.github.youndie.plakat.print/plakatWipe|plakatWipe@androidx.compose.ui.Modifier(io.github.youndie.plakat.print.PlakatWipe;kotlin.Function0<kotlin.Float>){}[0]
 final fun io.github.youndie.plakat.agit/io_github_youndie_plakat_agit_PlakatShape_Circle$stableprop_getter(): kotlin/Int // io.github.youndie.plakat.agit/io_github_youndie_plakat_agit_PlakatShape_Circle$stableprop_getter|io_github_youndie_plakat_agit_PlakatShape_Circle$stableprop_getter(){}[0]
 final fun io.github.youndie.plakat.agit/io_github_youndie_plakat_agit_PlakatShape_Poly$stableprop_getter(): kotlin/Int // io.github.youndie.plakat.agit/io_github_youndie_plakat_agit_PlakatShape_Poly$stableprop_getter|io_github_youndie_plakat_agit_PlakatShape_Poly$stableprop_getter(){}[0]
 final fun io.github.youndie.plakat.agit/io_github_youndie_plakat_agit_PlakatShape_Rect$stableprop_getter(): kotlin/Int // io.github.youndie.plakat.agit/io_github_youndie_plakat_agit_PlakatShape_Rect$stableprop_getter|io_github_youndie_plakat_agit_PlakatShape_Rect$stableprop_getter(){}[0]
+final fun io.github.youndie.plakat.print/PlakatRegisteredText(kotlin/String, androidx.compose.ui.text/TextStyle, androidx.compose.ui/Modifier?, androidx.compose.ui.graphics/Color, androidx.compose.ui.graphics/Color, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // io.github.youndie.plakat.print/PlakatRegisteredText|PlakatRegisteredText(kotlin.String;androidx.compose.ui.text.TextStyle;androidx.compose.ui.Modifier?;androidx.compose.ui.graphics.Color;androidx.compose.ui.graphics.Color;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun io.github.youndie.plakat.print/io_github_youndie_plakat_print_PlakatCutShape$stableprop_getter(): kotlin/Int // io.github.youndie.plakat.print/io_github_youndie_plakat_print_PlakatCutShape$stableprop_getter|io_github_youndie_plakat_print_PlakatCutShape$stableprop_getter(){}[0]
+final fun io.github.youndie.plakat.print/io_github_youndie_plakat_print_PlakatWipe$stableprop_getter(): kotlin/Int // io.github.youndie.plakat.print/io_github_youndie_plakat_print_PlakatWipe$stableprop_getter|io_github_youndie_plakat_print_PlakatWipe$stableprop_getter(){}[0]
+final fun io.github.youndie.plakat.print/io_github_youndie_plakat_print_PlakatWipe_Bottom$stableprop_getter(): kotlin/Int // io.github.youndie.plakat.print/io_github_youndie_plakat_print_PlakatWipe_Bottom$stableprop_getter|io_github_youndie_plakat_print_PlakatWipe_Bottom$stableprop_getter(){}[0]
+final fun io.github.youndie.plakat.print/io_github_youndie_plakat_print_PlakatWipe_Diagonal$stableprop_getter(): kotlin/Int // io.github.youndie.plakat.print/io_github_youndie_plakat_print_PlakatWipe_Diagonal$stableprop_getter|io_github_youndie_plakat_print_PlakatWipe_Diagonal$stableprop_getter(){}[0]
+final fun io.github.youndie.plakat.print/io_github_youndie_plakat_print_PlakatWipe_Left$stableprop_getter(): kotlin/Int // io.github.youndie.plakat.print/io_github_youndie_plakat_print_PlakatWipe_Left$stableprop_getter|io_github_youndie_plakat_print_PlakatWipe_Left$stableprop_getter(){}[0]
+final fun io.github.youndie.plakat.print/io_github_youndie_plakat_print_PlakatWipe_Top$stableprop_getter(): kotlin/Int // io.github.youndie.plakat.print/io_github_youndie_plakat_print_PlakatWipe_Top$stableprop_getter|io_github_youndie_plakat_print_PlakatWipe_Top$stableprop_getter(){}[0]
+final fun io.github.youndie.plakat.print/plakatHatchBrush(androidx.compose.ui.geometry/Size, androidx.compose.ui.graphics/Color, androidx.compose.ui.graphics/Color, kotlin/Float, kotlin/Float = ...): androidx.compose.ui.graphics/Brush // io.github.youndie.plakat.print/plakatHatchBrush|plakatHatchBrush(androidx.compose.ui.geometry.Size;androidx.compose.ui.graphics.Color;androidx.compose.ui.graphics.Color;kotlin.Float;kotlin.Float){}[0]
+final fun io.github.youndie.plakat.print/plakatWipePath(io.github.youndie.plakat.print/PlakatWipe, androidx.compose.ui.geometry/Size, kotlin/Float, androidx.compose.ui.unit/Density): androidx.compose.ui.graphics/Path // io.github.youndie.plakat.print/plakatWipePath|plakatWipePath(io.github.youndie.plakat.print.PlakatWipe;androidx.compose.ui.geometry.Size;kotlin.Float;androidx.compose.ui.unit.Density){}[0]
 final fun io.github.youndie.plakat.resources/io_github_youndie_plakat_resources_Res_array$stableprop_getter(): kotlin/Int // io.github.youndie.plakat.resources/io_github_youndie_plakat_resources_Res_array$stableprop_getter|io_github_youndie_plakat_resources_Res_array$stableprop_getter(){}[0]
 final fun io.github.youndie.plakat.resources/io_github_youndie_plakat_resources_Res_drawable$stableprop_getter(): kotlin/Int // io.github.youndie.plakat.resources/io_github_youndie_plakat_resources_Res_drawable$stableprop_getter|io_github_youndie_plakat_resources_Res_drawable$stableprop_getter(){}[0]
 final fun io.github.youndie.plakat.resources/io_github_youndie_plakat_resources_Res_font$stableprop_getter(): kotlin/Int // io.github.youndie.plakat.resources/io_github_youndie_plakat_resources_Res_font$stableprop_getter|io_github_youndie_plakat_resources_Res_font$stableprop_getter(){}[0]

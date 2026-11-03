@@ -1,10 +1,15 @@
 {
   "browser": "Chrome/156.0.8078.80",
   "scale": 1,
-  "viewport": 1584,
+  "viewports": {
+    "plakat-ui Компоненты.dc.html": 1584,
+    "plakat-ui Ядро.dc.html": 1584,
+    "plakat-ui Токены.dc.html": 1160
+  },
   "pages": {
     "plakat-ui Компоненты.dc.html": "c9256e8c5c483a978b27de29d824415d71f485c08ac2a4399a85157b12888d70",
-    "plakat-ui Ядро.dc.html": "d697709d7ba92b8d66b24c8c31405b8fad4c5d46d553f2d41eb3dcf2a4fa6172"
+    "plakat-ui Ядро.dc.html": "d697709d7ba92b8d66b24c8c31405b8fad4c5d46d553f2d41eb3dcf2a4fa6172",
+    "plakat-ui Токены.dc.html": "f1c130ed5923916c16f9d72d40fe818314a333cb602922ad1ef706188bdcdff4"
   },
   "fonts": {
     "rubik_mono_one_regular.ttf": "b22624b6a36e543e942106edfccd198c50b57b65b924bfe02a6f0a5699429e6b",
@@ -107,6 +112,72 @@
       "w": 224,
       "h": 15,
       "shift": 0.3125
+    },
+    {
+      "file": "Cut_Plate_Light.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "Filled / Default",
+      "card": 0,
+      "part": "first",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "w": 40,
+        "h": 48
+      },
+      "x": 56,
+      "y": 547,
+      "w": 40,
+      "h": 48,
+      "shift": 0.3125
+    },
+    {
+      "file": "Cut_Plate_Dark.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "Filled / Default",
+      "card": 1,
+      "part": "first",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "w": 40,
+        "h": 48
+      },
+      "x": 824,
+      "y": 547,
+      "w": 40,
+      "h": 48,
+      "shift": 0.3125
+    },
+    {
+      "file": "Hatch_Danger_Light.png",
+      "page": "plakat-ui Токены.dc.html",
+      "caption": "danger — штриховка + слово",
+      "card": 0,
+      "part": "first",
+      "crop": {
+        "x": 120,
+        "y": 0,
+        "w": 96,
+        "h": 48
+      },
+      "x": 368,
+      "y": 1580,
+      "w": 96,
+      "h": 48,
+      "shift": 0.6875
+    },
+    {
+      "file": "Registration_List_Light.png",
+      "page": "plakat-ui Токены.dc.html",
+      "caption": "plakat/print/registration",
+      "card": 0,
+      "part": "first",
+      "x": 24,
+      "y": 2922,
+      "w": 272,
+      "h": 140,
+      "shift": 0.828125
     },
     {
       "file": "Button_FilledDefault_Light.png",

@@ -45,6 +45,7 @@ Packages are `io.github.youndie.plakat.*` (research D1).
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/type/PlakatFonts.kt` | the display and body families |
 | `plakat-core/src/commonMain/composeResources/font/` | Rubik Mono One and the static Golos Text 400 and 600, with their OFL texts in `files/licences/` |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/agit/PlakatGen.kt` | the composition and rapport generator, ported from the design's JS |
+| `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/print/PlakatCutShape.kt` | the print primitives: the cut plate, and beside it `PlakatHatch.kt`, `PlakatWipe.kt`, `PlakatRegistration.kt`, `PlakatPrintLayer.kt` |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/print/PlakatRaskat.kt` | raskat's field, ink map and roll, ported from the design's JS; `RaskatImage.kt` prints it |
 | `scripts/design-references.mjs` | the pixel references, rendered from the spec pages in headless Chrome (`make references`) |
 | `plakat-core/src/desktopTest/snapshots/design/` | the references and their `manifest.json`; viddik's goldens are one level up |

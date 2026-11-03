@@ -1,3 +1,76 @@
+public final class io/github/youndie/plakat/print/PlakatCutShape : androidx/compose/ui/graphics/Shape {
+	public static final field $stable I
+	public fun <init> ()V
+	public synthetic fun <init> (FFILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (FFLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun createOutline-Pq9zytI (JLandroidx/compose/ui/unit/LayoutDirection;Landroidx/compose/ui/unit/Density;)Landroidx/compose/ui/graphics/Outline;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCutHeight-D9Ej5fM ()F
+	public final fun getCutWidth-D9Ej5fM ()F
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/youndie/plakat/print/PlakatHatchKt {
+	public static final fun plakatHatch--WgHM3s (Landroidx/compose/ui/Modifier;JJF)Landroidx/compose/ui/Modifier;
+	public static synthetic fun plakatHatch--WgHM3s$default (Landroidx/compose/ui/Modifier;JJFILjava/lang/Object;)Landroidx/compose/ui/Modifier;
+	public static final fun plakatHatchBrush-u5lswCc (JJJFF)Landroidx/compose/ui/graphics/Brush;
+	public static synthetic fun plakatHatchBrush-u5lswCc$default (JJJFFILjava/lang/Object;)Landroidx/compose/ui/graphics/Brush;
+}
+
+public final class io/github/youndie/plakat/print/PlakatPrintLayerKt {
+	public static final fun plakatPrintLayer-EgASVto (Landroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/ImageBitmap;FFI)Landroidx/compose/ui/Modifier;
+}
+
+public final class io/github/youndie/plakat/print/PlakatRegistrationKt {
+	public static final fun PlakatRegisteredText-jA1GFJw (Ljava/lang/String;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/Modifier;JJLandroidx/compose/runtime/Composer;II)V
+}
+
+public abstract class io/github/youndie/plakat/print/PlakatWipe {
+	public static final field $stable I
+}
+
+public final class io/github/youndie/plakat/print/PlakatWipe$Bottom : io/github/youndie/plakat/print/PlakatWipe {
+	public static final field $stable I
+	public static final field INSTANCE Lio/github/youndie/plakat/print/PlakatWipe$Bottom;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/youndie/plakat/print/PlakatWipe$Diagonal : io/github/youndie/plakat/print/PlakatWipe {
+	public static final field $stable I
+	public synthetic fun <init> (FLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-D9Ej5fM ()F
+	public final fun copy-0680j_4 (F)Lio/github/youndie/plakat/print/PlakatWipe$Diagonal;
+	public static synthetic fun copy-0680j_4$default (Lio/github/youndie/plakat/print/PlakatWipe$Diagonal;FILjava/lang/Object;)Lio/github/youndie/plakat/print/PlakatWipe$Diagonal;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSlant-D9Ej5fM ()F
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/youndie/plakat/print/PlakatWipe$Left : io/github/youndie/plakat/print/PlakatWipe {
+	public static final field $stable I
+	public static final field INSTANCE Lio/github/youndie/plakat/print/PlakatWipe$Left;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/youndie/plakat/print/PlakatWipe$Top : io/github/youndie/plakat/print/PlakatWipe {
+	public static final field $stable I
+	public static final field INSTANCE Lio/github/youndie/plakat/print/PlakatWipe$Top;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/youndie/plakat/print/PlakatWipeKt {
+	public static final fun plakatWipe (Landroidx/compose/ui/Modifier;Lio/github/youndie/plakat/print/PlakatWipe;Lkotlin/jvm/functions/Function0;)Landroidx/compose/ui/Modifier;
+	public static final fun plakatWipePath-x_KDEd0 (Lio/github/youndie/plakat/print/PlakatWipe;JFLandroidx/compose/ui/unit/Density;)Landroidx/compose/ui/graphics/Path;
+}
+
 public final class io/github/youndie/plakat/theme/PlakatPrintSwitches {
 	public static final field $stable I
 	public fun <init> ()V
