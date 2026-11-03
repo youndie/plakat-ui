@@ -1,7 +1,7 @@
 ---
 id: B-03
 title: "Generator: commonMain port of generate/rapport held to Node goldens on every target"
-status: open
+status: wip
 priority: P0
 size: M
 stage: stage-0-risks
