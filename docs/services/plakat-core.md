@@ -42,6 +42,9 @@ Packages are `io.github.youndie.plakat.*` (research D1).
 | `plakat-core/src/commonMain/composeResources/font/` | Rubik Mono One and the static Golos Text 400 and 600, with their OFL texts in `files/licences/` |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/agit/PlakatGen.kt` | the composition and rapport generator, ported from the design's JS |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/print/PlakatRaskat.kt` | raskat's field, ink map and roll, ported from the design's JS; `RaskatImage.kt` prints it |
+| `scripts/design-references.mjs` | the pixel references, rendered from the spec pages in headless Chrome (`make references`) |
+| `plakat-core/src/desktopTest/snapshots/design/` | the references and their `manifest.json`; viddik's goldens are one level up |
+| `plakat-core/src/desktopTest/kotlin/io/github/youndie/plakat/parity/FloorFixtures.kt` | the parity floor's fixtures |
 | `scripts/raskat-goldens.mjs` | raskat's goldens, emitted by the vendored JS with a stubbed canvas and clock; `--check` in `make check` |
 | `scripts/gen-goldens.mjs` | the generator's goldens, emitted by the vendored JS; `--check` runs in `make check` |
 | `scripts/fonts.py` | fetches the fonts at a pinned google/fonts commit and cuts the Golos statics (`scripts/fonts.lock`) |
@@ -66,6 +69,7 @@ each met this once.
 | Library | compose resources (`compose.components.resources`) | the bundled fonts, package `io.github.youndie.plakat.resources` |
 | Build | sborka 0.4.0.111 | conventions and the `wip` catalog, the same build as toon-ui |
 | Test | Compose ui-test, `compose.desktop.currentOs` (desktopTest only) | off-screen composition on the host's Skia |
+| Test | viddik 0.7.0 with KSP | screenshot goldens (verified by `check`) and design parity (`viddikDesignParity`, a report) |
 
 ## 5. Infrastructure and deploy
 

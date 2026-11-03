@@ -5,6 +5,8 @@ plugins {
     alias(wip.plugins.composeMultiplatform)
     alias(wip.plugins.composeCompiler)
     alias(wip.plugins.androidKotlinMultiplatformLibrary)
+    alias(wip.plugins.ksp)
+    alias(libs.plugins.viddik)
     id("io.github.youndie.sborka.kmp")
     id("io.github.youndie.sborka.lint")
 }
@@ -68,6 +70,18 @@ kotlin {
     }
 }
 
+// B-05. Goldens are verified by `check`; design parity is a report (`viddikDesignParity`) against the
+// PNGs scripts/design-references.mjs renders from the spec pages in Chrome. The tolerances are
+// viddik's defaults, written here to say they were looked at; the floor they are read against is
+// measured in B-05 (research D3) and is the number a component's parity is compared with.
+viddik {
+    verifyOnCheck.set(true)
+    shards.set(1)
+    designTolerancePercent.set(5.0)
+    designChannelTolerance.set(16)
+    designStrict.set(false)
+}
+
 compose.resources {
     packageOfResClass = "io.github.youndie.plakat.resources"
 }
@@ -78,6 +92,11 @@ tasks.withType<Test>().configureEach {
     inputs
         .dir(rootProject.layout.projectDirectory.dir("reference/design-system"))
         .withPropertyName("designSystem")
+        .withPathSensitivity(org.gradle.api.tasks.PathSensitivity.RELATIVE)
+    // The same for the goldens and the design references viddik reads (oldge-ui and toon-ui both learnt this).
+    inputs
+        .dir(layout.projectDirectory.dir("src/desktopTest/snapshots"))
+        .withPropertyName("viddikSnapshots")
         .withPathSensitivity(org.gradle.api.tasks.PathSensitivity.RELATIVE)
 }
 
