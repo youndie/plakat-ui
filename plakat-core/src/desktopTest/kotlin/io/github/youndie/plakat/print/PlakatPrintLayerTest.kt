@@ -30,10 +30,17 @@ import kotlin.test.assertEquals
 class PlakatPrintLayerTest {
     @Test
     fun `the tile repeats from the top-left over the content and stops at the box`() {
-        // A 2 × 2 tile: black at its top-left pixel, transparent elsewhere.
+        // A 2 × 2 tile: black at its bottom-right pixel, transparent elsewhere, so the fifth tile across a
+        // 9 px box would print its dot at the box's tenth pixel if the layer were not clipped.
         val tile = ImageBitmap(2, 2)
         CanvasDrawScope().draw(Density(1f), LayoutDirection.Ltr, Canvas(tile), Size(2f, 2f)) {
-            drawRect(Color.Black, size = Size(1f, 1f))
+            drawRect(
+                Color.Black,
+                topLeft =
+                    androidx.compose.ui.geometry
+                        .Offset(1f, 1f),
+                size = Size(1f, 1f),
+            )
         }
         runComposeUiTest {
             setContent {
@@ -53,7 +60,7 @@ class PlakatPrintLayerTest {
             for (y in 0 until 12) {
                 for (x in 0 until 12) {
                     val inBox = x in 1..9 && y in 1..9
-                    val dot = inBox && (x - 1) % 2 == 0 && (y - 1) % 2 == 0
+                    val dot = inBox && (x - 1) % 2 == 1 && (y - 1) % 2 == 1
                     assertEquals(if (dot) Color.Black else Color.White, px[x, y], "pixel $x, $y")
                 }
             }
