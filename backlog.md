@@ -59,7 +59,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-01](docs/backlog/B-01-repository-skeleton.md) `[ ]` | Repository skeleton: plakat-core, sample, sborka conventions, four targets, CI on macOS | P0 | M | - |
+| [B-01](docs/backlog/B-01-repository-skeleton.md) `[~]` | Repository skeleton: plakat-core, sample, sborka conventions, four targets, CI on macOS | P0 | M | - |
 | [B-02](docs/backlog/B-02-fonts.md) `[ ]` | Fonts: Rubik Mono One and static Golos Text 400/600, licences, coverage test | P0 | S | B-01 |
 | [B-03](docs/backlog/B-03-generator-port-and-numeric-parity.md) `[ ]` | Generator: commonMain port of generate/rapport held to Node goldens on every target | P0 | M | B-01 |
 | [B-04](docs/backlog/B-04-raskat-port.md) `[ ]` | Raskat: port the JS field to the CPU, goldens from Node, the roll animation | P0 | M | B-01 |

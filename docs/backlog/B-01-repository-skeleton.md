@@ -1,7 +1,7 @@
 ---
 id: B-01
 title: "Repository skeleton: plakat-core, sample, sborka conventions, four targets, CI on macOS"
-status: open
+status: wip
 priority: P0
 size: M
 stage: stage-0-risks
