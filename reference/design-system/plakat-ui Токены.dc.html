@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Rubik+Mono+One&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EEE5D1}
+a{color:#BE2F18}
+a:hover{color:#1D1B18}
+button{font:inherit}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#EEE5D1;color:#1D1B18;font-family:'Golos Text',sans-serif;position:relative">
+  <div style="max-width:1120px;margin:0 auto;padding:48px 24px 96px;display:flex;flex-direction:column;gap:64px">
+
+    <header style="display:flex;flex-direction:column;gap:16px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:.08em">PLAKAT-UI · ЭТАП 1 → 2 · АРТЕФАКТ 2</div>
+      <div style="font-family:'Rubik Mono One';font-size:56px;line-height:.95">ТОКЕНЫ</div>
+      <div style="height:8px;background:#1D1B18"></div>
+      <div style="font-size:17px;line-height:1.5;max-width:720px;text-wrap:pretty">Направление 3a «Сборка» выбрано. Ниже — семь правил стиля, токены обеих тем и ссылки на источники. Машиночитаемая версия — <a href="plakat-tokens.json">plakat-tokens.json</a>, из неё генерируется Kotlin. Компоненты ядра — <a href="plakat-ui Ядро.dc.html">plakat-ui Ядро</a>.</div>
+    </header>
+
+    <section style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;align-items:center;gap:16px"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">ПРАВИЛА 3A</div><span style="flex:1;height:3px;background:#1D1B18"></span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:8px">
+        <div style="background:#D4CEC2;padding:20px;display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px"><span style="font-family:'Rubik Mono One';font-size:14px">01</span><div style="font-size:16px;line-height:1.45;text-wrap:pretty"><b>Плакат сверху, лента снизу.</b> Первый экран раздела — Плакат, собранный генератором из круга, бруса и клина. Красной краской — один элемент.</div></div>
+        <div style="background:#D4CEC2;padding:20px;display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px"><span style="font-family:'Rubik Mono One';font-size:14px">02</span><div style="font-size:16px;line-height:1.45;text-wrap:pretty"><b>Фото только в фигуре и только растром.</b> Круг или прямоугольник, точка 45° шагом 4, одна краска. Сырое фото в кит не попадает.</div></div>
+        <div style="background:#D4CEC2;padding:20px;display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px"><span style="font-family:'Rubik Mono One';font-size:14px">03</span><div style="font-size:16px;line-height:1.45;text-wrap:pretty"><b>Одна ось −17°.</b> Наклон заголовка Плаката, срез угла кнопки, брус и клин лежат на ней. Текст тела не наклоняется.</div></div>
+        <div style="background:#D4CEC2;padding:20px;display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px"><span style="font-family:'Rubik Mono One';font-size:14px">04</span><div style="font-size:16px;line-height:1.45;text-wrap:pretty"><b>Две бумаги вместо теней.</b> Фон — газетная, карточки и подложки — бетонная. Граница поверхности — смена бумаги, без рамок и теней.</div></div>
+        <div style="background:#D4CEC2;padding:20px;display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px"><span style="font-family:'Rubik Mono One';font-size:14px">05</span><div style="font-size:16px;line-height:1.45;text-wrap:pretty"><b>Раппорт — только полосой.</b> Полоса 24 dp под шапкой и кромки; под текстом раппорт не лежит никогда.</div></div>
+        <div style="background:#D4CEC2;padding:20px;display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px"><span style="font-family:'Rubik Mono One';font-size:14px">06</span><div style="font-size:16px;line-height:1.45;text-wrap:pretty"><b>Два шрифта.</b> Rubik Mono One — Display, Headline, кнопки, номера; всё остальное — Golos Text. Прописные — только у первого.</div></div>
+        <div style="background:#D4CEC2;padding:20px;display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px"><span style="font-family:'Rubik Mono One';font-size:14px">07</span><div style="font-size:16px;line-height:1.45;text-wrap:pretty"><b>Генерация детерминирована.</b> Seed берётся из контента (id статьи, раздела), поэтому одна статья всегда получает один и тот же плакат.</div></div>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;align-items:center;gap:16px"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">ЦВЕТ</div><span style="flex:1;height:3px;background:#1D1B18"></span></div>
+      <div style="font-size:16px;line-height:1.5;max-width:720px;text-wrap:pretty">Пять красок и две бумаги. Тёмная тема — печать на угольном картоне: меняются paper, concrete, ink и ink-muted, а красный, охра и серо-синий остаются прежними.</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,480px),1fr));gap:8px">
+        <div style="background:#EEE5D1;border:1px solid #1D1B18;padding:20px;display:flex;flex-direction:column;gap:12px">
+          <div style="font-size:12px;font-weight:600;letter-spacing:.08em">БУМАГА · LIGHT</div>
+          <div style="display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:center"><span style="height:48px;background:#EEE5D1;border:1px solid #1D1B18"></span><div><div style="font-size:14px;font-weight:600">plakat/color/paper</div><div style="font-size:13px">фон</div></div><span style="font-size:13px">#EEE5D1</span></div>
+          <div style="display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:center"><span style="height:48px;background:#D4CEC2"></span><div><div style="font-size:14px;font-weight:600">plakat/color/concrete</div><div style="font-size:13px">карточки, подложки</div></div><span style="font-size:13px">#D4CEC2</span></div>
+          <div style="display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:center"><span style="height:48px;background:#1D1B18"></span><div><div style="font-size:14px;font-weight:600">plakat/color/ink</div><div style="font-size:13px">текст, линии, pressed · 15.4:1</div></div><span style="font-size:13px">#1D1B18</span></div>
+          <div style="display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:center"><span style="height:48px;background:#5E584D"></span><div><div style="font-size:14px;font-weight:600">plakat/color/ink-muted</div><div style="font-size:13px">placeholder, disabled · 5.6:1</div></div><span style="font-size:13px">#5E584D</span></div>
+          <div style="display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:center"><span style="height:48px;background:#BE2F18"></span><div><div style="font-size:14px;font-weight:600">plakat/color/red</div><div style="font-size:13px">primary, danger · на paper 4.6:1</div></div><span style="font-size:13px">#BE2F18</span></div>
+          <div style="display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:center"><span style="height:48px;background:#B5862F"></span><div><div style="font-size:14px;font-weight:600">plakat/color/ocher</div><div style="font-size:13px">warning, данные · текст ink</div></div><span style="font-size:13px">#B5862F</span></div>
+          <div style="display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:center"><span style="height:48px;background:#4E6272"></span><div><div style="font-size:14px;font-weight:600">plakat/color/slate</div><div style="font-size:13px">info, данные · текст paper 5.1:1</div></div><span style="font-size:13px">#4E6272</span></div>
+        </div>
+        <div style="background:#1F1D1A;color:#EEE5D1;padding:20px;display:flex;flex-direction:column;gap:12px">
+          <div style="font-size:12px;font-weight:600;letter-spacing:.08em">ЧЁРНАЯ БУМАГА · DARK</div>
+          <div style="display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:center"><span style="height:48px;background:#1F1D1A;border:1px solid #EEE5D1"></span><div><div style="font-size:14px;font-weight:600">plakat/color/paper</div><div style="font-size:13px">угольный картон</div></div><span style="font-size:13px">#1F1D1A</span></div>
+          <div style="display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:center"><span style="height:48px;background:#34312C"></span><div><div style="font-size:14px;font-weight:600">plakat/color/concrete</div><div style="font-size:13px">карточки, подложки</div></div><span style="font-size:13px">#34312C</span></div>
+          <div style="display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:center"><span style="height:48px;background:#EEE5D1"></span><div><div style="font-size:14px;font-weight:600">plakat/color/ink</div><div style="font-size:13px">крем вместо чёрного · 14.2:1</div></div><span style="font-size:13px">#EEE5D1</span></div>
+          <div style="display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:center"><span style="height:48px;background:#A39B8C"></span><div><div style="font-size:14px;font-weight:600">plakat/color/ink-muted</div><div style="font-size:13px">placeholder, disabled · 6.6:1</div></div><span style="font-size:13px">#A39B8C</span></div>
+          <div style="display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:center"><span style="height:48px;background:#BE2F18"></span><div><div style="font-size:14px;font-weight:600">plakat/color/red</div><div style="font-size:13px">только заливкой: текст на угле 2.9:1</div></div><span style="font-size:13px">#BE2F18</span></div>
+          <div style="display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:center"><span style="height:48px;background:#B5862F"></span><div><div style="font-size:14px;font-weight:600">plakat/color/ocher</div><div style="font-size:13px">без изменений</div></div><span style="font-size:13px">#B5862F</span></div>
+          <div style="display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:12px;align-items:center"><span style="height:48px;background:#4E6272"></span><div><div style="font-size:14px;font-weight:600">plakat/color/slate</div><div style="font-size:13px">без изменений</div></div><span style="font-size:13px">#4E6272</span></div>
+        </div>
+      </div>
+
+      <div style="font-size:12px;font-weight:600;letter-spacing:.08em;margin-top:16px">СЕМАНТИКА · РАЗЛИЧИМА В ГРАДАЦИЯХ СЕРОГО</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px">
+        <div style="display:flex;flex-direction:column;gap:8px"><div style="height:48px;background:#BE2F18;color:#EEE5D1;display:flex;align-items:center;padding:0 16px;font-family:'Rubik Mono One';font-size:13px">СОХРАНИТЬ</div><div style="font-size:13px"><b>primary</b> — сплошная заливка</div></div>
+        <div style="display:flex;flex-direction:column;gap:8px"><div style="height:48px;background:repeating-linear-gradient(45deg,#BE2F18 0 3px,#EEE5D1 3px 6px);display:flex;align-items:center;padding:0 12px"><span style="background:#EEE5D1;padding:4px 8px;font-family:'Rubik Mono One';font-size:13px;color:#BE2F18">ОШИБКА</span></div><div style="font-size:13px"><b>danger</b> — штриховка + слово</div></div>
+        <div style="display:flex;flex-direction:column;gap:8px"><div style="height:48px;border:3px solid #1D1B18;box-sizing:border-box;display:flex;align-items:center;gap:12px;padding:0 12px"><span style="width:20px;height:20px;background:#1D1B18;clip-path:polygon(0 55%,30% 55%,40% 75%,100% 0,100% 30%,40% 100%)"></span><span style="font-family:'Rubik Mono One';font-size:13px">ГОТОВО</span></div><div style="font-size:13px"><b>success</b> — чёрный клин-галочка</div></div>
+        <div style="display:flex;flex-direction:column;gap:8px"><div style="height:48px;background:#B5862F;color:#1D1B18;display:flex;align-items:center;padding:0 16px;font-family:'Rubik Mono One';font-size:13px">ВНИМАНИЕ</div><div style="font-size:13px"><b>warning</b> — охра, текст ink</div></div>
+        <div style="display:flex;flex-direction:column;gap:8px"><div style="height:48px;background:#4E6272;color:#EEE5D1;display:flex;align-items:center;padding:0 16px;font-family:'Rubik Mono One';font-size:13px">ИНФО</div><div style="font-size:13px"><b>info</b> — серо-синий, текст paper</div></div>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;align-items:center;gap:16px"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">ТИПОГРАФИКА</div><span style="flex:1;height:3px;background:#1D1B18"></span></div>
+      <div style="font-size:16px;line-height:1.5;max-width:720px;text-wrap:pretty">Плакатный скачок: Display M = 3 × Body M, Headline = 2 × Body M. Rubik Mono One — одно начертание (≈ 120 КБ с кириллицей), Golos Text — 400 / 600.</div>
+      <div style="display:flex;flex-direction:column">
+        <div style="display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:16px;align-items:baseline;padding:16px 0;border-top:1px solid #1D1B18"><div style="font-size:13px"><b>display/l</b><br>56 / 0.95 · Rubik Mono</div><div style="font-family:'Rubik Mono One';font-size:56px;line-height:.95;overflow-wrap:anywhere">ЧИТАЙ</div></div>
+        <div style="display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:16px;align-items:baseline;padding:16px 0;border-top:1px solid #1D1B18"><div style="font-size:13px"><b>display/m</b><br>48 / 0.95 · Плакат</div><div style="font-family:'Rubik Mono One';font-size:48px;line-height:.95;overflow-wrap:anywhere">ВЕСЬ НОЯБРЬ</div></div>
+        <div style="display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:16px;align-items:baseline;padding:16px 0;border-top:1px solid #1D1B18"><div style="font-size:13px"><b>headline</b><br>32 / 1.0 · Rubik Mono</div><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">СВЕЖИЙ ВЫПУСК</div></div>
+        <div style="display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:16px;align-items:baseline;padding:16px 0;border-top:1px solid #1D1B18"><div style="font-size:13px"><b>title</b><br>20 / 1.25 · Golos 600</div><div style="font-size:20px;line-height:1.25;font-weight:600">Город из фанеры: как строят временные павильоны</div></div>
+        <div style="display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:16px;align-items:baseline;padding:16px 0;border-top:1px solid #1D1B18"><div style="font-size:13px"><b>body/m</b><br>16 / 1.4 · Golos 400</div><div style="font-size:16px;line-height:1.4;max-width:560px">Павильон стоит три месяца, потом его разбирают и везут в другой город. Мы спросили архитекторов, как это устроено. Latin: Plywood city.</div></div>
+        <div style="display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:16px;align-items:baseline;padding:16px 0;border-top:1px solid #1D1B18"><div style="font-size:13px"><b>body/s</b><br>14 / 1.45 · минимум</div><div style="font-size:14px;line-height:1.45">Анна Ветрова · 8 минут чтения</div></div>
+        <div style="display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:16px;align-items:baseline;padding:16px 0;border-top:1px solid #1D1B18"><div style="font-size:13px"><b>label</b><br>12 · 600 · +0.08em</div><div style="font-size:12px;font-weight:600;letter-spacing:.08em">АРХИТЕКТУРА · 8 МИН</div></div>
+        <div style="display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:16px;align-items:baseline;padding:16px 0;border-top:1px solid #1D1B18;border-bottom:1px solid #1D1B18"><div style="font-size:13px"><b>button</b><br>14 · Rubik Mono · +0.04em</div><div style="font-family:'Rubik Mono One';font-size:14px;letter-spacing:.04em">ПОДПИСАТЬСЯ</div></div>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;align-items:center;gap:16px"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">ФОРМА И СЕТКА</div><span style="flex:1;height:3px;background:#1D1B18"></span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:32px">
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="font-size:12px;font-weight:600;letter-spacing:.08em">ЛИНИИ</div>
+          <div style="display:flex;flex-direction:column;gap:6px"><span style="height:1px;background:#1D1B18"></span><span style="font-size:13px">plakat/line/hair · 1 — разделители строк</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><span style="height:3px;background:#1D1B18"></span><span style="font-size:13px">plakat/line/rule · 3 — поле, рамки, рельс</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><span style="height:8px;background:#1D1B18"></span><span style="font-size:13px">plakat/line/bar · 8 — шапка, фокус, разделы</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="font-size:12px;font-weight:600;letter-spacing:.08em">ОСЬ −17° И СРЕЗ</div>
+          <div style="position:relative;height:120px;background:#D4CEC2;overflow:hidden">
+            <div style="position:absolute;left:16px;top:96px;width:300px;height:3px;background:#1D1B18;transform:rotate(-17deg);transform-origin:0 50%"></div>
+            <div style="position:absolute;left:16px;top:24px;width:160px;height:48px;background:#BE2F18;clip-path:polygon(0 14px,46px 0,100% 0,100% 100%,0 100%)"></div>
+            <div style="position:absolute;left:16px;top:84px;width:46px;height:14px;background:#1D1B18;clip-path:polygon(0 100%,100% 0,100% 100%)"></div>
+          </div>
+          <div style="font-size:13px;line-height:1.45">Срез 46 × 14 = 17°. Радиус 0; кривые — только полные круги.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div style="font-size:12px;font-weight:600;letter-spacing:.08em">СЕТКА 8 · РАЗМЕРЫ</div>
+          <div style="height:120px;background-image:linear-gradient(#1D1B18 0 1px,transparent 1px),linear-gradient(90deg,#1D1B18 0 1px,transparent 1px);background-size:8px 8px;opacity:.25"></div>
+          <div style="font-size:13px;line-height:1.45">Поля 16, зазор 8 или встык. Кнопка 48, поле 56, чип 32, чекбокс 24, touch ≥ 48.</div>
+        </div>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;align-items:center;gap:16px"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">ПЕЧАТЬ</div><span style="flex:1;height:3px;background:#1D1B18"></span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="position:relative;height:140px;background:#D4CEC2;display:flex;align-items:center;justify-content:center"><div style="position:relative"><div style="position:absolute;left:1px;top:1px;font-family:'Rubik Mono One';font-size:40px;color:#BE2F18">ЛИСТ</div><div style="position:relative;font-family:'Rubik Mono One';font-size:40px">ЛИСТ</div></div></div>
+          <div style="font-size:13px;line-height:1.45"><b>plakat/print/registration</b> · 1, 1 — красный слой под Display и плашками; 0 на теле и иконках; выключается в 0.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="position:relative;height:140px;background:#EEE5D1;overflow:hidden;border:1px solid #1D1B18;box-sizing:border-box"><div style="position:absolute;inset:0;mix-blend-mode:multiply;opacity:.45;background-image:url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27256%27 height=%27256%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%27.8%27 numOctaves=%273%27 stitchTiles=%27stitch%27/%3E%3CfeColorMatrix values=%270 0 0 0 .42 0 0 0 0 .34 0 0 0 0 .2 0 0 0 .6 0%27/%3E%3C/filter%3E%3Crect width=%27256%27 height=%27256%27 filter=%27url(%23n)%27/%3E%3C/svg%3E')"></div></div>
+          <div style="font-size:13px;line-height:1.45"><b>plakat/print/paper-texture</b> · тайл 256, multiply 45%. Отдельный слой, форма под ним плоская.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="position:relative;height:140px;background:#BE2F18;overflow:hidden"><div style="position:absolute;inset:0;opacity:.55;background-image:url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27200%27 height=%27200%27%3E%3Cfilter id=%27s%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%27.35%27 numOctaves=%273%27 seed=%277%27 stitchTiles=%27stitch%27/%3E%3CfeColorMatrix values=%270 0 0 0 .93 0 0 0 0 .9 0 0 0 0 .82 6 0 0 0 -4%27/%3E%3C/filter%3E%3Crect width=%27200%27 height=%27200%27 filter=%27url(%23s)%27/%3E%3C/svg%3E')"></div></div>
+          <div style="font-size:13px;line-height:1.45"><b>plakat/print/nonprint</b> · непрокрас на красных плашках, тайл 200, 55% по редким пятнам.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="position:relative;height:140px;background:#BE2F18;overflow:hidden;isolation:isolate">
+            <div style="position:absolute;inset:0;filter:contrast(30);background:#fff;mix-blend-mode:multiply">
+              <div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,#2a2a2a 0,#2a2a2a 16%,#8a8a8a 32%,#d8d8d8 50%,#f4f4f4 70%)"></div>
+              <div style="position:absolute;inset:-50%;transform:rotate(45deg);background-image:radial-gradient(circle,#000 0,#808080 2.83px);background-size:4px 4px;mix-blend-mode:plus-lighter"></div>
+            </div>
+          </div>
+          <div style="font-size:13px;line-height:1.45"><b>plakat/print/halftone</b> · шаг 4, 45°, одна краска. Фолбэк для Android &lt; 33 — плоская маска без точек.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="position:relative;height:140px;background:#EEE5D1;box-shadow:inset 0 0 0 1px #1D1B18"><canvas ref="{{ rkRef }}" width="560" height="280" style="width:100%;height:140px;display:block" aria-hidden="true"></canvas></div>
+          <div style="font-size:13px;line-height:1.45"><b>plakat/print/raskat</b> · зернистый переход двух красок, одна фигура на экран — единственное исключение из «нет градиентов». <a href="plakat-ui Раскат.dc.html">Правила</a>.</div>
+        </div>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;align-items:center;gap:16px"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">МОУШЕН</div><span style="flex:1;height:3px;background:#1D1B18"></span></div>
+      <div style="font-size:16px;line-height:1.5;max-width:720px;text-wrap:pretty">Нажмите строку — каретка проедет по рельсу с этой длительностью и кривой. Пружин и overshoot нет.</div>
+      <div style="display:flex;flex-direction:column">
+        <sc-for list="{{ rows }}" as="m" hint-placeholder-count="7">
+          <div onClick="{{ m.run }}" style="display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:16px;align-items:center;padding:12px 0;border-top:1px solid #1D1B18;cursor:pointer" style-active="background:#D4CEC2">
+            <div><div style="font-size:14px;font-weight:600">{{ m.name }}</div><div style="font-size:13px">{{ m.note }}</div></div>
+            <div style="position:relative;height:48px">
+              <span style="position:absolute;left:0;right:0;top:22px;height:3px;background:#1D1B18"></span>
+              <span style="position:absolute;left:{{ m.x }};top:8px;width:20px;height:32px;background:{{ m.color }};transition:{{ m.tr }}"></span>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;align-items:center;gap:16px"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">ИСТОЧНИКИ</div><span style="flex:1;height:3px;background:#1D1B18"></span></div>
+      <div style="display:flex;flex-direction:column;font-size:15px;line-height:1.45">
+        <div style="display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:16px;padding:12px 0;border-top:1px solid #1D1B18"><b>Rubik Mono One</b><span>OFL 1.1, Google Fonts. Кириллица есть. Открыто: сверить лицензию по name-table файла.</span></div>
+        <div style="display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:16px;padding:12px 0;border-top:1px solid #1D1B18"><b>Golos Text</b><span>OFL 1.1, Google Fonts. Кириллица и латиница. Открыто: сверить по файлу.</span></div>
+        <div style="display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:16px;padding:12px 0;border-top:1px solid #1D1B18"><b>Текстуры</b><span>Собственные, процедурные (feTurbulence). В PNG @2x — в артефакте 7.</span></div>
+        <div style="display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:16px;padding:12px 0;border-top:1px solid #1D1B18;border-bottom:1px solid #1D1B18"><b>Фото</b><span>Только CC0 и только через правило фотомонтажа.</span></div>
+      </div>
+    </section>
+  </div>
+  <div style="position:fixed;inset:0;pointer-events:none;mix-blend-mode:multiply;opacity:.35;background-image:url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27256%27 height=%27256%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%27.8%27 numOctaves=%273%27 stitchTiles=%27stitch%27/%3E%3CfeColorMatrix values=%270 0 0 0 .42 0 0 0 0 .34 0 0 0 0 .2 0 0 0 .6 0%27/%3E%3C/filter%3E%3Crect width=%27256%27 height=%27256%27 filter=%27url(%23n)%27/%3E%3C/svg%3E')"></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { on: {} };
+  rkRef = React.createRef();
+  componentDidMount() {
+    import('./plakat-raskat.js').then(m => { const c = this.rkRef.current; if (!c) return; const w = c.clientWidth || 280, x = c.getContext('2d'); c.width = w * 2; x.setTransform(2, 0, 0, 2, 0, 0);
+      x.fillStyle = '#EEE5D1'; x.fillRect(0, 0, w, 140); m.drawRaskat(x, { k: 'circle', cx: w / 2, cy: 70, r: 58 }, { a: '#BE2F18', b: '#EEE5D1', angle: -17, t0: .58, hard: 12, grain: 1.5, seed: 1919, streak: .5 }); }).catch(e => console.error('raskat', e));
+  }
+  renderVals() {
+    const HS = 'cubic-bezier(.2,.8,.9,.9)';
+    const defs = [
+      ['plakat/motion/duration/snap', '60 мс · hard-stop · release, смена цвета', 60, HS],
+      ['plakat/motion/duration/quick', '120 мс · hard-stop · switch, checkbox, nav', 120, HS],
+      ['plakat/motion/duration/normal', '200 мс · linear · wipe карточки, вкладки', 200, 'linear'],
+      ['plakat/motion/duration/scene', '320 мс · linear · диалог, смена экрана', 320, 'linear'],
+      ['plakat/motion/curve/linear', '200 мс · сдвиги и wipe', 200, 'linear'],
+      ['plakat/motion/curve/hard-stop', 'cubic-bezier(.2,.8,.9,.9) · 200 мс', 200, HS],
+      ['plakat/motion/curve/stepped', 'steps(6) · 240 мс · счётчики, сектор', 240, 'steps(6, end)']
+    ];
+    return {
+      rkRef: this.rkRef,
+      rows: defs.map(([name, note, ms, c], i) => {
+        const on = !!this.state.on[i];
+        return { name, note, color: i === 6 ? '#BE2F18' : '#1D1B18', x: on ? 'calc(100% - 20px)' : '0px', tr: `left ${ms}ms ${c}`,
+          run: () => this.setState(s => ({ on: { ...s.on, [i]: !s.on[i] } })) };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

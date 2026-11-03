@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Rubik+Mono+One&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#2B2925}
+a{color:#EEE5D1}
+a:hover{color:#BE2F18}
+button{font:inherit;-webkit-tap-highlight-color:transparent}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#2B2925;color:#EEE5D1;font-family:'Golos Text',sans-serif;padding:56px;box-sizing:border-box;display:flex;flex-direction:column;gap:56px">
+  <header style="display:flex;flex-direction:column;gap:12px;max-width:900px">
+    <div style="font-size:12px;font-weight:600;letter-spacing:.08em;color:#BDB4A2">PLAKAT-UI · ЭТАП 4 · АРТЕФАКТ 8</div>
+    <div style="font-family:'Rubik Mono One';font-size:56px;line-height:.95">ДЕМО</div>
+    <div style="font-size:17px;line-height:1.5;color:#BDB4A2;text-wrap:pretty">Три экрана журнала «Лист», собранные только из компонентов кита. Тёмная тема — те же экраны с другим набором токенов; на экране настроек переключатель темы работает. Правила — в <a href="plakat-ui Принципы.dc.html">plakat-ui Принципы</a>.</div>
+  </header>
+
+  <section style="display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;align-items:baseline;gap:16px"><div style="font-family:'Rubik Mono One';font-size:28px">01 · ОНБОРДИНГ</div><div style="font-size:14px;color:#BDB4A2">Окно · Button filled / text · индикатор страниц</div></div>
+    <div style="display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start">
+      <sc-for list="{{ ob }}" as="s" hint-placeholder-count="2">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="font-size:12px;font-weight:600;letter-spacing:.08em;color:#BDB4A2">{{ s.t.name }}</div>
+          <div data-screen-label="Онбординг" style="position:relative;width:390px;height:844px;overflow:hidden;background:{{ s.t.paper }};color:{{ s.t.ink }}">
+            <div style="padding:20px 16px 0;display:flex;justify-content:space-between;align-items:center;height:48px"><span style="font-family:'Rubik Mono One';font-size:20px">ЛИСТ</span><span style="font-size:12px;font-weight:600;letter-spacing:.08em">{{ s.pos }}</span></div>
+            <div style="height:8px;background:{{ s.t.ink }};margin:12px 16px 0"></div>
+            <div style="position:relative;margin-top:24px;overflow:hidden">
+              <div style="display:flex;width:1170px;transform:{{ s.tx }};transition:{{ s.tr }}">
+                <sc-for list="{{ s.panels }}" as="p" hint-placeholder-count="3">
+                  <div style="width:390px;padding:0 16px;box-sizing:border-box;display:flex;flex-direction:column;gap:20px">
+                    <div style="position:relative;height:360px;overflow:hidden;background:{{ s.t.concrete }}">
+                      <sc-for list="{{ p.shapes }}" as="g" hint-placeholder-count="0"><div style="position:absolute;left:{{ g.x }};top:{{ g.y }};width:{{ g.w }};height:{{ g.h }};background:{{ g.c }};border-radius:{{ g.r }};clip-path:{{ g.clip }};transform:{{ g.t }};transform-origin:{{ g.o }}"></div></sc-for>
+                      <span style="position:absolute;left:12px;top:12px;font-family:'Rubik Mono One';font-size:14px;background:{{ s.t.paper }};padding:4px 8px">{{ p.n }}</span>
+                    </div>
+                    <div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">{{ p.cap }}</div>
+                    <div style="font-size:17px;line-height:1.45;max-width:320px">{{ p.body }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+            <div style="position:absolute;left:16px;right:16px;bottom:120px;display:flex;gap:8px"><sc-for list="{{ s.dots }}" as="d" hint-placeholder-count="3"><span style="width:24px;height:8px;background:{{ d.bg }};box-shadow:inset 0 0 0 2px {{ s.t.ink }}"></span></sc-for></div>
+            <div style="position:absolute;left:16px;right:16px;bottom:40px;display:flex;gap:8px;align-items:center">
+              <button onClick="{{ s.skip }}" style="height:48px;padding:0 12px;border:0;background:transparent;color:{{ s.t.ink }};font-family:'Rubik Mono One';font-size:13px;cursor:pointer"><span style="border-bottom:3px solid {{ s.t.ink }};padding-bottom:3px">ПРОПУСТИТЬ</span></button>
+              <button onClick="{{ s.next }}" style="flex:1;height:48px;padding:0;border:0;background:transparent;cursor:pointer;position:relative" style-active="transform:translate(1px,1px)"><span style="position:absolute;inset:0;background:#BE2F18;clip-path:polygon(0 14px,46px 0,100% 0,100% 100%,0 100%)"></span><span style="position:relative;display:flex;height:100%;align-items:center;justify-content:center;font-family:'Rubik Mono One';font-size:14px;letter-spacing:.04em;color:#EEE5D1">{{ s.cta }}</span></button>
+            </div>
+            <div style="position:absolute;inset:0;pointer-events:none;background-image:url('textures/paper-grain-2x.png');background-size:256px 256px;mix-blend-mode:{{ s.t.texBlend }};opacity:{{ s.t.texOp }}"></div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;align-items:baseline;gap:16px"><div style="font-family:'Rubik Mono One';font-size:28px">02 · ЛЕНТА</div><div style="font-size:14px;color:#BDB4A2">TopAppBar + раппорт · Tabs · Плакат / Круг · раскат · Card · NavigationBar</div></div>
+    <div style="display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start">
+      <sc-for list="{{ feed }}" as="s" hint-placeholder-count="2">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="font-size:12px;font-weight:600;letter-spacing:.08em;color:#BDB4A2">{{ s.t.name }}</div>
+          <div data-screen-label="Лента" style="position:relative;width:390px;height:844px;overflow:hidden;background:{{ s.t.paper }};color:{{ s.t.ink }}">
+            <div style="position:absolute;inset:0 0 64px 0;overflow-y:auto;scrollbar-width:none">
+              <div style="padding:20px 16px 0;display:flex;justify-content:space-between;align-items:baseline"><span style="font-family:'Rubik Mono One';font-size:28px;line-height:1">ЛИСТ</span><span style="font-size:12px;font-weight:600;letter-spacing:.08em">№ 47 · НОЯБРЬ</span></div>
+              <div style="height:24px;margin-top:12px;background-image:{{ s.strip }};background-size:{{ s.stripSize }};background-repeat:repeat-x"></div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);position:relative;border-bottom:1px solid {{ s.t.ink }};margin-top:8px">
+                <sc-for list="{{ s.tabs }}" as="b" hint-placeholder-count="3"><button onClick="{{ b.set }}" style="height:48px;border:0;background:transparent;color:{{ s.t.ink }};font-size:12px;font-weight:600;letter-spacing:.08em;cursor:pointer">{{ b.label }}</button></sc-for>
+                <span style="position:absolute;left:{{ s.tabX }};bottom:-1px;width:33.333%;height:8px;background:#BE2F18;transition:left 200ms linear;pointer-events:none"></span>
+              </div>
+              <div style="position:relative;height:392px">
+                <canvas ref="{{ s.rk }}" width="780" height="784" style="position:absolute;inset:0;width:390px;height:392px" aria-hidden="true"></canvas>
+                <div style="position:absolute;left:16px;top:100px;transform:rotate(-17deg);transform-origin:0 0;font-family:'Rubik Mono One';font-size:48px;line-height:.95;white-space:nowrap">ЧИТАЙ<br>ВЕСЬ<br>НОЯБРЬ</div>
+                <div style="position:absolute;left:16px;top:256px;width:220px;font-size:16px;line-height:1.35">12 новых выпусков. Мы собрали их в одну ленту — читай по порядку.</div>
+                <div style="position:absolute;left:16px;right:16px;bottom:24px;height:48px"><span style="position:absolute;inset:0;background:#BE2F18;clip-path:polygon(0 14px,46px 0,100% 0,100% 100%,0 100%)"></span><span style="position:relative;display:flex;height:100%;align-items:center;justify-content:center;font-family:'Rubik Mono One';font-size:16px;letter-spacing:.04em;color:#EEE5D1">ПОДПИСАТЬСЯ</span></div>
+              </div>
+              <div style="padding:8px 16px 24px">
+                <div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.08em">СВЕЖЕЕ<span style="flex:1;height:3px;background:{{ s.t.ink }}"></span></div>
+                <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px">
+                  <sc-for list="{{ s.cards }}" as="c" hint-placeholder-count="3">
+                    <div style="display:flex;gap:16px;align-items:center;padding:12px;background:{{ s.t.concrete }};cursor:pointer" style-active="background:{{ s.t.ink }};color:{{ s.t.paper }}">
+                      <div style="position:relative;width:64px;height:64px;overflow:hidden;background:{{ s.t.paper }};flex:none"><sc-for list="{{ c.th }}" as="g" hint-placeholder-count="0"><div style="position:absolute;left:{{ g.x }};top:{{ g.y }};width:{{ g.w }};height:{{ g.h }};background:{{ g.c }};border-radius:{{ g.r }};clip-path:{{ g.clip }};transform:{{ g.t }};transform-origin:{{ g.o }}"></div></sc-for></div>
+                      <div style="min-width:0"><div style="font-size:11px;font-weight:600;letter-spacing:.08em">{{ c.rubric }}</div><div style="font-size:17px;font-weight:600;line-height:1.25;margin-top:4px">{{ c.title }}</div></div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+            <div style="position:absolute;left:0;right:0;bottom:0;height:64px;background:{{ s.t.navBg }};color:#EEE5D1;display:grid;grid-template-columns:repeat(4,1fr)">
+              <sc-for list="{{ s.nav }}" as="n" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px"><span style="width:40px;height:32px;display:flex;align-items:center;justify-content:center;background:{{ n.bg }}"><svg viewBox="0 0 24 24" style="width:24px;height:24px"><path d="{{ n.d }}" fill="currentColor"></path></svg></span><span style="font-size:11px;font-weight:600;letter-spacing:.06em">{{ n.label }}</span></div></sc-for>
+            </div>
+            <div style="position:absolute;inset:0;pointer-events:none;background-image:url('textures/paper-grain-2x.png');background-size:256px 256px;mix-blend-mode:{{ s.t.texBlend }};opacity:{{ s.t.texOp }}"></div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;align-items:baseline;gap:16px"><div style="font-family:'Rubik Mono One';font-size:28px">03 · НАСТРОЙКИ</div><div style="font-size:14px;color:#BDB4A2">TopAppBar collapsed · Счётчик · List item + Switch · Segmented · Button danger · NavigationBar</div></div>
+    <div style="display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start">
+      <sc-for list="{{ set }}" as="s" hint-placeholder-count="2">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="font-size:12px;font-weight:600;letter-spacing:.08em;color:#BDB4A2">{{ s.t.name }}</div>
+          <div data-screen-label="Настройки" style="position:relative;width:390px;height:844px;overflow:hidden;background:{{ s.t.paper }};color:{{ s.t.ink }};transition:background-color 60ms linear,color 60ms linear">
+            <div style="height:56px;display:flex;align-items:center;gap:4px;padding:8px 4px 0;border-bottom:3px solid {{ s.t.ink }}"><span style="width:48px;height:48px;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" style="width:24px;height:24px"><path d="{{ ic.back }}" fill="currentColor"></path></svg></span><span style="font-family:'Rubik Mono One';font-size:16px">НАСТРОЙКИ</span></div>
+            <div style="padding:24px 16px 0">
+              <div style="font-size:12px;font-weight:600;letter-spacing:.08em">ВАШ НОЯБРЬ</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">
+                <div style="background:{{ s.t.concrete }};padding:16px;display:flex;flex-direction:column;gap:8px">
+                  <div style="position:relative;width:112px;height:104px;overflow:hidden"><span style="position:absolute;left:0;top:0;font-family:'Rubik Mono One';font-size:100px;line-height:1;white-space:nowrap;transform-origin:0 0;transform:{{ num.tf }}">47</span></div>
+                  <div style="display:flex;flex-wrap:wrap;align-items:center;gap:3px;max-width:180px"><sc-for list="{{ isoA }}" as="q" hint-placeholder-count="9"><span style="width:10px;height:10px;background:{{ s.t.ink }}"></span></sc-for><span style="font-size:11px;font-weight:600;line-height:12px">+2</span></div>
+                  <div style="font-size:12px;font-weight:600;letter-spacing:.08em">СТАТЕЙ ПРОЧИТАНО</div><div style="font-size:12px">■ = 5 статей</div>
+                </div>
+                <div style="background:{{ s.t.concrete }};padding:16px;display:flex;flex-direction:column;gap:8px">
+                  <div style="position:relative;width:56px;height:104px;overflow:hidden"><span style="position:absolute;left:0;top:0;font-family:'Rubik Mono One';font-size:100px;line-height:1;white-space:nowrap;color:#BE2F18;transform-origin:0 0;transform:{{ num2.tf }}">6</span></div>
+                  <div style="display:flex;flex-wrap:wrap;gap:3px;max-width:150px"><sc-for list="{{ isoB }}" as="q" hint-placeholder-count="6"><span style="width:12px;height:12px;border-radius:50%;background:{{ q.c }}"></span></sc-for></div>
+                  <div style="font-size:12px;font-weight:600;letter-spacing:.08em">ДНЕЙ ПОДРЯД</div><div style="font-size:12px">● = день, красный — сегодня</div>
+                </div>
+              </div>
+            </div>
+            <div style="padding:24px 16px 0">
+              <div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.08em">ЧТЕНИЕ<span style="flex:1;height:3px;background:{{ s.t.ink }}"></span></div>
+              <sc-for list="{{ s.rows }}" as="r" hint-placeholder-count="3">
+                <div onClick="{{ r.toggle }}" role="switch" aria-checked="{{ r.aria }}" style="display:flex;align-items:center;justify-content:space-between;min-height:56px;border-bottom:1px solid {{ s.t.ink }};cursor:pointer;color:{{ r.fg }}">
+                  <span style="font-size:16px">{{ r.label }}</span>
+                  <span style="position:relative;width:56px;height:48px;flex:none"><span style="position:absolute;left:0;right:0;top:22px;height:3px;background:{{ r.rail }}"></span><span style="position:absolute;left:0;top:20px;height:8px;width:{{ r.fill }};background:#BE2F18;transition:width 120ms cubic-bezier(.2,.8,.9,.9)"></span><span style="position:absolute;left:0;top:8px;width:20px;height:32px;background:{{ r.knobBg }};transform:{{ r.knob }};transition:transform 120ms cubic-bezier(.2,.8,.9,.9)"></span></span>
+                </div>
+              </sc-for>
+              <div style="display:flex;align-items:center;justify-content:space-between;min-height:64px;border-bottom:1px solid {{ s.t.ink }}">
+                <span style="font-size:16px">Тема</span>
+                <div style="display:flex;box-shadow:inset 0 0 0 3px {{ s.t.ink }}"><sc-for list="{{ s.theme }}" as="b" hint-placeholder-count="2"><button onClick="{{ b.set }}" style="height:40px;padding:0 12px;border:0;background:{{ b.bg }};color:{{ b.fg }};font-size:12px;font-weight:600;letter-spacing:.06em;cursor:pointer">{{ b.label }}</button></sc-for></div>
+              </div>
+              <div style="margin-top:32px;height:48px;display:flex;align-items:center;padding:0 8px;background:repeating-linear-gradient(45deg,#BE2F18 0 3px,{{ s.t.paper }} 3px 6px)"><span style="background:{{ s.t.paper }};padding:6px 10px;font-family:'Rubik Mono One';font-size:13px">ВЫЙТИ ИЗ АККАУНТА</span></div>
+            </div>
+            <div style="position:absolute;left:0;right:0;bottom:0;height:64px;background:{{ s.t.navBg }};color:#EEE5D1;display:grid;grid-template-columns:repeat(4,1fr)">
+              <sc-for list="{{ s.nav }}" as="n" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px"><span style="width:40px;height:32px;display:flex;align-items:center;justify-content:center;background:{{ n.bg }}"><svg viewBox="0 0 24 24" style="width:24px;height:24px"><path d="{{ n.d }}" fill="currentColor"></path></svg></span><span style="font-size:11px;font-weight:600;letter-spacing:.06em">{{ n.label }}</span></div></sc-for>
+            </div>
+            <div style="position:absolute;inset:0;pointer-events:none;background-image:url('textures/paper-grain-2x.png');background-size:256px 256px;mix-blend-mode:{{ s.t.texBlend }};opacity:{{ s.t.texOp }}"></div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { G: null, icons: {}, ready: false, ob: { 0: 0, 1: 0 }, tab: { 0: 0, 1: 0 }, sw: { 0: { a: true, b: false }, 1: { a: true, b: true } }, setTheme: { 0: 'l', 1: 'd' } };
+  rk = [React.createRef(), React.createRef()];
+  TH = {
+    l: { key: 'l', name: 'БУМАГА', paper: '#EEE5D1', concrete: '#D4CEC2', ink: '#1D1B18', muted: '#5E584D', navBg: '#1D1B18', texBlend: 'multiply', texOp: '.8', pal: { red: '#BE2F18', ink: '#1D1B18', paper: '#EEE5D1', concrete: '#D4CEC2' } },
+    d: { key: 'd', name: 'ЧЁРНАЯ БУМАГА', paper: '#1F1D1A', concrete: '#34312C', ink: '#EEE5D1', muted: '#A39B8C', navBg: '#34312C', texBlend: 'screen', texOp: '.25', pal: { red: '#BE2F18', ink: '#EEE5D1', paper: '#1F1D1A', concrete: '#34312C' } }
+  };
+  componentDidMount() {
+    import('./plakat-gen.js').then(m => this.setState({ G: m })).catch(e => console.error('gen', e));
+    import('./plakat-icons.js').then(m => { const o = {}; m.ICONS.forEach(i => o[i.id] = i.d); this.setState({ icons: o }); }).catch(e => console.error('icons', e));
+    import('./plakat-raskat.js').then(m => { this.RK = m; this.drawRk(); }).catch(e => console.error('raskat', e));
+    const go = () => this.setState({ ready: true });
+    document.fonts ? document.fonts.load('100px "Rubik Mono One"', '0123456789').then(go, go) : go();
+  }
+  componentDidUpdate() { this.drawRk(); }
+  drawRk() {
+    if (!this.RK) return;
+    ['l', 'd'].forEach((k, i) => { const c = this.rk[i].current; if (!c || c.dataset.drawn) return; c.dataset.drawn = '1';
+      const T = this.TH[k], x = c.getContext('2d'); x.setTransform(2, 0, 0, 2, 0, 0); x.fillStyle = T.paper; x.fillRect(0, 0, 390, 392); x.fillStyle = T.concrete; x.fillRect(0, 168, 160, 144);
+      this.RK.drawRaskat(x, { k: 'circle', cx: 310, cy: 252, r: 60 }, { a: '#BE2F18', b: T.paper, angle: -17, t0: .58, hard: 12, grain: 2, seed: 1919, streak: .5 }); });
+  }
+  fit(text, W, H) {
+    const c = this.cv || (this.cv = document.createElement('canvas').getContext('2d')); c.font = '100px "Rubik Mono One"';
+    const t = c.measureText(text), cap = c.measureText('H').actualBoundingBoxAscent || 70, L = t.actualBoundingBoxLeft || 0, w = L + (t.actualBoundingBoxRight || t.width);
+    const asc = t.fontBoundingBoxAscent || 90, desc = t.fontBoundingBoxDescent || 20, capTop = (100 - (asc + desc)) / 2 + asc - cap;
+    return { tf: `scale(${(W / w).toFixed(4)},${(H / cap).toFixed(4)}) translate(${L.toFixed(2)}px,${(-capTop).toFixed(2)}px)` };
+  }
+  renderVals() {
+    const st = this.state, G = st.G, ic = st.icons, RED = '#BE2F18';
+    const seg = (on, t) => ({ bg: on ? t.ink : 'transparent', fg: on ? t.paper : t.ink });
+    const dom = (shapes, pal) => G ? shapes.map(s => G.toDOM(s, pal)) : [];
+    const nav = (active) => [['home', 'ЛЕНТА'], ['search', 'ПОИСК'], ['share', 'ОБМЕН'], ['settings', 'ОПЦИИ']].map(([id, label], i) => ({ d: ic[id] || '', label, bg: i === active ? RED : 'transparent' }));
+    const panelsCopy = [['01', 'ЧИТАЙ ПО ПОРЯДКУ', 'Каждую неделю — выпуск из 12 статей. Начни с первой.', 301], ['02', 'СОХРАНЯЙ В ЛИСТ', 'Закладки открываются без сети — в метро и в самолёте.', 318], ['03', 'ДЕЛИСЬ ВЫПУСКОМ', 'Отправь статью другу — он прочтёт её без подписки.', 335]];
+    const ob = [0, 1].map(i => { const t = this.TH[i ? 'd' : 'l'], p = st.ob[i];
+      return { t, pos: `${p + 1} / 3`, tx: `translateX(-${p * 390}px)`, tr: 'transform 200ms cubic-bezier(.2,.8,.9,.9)', cta: p === 2 ? 'НАЧАТЬ ЧИТАТЬ' : 'ДАЛЬШЕ',
+        panels: panelsCopy.map(([n, cap, body, seed]) => ({ n, cap, body, shapes: G ? dom(G.generate(seed, { W: 358, H: 360, head: { x: 0, y: 0, w: 72, h: 40 } }).shapes, t.pal) : [] })),
+        dots: [0, 1, 2].map(k => ({ bg: k === p ? RED : 'transparent' })),
+        next: () => this.setState(s => ({ ob: { ...s.ob, [i]: (s.ob[i] + 1) % 3 } })), skip: () => this.setState(s => ({ ob: { ...s.ob, [i]: 2 } })) }; });
+    const cardCopy = [['АРХИТЕКТУРА · 8 МИН', 'Город из фанеры: как строят временные павильоны', 71], ['ШРИФТ · 5 МИН', 'Буквы, которые читаются с другого конца площади', 72], ['ДИЗАЙН · 12 МИН', 'Семь способов сложить один лист бумаги', 73]];
+    const feed = [0, 1].map(i => { const t = this.TH[i ? 'd' : 'l'];
+      let strip = 'none', stripSize = 'auto';
+      if (G) { const r = G.rapport(1923, 12), svg = G.toSVG(r.shapes, r.w, r.h, t.pal); strip = `url("data:image/svg+xml,${encodeURIComponent(svg)}")`; stripSize = `${(r.w * 24 / r.h).toFixed(2)}px 24px`; }
+      return { t, rk: this.rk[i], strip, stripSize, tabX: `${st.tab[i] * 33.333}%`,
+        tabs: ['ЛЕНТА', 'АРХИВ', 'ЗАКЛАДКИ'].map((label, k) => ({ label, set: () => this.setState(s => ({ tab: { ...s.tab, [i]: k } })) })),
+        cards: cardCopy.map(([rubric, title, seed]) => ({ rubric, title, th: G ? dom(G.generate(seed, { W: 64, H: 64, head: false }).shapes, t.pal) : [] })),
+        nav: nav(0) }; });
+    const set = [0, 1].map(i => { const t = this.TH[st.setTheme[i]], sw = st.sw[i];
+      const row = (label, key, disabled) => { const on = !!sw[key]; return { label, aria: on ? 'true' : 'false', fg: disabled ? t.muted : t.ink, rail: disabled ? t.muted : t.ink, knobBg: disabled ? t.concrete : t.ink,
+        fill: on && !disabled ? '36px' : '0px', knob: `translateX(${on && !disabled ? 36 : 0}px)`, toggle: () => { if (!disabled) this.setState(s => ({ sw: { ...s.sw, [i]: { ...s.sw[i], [key]: !s.sw[i][key] } } })); } }; };
+      return { t, nav: nav(3), rows: [row('Присылать дайджест', 'a'), row('Только непрочитанное', 'b'), row('Офлайн-режим · скоро', 'c', true)],
+        theme: [['БУМАГА', 'l'], ['ЧЁРНАЯ', 'd']].map(([label, k]) => ({ label, ...seg(st.setTheme[i] === k, t), set: () => this.setState(s => ({ setTheme: { ...s.setTheme, [i]: k } })) })) }; });
+    return {
+      ob, feed, set, ic,
+      num: this.fit('47', 112, 104), num2: this.fit('6', 56, 104),
+      isoA: Array.from({ length: 9 }, () => ({ clip: 'none' })),
+      isoB: Array.from({ length: 6 }, (_, k) => ({ c: k === 5 ? RED : 'currentColor' }))
+    };
+  }
+}
+</script>
+</body>
+</html>

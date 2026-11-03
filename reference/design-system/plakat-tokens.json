@@ -1,0 +1,264 @@
+{
+  "$meta": {
+    "kit": "plakat-ui",
+    "direction": "3a",
+    "version": "0.2.0",
+    "date": "2026-11-03"
+  },
+  "plakat/color": {
+    "paper": {
+      "light": "#EEE5D1",
+      "dark": "#1F1D1A",
+      "note": "основная бумага; dark — угольный картон"
+    },
+    "concrete": {
+      "light": "#D4CEC2",
+      "dark": "#34312C",
+      "note": "вторая бумага: карточки, подложки, disabled-плашки"
+    },
+    "ink": {
+      "light": "#1D1B18",
+      "dark": "#EEE5D1",
+      "note": "типографская краска; в dark — бумажный крем"
+    },
+    "ink-muted": {
+      "light": "#5E584D",
+      "dark": "#A39B8C",
+      "note": "placeholder, disabled-текст; ≥ 4.5:1 на paper"
+    },
+    "red": {
+      "light": "#BE2F18",
+      "dark": "#BE2F18",
+      "note": "киноварь, не меняется между темами; ≤ 1/3 экрана"
+    },
+    "on-red": {
+      "light": "#EEE5D1",
+      "dark": "#EEE5D1",
+      "note": "4.64:1 на red"
+    },
+    "ocher": {
+      "light": "#B5862F",
+      "dark": "#B5862F",
+      "note": "вторая прогонка: warning, данные; текст на ней — ink light"
+    },
+    "slate": {
+      "light": "#4E6272",
+      "dark": "#4E6272",
+      "note": "вторая прогонка: info, данные; текст на ней — paper light (5.1:1)"
+    }
+  },
+  "plakat/semantic": {
+    "primary": {
+      "fill": "red",
+      "form": "заливка"
+    },
+    "danger": {
+      "fill": "red",
+      "form": "штриховка 45°, шаг 6, + слово «ОШИБКА»"
+    },
+    "success": {
+      "fill": "ink",
+      "form": "клин-галочка"
+    },
+    "warning": {
+      "fill": "ocher",
+      "form": "заливка + «ВНИМАНИЕ»"
+    },
+    "info": {
+      "fill": "slate",
+      "form": "заливка + «ИНФО»"
+    }
+  },
+  "plakat/type": {
+    "family/display": "Rubik Mono One",
+    "family/body": "Golos Text",
+    "display/l": {
+      "size": 56,
+      "line": 0.95,
+      "case": "upper",
+      "family": "display"
+    },
+    "display/m": {
+      "size": 48,
+      "line": 0.95,
+      "case": "upper",
+      "family": "display"
+    },
+    "headline": {
+      "size": 32,
+      "line": 1,
+      "case": "upper",
+      "family": "display"
+    },
+    "title": {
+      "size": 20,
+      "line": 1.25,
+      "weight": 600,
+      "family": "body"
+    },
+    "body/l": {
+      "size": 17,
+      "line": 1.4,
+      "weight": 400,
+      "family": "body"
+    },
+    "body/m": {
+      "size": 16,
+      "line": 1.4,
+      "weight": 400,
+      "family": "body"
+    },
+    "body/s": {
+      "size": 14,
+      "line": 1.45,
+      "weight": 400,
+      "family": "body"
+    },
+    "label": {
+      "size": 12,
+      "line": 1.2,
+      "weight": 600,
+      "tracking": 0.08,
+      "case": "upper",
+      "family": "body"
+    },
+    "button": {
+      "size": 14,
+      "line": 1,
+      "tracking": 0.04,
+      "case": "upper",
+      "family": "display"
+    }
+  },
+  "plakat/line": {
+    "hair": 1,
+    "rule": 3,
+    "bar": 8,
+    "cap": "butt",
+    "join": "miter"
+  },
+  "plakat/shape": {
+    "radius": 0,
+    "axis": -17,
+    "cut": {
+      "w": 46,
+      "h": 14
+    }
+  },
+  "plakat/grid": {
+    "step": 8,
+    "margin": 16,
+    "gutter": 8
+  },
+  "plakat/size": {
+    "button": 48,
+    "field": 56,
+    "chip": 32,
+    "touch": 48,
+    "checkbox": 24,
+    "switch": {
+      "w": 56,
+      "carriage": [
+        20,
+        32
+      ]
+    }
+  },
+  "plakat/print": {
+    "registration": {
+      "offset": [
+        1,
+        1
+      ],
+      "applies": "display, headline, плашки",
+      "enabled": true
+    },
+    "paper-texture": {
+      "tile": 256,
+      "opacity": 0.45,
+      "blend": "multiply",
+      "enabled": true
+    },
+    "nonprint": {
+      "tile": 200,
+      "opacity": 0.55,
+      "applies": "красные плашки",
+      "enabled": true
+    },
+    "halftone": {
+      "pitch": 4,
+      "angle": 45,
+      "inks": 1,
+      "fallback": "плоская маска без точек (Android < 33)"
+    },
+    "raskat": {
+      "enabled": true,
+      "perScreen": 1,
+      "shapes": [
+        "circle",
+        "wedge",
+        "rect"
+      ],
+      "pairs": [
+        "red→paper",
+        "red→ink",
+        "ocher→red",
+        "slate→red",
+        "ink→paper"
+      ],
+      "angle": [
+        -17,
+        73
+      ],
+      "t0": [
+        0.3,
+        0.7
+      ],
+      "hard": [
+        6,
+        30
+      ],
+      "grainDp": [
+        1,
+        4
+      ],
+      "note": "единственное исключение из «нет градиентов»; без текста поверх; off → краска A"
+    }
+  },
+  "plakat/motion/duration": {
+    "snap": 60,
+    "quick": 120,
+    "normal": 200,
+    "scene": 320,
+    "cascade": 30,
+    "screen-max": 400
+  },
+  "plakat/motion/curve": {
+    "linear": "linear",
+    "hard-stop": "cubic-bezier(0.2, 0.8, 0.9, 0.9)",
+    "stepped": "steps(n)"
+  },
+  "plakat/generator": {
+    "rng": "mulberry32(seed)",
+    "primitives": [
+      "circle",
+      "bar 8|16|24",
+      "wedge 17°",
+      "concrete plate",
+      "dot 16–48"
+    ],
+    "rules": [
+      "один красный элемент",
+      "координаты кратны 8",
+      "брус по −17° или 0°/90°",
+      "чёрные фигуры обходят зону заголовка",
+      "раппорт: тайл 2–4 × 2–3, зеркалим клин через тайл"
+    ]
+  },
+  "plakat/sources": {
+    "Rubik Mono One": "OFL 1.1 — Google Fonts; проверить name-table файла",
+    "Golos Text": "OFL 1.1 — Google Fonts; проверить name-table файла",
+    "textures": "собственные, процедурные (feTurbulence)",
+    "photos": "только CC0, через правило фотомонтажа"
+  }
+}

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Rubik+Mono+One&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+body{margin:0;background:#EEE5D1}
+a{color:#BE2F18}
+a:hover{color:#1D1B18}
+button{font:inherit;-webkit-tap-highlight-color:transparent}
+input[type=number]::-webkit-inner-spin-button{opacity:1}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#EEE5D1;color:#1D1B18;font-family:'Golos Text',sans-serif">
+  <div style="max-width:1200px;margin:0 auto;padding:48px 24px 96px;display:flex;flex-direction:column;gap:72px">
+
+    <header style="display:flex;flex-direction:column;gap:16px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:.08em">PLAKAT-UI · ЭТАП 3 · АРТЕФАКТ 6</div>
+      <div style="font-family:'Rubik Mono One';font-size:56px;line-height:.95">АГИТ-ГРАФИКА</div>
+      <div style="height:8px;background:#1D1B18"></div>
+      <div style="font-size:17px;line-height:1.5;max-width:780px;text-wrap:pretty">Шесть заготовок лежат файлами SVG, новые рисуются по правилам ниже (то же — в <a href="agit/README.md">agit/README.md</a>). Если картинка нужна по месту — generate(seed) собирает её из всего словаря кита. Код — <a href="plakat-gen.js">plakat-gen.js</a>, порт для Compose — <a href="plakat-gen.kt">plakat-gen.kt</a>. Красный элемент любой заготовки можно отдать в <a href="plakat-ui Раскат.dc.html">Раскат</a> — один на экран.</div>
+      <div style="background:#1D1B18;color:#EEE5D1;padding:16px 20px;font-family:ui-monospace,Menlo,monospace;font-size:13px;line-height:1.7;overflow-x:auto;white-space:pre">generate(seed, { W: 360, H: 240, head? })  → { head, shapes, elements, red }
+rapport(seed, cell = 24)                   → { w, h, shapes }
+halftone(ctx, photo, { mode: 'dots' | 'mask', pitch: 4, angle: 45, ink })
+
+// Compose
+PlakatGen.generate(seed = article.id.stableSeed(), w = 360.0, h = 240.0)
+Modifier.plakatHalftone(mode = if (SDK_INT &gt;= 33) Shader else CpuBitmap)</div>
+    </header>
+
+    <section style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;align-items:center;gap:16px"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">ЗАГОТОВКИ</div><span style="flex:1;height:3px;background:#1D1B18"></span></div>
+      <div style="display:flex;flex-wrap:wrap;gap:16px 24px;align-items:center">
+        <div style="font-size:15px;line-height:1.5;max-width:520px">Шесть файлов в папке <a href="agit/presets.json">agit/</a>: 360 × 240, светлый и тёмный. Пунктир — зона заголовка из presets.json.</div>
+        <div style="display:flex;border:3px solid #1D1B18">
+          <sc-for list="{{ themeBtns }}" as="b" hint-placeholder-count="2"><button onClick="{{ b.set }}" style="height:42px;padding:0 16px;border:0;background:{{ b.bg }};color:{{ b.fg }};font-family:'Rubik Mono One';font-size:12px;cursor:pointer">{{ b.label }}</button></sc-for>
+        </div>
+        <button onClick="{{ toggleHead }}" style="height:48px;padding:0 16px;border:3px solid #1D1B18;background:transparent;font-family:'Rubik Mono One';font-size:12px;cursor:pointer" style-active="background:#1D1B18;color:#EEE5D1">{{ headLabel }}</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:24px 16px">
+        <sc-for list="{{ presets }}" as="p" hint-placeholder-count="6">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="position:relative;width:360px;height:240px;overflow:hidden;background:{{ pal.paper }};color:{{ pal.ink }}">
+              <div role="img" aria-label="{{ p.ru }}" style="position:absolute;inset:0;background-image:{{ p.bg }};background-size:360px 240px"></div>
+              <sc-if value="{{ showHead }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:{{ p.hx }};top:{{ p.hy }};width:{{ p.hw }};height:{{ p.hh }};display:flex;flex-direction:column;align-items:flex-start;font-family:'Rubik Mono One';font-size:24px;line-height:1"><sc-for list="{{ p.lines }}" as="x" hint-placeholder-count="2"><span>{{ x.l }}</span></sc-for></div></sc-if>
+              <sc-if value="{{ showZone }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;left:{{ p.hx }};top:{{ p.hy }};width:{{ p.hw }};height:{{ p.hh }};outline:1px dashed {{ pal.ink }};outline-offset:-1px"></div></sc-if>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px">
+              <span style="flex:1;min-width:0"><b>{{ p.ru }}</b> · {{ p.use }}</span>
+              <a href="{{ p.src }}" download="{{ p.fname }}" style="height:48px;padding:0 8px;display:flex;align-items:center;font-family:'Rubik Mono One';font-size:12px;color:#1D1B18;text-decoration:none"><span style="border-bottom:3px solid #1D1B18;padding-bottom:2px">SVG</span></a>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;align-items:center;gap:16px"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">КАК РИСОВАТЬ НОВУЮ</div><span style="flex:1;height:3px;background:#1D1B18"></span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:32px;align-items:start">
+        <div style="display:flex;flex-direction:column">
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;padding:14px 0;border-top:1px solid #1D1B18"><span style="font-family:'Rubik Mono One';font-size:14px">01</span><div style="font-size:15px;line-height:1.5"><b>Сначала зона заголовка.</b> Отступ 16, ширина 45–60 %, высота 26–40 % кадра. Чёрное и красное в неё не заходят, серая плашка — может.</div></div>
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;padding:14px 0;border-top:1px solid #1D1B18"><span style="font-family:'Rubik Mono One';font-size:14px">02</span><div style="font-size:15px;line-height:1.5"><b>Одна крупная форма</b> — круг или клин. Она держит композицию.</div></div>
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;padding:14px 0;border-top:1px solid #1D1B18"><span style="font-family:'Rubik Mono One';font-size:14px">03</span><div style="font-size:15px;line-height:1.5"><b>2–4 элемента из словаря:</b> точка, брус 8 / 16 / 24, клин 17°, серая плашка, колонны, клетка, рельс с разрывом, полоса раппорта, земля.</div></div>
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;padding:14px 0;border-top:1px solid #1D1B18"><span style="font-family:'Rubik Mono One';font-size:14px">04</span><div style="font-size:15px;line-height:1.5"><b>Ровно один красный элемент</b>, не больше трети кадра. В группе красной может быть одна часть.</div></div>
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;padding:14px 0;border-top:1px solid #1D1B18"><span style="font-family:'Rubik Mono One';font-size:14px">05</span><div style="font-size:15px;line-height:1.5"><b>Одна ось −17°.</b> Брус — по оси или 0° / 90°, гипотенуза клина — 17°. Композицию с диагональю не зеркалить.</div></div>
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;padding:14px 0;border-top:1px solid #1D1B18"><span style="font-family:'Rubik Mono One';font-size:14px">06</span><div style="font-size:15px;line-height:1.5"><b>Сетка 8, стоит на земле.</b> Всё кратно 8; хотя бы одна фигура опирается на низ кадра. Уходить за край можно.</div></div>
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;padding:14px 0;border-top:1px solid #1D1B18;border-bottom:1px solid #1D1B18"><span style="font-family:'Rubik Mono One';font-size:14px">07</span><div style="font-size:15px;line-height:1.5"><b>Файл:</b> один SVG из rect, circle, polygon; fill — paper, concrete, ink или red; без stroke, градиентов, прозрачности и текста. Рядом — *-dark.svg.</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="font-size:12px;font-weight:600;letter-spacing:.08em">ПРОВЕРКА</div>
+          <div style="font-size:15px;line-height:1.6">В градациях серого красный всё ещё главный · на 64 px читается силуэт · заголовок в зоне читается без плашки · нет предметов, людей, букв, стрелок и символики эпохи · не перерисовка конкретной работы.</div>
+          <div style="font-size:12px;font-weight:600;letter-spacing:.08em;margin-top:12px">НЕ ТАК</div>
+          <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">
+            <div style="display:flex;flex-direction:column;gap:6px"><div style="position:relative;aspect-ratio:3/2;background:#EEE5D1;box-shadow:inset 0 0 0 1px #1D1B18;overflow:hidden"><span style="position:absolute;left:52%;top:30%;width:34%;aspect-ratio:1;border-radius:50%;background:#BE2F18"></span><span style="position:absolute;left:10%;top:62%;width:30%;height:22%;background:#BE2F18"></span></div><span style="font-size:13px">Два красных</span></div>
+            <div style="display:flex;flex-direction:column;gap:6px"><div style="position:relative;aspect-ratio:3/2;background:#EEE5D1;box-shadow:inset 0 0 0 1px #1D1B18;overflow:hidden"><span style="position:absolute;left:-10%;top:60%;width:120%;height:6%;background:#1D1B18;transform:rotate(-17deg)"></span><span style="position:absolute;left:-10%;top:40%;width:120%;height:6%;background:#1D1B18;transform:rotate(17deg)"></span><span style="position:absolute;left:60%;top:10%;width:26%;aspect-ratio:1;border-radius:50%;background:#BE2F18"></span></div><span style="font-size:13px">Вторая диагональ</span></div>
+            <div style="display:flex;flex-direction:column;gap:6px"><div style="position:relative;aspect-ratio:3/2;background:#EEE5D1;box-shadow:inset 0 0 0 1px #1D1B18;overflow:hidden"><span style="position:absolute;left:4%;top:7%;width:55%;height:34%;outline:1px dashed #1D1B18;outline-offset:-1px"></span><span style="position:absolute;left:40%;top:18%;width:40%;aspect-ratio:1;border-radius:50%;background:#BE2F18"></span></div><span style="font-size:13px">В зоне заголовка</span></div>
+            <div style="display:flex;flex-direction:column;gap:6px"><div style="position:relative;aspect-ratio:3/2;background:#EEE5D1;box-shadow:inset 0 0 0 1px #1D1B18;overflow:hidden"><span style="position:absolute;left:20%;top:16%;width:28%;aspect-ratio:1;border-radius:24%;background:#BE2F18;box-shadow:6px 8px 0 rgba(0,0,0,.25)"></span><span style="position:absolute;left:56%;top:30%;width:30%;height:16%;border-radius:999px;border:3px solid #1D1B18"></span></div><span style="font-size:13px">Скругления, обводка, тень</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;align-items:center;gap:16px"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">GENERATE(SEED)</div><span style="flex:1;height:3px;background:#1D1B18"></span></div>
+      <div style="font-size:15px;line-height:1.5;max-width:780px;text-wrap:pretty">Случайная картинка из всего словаря: 3–6 элементов, одна крупная форма обязательна. Правила 01–06 зашиты в код — генератор пересобирает элемент, если тот заходит в зону заголовка, и выбирает красным ровно одну фигуру не больше трети кадра.</div>
+      <div style="display:flex;flex-wrap:wrap;gap:16px 24px;align-items:center">
+        <label style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;font-weight:600;letter-spacing:.08em">SEED</span><input type="number" value="{{ seed }}" onChange="{{ onSeed }}" style="width:96px;height:48px;border:0;border-bottom:3px solid #1D1B18;background:transparent;font-family:'Rubik Mono One';font-size:18px;color:#1D1B18;outline:none;padding:0 4px;box-sizing:border-box"></label>
+        <button onClick="{{ randomSeed }}" style="height:48px;padding:0 16px;border:3px solid #1D1B18;background:transparent;font-family:'Rubik Mono One';font-size:12px;cursor:pointer" style-active="background:#1D1B18;color:#EEE5D1">СЛУЧАЙНЫЙ</button>
+        <div style="display:flex;border:3px solid #1D1B18"><sc-for list="{{ fmtBtns }}" as="b" hint-placeholder-count="3"><button onClick="{{ b.set }}" style="height:42px;padding:0 12px;border:0;background:{{ b.bg }};color:{{ b.fg }};font-size:13px;font-weight:600;cursor:pointer">{{ b.label }}</button></sc-for></div>
+        <button onClick="{{ toggleGenZone }}" style="height:48px;padding:0 16px;border:3px solid #1D1B18;background:transparent;font-family:'Rubik Mono One';font-size:12px;cursor:pointer" style-active="background:#1D1B18;color:#EEE5D1">{{ genZoneLabel }}</button>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:24px 16px;align-items:flex-start">
+        <sc-for list="{{ gens }}" as="v" hint-placeholder-count="12">
+          <div style="display:flex;flex-direction:column;gap:6px;width:{{ v.cw }}">
+            <div style="position:relative;width:{{ v.cw }};height:{{ v.ch }};overflow:hidden;background:{{ pal.paper }}"><div style="position:absolute;left:0;top:0;width:{{ v.w }};height:{{ v.h }};transform:{{ v.scale }};transform-origin:0 0">
+              <sc-for list="{{ v.shapes }}" as="s" hint-placeholder-count="0"><div style="position:absolute;left:{{ s.x }};top:{{ s.y }};width:{{ s.w }};height:{{ s.h }};background:{{ s.c }};border-radius:{{ s.r }};clip-path:{{ s.clip }};transform:{{ s.t }};transform-origin:{{ s.o }}"></div></sc-for>
+              <sc-if value="{{ v.zone }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:{{ v.hx }};top:{{ v.hy }};width:{{ v.hw }};height:{{ v.hh }};outline:2px dashed {{ pal.ink }};outline-offset:-2px"></div></sc-if>
+            </div></div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="flex:1;min-width:0;line-height:1.35"><b>seed {{ v.seed }}</b><br>{{ v.list }}</span><button onClick="{{ v.download }}" style="height:48px;padding:0 4px;border:0;background:transparent;cursor:pointer;font-family:'Rubik Mono One';font-size:11px;color:#1D1B18"><span style="border-bottom:3px solid #1D1B18;padding-bottom:2px">SVG</span></button></div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;align-items:center;gap:16px"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">РАППОРТЫ</div><span style="flex:1;height:3px;background:#1D1B18"></span></div>
+      <div style="font-size:15px;line-height:1.5;max-width:760px;text-wrap:pretty">rapport(seed) выбирает мотив 2–4 × 2–3 клетки из квадрата, полу-квадрата, бруса, круга и клина; ровно один мотив красный. Период — два мотива по каждой оси: во втором клин зеркалится, поэтому тайл бесшовный. Под текстом раппорт не лежит.</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:24px 16px">
+        <sc-for list="{{ raps }}" as="t" hint-placeholder-count="4">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="height:200px;background-image:{{ t.bg }};background-size:{{ t.size }}"></div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px">
+              <span style="flex:1;min-width:0"><b>seed {{ t.seed }}</b> · тайл {{ t.dim }}</span>
+              <button onClick="{{ t.reroll }}" aria-label="Пересобрать" style="width:48px;height:48px;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#1D1B18" style-active="background:#1D1B18;color:#EEE5D1"><svg viewBox="0 0 24 24" style="width:24px;height:24px"><path d="M12 4A8 8 0 1 0 20 12H17A5 5 0 1 1 12 7zM12 2L15.5 5.5L12 9z" fill="currentColor"></path></svg></button>
+              <button onClick="{{ t.download }}" style="height:48px;padding:0 8px;border:0;background:transparent;cursor:pointer;font-family:'Rubik Mono One';font-size:12px;color:#1D1B18"><span style="border-bottom:3px solid #1D1B18;padding-bottom:2px">SVG</span></button>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="font-size:12px;font-weight:600;letter-spacing:.08em;margin-top:8px">В ДЕЛЕ</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px">
+        <div style="background:{{ pal.paper }};color:{{ pal.ink }};padding:16px;display:flex;flex-direction:column;gap:8px;box-shadow:inset 0 0 0 1px #1D1B18">
+          <div style="font-size:12px;font-weight:600;letter-spacing:.08em">SKELETON</div>
+          <div style="display:flex;gap:16px;align-items:center;padding:12px;background:{{ pal.concrete }}"><div style="width:64px;height:64px;flex:none;background-image:{{ r0.bg }};background-size:{{ r0.size }};background-position:{{ skelPos }}"></div><div style="flex:1;display:flex;flex-direction:column;gap:8px"><span style="height:8px;width:40%;background:{{ pal.ink }}"></span><span style="height:12px;width:90%;background:{{ pal.paper }}"></span><span style="height:12px;width:70%;background:{{ pal.paper }}"></span></div></div>
+          <div style="display:flex;gap:16px;align-items:center;padding:12px;background:{{ pal.concrete }}"><div style="width:64px;height:64px;flex:none;background-image:{{ r0.bg }};background-size:{{ r0.size }};background-position:{{ skelPos }}"></div><div style="flex:1;display:flex;flex-direction:column;gap:8px"><span style="height:8px;width:30%;background:{{ pal.ink }}"></span><span style="height:12px;width:80%;background:{{ pal.paper }}"></span><span style="height:12px;width:60%;background:{{ pal.paper }}"></span></div></div>
+          <div style="font-size:13px;line-height:1.4">Узор сдвигается на клетку ступенями (6 шагов, цикл 1200 мс), пока идёт загрузка. Reduce motion — стоит.</div>
+        </div>
+        <div style="background:{{ pal.paper }};color:{{ pal.ink }};padding:16px;display:flex;flex-direction:column;gap:12px;box-shadow:inset 0 0 0 1px #1D1B18">
+          <div style="font-size:12px;font-weight:600;letter-spacing:.08em">РАЗДЕЛИТЕЛЬ 24</div>
+          <div style="font-family:'Rubik Mono One';font-size:20px">АРХИТЕКТУРА</div>
+          <div style="height:24px;background-image:{{ r1.bg }};background-size:{{ r1.size }}"></div>
+          <div style="font-size:15px;line-height:1.45">Раздел начинается полосой 24 dp; seed — id раздела, поэтому у каждого раздела своя полоса.</div>
+          <div style="font-family:'Rubik Mono One';font-size:20px;margin-top:8px">ШРИФТ</div>
+          <div style="height:24px;background-image:{{ r2.bg }};background-size:{{ r2.size }}"></div>
+        </div>
+        <div style="position:relative;background-image:{{ r3.bg }};background-size:{{ r3.size }};padding:24px;display:flex;align-items:flex-end;min-height:220px;box-sizing:border-box">
+          <div style="background:{{ pal.paper }};color:{{ pal.ink }};padding:16px;display:flex;flex-direction:column;gap:8px;width:100%;box-sizing:border-box"><div style="font-size:12px;font-weight:600;letter-spacing:.08em">ФОН РАЗДЕЛА</div><div style="font-family:'Rubik Mono One';font-size:20px">ВЫПУСК № 47</div><div style="font-size:14px">Текст — на плашке бумаги, не на узоре.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;align-items:center;gap:16px"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">ФОТОМОНТАЖ</div><span style="flex:1;height:3px;background:#1D1B18"></span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px">
+        <div style="background:#D4CEC2;padding:16px;display:grid;grid-template-columns:32px minmax(0,1fr);gap:8px"><span style="font-family:'Rubik Mono One';font-size:14px">1</span><div style="font-size:15px;line-height:1.45"><b>Исходник.</b> Только CC0, крупный план или фигура.</div></div>
+        <div style="background:#D4CEC2;padding:16px;display:grid;grid-template-columns:32px minmax(0,1fr);gap:8px"><span style="font-family:'Rubik Mono One';font-size:14px">2</span><div style="font-size:15px;line-height:1.45"><b>Обесцветить</b>, контраст ×1,4.</div></div>
+        <div style="background:#D4CEC2;padding:16px;display:grid;grid-template-columns:32px minmax(0,1fr);gap:8px"><span style="font-family:'Rubik Mono One';font-size:14px">3</span><div style="font-size:15px;line-height:1.45"><b>Растр</b> 45°: радиус точки = шаг × 0,71 × √(1 − яркость). Фолбэк — порог 0,5.</div></div>
+        <div style="background:#D4CEC2;padding:16px;display:grid;grid-template-columns:32px minmax(0,1fr);gap:8px"><span style="font-family:'Rubik Mono One';font-size:14px">4</span><div style="font-size:15px;line-height:1.45"><b>Краска, кадр, ось.</b> Красный или чёрный; круг или прямоугольник; −17°.</div></div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:16px 24px;align-items:center">
+        <div style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;font-weight:600;letter-spacing:.08em">РЕЖИМ</span><div style="display:flex;border:3px solid #1D1B18"><sc-for list="{{ modeBtns }}" as="b" hint-placeholder-count="2"><button onClick="{{ b.set }}" style="height:42px;padding:0 14px;border:0;background:{{ b.bg }};color:{{ b.fg }};font-size:13px;font-weight:600;cursor:pointer">{{ b.label }}</button></sc-for></div></div>
+        <div style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;font-weight:600;letter-spacing:.08em">ШАГ</span><div style="display:flex;border:3px solid #1D1B18"><sc-for list="{{ pitchBtns }}" as="b" hint-placeholder-count="3"><button onClick="{{ b.set }}" style="height:42px;min-width:48px;padding:0 12px;border:0;background:{{ b.bg }};color:{{ b.fg }};font-family:'Rubik Mono One';font-size:13px;cursor:pointer">{{ b.label }}</button></sc-for></div></div>
+        <span style="font-size:13px;color:#1D1B18">{{ modeNote }}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:32px 24px">
+        <sc-for list="{{ ex }}" as="e" hint-placeholder-count="3">
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <canvas ref="{{ e.ref }}" width="680" height="840" style="width:340px;height:420px;max-width:100%;background:#EEE5D1;box-shadow:inset 0 0 0 1px #1D1B18"></canvas>
+            <div style="display:flex;gap:12px;align-items:flex-end">
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <div style="width:96px;height:120px;color:#1D1B18"><image-slot id="{{ e.id }}" shape="rect" placeholder="CC0"></image-slot></div>
+                <span style="font-size:12px">исходник</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;border:3px solid #1D1B18;align-self:flex-start"><sc-for list="{{ e.stages }}" as="s" hint-placeholder-count="4"><button onClick="{{ s.set }}" style="height:42px;min-width:44px;padding:0 10px;border:0;background:{{ s.bg }};color:{{ s.fg }};font-family:'Rubik Mono One';font-size:13px;cursor:pointer">{{ s.label }}</button></sc-for></div>
+                <div style="font-size:14px;line-height:1.4"><b>{{ e.name }}</b><br>{{ e.note }}</div>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="font-size:14px;line-height:1.5;max-width:780px;text-wrap:pretty">Перетащите CC0-фото на «исходник» — кадр пересчитается. Точки: на Android 13+ это AGSL-шейдер в реальном времени, ниже — тот же алгоритм на CPU, один раз в Bitmap с кэшем. Маска 1-бит — самый дешёвый вариант для слабых устройств и превью в списке.</div>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { G: null, manifest: null, fmt: '3:2', genZone: false, seed: 1919, over: {}, rover: {}, dark: false, head: false, arch: 'klin', stage: { 0: 4, 1: 4, 2: 4 }, mode: 'dots', pitch: 4, tick: 0, srcV: 0 };
+  cv = [React.createRef(), React.createRef(), React.createRef()];
+  src = [null, null, null];
+  srcKey = ['', '', ''];
+  ids = ['agit-photo-1', 'agit-photo-2', 'agit-photo-3'];
+  cfg = [
+    { name: 'Круг · красный', note: 'круг 300, киноварь', shape: 'circle', red: true, fx: .55, fy: .4 },
+    { name: 'Кадр под осью · чёрный', note: '220 × 300, повёрнут на −17°', shape: 'tilt', red: false, fx: .5, fy: .34 },
+    { name: 'Срез · красный', note: 'во всю ширину, низ по оси −17°', shape: 'cut', red: true, fx: .6, fy: .36 }
+  ];
+  componentDidMount() {
+    import('./plakat-gen.js').then(m => this.setState({ G: m })).catch(e => console.error('gen', e));
+    fetch('agit/presets.json').then(r => r.json()).then(j => this.setState({ manifest: j })).catch(e => console.error('presets', e));
+    this.iv = setInterval(() => {
+      const rm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let changed = false;
+      this.ids.forEach((id, i) => {
+        const img = document.getElementById(id)?.shadowRoot?.querySelector('.frame img');
+        const ok = img && img.getAttribute('src') && img.complete && img.naturalWidth;
+        const key = ok ? img.src : '';
+        if (key !== this.srcKey[i]) { this.srcKey[i] = key; this.src[i] = ok ? img : null; changed = true; }
+      });
+      this.setState(s => ({ tick: rm ? s.tick : (s.tick + 1) % 6, srcV: changed ? s.srcV + 1 : s.srcV }));
+    }, 200);
+  }
+  componentWillUnmount() { clearInterval(this.iv); }
+  componentDidUpdate() {
+    const st = this.state, key = [st.G ? 1 : 0, st.mode, st.pitch, st.stage[0], st.stage[1], st.stage[2], st.srcV].join('|');
+    if (key !== this.drawn) { this.drawn = key; this.drawAll(); }
+  }
+  drawAll() {
+    const G = this.state.G; if (!G) return;
+    this.stand = this.stand || this.cfg.map(c => G.standIn(680, 840, c.fx, c.fy));
+    this.cfg.forEach((c, i) => {
+      const cv = this.cv[i].current; if (!cv) return;
+      try { this.drawOne(G, cv.getContext('2d'), this.src[i] || this.stand[i], c, this.state.stage[i]); } catch (e) { console.error('halftone', e); }
+    });
+  }
+  drawOne(G, ctx, src, c, stage) {
+    const W = 680, H = 840, PAPER = '#EEE5D1', INK = '#1D1B18', RED = '#BE2F18', pitch = this.state.pitch * 2, mode = this.state.mode;
+    ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.fillStyle = PAPER; ctx.fillRect(0, 0, W, H);
+    if (stage === 1) { G.coverDraw(ctx, src, W, H); return; }
+    const frame = stage < 4 ? { w: W, h: H } : c.shape === 'circle' ? { w: 600, h: 600 } : c.shape === 'tilt' ? { w: 440, h: 600 } : { w: W, h: H };
+    const off = document.createElement('canvas'); off.width = frame.w; off.height = frame.h;
+    G.halftone(off.getContext('2d'), src, { W: frame.w, H: frame.h, mode: stage === 2 ? 'gray' : mode, pitch, angle: 45, contrast: 1.4, ink: stage === 4 && c.red ? RED : INK, paper: PAPER });
+    if (stage < 4) { ctx.drawImage(off, 0, 0); return; }
+    ctx.save();
+    if (c.shape === 'circle') { ctx.beginPath(); ctx.arc(W / 2, H / 2, 300, 0, Math.PI * 2); ctx.clip(); ctx.drawImage(off, W / 2 - 300, H / 2 - 300); }
+    else if (c.shape === 'tilt') { ctx.translate(W / 2, H / 2); ctx.rotate(-17 * Math.PI / 180); ctx.drawImage(off, -220, -300); }
+    else { ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(W, 0); ctx.lineTo(W, 592); ctx.lineTo(0, 800); ctx.closePath(); ctx.clip(); ctx.drawImage(off, 0, 0); }
+    ctx.restore();
+  }
+  dl(name, svg) { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' })); a.download = name; document.body.appendChild(a); a.click(); a.remove(); }
+  renderVals() {
+    const st = this.state, G = st.G, rnd = () => Math.floor(Math.random() * 9999) + 1;
+    const pal = G ? (st.dark ? G.PAL.dark : G.PAL.light) : { red: '#BE2F18', ink: '#1D1B18', paper: '#EEE5D1', concrete: '#D4CEC2' };
+    const sfx = st.dark ? '-dark' : '';
+    const titles = { voshod: ['ДОБРОЕ', 'УТРО'], klin: ['ЛЕНТА', 'ПУСТА'], kolonny: ['ДАННЫХ', 'ПОКА НЕТ'], os: ['НЕ НАШЛИ.', 'ИЩИ ИНАЧЕ'], shag: ['СОХРАНИ', 'ПЕРВУЮ'], razryv: ['НЕТ', 'СЕТИ'] };
+    const presets = (st.manifest || []).map(p => {
+      const src = st.dark ? p.dark : p.file;
+      return { ru: p.ru, use: p.use, src, bg: `url("${src}")`, fname: src.split('/').pop(),
+        hx: p.head.x + 'px', hy: p.head.y + 'px', hw: p.head.w + 'px', hh: p.head.h + 'px', lines: (titles[p.id] || ['']).map(l => ({ l })) };
+    });
+    const FMT = { '3:2': [360, 240, .5], '1:1': [392, 392, .4], '9:16': [240, 400, .45] }, [fw, fh, fk] = FMT[st.fmt];
+    const EL = { plate: 'плашка', strip: 'раппорт', wedge: 'клин', circle: 'круг', columns: 'колонны', checker: 'клетка', ground: 'земля', bar: 'брус', rail: 'рельс', dot: 'точка' };
+    const gens = G ? Array.from({ length: 12 }, (_, i) => {
+      const seed = st.seed + i, c = G.generate(seed, { W: fw, H: fh });
+      return { seed, w: fw + 'px', h: fh + 'px', cw: Math.round(fw * fk) + 'px', ch: Math.round(fh * fk) + 'px', scale: `scale(${fk})`,
+        shapes: c.shapes.map(s => G.toDOM(s, pal)), zone: st.genZone, hx: c.head.x + 'px', hy: c.head.y + 'px', hw: c.head.w + 'px', hh: c.head.h + 'px',
+        list: c.elements.map(e => e === c.red ? EL[e].toUpperCase() : EL[e]).join(' · '),
+        download: () => this.dl(`plakat-gen-${seed}-${fw}x${fh}${sfx}.svg`, G.toSVG(c.shapes, fw, fh, pal)) };
+    }) : [];
+    const rap = i => {
+      if (!G) return { bg: 'none', size: 'auto', seed: 0, dim: '', reroll: () => {}, download: () => {} };
+      const seed = st.rover[i] ?? (st.seed + 4 + i * 2), t = G.rapport(seed, 24), svg = G.toSVG(t.shapes, t.w, t.h, pal);
+      return { seed, dim: `${t.w} × ${t.h}`, bg: `url("data:image/svg+xml,${encodeURIComponent(svg)}")`, size: `${t.w}px ${t.h}px`,
+        reroll: () => this.setState(s => ({ rover: { ...s.rover, [i]: rnd() } })), download: () => this.dl(`plakat-rapport-${seed}${sfx}.svg`, svg) };
+    };
+    const raps = [0, 1, 2, 3].map(rap);
+    const seg = (cur, v) => ({ bg: cur === v ? '#1D1B18' : 'transparent', fg: cur === v ? '#EEE5D1' : '#1D1B18' });
+    return {
+      seed: st.seed, pal, presets, raps, r0: raps[0], r1: raps[1], r2: raps[2], r3: raps[3],
+      skelPos: `${st.tick * 4}px 0px`,
+      onSeed: e => { const v = parseInt(e.target.value, 10); if (!isNaN(v)) this.setState({ seed: Math.max(1, v), over: {}, rover: {} }); },
+      randomSeed: () => this.setState({ seed: rnd(), over: {}, rover: {} }),
+      themeBtns: [['БУМАГА', false], ['ЧЁРНАЯ', true]].map(([label, d]) => ({ label, ...seg(st.dark, d), set: () => this.setState({ dark: d }) })),
+      gens,
+      fmtBtns: Object.keys(FMT).map(f => ({ label: f, ...seg(st.fmt, f), set: () => this.setState({ fmt: f }) })),
+      genZoneLabel: st.genZone ? 'СКРЫТЬ ЗОНУ' : 'ПОКАЗАТЬ ЗОНУ', toggleGenZone: () => this.setState(s => ({ genZone: !s.genZone })),
+      showHead: st.head, showZone: !st.head, headLabel: st.head ? 'ПОКАЗАТЬ ЗОНЫ' : 'ПОКАЗАТЬ ЗАГОЛОВКИ',
+      toggleHead: () => this.setState(s => ({ head: !s.head })),
+      modeBtns: [['Точки', 'dots'], ['Маска 1-бит', 'mask']].map(([label, m]) => ({ label, ...seg(st.mode, m), set: () => this.setState({ mode: m }) })),
+      pitchBtns: [3, 4, 6].map(p => ({ label: String(p), ...seg(st.pitch, p), set: () => this.setState({ pitch: p }) })),
+      modeNote: st.mode === 'dots' ? 'Шейдер на API 33+ · CPU-битмап ниже' : 'Фолбэк: порог 0,5, без точек',
+      ex: this.cfg.map((c, i) => ({ ...c, id: this.ids[i], ref: this.cv[i],
+        stages: [1, 2, 3, 4].map(n => ({ label: String(n), ...seg(st.stage[i], n), set: () => this.setState(x => ({ stage: { ...x.stage, [i]: n } })) })) }))
+    };
+  }
+}
+</script>
+</body>
+</html>

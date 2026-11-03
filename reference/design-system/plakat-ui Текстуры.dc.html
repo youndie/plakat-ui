@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Rubik+Mono+One&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EEE5D1}
+a{color:#BE2F18}
+a:hover{color:#1D1B18}
+button{font:inherit}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#EEE5D1;color:#1D1B18;font-family:'Golos Text',sans-serif">
+  <div style="max-width:1200px;margin:0 auto;padding:48px 24px 96px;display:flex;flex-direction:column;gap:64px">
+
+    <header style="display:flex;flex-direction:column;gap:16px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:.08em">PLAKAT-UI · ЭТАП 4 · АРТЕФАКТ 7</div>
+      <div style="font-family:'Rubik Mono One';font-size:56px;line-height:.95">ТЕКСТУРЫ</div>
+      <div style="height:8px;background:#1D1B18"></div>
+      <div style="font-size:17px;line-height:1.5;max-width:760px;text-wrap:pretty">Восемь бесшовных тайлов PNG @2x в папке <a href="textures/paper-light-2x.png">textures/</a>: 512 px = 256 dp. Процедурные, собственные — лицензионных вопросов нет. Текстура всегда отдельный слой поверх плоской формы и выключается токеном.</div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center">
+        <button onClick="{{ toggleSeams }}" style="height:48px;padding:0 16px;border:3px solid #1D1B18;background:transparent;font-family:'Rubik Mono One';font-size:12px;cursor:pointer" style-active="background:#1D1B18;color:#EEE5D1">{{ seamLabel }}</button>
+        <span style="font-size:14px">Бумага показана ровно 2 × 2 тайла (уменьшено до 160 px), непрокрас — 256 px на тайл. Красная линия — стык; шва на ней быть не должно.</span>
+      </div>
+    </header>
+
+    <section style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;align-items:center;gap:16px"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">БУМАГА</div><span style="flex:1;height:3px;background:#1D1B18"></span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:24px 16px">
+        <sc-for list="{{ papers }}" as="t" hint-placeholder-count="4">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="position:relative;width:320px;height:320px;background-color:{{ t.under }};background-image:{{ t.bg }};background-size:160px 160px;box-shadow:inset 0 0 0 1px #1D1B18">
+              <sc-if value="{{ seams }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;background-image:linear-gradient(90deg,transparent 159px,#BE2F18 159px 161px,transparent 161px),linear-gradient(transparent 159px,#BE2F18 159px 161px,transparent 161px);background-size:160px 160px;pointer-events:none"></div></sc-if>
+            </div>
+            <div style="display:flex;justify-content:space-between;gap:12px;font-size:13px;line-height:1.4"><span><b>{{ t.name }}</b> · {{ t.use }}</span><a href="{{ t.file }}" download="{{ t.fname }}">PNG</a></div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;align-items:center;gap:16px"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">НЕПРОКРАС</div><span style="flex:1;height:3px;background:#1D1B18"></span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="position:relative;height:240px;background:#BE2F18;overflow:hidden"><div style="position:absolute;inset:0;background-image:url('textures/nonprint-mask-2x.png');background-size:256px 256px"></div>
+            <sc-if value="{{ seams }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;background-image:linear-gradient(90deg,transparent 255px,#1D1B18 255px 257px,transparent 257px),linear-gradient(transparent 255px,#1D1B18 255px 257px,transparent 257px);background-size:256px 256px;pointer-events:none"></div></sc-if></div>
+          <div style="font-size:13px;line-height:1.4"><b>nonprint-mask</b> · кремовые пятна с альфой, ~2 % площади. Кладём поверх красных плашек; токен plakat/print/nonprint, 0 — выключено.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="position:relative;height:240px;background-color:#EEE5D1;background-image:url('textures/paper-light-2x.png');background-size:256px 256px;padding:24px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:flex-end;gap:16px">
+            <div style="position:relative;height:48px;overflow:hidden;clip-path:polygon(0 14px,46px 0,100% 0,100% 100%,0 100%)"><span style="position:absolute;inset:0;background:#BE2F18"></span><span style="position:absolute;inset:0;background-image:url('textures/nonprint-mask-2x.png');background-size:256px 256px;opacity:.9"></span><span style="position:relative;display:flex;height:100%;align-items:center;justify-content:center;font-family:'Rubik Mono One';font-size:14px;color:#EEE5D1">ПОДПИСАТЬСЯ</span></div>
+            <div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">ЛИСТ</div>
+          </div>
+          <div style="font-size:13px;line-height:1.4"><b>В сборке</b> · paper-light под всем, nonprint-mask на кнопке. Форма под текстурой плоская.</div>
+        </div>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;align-items:center;gap:16px"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">РАСТР-ЗАГЛУШКА</div><span style="flex:1;height:3px;background:#1D1B18"></span></div>
+      <div style="font-size:15px;line-height:1.5;max-width:760px;text-wrap:pretty">Для Android &lt; 33 без шейдера: фото сводится к 1-битной маске, а тёмная область заливается готовым тайлом точек вместо сплошной краски — вид растра без вычислений. Тайл 48 px, точки 45°, период 12 px (шаг ≈ 4,2 dp). Три тона.</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px">
+        <sc-for list="{{ screens }}" as="s" hint-placeholder-count="3">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="height:160px;background-color:#EEE5D1;background-image:{{ s.bg }};background-size:24px 24px;box-shadow:inset 0 0 0 1px #1D1B18"></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px"><span><b>halftone-screen-{{ s.t }}</b> · {{ s.t }} %</span><a href="{{ s.file }}" download="{{ s.fname }}">PNG</a></div>
+          </div>
+        </sc-for>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="position:relative;height:160px;background:#EEE5D1;box-shadow:inset 0 0 0 1px #1D1B18;overflow:hidden"><div style="position:absolute;left:40px;top:16px;width:128px;height:128px;border-radius:50%;background-color:#BE2F18"></div><div style="position:absolute;left:40px;top:16px;width:128px;height:128px;clip-path:polygon(0 0,100% 0,100% 55%,0 85%);background-image:url('textures/halftone-screen-50-2x.png');background-size:24px 24px;mix-blend-mode:multiply;border-radius:50%"></div></div>
+          <div style="font-size:13px"><b>Пример</b> · маска × тайл 50 % поверх краски</div>
+        </div>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;align-items:center;gap:16px"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">ФАЙЛЫ</div><span style="flex:1;height:3px;background:#1D1B18"></span></div>
+      <div style="display:flex;flex-direction:column;font-size:14px">
+        <sc-for list="{{ files }}" as="f" hint-placeholder-count="8"><div style="display:grid;grid-template-columns:minmax(0,260px) 90px minmax(0,1fr);gap:12px;padding:10px 0;border-top:1px solid #1D1B18"><a href="{{ f.file }}" download="{{ f.fname }}">{{ f.fname }}</a><span>{{ f.dim }}</span><span>{{ f.note }}</span></div></sc-for>
+      </div>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { seams: false };
+  renderVals() {
+    const P = (name, fname, use, under, size = '256px 256px') => ({ name, fname, file: 'textures/' + fname, use, under, size, bg: `url("textures/${fname}")` });
+    const papers = [
+      P('paper-light', 'paper-light-2x.png', 'фон светлой темы, непрозрачный', '#EEE5D1'),
+      P('concrete-light', 'concrete-light-2x.png', 'карточки, подложки', '#D4CEC2'),
+      P('paper-dark', 'paper-dark-2x.png', 'фон «Чёрной бумаги»', '#1F1D1A'),
+      P('paper-grain', 'paper-grain-2x.png', 'альфа-слой multiply поверх любой плоской краски', '#EEE5D1')
+    ];
+    const screens = [25, 50, 75].map(t => ({ t, fname: `halftone-screen-${t}-2x.png`, file: `textures/halftone-screen-${t}-2x.png`, bg: `url("textures/halftone-screen-${t}-2x.png")` }));
+    const files = [
+      ...papers.map(p => ({ fname: p.fname, file: p.file, dim: '512 × 512', note: p.use })),
+      { fname: 'nonprint-mask-2x.png', file: 'textures/nonprint-mask-2x.png', dim: '512 × 512', note: 'альфа-маска поверх красных плашек' },
+      ...screens.map(s => ({ fname: s.fname, file: s.file, dim: '48 × 48', note: `растр-заглушка ${s.t} %, 45°, период 12 px` }))
+    ];
+    return { papers, screens, files, seams: this.state.seams, seamLabel: this.state.seams ? 'СКРЫТЬ ШВЫ' : 'ПОКАЗАТЬ ШВЫ', toggleSeams: () => this.setState(s => ({ seams: !s.seams })) };
+  }
+}
+</script>
+</body>
+</html>

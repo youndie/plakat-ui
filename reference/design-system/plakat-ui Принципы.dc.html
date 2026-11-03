@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Rubik+Mono+One&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EEE5D1}
+a{color:#BE2F18}
+a:hover{color:#1D1B18}
+button{font:inherit}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#EEE5D1;color:#1D1B18;font-family:'Golos Text',sans-serif">
+  <div style="max-width:1120px;margin:0 auto;padding:48px 24px 96px;display:flex;flex-direction:column;gap:64px">
+
+    <header style="display:flex;flex-direction:column;gap:16px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:.08em">PLAKAT-UI · ЭТАП 4 · АРТЕФАКТ 8</div>
+      <div style="font-family:'Rubik Mono One';font-size:56px;line-height:.95">КАК НАРИСОВАТЬ<br>НОВЫЙ КОМПОНЕНТ</div>
+      <div style="height:8px;background:#1D1B18"></div>
+      <div style="font-size:17px;line-height:1.5;max-width:760px;text-wrap:pretty">Семь шагов от компонента Material к компоненту plakat-ui. Разобран Slider — его в ките ещё нет (v1). Внизу — восемь пар «так / не так», общие для любого компонента.</div>
+    </header>
+
+    <section style="display:flex;flex-direction:column;gap:0">
+      <sc-for list="{{ steps }}" as="s" hint-placeholder-count="7">
+        <div style="display:grid;grid-template-columns:56px minmax(0,1fr) minmax(0,400px);gap:24px;padding:28px 0;border-top:1px solid #1D1B18;align-items:center">
+          <span style="font-family:'Rubik Mono One';font-size:24px">{{ s.n }}</span>
+          <div style="display:flex;flex-direction:column;gap:6px"><div style="font-family:'Rubik Mono One';font-size:18px;line-height:1.15">{{ s.title }}</div><div style="font-size:15px;line-height:1.5;text-wrap:pretty">{{ s.body }}</div></div>
+          <div style="position:relative;height:120px;background:#D4CEC2;overflow:hidden">
+            <div style="position:absolute;left:24px;right:24px;top:0;bottom:0">
+              <sc-for list="{{ s.parts }}" as="p" hint-placeholder-count="0"><div style="position:absolute;left:{{ p.x }};top:{{ p.y }};width:{{ p.w }};height:{{ p.h }};background:{{ p.c }};border-radius:{{ p.r }};border:{{ p.b }};box-sizing:border-box;transform:{{ p.t }}"></div></sc-for>
+              <sc-for list="{{ s.labels }}" as="l" hint-placeholder-count="0"><span style="position:absolute;left:{{ l.x }};top:{{ l.y }};font-size:11px;font-weight:600;letter-spacing:.06em;white-space:nowrap">{{ l.t }}</span></sc-for>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+      <div style="border-top:1px solid #1D1B18"></div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;align-items:center;gap:16px"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">ЖИВОЙ SLIDER</div><span style="flex:1;height:3px;background:#1D1B18"></span></div>
+      <div style="display:flex;flex-wrap:wrap;gap:32px;align-items:center">
+        <div style="width:358px;max-width:100%;display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:600;letter-spacing:.08em"><span>РАЗМЕР ШРИФТА</span><span style="font-family:'Rubik Mono One';font-size:14px;letter-spacing:0">{{ sl.v }}</span></div>
+          <div onPointerDown="{{ sl.down }}" onPointerMove="{{ sl.move }}" onPointerUp="{{ sl.up }}" onPointerLeave="{{ sl.up }}" style="position:relative;height:48px;cursor:pointer;touch-action:none">
+            <span style="position:absolute;left:0;right:0;top:22px;height:3px;background:#1D1B18"></span>
+            <sc-for list="{{ sl.ticks }}" as="t" hint-placeholder-count="7"><span style="position:absolute;left:{{ t.x }};top:{{ t.y }};width:3px;height:{{ t.h }};background:#1D1B18;margin-left:-1px"></span></sc-for>
+            <span style="position:absolute;left:0;top:20px;height:8px;width:{{ sl.fill }};background:#BE2F18;transition:{{ sl.tr }}"></span>
+            <span style="position:absolute;left:{{ sl.fill }};top:8px;width:20px;height:32px;margin-left:-10px;background:#1D1B18;transition:{{ sl.tr }}"></span>
+          </div>
+          <div style="font-size:{{ sl.px }};line-height:1.35">Павильон стоит три месяца, потом его разбирают.</div>
+        </div>
+        <div style="font-size:14px;line-height:1.5;max-width:420px">Каретка встаёт на риски с жёстким стопом (quick 120 мс, hard-stop), заполнение — красный брус 8, риски — линейка 3. Событие <b>notch</b> — щелчок на каждой риске, под звук.</div>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;align-items:center;gap:16px"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">ТАК / НЕ ТАК</div><span style="flex:1;height:3px;background:#1D1B18"></span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:24px 16px">
+        <sc-for list="{{ pairs }}" as="q" hint-placeholder-count="8">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+              <div style="position:relative;height:96px;background:#D4CEC2;display:flex;align-items:center;justify-content:center;overflow:hidden"><div style="{{ q.okStyle }}">{{ q.okText }}</div></div>
+              <div style="position:relative;height:96px;background:#D4CEC2;display:flex;align-items:center;justify-content:center;overflow:hidden"><div style="{{ q.badStyle }}">{{ q.badText }}</div><span style="position:absolute;left:-8px;right:-8px;top:50%;height:3px;background:#BE2F18;transform:rotate(-17deg)"></span></div>
+            </div>
+            <div style="font-size:13px;line-height:1.4"><b>{{ q.title }}</b><br>{{ q.note }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;align-items:center;gap:16px"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">ЧЕК-ЛИСТ</div><span style="flex:1;height:3px;background:#1D1B18"></span></div>
+      <sc-for list="{{ checks }}" as="c" hint-placeholder-count="8"><div style="display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-top:1px solid #1D1B18;font-size:15px;line-height:1.45"><span style="width:16px;height:16px;flex:none;margin-top:3px;box-shadow:inset 0 0 0 3px #1D1B18"></span>{{ c }}</div></sc-for>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { v: 3, drag: false };
+  renderVals() {
+    const R = '#BE2F18', I = '#1D1B18', P = '#EEE5D1', px = v => v + 'px';
+    const B = (x, y, w, h, c, o = {}) => ({ x: px(x), y: px(y), w: px(w), h: px(h), c, r: o.r || '0', b: o.b || 'none', t: o.t || 'none' });
+    const L = (x, y, t) => ({ x: px(x), y: px(y), t });
+    const steps = [
+      { n: '01', title: 'ИНВЕНТАРЬ MATERIAL', body: 'Берём API и состояния как есть: value, range, steps, enabled, onValueChange. Разработчик не должен переучиваться — меняется только вид и движение.', parts: [B(0, 54, 352, 4, '#8a8a8a', { r: '2px' }), B(0, 54, 150, 4, '#5E584D', { r: '2px' }), B(140, 46, 20, 20, '#5E584D', { r: '50%' })], labels: [L(0, 82, 'Material: дорожка, бегунок, скругления')] },
+      { n: '02', title: 'ФУНКЦИЯ, НЕ ДЕКОР', body: 'Что каждый пиксель делает? Направляющая — где можно; заполнение — сколько выбрано; каретка — что тянуть; риски — где можно остановиться.', parts: [B(0, 55, 352, 3, I), B(144, 40, 20, 32, I)], labels: [L(0, 82, 'рельс · каретка — больше ничего')] },
+      { n: '03', title: 'ТОЛЬКО ПРИМИТИВЫ', body: 'Рельс — линейка 3, заполнение — брус 8, каретка — прямоугольник 20 × 32, риски — линейка 3 × 8. Радиус 0. Круг — только если это и правда круг.', parts: [B(0, 55, 352, 3, I), B(0, 52, 154, 8, R), B(144, 40, 20, 32, I), ...[0, 1, 2, 3, 4, 5, 6].map(k => B(k * 58, 64, 3, 8, I))], labels: [L(0, 82, 'линейка 3 · брус 8 · 20 × 32')] },
+      { n: '04', title: 'ОДНА ДИАГОНАЛЬ — ИЛИ НИ ОДНОЙ', body: 'Если у компонента есть ось — она −17°: срез угла, клин-индикатор, наклон. Слайдеру диагональ не нужна — и это нормально, лишнюю не добавляем.', parts: [B(0, 55, 352, 3, I), B(0, 52, 154, 8, R), B(144, 40, 20, 32, I), B(250, 20, 80, 3, I, { t: 'rotate(-17deg)' })], labels: [L(0, 82, 'диагональ — только если она работает'), L(236, 30, '−17°?')] },
+      { n: '05', title: 'СОСТОЯНИЯ БЕЗ ЦВЕТА', body: 'Pressed — инверсия, focused — рамка 3 с отступом, disabled — волосная линия и muted, error — штриховка и слово. Проверка в градациях серого.', parts: [B(0, 30, 160, 3, I), B(0, 27, 80, 8, R), B(70, 16, 20, 32, I), B(190, 31, 160, 1, '#5E584D'), B(260, 16, 20, 32, '#D4CEC2', { b: '1px solid #5E584D' })], labels: [L(0, 70, 'default'), L(190, 70, 'disabled')] },
+      { n: '06', title: 'ДВИЖЕНИЕ ПО РЕЛЬСАМ', body: 'Каретка едет только по оси рельса и встаёт на риски: quick 120 мс, hard-stop, без пролёта. Имя события — для звука: notch. Reduce motion — мгновенно.', parts: [B(0, 55, 352, 3, I), ...[0, 1, 2, 3, 4, 5, 6].map(k => B(k * 58, 64, 3, 8, I)), B(106, 40, 20, 32, '#5E584D'), B(164, 40, 20, 32, I), B(126, 50, 38, 3, R)], labels: [L(0, 82, 'notch · 120 мс · hard-stop')] },
+      { n: '07', title: 'ПРОВЕРКА', body: 'Пройти чек-лист ниже, собрать компонент в обеих темах, поставить на демо-экран рядом с готовыми — он не должен выделяться ничем, кроме функции.', parts: [B(0, 30, 160, 64, P), B(16, 61, 128, 3, I), B(16, 58, 60, 8, R), B(68, 46, 20, 32, I), B(188, 30, 160, 64, '#1F1D1A'), B(204, 61, 128, 3, P), B(204, 58, 60, 8, R), B(256, 46, 20, 32, P)], labels: [L(0, 100, 'бумага'), L(188, 100, 'чёрная бумага')] }
+    ];
+    const N = 7, v = this.state.v, w = 358;
+    const setFrom = e => { const r = e.currentTarget.getBoundingClientRect(), k = Math.round(Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * (N - 1)); if (k !== this.state.v) this.setState({ v: k }); };
+    const sl = {
+      v: 14 + v * 2, px: (14 + v * 2) + 'px', fill: (v / (N - 1) * 100).toFixed(2) + '%', tr: 'left 120ms cubic-bezier(.2,.8,.9,.9), width 120ms cubic-bezier(.2,.8,.9,.9)',
+      ticks: Array.from({ length: N }, (_, k) => ({ x: (k / (N - 1) * 100).toFixed(2) + '%', y: k % 3 === 0 ? '32px' : '32px', h: k % 3 === 0 ? '12px' : '8px' })),
+      down: e => { this.setState({ drag: true }); setFrom(e); }, move: e => { if (this.state.drag) setFrom(e); }, up: () => this.state.drag && this.setState({ drag: false })
+    };
+    const S = (...a) => Object.fromEntries(a.map(d => { const i = d.indexOf(':'); return [d.slice(0, i).trim().replace(/-([a-z])/g, (_, c) => c.toUpperCase()), d.slice(i + 1).trim()]; }));
+    const pairs = [
+      { title: 'Заливка, а не контур', note: 'Иконка — трафарет; контурные линии — Material.', okStyle: S('width:40px', 'height:40px', `background:${I}`, 'clip-path:polygon(0 100%,50% 0,100% 100%)'), okText: '', badStyle: S('width:36px', 'height:36px', `border:2px solid ${I}`, 'border-radius:8px'), badText: '' },
+      { title: 'Радиус 0', note: 'Скругление — единственная кривая, которую мы не берём.', okStyle: S('width:120px', 'height:40px', `background:${R}`, "font-family:'Rubik Mono One'", 'font-size:12px', `color:${P}`, 'display:flex', 'align-items:center', 'justify-content:center', 'clip-path:polygon(0 12px,40px 0,100% 0,100% 100%,0 100%)'), okText: 'ЧИТАТЬ', badStyle: S('width:120px', 'height:40px', `background:${R}`, "font-family:'Rubik Mono One'", 'font-size:12px', `color:${P}`, 'display:flex', 'align-items:center', 'justify-content:center', 'border-radius:20px'), badText: 'ЧИТАТЬ' },
+      { title: 'Плоско, без тени', note: 'Поверхность — смена бумаги; тень и блик — не наше.', okStyle: S('width:110px', 'height:56px', `background:${P}`), okText: '', badStyle: S('width:110px', 'height:56px', `background:${P}`, 'box-shadow:0 8px 16px rgba(0,0,0,.35)'), badText: '' },
+      { title: 'Одна ось', note: 'Вторая диагональ разрушает плакат.', okStyle: S('width:110px', 'height:6px', `background:${I}`, 'transform:rotate(-17deg)', 'box-shadow:0 22px 0 #1D1B18'), okText: '', badStyle: S('width:110px', 'height:6px', `background:${I}`, 'transform:rotate(-17deg)', 'box-shadow:0 0 0 #000', 'outline:0'), badText: '' },
+      { title: 'Красный — не единственный носитель', note: 'Danger = штриховка + слово, не только цвет.', okStyle: S('padding:8px', 'background:repeating-linear-gradient(45deg,#BE2F18 0 3px,#D4CEC2 3px 6px)', "font-family:'Rubik Mono One'", 'font-size:11px', 'box-shadow:inset 0 0 0 0 #000'), okText: 'ОШИБКА', badStyle: S('width:110px', 'height:36px', `background:${R}`), badText: '' },
+      { title: 'Прописные — до трёх слов', note: 'Текст тела и списки — в обычном регистре.', okStyle: S('font-size:13px', 'line-height:1.3', 'max-width:110px'), okText: 'Павильон стоит три месяца.', badStyle: S('font-size:11px', 'font-weight:600', 'letter-spacing:.06em', 'line-height:1.3', 'max-width:110px'), badText: 'ПАВИЛЬОН СТОИТ ТРИ МЕСЯЦА, ПОТОМ ЕГО РАЗБИРАЮТ.' },
+      { title: 'Движение по рельсу', note: 'Без пружины и overshoot: жёсткий стоп.', okStyle: S('width:110px', 'height:3px', `background:${I}`, 'box-shadow:40px -14px 0 8px #1D1B18'), okText: '', badStyle: S('width:110px', 'height:40px', `border-bottom:3px solid ${I}`, 'border-radius:0 0 60px 60px'), badText: '' },
+      { title: 'Своё, не цитата', note: 'Никакой символики эпохи и перерисовок работ.', okStyle: S('width:48px', 'height:48px', `background:${R}`, 'border-radius:50%', 'box-shadow:24px 24px 0 -16px #1D1B18'), okText: '', badStyle: S("font-family:'Rubik Mono One'", 'font-size:28px', `color:${I}`), badText: '«…»' }
+    ];
+    pairs[3] = { title: 'Одна ось −17°', note: 'Диагональ в другую сторону — вторая ось, плакат разваливается.', okStyle: S('width:110px', 'height:6px', `background:${I}`, 'transform:rotate(-17deg)'), okText: '', badStyle: S('width:110px', 'height:6px', `background:${I}`, 'transform:rotate(17deg)'), badText: '' };
+    const checks = [
+      'Все применимые состояния нарисованы в обеих темах.',
+      'У каждой анимации — кадры, мс, кривая, имя события и вариант reduce motion.',
+      'Только примитивы, радиус 0, нет теней и градиентов (кроме одного раската на экран), не больше одной диагонали.',
+      'Состояние различимо без цвета: форма, заливка, текст.',
+      'Контраст текста ≥ 4,5 : 1, touch target ≥ 48 dp; срез угла не уменьшает зону нажатия.',
+      'Ничего заимствованного: ни перерисовок конкретных работ, ни символики, ни шрифтов без OFL.',
+      'Анимация собирается из дешёвых приёмов: сдвиг, clip, смена краски, ступени.',
+      'Компонент встал на демо-экран рядом с готовыми и не выделяется ничем, кроме функции.'
+    ];
+    return { steps, sl, pairs, checks };
+  }
+}
+</script>
+</body>
+</html>

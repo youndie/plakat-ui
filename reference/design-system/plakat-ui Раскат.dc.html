@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Rubik+Mono+One&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EEE5D1}
+a{color:#BE2F18}
+a:hover{color:#1D1B18}
+button{font:inherit}
+input[type=range]{accent-color:#BE2F18}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#EEE5D1;color:#1D1B18;font-family:'Golos Text',sans-serif">
+  <div style="max-width:1200px;margin:0 auto;padding:48px 24px 96px;display:flex;flex-direction:column;gap:64px">
+
+    <header style="display:flex;flex-direction:column;gap:16px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:.08em">PLAKAT-UI · АКЦЕНТ · plakat/print/raskat</div>
+      <div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap">
+        <div style="font-family:'Rubik Mono One';font-size:56px;line-height:.95">РАСКАТ</div>
+        <canvas ref="{{ cvHero }}" width="192" height="192" style="width:96px;height:96px"></canvas>
+      </div>
+      <div style="height:8px;background:#1D1B18"></div>
+      <div style="font-size:17px;line-height:1.5;max-width:760px;text-wrap:pretty">Ирисовая печать: две краски на одном валике дают зернистый переход. В ките это единственное исключение из «нет градиентов» — одна фигура на экран. Переход не плавный: каждый пиксель — либо одна краска, либо другая, и плотность зерна сжата к линии перехода. Код — <a href="plakat-raskat.js">plakat-raskat.js</a>, Compose — <a href="plakat-raskat.kt">plakat-raskat.kt</a>.</div>
+    </header>
+
+    <section style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;align-items:center;gap:16px"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">ПРАВИЛА</div><span style="flex:1;height:3px;background:#1D1B18"></span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:0 32px">
+        <div style="display:flex;flex-direction:column">
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;padding:14px 0;border-top:1px solid #1D1B18"><span style="font-family:'Rubik Mono One';font-size:14px">K1</span><div style="font-size:15px;line-height:1.5"><b>Одна фигура на экран</b> — круг, клин или прямоугольник в Плакате, заставке или Окне. В контролах, карточках и тексте — никогда.</div></div>
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;padding:14px 0;border-top:1px solid #1D1B18"><span style="font-family:'Rubik Mono One';font-size:14px">K2</span><div style="font-size:15px;line-height:1.5"><b>Две краски кита</b>: киноварь → бумага, киноварь → чёрный, охра → киноварь, серо-синий → киноварь, чёрный → бумага. Третьей нет.</div></div>
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;padding:14px 0;border-top:1px solid #1D1B18"><span style="font-family:'Rubik Mono One';font-size:14px">K3</span><div style="font-size:15px;line-height:1.5"><b>Направление — по оси −17°</b> или поперёк неё (73°). Линия перехода смещена: 30–70 % фигуры, жёсткость ≥ 6 — у раската есть шов, а не туман.</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column">
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;padding:14px 0;border-top:1px solid #1D1B18"><span style="font-family:'Rubik Mono One';font-size:14px">K4</span><div style="font-size:15px;line-height:1.5"><b>Фактура — зерно, растр или штрих</b>, одна на экран; шаг 1–4 dp, по seed фигуры. Без сглаживания и прозрачности: раскат — это печать, а не смесь.</div></div>
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;padding:14px 0;border-top:1px solid #1D1B18"><span style="font-family:'Rubik Mono One';font-size:14px">K5</span><div style="font-size:15px;line-height:1.5"><b>Текст на раскат не ставим</b>: контраст меняется по фигуре. Смысла раскат не несёт — в градациях серого экран читается без него.</div></div>
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;padding:14px 0;border-top:1px solid #1D1B18"><span style="font-family:'Rubik Mono One';font-size:14px">K6</span><div style="font-size:15px;line-height:1.5"><b>Выключается токеном</b> plakat/print/raskat → фигура краской A. Compose: AGSL-шейдер на API 33+, ниже — CPU один раз в Bitmap.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;align-items:center;gap:16px"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">ПЕСОЧНИЦА</div><span style="flex:1;height:3px;background:#1D1B18"></span></div>
+      <div style="display:flex;flex-wrap:wrap;gap:16px 24px;align-items:flex-end">
+        <sc-for list="{{ segs }}" as="g" hint-placeholder-count="3"><div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;font-weight:600;letter-spacing:.08em">{{ g.label }}</span><div style="display:flex;flex-wrap:wrap;border:3px solid #1D1B18"><sc-for list="{{ g.opts }}" as="b" hint-placeholder-count="3"><button onClick="{{ b.set }}" style="height:42px;padding:0 12px;border:0;background:{{ b.bg }};color:{{ b.fg }};font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">{{ b.label }}</button></sc-for></div></div></sc-for>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px 32px;align-items:flex-end">
+        <sc-for list="{{ sliders }}" as="s" hint-placeholder-count="3"><label style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;font-weight:600;letter-spacing:.08em">{{ s.label }} · {{ s.v }}</span><input type="range" min="{{ s.min }}" max="{{ s.max }}" step="{{ s.step }}" value="{{ s.v }}" onChange="{{ s.on }}" style="width:200px;height:48px"></label></sc-for>
+        <button onClick="{{ reseed }}" style="height:48px;padding:0 16px;border:3px solid #1D1B18;background:transparent;font-family:'Rubik Mono One';font-size:12px;cursor:pointer" style-active="background:#1D1B18;color:#EEE5D1">ЗЕРНО · SEED {{ seed }}</button>
+        <button onClick="{{ rollPlay }}" style="height:48px;padding:0 16px;border:0;background:#BE2F18;color:#EEE5D1;font-family:'Rubik Mono One';font-size:12px;cursor:pointer;clip-path:polygon(0 14px,46px 0,100% 0,100% 100%,0 100%)" style-active="background:#1D1B18">ПРОКАТИТЬ · ROLL</button>
+      </div>
+      <canvas ref="{{ cvPlay }}" width="1120" height="640" style="width:560px;height:320px;max-width:100%;box-shadow:inset 0 0 0 1px #1D1B18"></canvas>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;align-items:center;gap:16px"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">ТРИ ФАКТУРЫ</div><span style="flex:1;height:3px;background:#1D1B18"></span></div>
+      <div style="font-size:15px;line-height:1.5;max-width:780px;text-wrap:pretty">Одна формула, разный порог: краска B там, где профиль перехода выше порога фактуры. Зерно — шум с волокном вдоль хода валика; растр — точки 45° того же шага, что у фото; штрих — линии параллельно шву, толщина растёт к B. На экране — одна фактура.</div>
+      <div style="display:flex;flex-wrap:wrap;gap:16px">
+        <div style="display:flex;flex-direction:column;gap:6px"><canvas ref="{{ cvM0 }}" width="480" height="480" style="width:240px;height:240px;box-shadow:inset 0 0 0 1px #1D1B18"></canvas><span style="font-size:13px"><b>Зерно</b> · волокно 50 %</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><canvas ref="{{ cvM1 }}" width="480" height="480" style="width:240px;height:240px;box-shadow:inset 0 0 0 1px #1D1B18"></canvas><span style="font-size:13px"><b>Растр</b> · точки 45°, шаг 8 dp</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><canvas ref="{{ cvM2 }}" width="480" height="480" style="width:240px;height:240px;box-shadow:inset 0 0 0 1px #1D1B18"></canvas><span style="font-size:13px"><b>Штрих</b> · линии вдоль шва, −17°</span></div>
+      </div>
+      <div style="font-size:12px;font-weight:600;letter-spacing:.08em;margin-top:8px">ДВИЖЕНИЕ · ROLL · 320 МС · HARD-STOP</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end">
+        <div style="display:flex;flex-direction:column;gap:6px"><canvas ref="{{ cvF0 }}" width="240" height="240" style="width:120px;height:120px;box-shadow:inset 0 0 0 1px #1D1B18"></canvas><span style="font-size:12px"><b>0</b> · плоская A</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><canvas ref="{{ cvF1 }}" width="240" height="240" style="width:120px;height:120px;box-shadow:inset 0 0 0 1px #1D1B18"></canvas><span style="font-size:12px"><b>60</b> · B с края</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><canvas ref="{{ cvF2 }}" width="240" height="240" style="width:120px;height:120px;box-shadow:inset 0 0 0 1px #1D1B18"></canvas><span style="font-size:12px"><b>150</b> · вкатывается</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><canvas ref="{{ cvF3 }}" width="240" height="240" style="width:120px;height:120px;box-shadow:inset 0 0 0 1px #1D1B18"></canvas><span style="font-size:12px"><b>320</b> · стоп на шве</span></div>
+        <div style="font-size:13px;line-height:1.45;max-width:300px;padding-left:16px">Событие <b>roll</b>: линия перехода едет от дальнего края до цели. Фактура при этом стоит на месте — двигается только краска, как на валике. Только при появлении Плаката; reduce motion — сразу финал.</div>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;align-items:center;gap:16px"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">ГДЕ ПРИМЕНЯЕМ</div><span style="flex:1;height:3px;background:#1D1B18"></span></div>
+      <div style="display:flex;flex-wrap:wrap;gap:32px 24px;align-items:flex-start">
+        <div style="display:flex;flex-direction:column;gap:8px;width:390px;max-width:100%"><canvas ref="{{ cvA }}" width="780" height="784" style="width:390px;height:392px;max-width:100%;box-shadow:inset 0 0 0 1px #1D1B18" aria-label="Читай весь ноябрь"></canvas><div style="font-size:14px;line-height:1.45"><b>Плакат / Круг · раскат</b> — композиция Ядра; круг-раскат киноварь → бумага по −17°, переход 58 %. Круг ушёл из-под заголовка (K5).</div></div>
+        <div style="display:flex;flex-direction:column;gap:8px;width:390px;max-width:100%"><canvas ref="{{ cvB }}" width="780" height="784" style="width:390px;height:392px;max-width:100%;box-shadow:inset 0 0 0 1px #1D1B18" aria-label="Эфир в 19:00"></canvas><div style="font-size:14px;line-height:1.45"><b>Заставка / Клин · раскат</b> — клин на всю ширину, киноварь → чёрный поперёк оси: восход над землёй.</div></div>
+        <div style="display:flex;flex-direction:column;gap:8px;width:390px;max-width:100%"><canvas ref="{{ cvC }}" width="780" height="784" style="width:390px;height:392px;max-width:100%;box-shadow:inset 0 0 0 1px #1D1B18" aria-label="Читай по порядку"></canvas><div style="font-size:14px;line-height:1.45"><b>Окно / Панель · раскат</b> — картинка онбординга: прямоугольник охра → киноварь, остальное плоско.</div></div>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;align-items:center;gap:16px"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">НЕ ТАК</div><span style="flex:1;height:3px;background:#1D1B18"></span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px">
+        <div style="display:flex;flex-direction:column;gap:8px"><div style="position:relative;height:160px;background:#D4CEC2;overflow:hidden"><div style="position:absolute;left:70px;top:20px;width:120px;height:120px;border-radius:50%;background:linear-gradient(163deg,#BE2F18,#EEE5D1)"></div><span style="position:absolute;left:0;right:0;top:50%;height:3px;background:#1D1B18;transform:rotate(-17deg)"></span></div><div style="font-size:13px"><b>Гладкий градиент</b> — нет зерна, нет шва</div></div>
+        <div style="display:flex;flex-direction:column;gap:8px"><div style="position:relative;height:160px;overflow:hidden"><canvas ref="{{ cvX1 }}" width="520" height="320" style="width:260px;height:160px;display:block"></canvas><span style="position:absolute;left:0;right:0;top:50%;height:3px;background:#1D1B18;transform:rotate(-17deg)"></span></div><div style="font-size:13px"><b>Два раската</b> на одном экране</div></div>
+        <div style="display:flex;flex-direction:column;gap:8px"><div style="position:relative;height:160px;overflow:hidden"><canvas ref="{{ cvX2 }}" width="520" height="320" style="width:260px;height:160px;display:block"></canvas><span style="position:absolute;left:0;right:0;top:50%;height:3px;background:#1D1B18;transform:rotate(-17deg)"></span></div><div style="font-size:13px"><b>Текст на раскате</b> — контраст плывёт</div></div>
+        <div style="display:flex;flex-direction:column;gap:8px"><div style="position:relative;height:160px;overflow:hidden"><canvas ref="{{ cvX3 }}" width="520" height="320" style="width:260px;height:160px;display:block"></canvas><span style="position:absolute;left:0;right:0;top:50%;height:3px;background:#1D1B18;transform:rotate(-17deg)"></span></div><div style="font-size:13px"><b>Мягко, без шва</b> — жёсткость 2, туман</div></div>
+      </div>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { R: null, ready: false, shape: 'circle', pair: 'red-paper', dir: -17, t0: 58, hard: 12, grain: 2, seed: 1919, mode: 'grain', streak: 40 };
+  cvM = [React.createRef(), React.createRef(), React.createRef()]; cvF = [React.createRef(), React.createRef(), React.createRef(), React.createRef()];
+  cvHero = React.createRef(); cvPlay = React.createRef(); cvA = React.createRef(); cvB = React.createRef(); cvC = React.createRef(); cvX1 = React.createRef(); cvX2 = React.createRef(); cvX3 = React.createRef();
+  componentDidMount() {
+    import('./plakat-raskat.js').then(m => this.setState({ R: m })).catch(e => console.error('raskat', e));
+    const go = () => this.setState({ ready: true });
+    document.fonts ? Promise.all([document.fonts.load('32px "Rubik Mono One"', 'ЧИТАЙВЕСЬНОЯБРЬ'), document.fonts.load('600 12px "Golos Text"', 'ЛИСТ')]).then(go, go) : go();
+  }
+  componentDidUpdate() {
+    const st = this.state; if (!st.R || !st.ready) return;
+    if (!this.done) { this.done = true; this.drawStatic(); }
+    const key = [st.shape, st.pair, st.dir, st.t0, st.hard, st.grain, st.seed, st.mode, st.streak].join('|');
+    if (key !== this.key) { this.key = key; this.drawPlay(); }
+  }
+  playOpts(t0) { const st = this.state, [a, b] = st.R.PAIRS[st.pair]; return { a, b, angle: st.dir, t0: t0 ?? st.t0 / 100, hard: st.hard, grain: st.grain, seed: st.seed, mode: st.mode, streak: st.streak / 100 }; }
+  playShape() { const st = this.state; return st.shape === 'circle' ? { k: 'circle', cx: 280, cy: 160, r: 136 } : st.shape === 'wedge' ? { k: 'poly', pts: [[24, 304], [536, 304 - 512 * Math.tan(17 * Math.PI / 180)], [536, 304]] } : { k: 'rect', x: 80, y: 32, w: 400, h: 256 }; }
+  rollPlay() {
+    const st = this.state, x = this.ctx(this.cvPlay, 560, 320); if (!x || !st.R) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { this.drawPlay(); return; }
+    this.cancel && this.cancel();
+    this.cancel = st.R.roll(t0 => { x.fillStyle = '#EEE5D1'; x.fillRect(0, 0, 560, 320); x.fillStyle = '#1D1B18'; x.fillRect(0, 304, 560, 16); st.R.drawRaskat(x, this.playShape(), this.playOpts(t0)); }, st.t0 / 100, 320);
+  }
+  ctx(ref, w, h) { const c = ref.current; if (!c) return null; const x = c.getContext('2d'); x.setTransform(c.width / w, 0, 0, c.height / h, 0, 0); return x; }
+  drawPlay() {
+    const st = this.state, R = st.R, x = this.ctx(this.cvPlay, 560, 320); if (!x) return;
+    x.fillStyle = '#EEE5D1'; x.fillRect(0, 0, 560, 320); x.fillStyle = '#1D1B18'; x.fillRect(0, 304, 560, 16);
+    R.drawRaskat(x, this.playShape(), this.playOpts());
+  }
+  drawStatic() {
+    const R = this.state.R, RED = '#BE2F18', INK = '#1D1B18', PAPER = '#EEE5D1', CON = '#D4CEC2', T = Math.tan(17 * Math.PI / 180);
+    let x = this.ctx(this.cvHero, 96, 96); if (x) { x.fillStyle = PAPER; x.fillRect(0, 0, 96, 96); R.drawRaskat(x, { k: 'circle', cx: 48, cy: 48, r: 44 }, { a: RED, b: PAPER, angle: -17, t0: .58, hard: 12, grain: 1.5, seed: 7 }); }
+    const btn = (x, label, bx, bw, by = 320) => { x.fillStyle = RED; x.beginPath(); x.moveTo(bx, by + 14); x.lineTo(bx + 46, by); x.lineTo(bx + bw, by); x.lineTo(bx + bw, by + 48); x.lineTo(bx, by + 48); x.closePath(); x.fill(); x.fillStyle = PAPER; x.font = '16px "Rubik Mono One"'; x.textAlign = 'center'; x.fillText(label, bx + bw / 2, by + 30); x.textAlign = 'left'; };
+    x = this.ctx(this.cvA, 390, 392);
+    if (x) { x.fillStyle = PAPER; x.fillRect(0, 0, 390, 392);
+      x.fillStyle = CON; x.fillRect(0, 168, 160, 144);
+      R.drawRaskat(x, { k: 'circle', cx: 310, cy: 252, r: 60 }, { a: RED, b: PAPER, angle: -17, t0: .58, hard: 12, grain: 2, seed: 1919 });
+      x.save(); x.translate(16, 100); x.rotate(-17 * Math.PI / 180); x.fillStyle = INK; x.font = '48px "Rubik Mono One"'; ['ЧИТАЙ', 'ВЕСЬ', 'НОЯБРЬ'].forEach((l, i) => x.fillText(l, 0, 40 + i * 46)); x.restore();
+      x.fillStyle = INK; x.font = '16px "Golos Text"'; ['12 новых выпусков.', 'Мы собрали их в одну', 'ленту — читай по порядку.'].forEach((l, i) => x.fillText(l, 16, 262 + i * 20));
+      btn(x, 'ПОДПИСАТЬСЯ', 16, 358); }
+    x = this.ctx(this.cvB, 390, 392);
+    if (x) { x.fillStyle = PAPER; x.fillRect(0, 0, 390, 392); x.fillStyle = INK; x.font = '600 12px "Golos Text"'; x.fillText('ЛИСТ · № 47', 16, 28);
+      x.font = '32px "Rubik Mono One"'; x.fillText('ЭФИР', 16, 76); x.fillText('В 19:00', 16, 110);
+      R.drawRaskat(x, { k: 'poly', pts: [[0, 296], [390, 296 - 390 * T], [390, 296]] }, { a: INK, b: RED, angle: 73, t0: .5, hard: 9, grain: 2.5, seed: 1923 });
+      x.fillStyle = INK; x.fillRect(0, 296, 390, 8); x.beginPath(); x.arc(308, 96, 36, 0, Math.PI * 2); x.fill();
+      btn(x, 'НАПОМНИТЬ', 16, 358); }
+    x = this.ctx(this.cvC, 390, 392);
+    if (x) { x.fillStyle = PAPER; x.fillRect(0, 0, 390, 392); x.fillStyle = CON; x.fillRect(16, 16, 358, 232);
+      R.drawRaskat(x, { k: 'rect', x: 16, y: 16, w: 216, h: 232 }, { a: '#B5862F', b: RED, angle: -17, t0: .55, hard: 10, grain: 2, seed: 1927 });
+      x.fillStyle = INK; x.fillRect(16, 232, 358, 16); x.beginPath(); x.arc(304, 96, 40, 0, Math.PI * 2); x.fill();
+      x.fillStyle = PAPER; x.fillRect(24, 24, 40, 28); x.fillStyle = INK; x.font = '14px "Rubik Mono One"'; x.fillText('01', 30, 44);
+      x.font = '20px "Rubik Mono One"'; x.fillText('ЧИТАЙ ПО ПОРЯДКУ', 16, 286); x.font = '15px "Golos Text"'; x.fillText('Каждую неделю — выпуск из 12 статей.', 16, 312);
+      btn(x, 'ДАЛЬШЕ', 16, 358); }
+    [['grain', { streak: .5 }], ['dots', {}], ['lines', {}]].forEach(([mode, extra], i) => { const c = this.ctx(this.cvM[i], 240, 240); if (!c) return; c.fillStyle = PAPER; c.fillRect(0, 0, 240, 240); c.fillStyle = INK; c.fillRect(0, 224, 240, 16);
+      R.drawRaskat(c, { k: 'circle', cx: 120, cy: 112, r: 104 }, { a: RED, b: PAPER, angle: -17, t0: .55, hard: 10, grain: 2, seed: 1919, mode, ...extra }); });
+    [1.15, .9, .7, .55].forEach((t0, i) => { const c = this.ctx(this.cvF[i], 120, 120); if (!c) return; c.fillStyle = PAPER; c.fillRect(0, 0, 120, 120);
+      R.drawRaskat(c, { k: 'circle', cx: 60, cy: 60, r: 52 }, { a: RED, b: PAPER, angle: -17, t0, hard: 10, grain: 1.5, seed: 1919, streak: .5 }); });
+    x = this.ctx(this.cvX1, 260, 160);
+    if (x) { x.fillStyle = CON; x.fillRect(0, 0, 260, 160); R.drawRaskat(x, { k: 'circle', cx: 80, cy: 80, r: 56 }, { a: RED, b: PAPER, t0: .55, hard: 12, seed: 3 }); R.drawRaskat(x, { k: 'rect', x: 150, y: 24, w: 90, h: 112 }, { a: '#B5862F', b: RED, t0: .5, hard: 10, seed: 4 }); }
+    x = this.ctx(this.cvX2, 260, 160);
+    if (x) { x.fillStyle = CON; x.fillRect(0, 0, 260, 160); R.drawRaskat(x, { k: 'rect', x: 16, y: 16, w: 228, h: 128 }, { a: RED, b: PAPER, angle: 0, t0: .5, hard: 10, seed: 5 }); x.fillStyle = PAPER; x.font = '28px "Rubik Mono One"'; x.fillText('НОВОЕ', 36, 92); }
+    x = this.ctx(this.cvX3, 260, 160);
+    if (x) { x.fillStyle = CON; x.fillRect(0, 0, 260, 160); R.drawRaskat(x, { k: 'circle', cx: 130, cy: 80, r: 64 }, { a: RED, b: PAPER, t0: .5, hard: 2, seed: 6 }); }
+  }
+  renderVals() {
+    const st = this.state, seg = (a, b) => ({ bg: a === b ? '#1D1B18' : 'transparent', fg: a === b ? '#EEE5D1' : '#1D1B18' });
+    const S = (label, key, opts) => ({ label, opts: opts.map(([v, l]) => ({ label: l, ...seg(st[key], v), set: () => this.setState({ [key]: v }) })) });
+    const L = (label, key, min, max, step) => ({ label, min, max, step, v: st[key], on: e => this.setState({ [key]: +e.target.value }) });
+    const pairs = [['red-paper', 'киноварь → бумага'], ['red-ink', 'киноварь → чёрный'], ['ocher-red', 'охра → киноварь'], ['slate-red', 'серо-синий → киноварь'], ['ink-paper', 'чёрный → бумага']];
+    return {
+      cvHero: this.cvHero, cvPlay: this.cvPlay, cvA: this.cvA, cvB: this.cvB, cvC: this.cvC, cvX1: this.cvX1, cvX2: this.cvX2, cvX3: this.cvX3, seed: st.seed,
+      segs: [S('ФАКТУРА', 'mode', [['grain', 'зерно'], ['dots', 'растр'], ['lines', 'штрих']]), S('ФИГУРА', 'shape', [['circle', 'круг'], ['wedge', 'клин'], ['rect', 'прямоугольник']]), S('КРАСКИ', 'pair', pairs), S('НАПРАВЛЕНИЕ', 'dir', [[-17, 'по оси −17°'], [73, 'поперёк 73°'], [0, '0°'], [90, '90°']])],
+      sliders: [L('ЛИНИЯ ПЕРЕХОДА %', 't0', 30, 70, 1), L('ЖЁСТКОСТЬ', 'hard', 2, 30, 1), L(st.mode === 'grain' ? 'ЗЕРНО DP' : 'ШАГ · DP × 4', 'grain', 1, 4, .5), ...(st.mode === 'grain' ? [L('ВОЛОКНО ВАЛИКА %', 'streak', 0, 100, 10)] : [])],
+      rollPlay: () => this.rollPlay(),
+      cvM0: this.cvM[0], cvM1: this.cvM[1], cvM2: this.cvM[2], cvF0: this.cvF[0], cvF1: this.cvF[1], cvF2: this.cvF[2], cvF3: this.cvF[3],
+      reseed: () => this.setState({ seed: Math.floor(Math.random() * 9999) + 1 })
+    };
+  }
+}
+</script>
+</body>
+</html>

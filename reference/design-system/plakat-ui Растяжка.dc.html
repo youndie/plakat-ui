@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Rubik+Mono+One&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EEE5D1}
+a{color:#BE2F18}
+a:hover{color:#1D1B18}
+button{font:inherit}
+input[type=range]{accent-color:#BE2F18}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#EEE5D1;color:#1D1B18;font-family:'Golos Text',sans-serif">
+  <div style="max-width:1200px;margin:0 auto;padding:48px 24px 96px;display:flex;flex-direction:column;gap:72px">
+
+    <header style="display:flex;flex-direction:column;gap:16px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:.08em">PLAKAT-UI · КОМПОНЕНТ · РАСТЯЖКА</div>
+      <div style="position:relative;width:720px;max-width:100%;height:120px;overflow:hidden"><span style="position:absolute;left:0;top:0;font-family:'Rubik Mono One';font-size:100px;line-height:1;white-space:nowrap;color:#1D1B18;transform-origin:0 0;transform:{{ hero.tf }}">{{ hero.text }}</span></div>
+      <div style="height:8px;background:#1D1B18"></div>
+      <div style="font-size:17px;line-height:1.5;max-width:760px;text-wrap:pretty">Одна строка Display заполняет заданный прямоугольник от верха прописных до базовой линии: ширина — подгонкой, высота — растяжением букв. Приём плакатов 1920-х, когда слово набирали «в колонну» на всю полосу. Это статичная типографика; правило моушена «текст не деформируется» остаётся в силе.</div>
+    </header>
+
+    <section style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;align-items:center;gap:16px"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">ПРАВИЛА</div><span style="flex:1;height:3px;background:#1D1B18"></span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:0 32px">
+        <div style="display:flex;flex-direction:column">
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;padding:14px 0;border-top:1px solid #1D1B18"><span style="font-family:'Rubik Mono One';font-size:14px">01</span><div style="font-size:15px;line-height:1.5"><b>Только Rubik Mono One, прописные, одна строка</b>, 1–2 слова. Не для тела, подписей, кнопок.</div></div>
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;padding:14px 0;border-top:1px solid #1D1B18"><span style="font-family:'Rubik Mono One';font-size:14px">02</span><div style="font-size:15px;line-height:1.5"><b>Коэффициент растяжения 1,5–4.</b> Это отношение вертикального масштаба к горизонтальному. Меньше 1 — сплющивание, запрещено. Больше 4 — буквы рвутся.</div></div>
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;padding:14px 0;border-top:1px solid #1D1B18"><span style="font-family:'Rubik Mono One';font-size:14px">03</span><div style="font-size:15px;line-height:1.5"><b>Коробка на сетке 8</b>, высота ≥ 48. Буквы встают в неё встык: верх прописных — к верху, базовая линия — к низу. Если в строке есть Й или Ё — строка опускается, надстрочный знак остаётся в коробке.</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column">
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;padding:14px 0;border-top:1px solid #1D1B18"><span style="font-family:'Rubik Mono One';font-size:14px">04</span><div style="font-size:15px;line-height:1.5"><b>Одна растяжка на экран.</b> Она и есть главная мысль; рядом — обычный Display или ничего.</div></div>
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;padding:14px 0;border-top:1px solid #1D1B18"><span style="font-family:'Rubik Mono One';font-size:14px">05</span><div style="font-size:15px;line-height:1.5"><b>Не анимируется масштабом.</b> Появление — шторкой, смена — сменой листа. Под −17° не наклоняется: растяжка всегда стоит.</div></div>
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;padding:14px 0;border-top:1px solid #1D1B18"><span style="font-family:'Rubik Mono One';font-size:14px">06</span><div style="font-size:15px;line-height:1.5"><b>Остаётся текстом</b>: контент-описание для скринридера, копирование, кириллица и латиница.</div></div>
+        </div>
+      </div>
+      <div style="background:#1D1B18;color:#EEE5D1;padding:16px 20px;font-family:ui-monospace,Menlo,monospace;font-size:13px;line-height:1.7;overflow-x:auto;white-space:pre">// Compose: измеряем строку TextMeasurer'ом, растягиваем в DrawScope
+@Composable fun PlakatStretch(text: String, modifier: Modifier)   // размер задаёт modifier
+  sx = box.width  / (bounds.right - bounds.left)
+  sy = box.height / capHeight                     // capHeight из метрик шрифта
+  require(sy / sx in 1.5f..4f)
+  drawContext.transform.scale(sx, sy, pivot = Offset.Zero); drawText(layout, topLeft = Offset(-bounds.left, -capTop))</div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;align-items:center;gap:16px"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">ПЕСОЧНИЦА</div><span style="flex:1;height:3px;background:#1D1B18"></span></div>
+      <div style="display:flex;flex-wrap:wrap;gap:16px 32px;align-items:flex-end">
+        <label style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;font-weight:600;letter-spacing:.08em">ТЕКСТ</span><input value="{{ pg.text }}" onChange="{{ pg.onText }}" style="width:220px;height:48px;border:0;border-bottom:3px solid #1D1B18;background:transparent;font-family:'Rubik Mono One';font-size:18px;color:#1D1B18;outline:none;padding:0;text-transform:uppercase"></label>
+        <label style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;font-weight:600;letter-spacing:.08em">ШИРИНА · {{ pg.w }}</span><input type="range" min="120" max="720" step="8" value="{{ pg.w }}" onChange="{{ pg.onW }}" style="width:200px;height:48px"></label>
+        <label style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;font-weight:600;letter-spacing:.08em">ВЫСОТА · {{ pg.h }}</span><input type="range" min="48" max="320" step="8" value="{{ pg.h }}" onChange="{{ pg.onH }}" style="width:200px;height:48px"></label>
+        <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;font-weight:600;letter-spacing:.08em">РАСТЯЖЕНИЕ</span><span style="height:48px;display:flex;align-items:center;gap:8px;font-family:'Rubik Mono One';font-size:18px">×{{ pg.k }}<span style="font-family:'Golos Text';font-size:14px;font-weight:600;padding:4px 8px;background:{{ pg.badgeBg }};color:{{ pg.badgeFg }}">{{ pg.verdict }}</span></span></div>
+      </div>
+      <div style="overflow-x:auto;overflow-y:hidden;max-width:100%;padding:2px 0"><div style="position:relative;overflow:clip;width:{{ pg.wpx }};height:{{ pg.hpx }};box-shadow:0 0 0 1px #1D1B18;background-image:linear-gradient(rgba(29,27,24,.12) 0 1px,transparent 1px),linear-gradient(90deg,rgba(29,27,24,.12) 0 1px,transparent 1px);background-size:8px 8px"><span style="position:absolute;left:0;top:0;font-family:'Rubik Mono One';font-size:100px;line-height:1;white-space:nowrap;color:{{ pg.fill }};transform-origin:0 0;transform:{{ pg.tf }}">{{ pg.up }}</span></div></div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;align-items:center;gap:16px"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">ПРОЕКЦИЯ</div><span style="flex:1;height:3px;background:#1D1B18"></span></div>
+      <div style="font-size:16px;line-height:1.5;max-width:780px;text-wrap:pretty">Надпись как поверхность объёмной формы: текст лежит на плоскости, уходящей вдаль, обвивает колонну или переламывается через ребро бруса. Формы — из примитивов кита. Текст один раз растрируется и натягивается сеткой треугольников на форму. Код — <a href="plakat-warp.js">plakat-warp.js</a>, порт для Compose — <a href="plakat-warp.kt">plakat-warp.kt</a>.</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:0 32px">
+        <div style="display:flex;flex-direction:column">
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;padding:14px 0;border-top:1px solid #1D1B18"><span style="font-family:'Rubik Mono One';font-size:14px">P1</span><div style="font-size:15px;line-height:1.5"><b>Шесть форм.</b> Рупор — плоскость в перспективе, Конус — рупор объёмом (r₀ = r₁ даёт вал), Колонна — цилиндр, Шар — пояс по экватору, Брус — косоугольная проекция, Лестница — ступени вверх и вглубь. До трёх строк на форму. Новые собираются из тех же примитивов.</div></div>
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;padding:14px 0;border-top:1px solid #1D1B18"><span style="font-family:'Rubik Mono One';font-size:14px">P2</span><div style="font-size:15px;line-height:1.5"><b>Ось формы — 0°, −17° или −90°.</b> Рупор опирается кромкой на пол, на потолок или раскрывается от оси; раскрытие ≤ 30°, всегда от узкого конца по ходу чтения. Глубина бруса — по −17°. Изометрия — вторая ось, нельзя.</div></div>
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;padding:14px 0;border-top:1px solid #1D1B18"><span style="font-family:'Rubik Mono One';font-size:14px">P3</span><div style="font-size:15px;line-height:1.5"><b>Читается лицо.</b> Обратная сторона колонны не рисуется, дуга текста ≤ ±70°. Узкий конец рупора ≥ 24.</div></div>
+        </div>
+        <div style="display:flex;flex-direction:column">
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;padding:14px 0;border-top:1px solid #1D1B18"><span style="font-family:'Rubik Mono One';font-size:14px">P4</span><div style="font-size:15px;line-height:1.5"><b>Грани — плоские краски</b>: лицо красное, бок — ink, верх — бетон; если надпись переламывается через верхнее ребро — верх ink, чтобы кремовые буквы читались, и на крышку уходит не больше 20 % высоты букв. Без теней и градиентов; объём даёт только смена краски.</div></div>
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;padding:14px 0;border-top:1px solid #1D1B18"><span style="font-family:'Rubik Mono One';font-size:14px">P5</span><div style="font-size:15px;line-height:1.5"><b>Только Плакат и заставки</b>, одна на экран, статично. Появление — шторкой. Своё слово и своя композиция.</div></div>
+          <div style="display:grid;grid-template-columns:40px minmax(0,1fr);gap:8px;padding:14px 0;border-top:1px solid #1D1B18"><span style="font-family:'Rubik Mono One';font-size:14px">P6</span><div style="font-size:15px;line-height:1.5"><b>Compose.</b> Текст → ImageBitmap один раз, затем drawVertices / drawBitmapMesh сеткой 40 × 8. Пересчёт — при смене текста или размера. Снимаем запрет брифа «текст по дуге не делаем» для Плаката: это один вызов отрисовки.</div></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:16px 32px;align-items:flex-end">
+        <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;font-weight:600;letter-spacing:.08em">ФОРМА</span><div style="display:flex;border:3px solid #1D1B18"><sc-for list="{{ pj.formBtns }}" as="b" hint-placeholder-count="3"><button onClick="{{ b.set }}" style="height:42px;padding:0 14px;border:0;background:{{ b.bg }};color:{{ b.fg }};font-size:13px;font-weight:600;cursor:pointer">{{ b.label }}</button></sc-for></div></div>
+        <label style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;font-weight:600;letter-spacing:.08em">ТЕКСТ</span><input value="{{ pj.text }}" onChange="{{ pj.onText }}" title="/ — перенос строки" style="width:260px;height:48px;border:0;border-bottom:3px solid #1D1B18;background:transparent;font-family:'Rubik Mono One';font-size:18px;color:#1D1B18;outline:none;padding:0;text-transform:uppercase"></label>
+        <sc-for list="{{ pj.segs }}" as="g" hint-placeholder-count="0"><div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;font-weight:600;letter-spacing:.08em">{{ g.label }}</span><div style="display:flex;border:3px solid #1D1B18"><sc-for list="{{ g.opts }}" as="b" hint-placeholder-count="3"><button onClick="{{ b.set }}" style="height:42px;padding:0 12px;border:0;background:{{ b.bg }};color:{{ b.fg }};font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap">{{ b.label }}</button></sc-for></div></div></sc-for>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px 32px;align-items:flex-end">
+        <sc-for list="{{ pj.sliders }}" as="s" hint-placeholder-count="3"><label style="display:flex;flex-direction:column;gap:4px"><span style="font-size:12px;font-weight:600;letter-spacing:.08em">{{ s.label }} · {{ s.v }}</span><input type="range" min="{{ s.min }}" max="{{ s.max }}" step="{{ s.step }}" value="{{ s.v }}" onChange="{{ s.on }}" style="width:200px;height:48px"></label></sc-for>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end">
+        <canvas ref="{{ cvPlay }}" width="1120" height="640" style="width:560px;height:320px;max-width:100%;background:#EEE5D1;box-shadow:inset 0 0 0 1px #1D1B18" aria-label="{{ pj.up }}"></canvas>
+        <div style="display:flex;flex-direction:column;gap:8px;max-width:220px">
+          <div style="font-size:13px;line-height:1.45">«/» в тексте — перенос строки: каждая строка получает свою полосу на форме, у Лестницы — свою ступень. Короткие строки у рупора и конуса прижимаются к широкому концу, у бруса — к началу, у остальных — по центру.</div>
+          <button onClick="{{ pj.png }}" style="align-self:flex-start;height:48px;padding:0 16px;border:3px solid #1D1B18;background:transparent;font-family:'Rubik Mono One';font-size:12px;cursor:pointer" style-active="background:#1D1B18;color:#EEE5D1">PNG @2X</button>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:32px 24px;align-items:flex-start;margin-top:16px">
+        <div style="display:flex;flex-direction:column;gap:8px;width:390px;max-width:100%">
+          <canvas ref="{{ cvP1 }}" width="780" height="784" style="width:390px;height:392px;max-width:100%;background:#EEE5D1;box-shadow:inset 0 0 0 1px #1D1B18" aria-label="Читай весь ноябрь"></canvas>
+          <div style="font-size:14px;line-height:1.45"><b>Плакат / Проекция / Рупор</b> — «НОЯБРЬ» на красной плоскости: узкий конец 56 слева, верхняя кромка по −17°, низ на брусе-земле. Поля внутри плоскости — 16 % по высоте, 4 % по длине.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;width:390px;max-width:100%">
+          <canvas ref="{{ cvP2 }}" width="780" height="784" style="width:390px;height:392px;max-width:100%;background:#EEE5D1;box-shadow:inset 0 0 0 1px #1D1B18" aria-label="Лист, выпуск 47"></canvas>
+          <div style="font-size:14px;line-height:1.45"><b>Плакат / Проекция / Колонна</b> — «ЛИСТ·47» обвивает красный цилиндр по дуге ±70°, верх — бетон, колонна стоит на земле.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;width:390px;max-width:100%">
+          <canvas ref="{{ cvP3 }}" width="780" height="784" style="width:390px;height:392px;max-width:100%;background:#EEE5D1;box-shadow:inset 0 0 0 1px #1D1B18" aria-label="Новое"></canvas>
+          <div style="font-size:14px;line-height:1.45"><b>Плакат / Проекция / Брус</b> — «НОВОЕ» идёт по красному лицу и ломается на чёрный бок; глубина бруса — по −17°.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;width:390px;max-width:100%">
+          <canvas ref="{{ cvP4 }}" width="780" height="784" style="width:390px;height:392px;max-width:100%;background:#EEE5D1;box-shadow:inset 0 0 0 1px #1D1B18" aria-label="Слушай. Эфир в 19:00"></canvas>
+          <div style="font-size:14px;line-height:1.45"><b>Плакат / Проекция / Конус</b> — «СЛУШАЙ» по объёмному рупору: ось −17°, радиус 20 → 92, раструб — ink.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;width:390px;max-width:100%">
+          <canvas ref="{{ cvP5 }}" width="780" height="784" style="width:390px;height:392px;max-width:100%;background:#EEE5D1;box-shadow:inset 0 0 0 1px #1D1B18" aria-label="Кругозор. Мир за неделю"></canvas>
+          <div style="font-size:14px;line-height:1.45"><b>Плакат / Проекция / Шар</b> — «КРУГОЗОР» поясом по экватору, дуга ±72°, вид сверху 14°.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;width:390px;max-width:100%">
+          <canvas ref="{{ cvP6 }}" width="780" height="784" style="width:390px;height:392px;max-width:100%;background:#EEE5D1;box-shadow:inset 0 0 0 1px #1D1B18" aria-label="Шаг за шагом"></canvas>
+          <div style="font-size:14px;line-height:1.45"><b>Плакат / Проекция / Лестница</b> — «ШАГ / ЗА / ШАГОМ»: по строке на подступенок, ступени уходят вверх и вглубь по −17°.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;width:390px;max-width:100%">
+          <canvas ref="{{ cvP7 }}" width="780" height="784" style="width:390px;height:392px;max-width:100%;background:#EEE5D1;box-shadow:inset 0 0 0 1px #1D1B18" aria-label="Читай весь ноябрь"></canvas>
+          <div style="font-size:14px;line-height:1.45"><b>Плакат / Проекция / Рупор в две строки</b> — ось −17°, раскрытие от оси; каждая строка — своя полоса плоскости.</div>
+        </div>
+      </div>
+      <div style="font-size:12px;font-weight:600;letter-spacing:.08em;margin-top:16px">РУПОР · ЧЕТЫРЕ ПОЛОЖЕНИЯ</div>
+      <div style="display:flex;flex-wrap:wrap;gap:16px">
+        <div style="display:flex;flex-direction:column;gap:6px"><canvas ref="{{ cvV0 }}" width="520" height="400" style="width:260px;height:200px;box-shadow:inset 0 0 0 1px #1D1B18"></canvas><span style="font-size:13px"><b>Пол</b> · ось 0°, низ на земле</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><canvas ref="{{ cvV1 }}" width="520" height="400" style="width:260px;height:200px;box-shadow:inset 0 0 0 1px #1D1B18"></canvas><span style="font-size:13px"><b>Потолок</b> · ось 0°, верх под брусом</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><canvas ref="{{ cvV2 }}" width="520" height="400" style="width:260px;height:200px;box-shadow:inset 0 0 0 1px #1D1B18"></canvas><span style="font-size:13px"><b>По оси</b> · −17°, раскрытие поровну</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><canvas ref="{{ cvV3 }}" width="520" height="400" style="width:260px;height:200px;box-shadow:inset 0 0 0 1px #1D1B18"></canvas><span style="font-size:13px"><b>Вертикаль</b> · −90°, растёт вверх</span></div>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;align-items:center;gap:16px"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">ГДЕ ПРИМЕНЯЕМ</div><span style="flex:1;height:3px;background:#1D1B18"></span></div>
+      <div style="display:flex;flex-wrap:wrap;gap:32px 24px;align-items:flex-start">
+
+        <div style="display:flex;flex-direction:column;gap:8px;width:390px">
+          <div style="position:relative;width:390px;height:600px;overflow:hidden;background:#EEE5D1;box-shadow:inset 0 0 0 1px #1D1B18">
+            <div style="position:absolute;left:16px;top:16px;width:358px;height:136px"><span style="position:absolute;left:0;top:0;font-family:'Rubik Mono One';font-size:100px;line-height:1;white-space:nowrap;color:#1D1B18;transform-origin:0 0;transform:{{ p1.tf }}">{{ p1.text }}</span></div>
+            <div style="position:absolute;left:16px;top:168px;width:358px;height:16px;background:#BE2F18"></div>
+            <div style="position:absolute;left:16px;top:200px;width:358px;height:120px"><span style="position:absolute;left:0;top:0;font-family:'Rubik Mono One';font-size:100px;line-height:1;white-space:nowrap;color:#1D1B18;transform-origin:0 0;transform:{{ p2.tf }}">{{ p2.text }}</span></div>
+            <div style="position:absolute;left:16px;top:336px;width:358px;height:80px"><span style="position:absolute;left:0;top:0;font-family:'Rubik Mono One';font-size:100px;line-height:1;white-space:nowrap;color:#1D1B18;transform-origin:0 0;transform:{{ p3.tf }}">{{ p3.text }}</span></div>
+            <div style="position:absolute;left:16px;top:440px;width:240px;font-size:16px;line-height:1.4">12 новых выпусков. Мы собрали их в одну ленту — читай по порядку.</div>
+            <div style="position:absolute;right:-56px;top:440px;width:136px;height:136px;border-radius:50%;background:#1D1B18"></div>
+            <div style="position:absolute;left:16px;width:240px;bottom:24px;height:48px"><span style="position:absolute;inset:0;background:#BE2F18;clip-path:polygon(0 14px,46px 0,100% 0,100% 100%,0 100%)"></span><span style="position:relative;display:flex;height:100%;align-items:center;justify-content:center;font-family:'Rubik Mono One';font-size:14px;letter-spacing:.04em;color:#EEE5D1">ПОДПИСАТЬСЯ</span></div>
+          </div>
+          <div style="font-size:14px;line-height:1.45"><b>Плакат / Растяжка</b> — четвёртая раскладка. Три строки набраны на всю ширину, высоты 136 / 120 / 80 — у каждой растяжение 1,6–2,3. Красный брус — разделитель. Диагонали нет: здесь главная — вертикаль.</div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:24px;width:390px">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="background:#EEE5D1;box-shadow:inset 0 0 0 1px #1D1B18;padding:16px 16px 0">
+              <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:600;letter-spacing:.08em"><span>№ 47</span><span>НОЯБРЬ 2026</span></div>
+              <div style="position:relative;width:358px;height:120px;margin-top:8px"><span style="position:absolute;left:0;top:0;font-family:'Rubik Mono One';font-size:100px;line-height:1;white-space:nowrap;color:#1D1B18;transform-origin:0 0;transform:{{ mast.tf }}">{{ mast.text }}</span></div>
+              <div style="height:8px;background:#1D1B18;margin-top:12px"></div>
+              <div style="height:16px"></div>
+            </div>
+            <div style="font-size:14px;line-height:1.45"><b>TopAppBar / Шапка</b> — название издания на всю ширину, 120 (×1,6). При скролле не сжимается масштабом, а уезжает вверх; остаётся обычная свёрнутая шапка.</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <div style="background:#D4CEC2;padding:16px;display:flex;flex-direction:column;gap:8px"><div style="position:relative;width:112px;height:104px"><span style="position:absolute;left:0;top:0;font-family:'Rubik Mono One';font-size:100px;line-height:1;white-space:nowrap;color:#1D1B18;transform-origin:0 0;transform:{{ num.tf }}">{{ num.text }}</span></div><div style="font-size:12px;font-weight:600;letter-spacing:.08em">СТАТЕЙ ПРОЧИТАНО</div></div>
+              <div style="background:#D4CEC2;padding:16px;display:flex;flex-direction:column;gap:8px"><div style="position:relative;width:56px;height:104px"><span style="position:absolute;left:0;top:0;font-family:'Rubik Mono One';font-size:100px;line-height:1;white-space:nowrap;color:#BE2F18;transform-origin:0 0;transform:{{ num2.tf }}">{{ num2.text }}</span></div><div style="font-size:12px;font-weight:600;letter-spacing:.08em">ДНЕЙ ПОДРЯД</div></div>
+            </div>
+            <div style="font-size:14px;line-height:1.45"><b>Счётчик / Колонна</b> — число растянуто на высоту плитки 104, ширина — по числу разрядов (56 на разряд). Тик меняет цифры сменой листа, без масштаба.</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="background:#EEE5D1;box-shadow:inset 0 0 0 1px #1D1B18;padding:16px;display:flex;flex-direction:column;gap:8px">
+              <div style="position:relative;width:358px;height:48px"><span style="position:absolute;left:0;top:0;font-family:'Rubik Mono One';font-size:100px;line-height:1;white-space:nowrap;color:#1D1B18;transform-origin:0 0;transform:{{ sec.tf }}">{{ sec.text }}</span></div>
+              <div style="height:3px;background:#1D1B18"></div>
+              <div style="display:flex;gap:16px;align-items:center;padding:12px;background:#D4CEC2"><span style="width:64px;height:64px;background:#EEE5D1;flex:none;position:relative;overflow:hidden"><span style="position:absolute;right:-12px;top:-12px;width:48px;height:48px;border-radius:50%;background:#BE2F18"></span><span style="position:absolute;left:0;bottom:12px;width:64px;height:8px;background:#1D1B18"></span></span><div><div style="font-size:11px;font-weight:600;letter-spacing:.08em">8 МИН</div><div style="font-size:16px;font-weight:600;line-height:1.25;margin-top:4px">Город из фанеры: временные павильоны</div></div></div>
+            </div>
+            <div style="font-size:14px;line-height:1.45"><b>Раздел / Заголовок</b> — рубрика в ленте, 48 на всю ширину. Одна на экран: следующая рубрика — уже обычный Headline.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:24px">
+      <div style="display:flex;align-items:center;gap:16px"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">НЕ ТАК</div><span style="flex:1;height:3px;background:#1D1B18"></span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px">
+        <div style="display:flex;flex-direction:column;gap:8px"><div style="position:relative;height:120px;overflow:hidden"><canvas ref="{{ cvB1 }}" width="520" height="240" style="width:260px;max-width:100%;height:120px;display:block;background:#D4CEC2"></canvas><span style="position:absolute;left:0;right:0;top:50%;height:3px;background:#1D1B18;transform:rotate(-17deg)"></span></div><div style="font-size:13px"><b>Изометрия</b> — две оси, ±30°</div></div>
+        <div style="display:flex;flex-direction:column;gap:8px"><div style="position:relative;height:120px;overflow:hidden"><canvas ref="{{ cvB2 }}" width="520" height="240" style="width:260px;max-width:100%;height:120px;display:block;background:#D4CEC2"></canvas><span style="position:absolute;left:0;right:0;top:50%;height:3px;background:#1D1B18;transform:rotate(-17deg)"></span></div><div style="font-size:13px"><b>Колонна по кругу</b> — текст до самого края, буквы в нитку</div></div>
+        <div style="display:flex;flex-direction:column;gap:8px"><div style="position:relative;height:120px;background:#D4CEC2;padding:16px;box-sizing:border-box;overflow:hidden"><span style="display:block;position:relative;width:40px;height:88px"><span style="position:absolute;left:0;top:0;font-family:'Rubik Mono One';font-size:100px;line-height:1;white-space:nowrap;color:#1D1B18;transform-origin:0 0;transform:{{ bad1.tf }}">{{ bad1.text }}</span></span><span style="position:absolute;left:0;right:0;top:50%;height:3px;background:#BE2F18;transform:rotate(-17deg)"></span></div><div style="font-size:13px"><b>×{{ bad1.k }}</b> — больше 4, буквы рвутся</div></div>
+        <div style="display:flex;flex-direction:column;gap:8px"><div style="position:relative;height:120px;background:#D4CEC2;padding:16px;box-sizing:border-box;overflow:hidden;display:flex;align-items:center"><span style="display:block;position:relative;width:240px;height:32px"><span style="position:absolute;left:0;top:0;font-family:'Rubik Mono One';font-size:100px;line-height:1;white-space:nowrap;color:#1D1B18;transform-origin:0 0;transform:{{ bad2.tf }}">{{ bad2.text }}</span></span><span style="position:absolute;left:0;right:0;top:50%;height:3px;background:#BE2F18;transform:rotate(-17deg)"></span></div><div style="font-size:13px"><b>×{{ bad2.k }}</b> — сплющено</div></div>
+        <div style="display:flex;flex-direction:column;gap:8px"><div style="position:relative;height:120px;background:#D4CEC2;padding:16px;box-sizing:border-box;overflow:hidden"><div style="font-size:15px;line-height:1.3;transform:scaleY(2);transform-origin:0 0">Павильон стоит три месяца, потом его разбирают.</div><span style="position:absolute;left:0;right:0;top:50%;height:3px;background:#BE2F18;transform:rotate(-17deg)"></span></div><div style="font-size:13px"><b>Текст тела</b> — не растягивается</div></div>
+        <div style="display:flex;flex-direction:column;gap:8px"><div style="position:relative;height:120px;background:#D4CEC2;padding:16px;box-sizing:border-box;overflow:hidden"><div style="transform:rotate(-17deg);transform-origin:0 100%;margin-top:56px;width:220px;height:48px"><span style="display:block;position:relative;width:220px;height:48px"><span style="position:absolute;left:0;top:0;font-family:'Rubik Mono One';font-size:100px;line-height:1;white-space:nowrap;color:#1D1B18;transform-origin:0 0;transform:{{ sec2.tf }}">{{ sec2.text }}</span></span></div><span style="position:absolute;left:0;right:0;top:50%;height:3px;background:#BE2F18;transform:rotate(-17deg)"></span></div><div style="font-size:13px"><b>Под наклоном</b> — растяжка стоит</div></div>
+      </div>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { ready: false, text: 'ЛИСТ', w: 358, h: 160, W: null, form: 'horn', ptext: 'ЧИТАЙ ВСЁ / НОЯБРЬ',
+    P: { horn: { angle: 0, anchor: 'floor', h0: 80, spread: 17, persp: 100 }, cone: { angle: -17, r0: 24, r1: 96, yaw: 16, arc: 60 },
+      column: { arc: 65, spin: 0, tilt: 16 }, sphere: { lon: 70, lat: 22, tilt: 14 }, box: { fold: 'side', d: 120, at: 60 }, stairs: { n: 3, sd: 40 } } };
+  cvPlay = React.createRef(); cvP1 = React.createRef(); cvP2 = React.createRef(); cvP3 = React.createRef(); cvP4 = React.createRef(); cvP5 = React.createRef(); cvP6 = React.createRef(); cvP7 = React.createRef();
+  cvB1 = React.createRef(); cvB2 = React.createRef(); cvV = [React.createRef(), React.createRef(), React.createRef(), React.createRef()];
+  componentDidUpdate() {
+    const st = this.state; if (!st.W || !st.ready) return;
+    const key = st.form + '|' + st.ptext + '|' + JSON.stringify(st.P[st.form]);
+    if (!this.drawnStatic) { this.drawnStatic = true; this.drawStatic2(); }
+    if (key !== this.drawnKey) { this.drawnKey = key; this.drawPlay2(); }
+  }
+  // вписать рупор в прямоугольник: строим в нуле, меряем, масштабируем и ставим
+  fitHorn(p, box, align = 'center') {
+    const W = this.state.W, f0 = W.horn({ ...p, ox: 0, oy: 0 }), xs = f0.quad.map(q => q[0]), ys = f0.quad.map(q => q[1]);
+    const bw = Math.max(...xs) - Math.min(...xs), bh = Math.max(...ys) - Math.min(...ys), k = Math.min(1, box.w / bw, box.h / bh);
+    const ox = box.x + (box.w - bw * k) / 2 - Math.min(...xs) * k, oy = align === 'bottom' ? box.y + box.h - Math.max(...ys) * k : align === 'top' ? box.y - Math.min(...ys) * k : box.y + (box.h - bh * k) / 2 - Math.min(...ys) * k;
+    return W.horn({ ...p, L: p.L * k, h0: p.h0 * k, ox, oy });
+  }
+  fitCone(p, box) {
+    const W = this.state.W, f0 = W.cone({ ...p, ox: 0, oy: 0 }), s = Math.sin((p.yaw || 0) * Math.PI / 180);
+    const pts = [[0, -p.r0], [p.L, -p.r1], [p.L, p.r1], [0, p.r0], [p.L + p.r1 * s, 0], [-p.r0 * s, 0]].map(f0.R);
+    const xs = pts.map(q => q[0]), ys = pts.map(q => q[1]), bw = Math.max(...xs) - Math.min(...xs), bh = Math.max(...ys) - Math.min(...ys), k = Math.min(1, box.w / bw, box.h / bh);
+    return W.cone({ ...p, L: p.L * k, r0: p.r0 * k, r1: p.r1 * k, ox: box.x + (box.w - bw * k) / 2 - Math.min(...xs) * k, oy: box.y + (box.h - bh * k) / 2 - Math.min(...ys) * k });
+  }
+  paint(x, form, p, text, area, ground) {
+    const W = this.state.W, RED = '#BE2F18', INK = '#1D1B18', PAPER = '#EEE5D1', CON = '#D4CEC2';
+    const lines = text.split('/').map(s => s.trim()).filter(Boolean), n = lines.length || 1;
+    if (form === 'stairs') {
+      const words = n > 1 ? lines : text.split(/\s+/).filter(Boolean), k = Math.max(2, Math.min(6, p.n)), L = words.length <= k ? words : [...words.slice(0, k - 1), words.slice(k - 1).join(' ')];
+      const sd = p.sd, sdx = sd * Math.cos(17 * Math.PI / 180), sdy = sd * Math.sin(17 * Math.PI / 180), w = area.w - sdx * (k - 1), rh = Math.min(96, (area.h - sdy * (k - 1)) / k);
+      const f = W.stairs({ x: area.x, y: area.y + area.h, n: k, w, rh, sd }); W.drawStairs(x, f, RED, CON, INK);
+      L.forEach((t, i) => { if (f.maps[i]) W.warp(x, W.textSource(t, PAPER), f.maps[i], { nu: 24, nv: 6 }); });
+      return;
+    }
+    // строки выравниваются влево: длина строки на форме пропорциональна её естественной ширине, самая длинная — во всю форму
+    const srcs = lines.map(t => W.textSource(t, PAPER)), amax = Math.max(...srcs.map(s => s.aspect));
+    // рупор и конус: короткие строки — к широкому концу (туда растёт крик); остальные формы — по центру
+    const al = form === 'horn' || form === 'cone' ? 1 : form === 'box' ? 0 : .5;
+    const warpLines = (map, opt = {}) => srcs.forEach((s, i) => { const lm = n > 1 ? W.lineMap(map, i, n) : map, k = s.aspect / amax, o = (1 - k) * al;
+      W.warp(x, s, n > 1 ? (u, v) => lm(o + u * k, v) : lm, { ...opt, folds: (opt.folds || []).map(f => (f - o) / k).filter(f => f > 0 && f < 1), vfolds: (opt.vfolds || []).map(v => n > 1 ? W.lineV(v, i, n) : v) }); });
+    const src = W.textSource(lines[0] || ' ', PAPER);
+    if (form === 'horn') { const f = this.fitHorn({ L: area.w, h0: p.h0, spread: p.spread, angle: p.angle, anchor: p.anchor, persp: p.persp / 100 }, area, ground && (p.angle === 0 && p.anchor === 'floor' || p.angle === -90) ? 'bottom' : (p.angle === 0 && p.anchor === 'ceiling' ? 'top' : 'center')); W.drawHorn(x, f, RED); warpLines(f.map, { nu: 48, nv: 8 }); }
+    if (form === 'cone') { const f = this.fitCone({ L: area.w * .8, r0: p.r0, r1: p.r1, yaw: p.yaw, arc: p.arc, angle: p.angle, pad: [.06, 0] }, area); W.drawCone(x, f, RED, null); warpLines(f.map, { nu: 48, nv: 10 }); W.drawCone(x, { ...f, r0: 0 }, 'transparent', INK); }
+    if (form === 'column') { const r = Math.min(area.w * .3, area.h * .45), f = W.column({ cx: area.x + area.w / 2, r, top: area.y + r * p.tilt / 100 + 4, bottom: area.y + area.h, band: [area.y + area.h * .3, area.y + area.h * .72], arc: p.arc, spin: p.spin, tilt: p.tilt / 100 }); W.drawColumn(x, f, RED, CON); warpLines(f.map, { nu: 60, nv: 8 }); }
+    if (form === 'sphere') { const R = Math.min(area.w, area.h) / 2 - 4, f = W.sphere({ cx: area.x + area.w / 2, cy: area.y + area.h / 2, R, lon: p.lon, lat: p.lat * (n > 1 ? 1.5 : 1), tilt: p.tilt }); W.drawSphere(x, f, RED); warpLines(f.map, { nu: 60, nv: 10 }); }
+    if (form === 'box') { const d = p.d, dx = d * Math.cos(17 * Math.PI / 180), dy = d * Math.sin(17 * Math.PI / 180), w = area.w - dx, h = area.h - dy, y = area.y + dy;
+      const top = p.fold === 'top', ft = Math.min(1 - p.at / 100, .2), Hc = Math.min(3.5 * (w - 16) / src.aspect, h * .9 / (1 - ft));
+      const hf = top ? Math.round(Hc * (1 - ft) + 16) : h, yf = top ? area.y + area.h - hf : y, y1 = top ? yf + Hc * (1 - ft) : y + h * .8;
+      const f = W.box({ x: area.x, y: yf, w, h: hf, d, band: [yf + hf * .2, y1], fold: p.fold, at: top ? ft : p.at / 100 }); W.drawBox(x, f, RED, INK, top ? INK : CON);
+      warpLines(f.map, { nu: 48, nv: 16, folds: f.folds, vfolds: top ? [f.vfold] : [] }); }
+  }
+  drawPlay2() {
+    const st = this.state, x = this.ctx(this.cvPlay, 560, 320); if (!x) return;
+    x.fillStyle = '#EEE5D1'; x.fillRect(0, 0, 560, 320); x.fillStyle = '#1D1B18'; x.fillRect(0, 304, 560, 16);
+    this.paint(x, st.form, st.P[st.form], (st.ptext || ' ').toUpperCase(), { x: 24, y: 16, w: 512, h: 288 }, true);
+  }
+  drawStatic2() {
+    const W = this.state.W, RED = '#BE2F18', INK = '#1D1B18', PAPER = '#EEE5D1', CON = '#D4CEC2';
+    const frame = (x, title, head) => { x.fillStyle = PAPER; x.fillRect(0, 0, 390, 392); x.fillStyle = INK; x.font = '600 12px "Golos Text"'; x.fillText(title, 16, 28); if (head) { x.font = '32px "Rubik Mono One"'; head.forEach((l, i) => x.fillText(l, 16, 72 + i * 34)); } x.fillRect(0, 312, 390, 8); };
+    const btn = (x, label, bx, bw) => { x.fillStyle = RED; x.beginPath(); x.moveTo(bx, 342); x.lineTo(bx + 46, 328); x.lineTo(bx + bw, 328); x.lineTo(bx + bw, 376); x.lineTo(bx, 376); x.closePath(); x.fill(); x.fillStyle = PAPER; x.font = '14px "Rubik Mono One"'; x.textAlign = 'center'; x.fillText(label, bx + bw / 2, 357); x.textAlign = 'left'; };
+    let x = this.ctx(this.cvP1, 390, 392);
+    if (x) { frame(x, 'ЛИСТ · № 47', ['ЧИТАЙ', 'ВЕСЬ']); x.beginPath(); x.arc(326, 72, 40, 0, Math.PI * 2); x.fill();
+      const f = W.horn({ ox: 16, oy: 312, L: 358, h0: 56, spread: 17 }); W.drawHorn(x, f, RED); W.warp(x, W.textSource('НОЯБРЬ', PAPER), f.map, { nu: 48, nv: 8 }); btn(x, 'ПОДПИСАТЬСЯ', 16, 358); }
+    x = this.ctx(this.cvP2, 390, 392);
+    if (x) { frame(x, 'ЛИСТ · № 47', ['ВЫПУСК']);
+      const f = W.column({ cx: 264, r: 96, top: 112, bottom: 312, band: [168, 264], arc: 70 }); W.drawColumn(x, f, RED, CON); W.warp(x, W.textSource('ЛИСТ·47', PAPER), f.map, { nu: 60, nv: 8 });
+      x.fillStyle = CON; x.fillRect(16, 232, 72, 80); btn(x, 'ЧИТАТЬ', 16, 200); }
+    x = this.ctx(this.cvP3, 390, 392);
+    if (x) { frame(x, 'ЛИСТ · № 47', ['ВЫПУСК']);
+      const f = W.box({ x: 16, y: 152, w: 260, h: 160, d: 96, band: [184, 288] }); W.drawBox(x, f, RED, INK, CON); W.warp(x, W.textSource('НОВОЕ', PAPER), f.map, { nu: 48, nv: 8, folds: f.folds }); btn(x, 'ЧИТАТЬ', 16, 358); }
+    x = this.ctx(this.cvP4, 390, 392);
+    if (x) { frame(x, 'ЛИСТ · № 47', ['ЭФИР', 'В 19:00']);
+      const f = this.fitCone({ L: 320, r0: 20, r1: 92, yaw: 16, arc: 62, angle: -17, pad: [.06, 0] }, { x: 24, y: 120, w: 350, h: 184 });
+      W.drawCone(x, f, RED, null); W.warp(x, W.textSource('СЛУШАЙ', PAPER), f.map, { nu: 48, nv: 10 }); W.drawCone(x, { ...f, r0: 0 }, 'transparent', INK); btn(x, 'НАПОМНИТЬ', 16, 358); }
+    x = this.ctx(this.cvP5, 390, 392);
+    if (x) { frame(x, 'ЛИСТ · № 47', ['МИР ЗА', 'НЕДЕЛЮ']); x.fillStyle = CON; x.fillRect(16, 232, 64, 80);
+      const f = W.sphere({ cx: 254, cy: 210, R: 100, lon: 72, lat: 22, tilt: 14 }); W.drawSphere(x, f, RED); W.warp(x, W.textSource('КРУГОЗОР', PAPER), f.map, { nu: 64, nv: 10 });
+      btn(x, 'ЧИТАТЬ', 16, 358); }
+    x = this.ctx(this.cvP6, 390, 392);
+    if (x) { frame(x, 'ЛИСТ · № 47', []); this.paint(x, 'stairs', { n: 3, sd: 40 }, 'ШАГ / ЗА / ШАГОМ', { x: 16, y: 48, w: 358, h: 264 }, true); btn(x, 'НАЧАТЬ КУРС', 16, 358); }
+    x = this.ctx(this.cvP7, 390, 392);
+    if (x) { frame(x, 'ЛИСТ · № 47', []); x.beginPath(); x.arc(326, 64, 32, 0, Math.PI * 2); x.fill(); this.paint(x, 'horn', { angle: -17, anchor: 'axis', h0: 40, spread: 17, persp: 100 }, 'ЧИТАЙ ВЕСЬ / НОЯБРЬ', { x: 16, y: 96, w: 358, h: 208 }, false); btn(x, 'ПОДПИСАТЬСЯ', 16, 358); }
+    const vars = [{ angle: 0, anchor: 'floor' }, { angle: 0, anchor: 'ceiling' }, { angle: -17, anchor: 'axis' }, { angle: -90, anchor: 'floor' }];
+    vars.forEach((v, i) => { const c = this.ctx(this.cvV[i], 260, 200); if (!c) return; c.fillStyle = PAPER; c.fillRect(0, 0, 260, 200); c.fillStyle = INK; if (v.anchor === 'ceiling') c.fillRect(0, 0, 260, 8); else c.fillRect(0, 192, 260, 8);
+      const area = v.anchor === 'ceiling' ? { x: 12, y: 8, w: 236, h: 180 } : { x: 12, y: 12, w: 236, h: 180 };
+      const f = this.fitHorn({ L: 236, h0: 28, spread: 17, angle: v.angle, anchor: v.anchor, persp: 1 }, area, v.anchor === 'ceiling' ? 'top' : (v.angle === -17 ? 'center' : 'bottom'));
+      W.drawHorn(c, f, RED); W.warp(c, W.textSource('НОЯБРЬ', PAPER), f.map, { nu: 40, nv: 8 }); });
+    x = this.ctx(this.cvB1, 260, 120);
+    if (x) { x.fillStyle = CON; x.fillRect(0, 0, 260, 120); const c30 = Math.cos(Math.PI / 6), s30 = .5, s = 44, ox = 130, oy = 108;
+      const L = [[ox - s * c30, oy - s * s30], [ox, oy], [ox, oy - s], [ox - s * c30, oy - s - s * s30]], R = [[ox, oy], [ox + s * c30, oy - s * s30], [ox + s * c30, oy - s - s * s30], [ox, oy - s]];
+      const poly = (p, c) => { x.fillStyle = c; x.beginPath(); x.moveTo(...p[0]); p.slice(1).forEach(q => x.lineTo(...q)); x.closePath(); x.fill(); };
+      poly(L, RED); poly(R, INK); poly([L[3], L[2], R[2], [ox, oy - 2 * s]], PAPER);
+      W.warp(x, W.textSource('НО', PAPER), W.quadMap(L[3], L[2], L[1], L[0]), { nu: 12, nv: 6 }); W.warp(x, W.textSource('ВО', PAPER), W.quadMap(R[3], R[2], R[1], R[0]), { nu: 12, nv: 6 }); }
+    x = this.ctx(this.cvB2, 260, 120);
+    if (x) { x.fillStyle = CON; x.fillRect(0, 0, 260, 120); const f = W.column({ cx: 130, r: 60, top: 16, bottom: 112, band: [40, 88], arc: 89 }); W.drawColumn(x, f, RED, PAPER); W.warp(x, W.textSource('ЛИСТ ЛИСТ', PAPER), f.map, { nu: 60, nv: 6 }); }
+  }
+  ctx(ref, w, h) { const c = ref.current; if (!c) return null; const x = c.getContext('2d'); x.setTransform(1, 0, 0, 1, 0, 0); x.clearRect(0, 0, c.width, c.height); x.setTransform(c.width / w, 0, 0, c.height / h, 0, 0); return x; }
+  drawPlay() {
+    const W = this.state.W, st = this.state, x = this.ctx(this.cvPlay, 560, 320); if (!x) return;
+    const RED = '#BE2F18', INK = '#1D1B18', PAPER = '#EEE5D1', CON = '#D4CEC2', up = (st.ptext || ' ').toUpperCase();
+    x.fillStyle = PAPER; x.fillRect(0, 0, 560, 320); x.fillStyle = INK; x.fillRect(0, 304, 560, 16);
+    if (st.form === 'horn') { const f = W.horn({ x: 24, y: 304, w: 512, h0: st.pHorn }); W.drawHorn(x, f, RED); W.warp(x, W.textSource(up, PAPER), f.map, { nu: 48, nv: 8 }); }
+    if (st.form === 'column') { const f = W.column({ cx: 280, r: 120, top: 40, bottom: 304, band: [104, 232], arc: st.pCol }); W.drawColumn(x, f, RED, CON); W.warp(x, W.textSource(up, PAPER), f.map, { nu: 60, nv: 8 }); }
+    if (st.form === 'box') { const d = st.pBox, f = W.box({ x: 24, y: 304 - 200, w: 512 - d * Math.cos(17 * Math.PI / 180), h: 200, d, band: [144, 264] }); W.drawBox(x, f, RED, INK, CON); W.warp(x, W.textSource(up, PAPER), f.map, { nu: 48, nv: 8, folds: f.folds }); }
+  }
+  drawStatic() {
+    const W = this.state.W, RED = '#BE2F18', INK = '#1D1B18', PAPER = '#EEE5D1', CON = '#D4CEC2';
+    const frame = (x, title) => { x.fillStyle = PAPER; x.fillRect(0, 0, 390, 392); x.fillStyle = INK; x.font = '600 12px "Golos Text"'; x.fillText(title, 16, 28); };
+    const btn = (x, label, bx, bw) => { x.fillStyle = RED; x.beginPath(); x.moveTo(bx, 328 + 14); x.lineTo(bx + 46, 328); x.lineTo(bx + bw, 328); x.lineTo(bx + bw, 376); x.lineTo(bx, 376); x.closePath(); x.fill(); x.fillStyle = PAPER; x.font = '14px "Rubik Mono One"'; x.textAlign = 'center'; x.fillText(label, bx + bw / 2, 357); x.textAlign = 'left'; };
+    let x = this.ctx(this.cvP1, 390, 392);
+    if (x) { frame(x, 'ЛИСТ · № 47'); x.fillStyle = INK; x.font = '32px "Rubik Mono One"'; x.fillText('ЧИТАЙ', 16, 72); x.fillText('ВЕСЬ', 16, 106);
+      x.beginPath(); x.arc(326, 72, 40, 0, Math.PI * 2); x.fillStyle = INK; x.fill();
+      x.fillStyle = INK; x.fillRect(0, 312, 390, 8);
+      const f = W.horn({ x: 16, y: 312, w: 358, h0: 56 }); W.drawHorn(x, f, RED); W.warp(x, W.textSource('НОЯБРЬ', PAPER), f.map, { nu: 48, nv: 8 });
+      btn(x, 'ПОДПИСАТЬСЯ', 16, 358); }
+    x = this.ctx(this.cvP2, 390, 392);
+    if (x) { frame(x, 'ЛИСТ · № 47'); x.fillStyle = INK; x.font = '32px "Rubik Mono One"'; x.fillText('ВЫПУСК', 16, 72);
+      x.fillStyle = INK; x.fillRect(0, 312, 390, 8);
+      const f = W.column({ cx: 264, r: 96, top: 112, bottom: 312, band: [168, 264], arc: 70 }); W.drawColumn(x, f, RED, CON); W.warp(x, W.textSource('ЛИСТ·47', PAPER), f.map, { nu: 60, nv: 8 });
+      x.fillStyle = CON; x.fillRect(16, 232, 72, 80);
+      btn(x, 'ЧИТАТЬ', 16, 200); }
+    x = this.ctx(this.cvP3, 390, 392);
+    if (x) { frame(x, 'ЛИСТ · № 47'); x.fillStyle = INK; x.font = '32px "Rubik Mono One"'; x.fillText('ВЫПУСК', 16, 72);
+      x.fillStyle = INK; x.fillRect(0, 312, 390, 8);
+      const d = 96, f = W.box({ x: 16, y: 152, w: 260, h: 160, d, band: [184, 288] }); W.drawBox(x, f, RED, INK, CON); W.warp(x, W.textSource('НОВОЕ', PAPER), f.map, { nu: 48, nv: 8, folds: f.folds });
+      btn(x, 'ЧИТАТЬ', 16, 358); }
+    x = this.ctx(this.cvB1, 260, 120);
+    if (x) { x.fillStyle = CON; x.fillRect(0, 0, 260, 120); const c30 = Math.cos(Math.PI / 6), s30 = .5, s = 44, ox = 130, oy = 108;
+      const L = [[ox - s * c30, oy - s * s30], [ox, oy], [ox, oy - s], [ox - s * c30, oy - s - s * s30]], R = [[ox, oy], [ox + s * c30, oy - s * s30], [ox + s * c30, oy - s - s * s30], [ox, oy - s]];
+      const poly = (p, c) => { x.fillStyle = c; x.beginPath(); x.moveTo(...p[0]); p.slice(1).forEach(q => x.lineTo(...q)); x.closePath(); x.fill(); };
+      poly(L, RED); poly(R, INK); poly([L[3], L[2], R[2], [ox, oy - 2 * s]], PAPER);
+      W.warp(x, W.textSource('НО', PAPER), W.quadMap(L[3], L[2], L[1], L[0]), { nu: 12, nv: 6 }); W.warp(x, W.textSource('ВО', PAPER), W.quadMap(R[3], R[2], R[1], R[0]), { nu: 12, nv: 6 }); }
+    x = this.ctx(this.cvB2, 260, 120);
+    if (x) { x.fillStyle = CON; x.fillRect(0, 0, 260, 120); const f = W.column({ cx: 130, r: 60, top: 16, bottom: 112, band: [40, 88], arc: 89 }); W.drawColumn(x, f, RED, PAPER); W.warp(x, W.textSource('ЛИСТ ЛИСТ', PAPER), f.map, { nu: 60, nv: 6 }); }
+  }
+  componentDidMount() {
+    const go = () => this.setState({ ready: true });
+    if (document.fonts && document.fonts.load) Promise.all([document.fonts.load('100px "Rubik Mono One"', 'ЛИСТАБВГДЕЁЖЗИЙКМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ0123456789·'), document.fonts.load('600 12px "Golos Text"', 'ЛИСТ')]).then(go, go); else go();
+    import('./plakat-warp.js').then(m => this.setState({ W: m })).catch(e => console.error('warp', e));
+  }
+  m(text) {
+    this.cache = this.cache || {};
+    const key = (this.state.ready ? 'r' : 'n') + text;
+    if (this.cache[key]) return this.cache[key];
+    const c = this.cv || (this.cv = document.createElement('canvas').getContext('2d'));
+    c.font = '100px "Rubik Mono One"';
+    const t = c.measureText(text), cap = c.measureText('H').actualBoundingBoxAscent || 70;
+    const L = t.actualBoundingBoxLeft || 0, R = t.actualBoundingBoxRight || t.width;
+    const asc = t.fontBoundingBoxAscent || 90, desc = t.fontBoundingBoxDescent || 20;
+    const baseline = (100 - (asc + desc)) / 2 + asc;
+    const over = Math.max(0, (t.actualBoundingBoxAscent || cap) - cap);
+    return (this.cache[key] = { L, w: L + R, cap, capTop: baseline - cap, over });
+  }
+  // Буквы — по высоте прописных; диакритика (Й, Ё) уходит вверх, и строка опускается на её высоту,
+  // чтобы надстрочный знак остался в коробке. Высота коробки = высота прописных + надстрочная часть.
+  fit(text, W, H) {
+    const { L, w, cap, capTop, over } = this.m(text), sx = W / w, sy = H / (cap + over);
+    return { text, tf: `scale(${sx.toFixed(4)},${sy.toFixed(4)}) translate(${L.toFixed(2)}px,${(over - capTop).toFixed(2)}px)`, k: (sy / sx).toFixed(1) };
+  }
+  // Рупор: моноширинные ячейки W/n, высота буквы растёт слева направо так, что верх ступенек лежит на оси −17°.
+  // h0 — высота первой буквы; последняя ≈ h0 + tan17° · W. Низ — общая базовая линия.
+  horn(text, W, h0, o = {}) {
+    const ch = [...text], n = ch.length || 1, cell = W / n, T = Math.tan(17 * Math.PI / 180), dir = o.reverse ? -1 : 1;
+    let kmin = 99, kmax = 0;
+    const letters = ch.map((c, i) => {
+      const xc = (i + .5) * cell, h = Math.max(8, Math.round((dir > 0 ? h0 + T * xc : h0 + T * (W - xc)) / 8) * 8);
+      const f = c === ' ' ? { tf: 'none', k: '0' } : this.fit(c, cell, h);
+      if (c !== ' ') { kmin = Math.min(kmin, +f.k); kmax = Math.max(kmax, +f.k); }
+      return { ch: c, x: (i * cell).toFixed(2) + 'px', w: cell.toFixed(2) + 'px', h: h + 'px', tf: f.tf };
+    });
+    const hmax = Math.max(...letters.map(l => parseInt(l.h)));
+    return { letters, hpx: hmax + 'px', hlist: letters.map(l => parseInt(l.h)).join(' / '), kmin: kmin.toFixed(1), kmax: kmax.toFixed(1), ok: kmin >= 1 && kmax <= 4 };
+  }
+  renderVals() {
+    const st = this.state, up = (st.text || ' ').toUpperCase(), f = this.fit(up, st.w, st.h);
+    const k = +f.k, ok = k >= 1.5 && k <= 4, low = k < 1;
+    const seg = (a, b) => ({ bg: a === b ? '#1D1B18' : 'transparent', fg: a === b ? '#EEE5D1' : '#1D1B18' });
+    const ANG = [[0, '→ 0°'], [-17, '↗ −17°'], [-90, '↑ −90°']];
+    const CTRL = {
+      horn: { segs: [['ОСЬ', 'angle', ANG], ['ОПОРА', 'anchor', [['floor', 'пол'], ['ceiling', 'потолок'], ['axis', 'ось']]]], sliders: [['УЗКИЙ КОНЕЦ', 'h0', 16, 160, 8], ['РАСКРЫТИЕ °', 'spread', 0, 30, 1], ['ПЕРСПЕКТИВА %', 'persp', 0, 100, 10]] },
+      cone: { segs: [['ОСЬ', 'angle', ANG]], sliders: [['УЗКИЙ РАДИУС', 'r0', 0, 120, 4], ['ШИРОКИЙ РАДИУС', 'r1', 24, 140, 4], ['ПОВОРОТ К ЗРИТЕЛЮ °', 'yaw', 0, 45, 1], ['ДУГА ТЕКСТА °', 'arc', 30, 80, 5]] },
+      column: { segs: [], sliders: [['ДУГА °', 'arc', 30, 80, 5], ['ПОВОРОТ °', 'spin', -40, 40, 5], ['ВИД СВЕРХУ', 'tilt', 0, 40, 2]] },
+      sphere: { segs: [], sliders: [['ДУГА ПО ДОЛГОТЕ °', 'lon', 30, 85, 5], ['ВЫСОТА ПОЯСА °', 'lat', 10, 40, 2], ['ВИД СВЕРХУ °', 'tilt', 0, 30, 2]] },
+      box: { segs: [['ПЕРЕЛОМ', 'fold', [['side', 'боковое ребро'], ['top', 'верхнее ребро']]]], sliders: st.P.box.fold === 'top' ? [['ГЛУБИНА', 'd', 40, 200, 8], ['ДО ПЕРЕЛОМА %', 'at', 80, 95, 1]] : [['ГЛУБИНА', 'd', 40, 200, 8], ['ДО ПЕРЕЛОМА %', 'at', 30, 85, 5]] },
+      stairs: { segs: [], sliders: [['СТУПЕНИ', 'n', 2, 6, 1], ['ШАГ ВГЛУБЬ', 'sd', 16, 72, 8]] }
+    }[st.form], cur = st.P[st.form], setP = (k, v) => this.setState(s => ({ P: { ...s.P, [s.form]: { ...s.P[s.form], [k]: v } } }));
+    return {
+      cvPlay: this.cvPlay, cvP1: this.cvP1, cvP2: this.cvP2, cvP3: this.cvP3, cvP4: this.cvP4, cvP5: this.cvP5, cvP6: this.cvP6, cvP7: this.cvP7, cvB1: this.cvB1, cvB2: this.cvB2,
+      cvV0: this.cvV[0], cvV1: this.cvV[1], cvV2: this.cvV[2], cvV3: this.cvV[3],
+      pj: { text: st.ptext, up: (st.ptext || ' ').toUpperCase(),
+        formBtns: [['Рупор', 'horn'], ['Конус', 'cone'], ['Колонна', 'column'], ['Шар', 'sphere'], ['Брус', 'box'], ['Лестница', 'stairs']].map(([label, m]) => ({ label, ...seg(st.form, m), set: () => this.setState({ form: m }) })),
+        segs: CTRL.segs.map(([label, key, opts]) => ({ label, opts: opts.map(([v, l]) => ({ label: l, ...seg(cur[key], v), set: () => { setP(key, v); if (key === 'fold') setP('at', v === 'top' ? 85 : 60); } })) })),
+        sliders: CTRL.sliders.map(([label, key, min, max, step]) => ({ label, min, max, step, v: cur[key], on: e => setP(key, +e.target.value) })),
+        onText: e => this.setState({ ptext: e.target.value.slice(0, 32) }),
+        png: () => { const c = this.cvPlay.current; if (!c) return; c.toBlob(b => { const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = `plakat-proekciya-${st.form}.png`; document.body.appendChild(a); a.click(); a.remove(); }); } },
+      hero: this.fit('РАСТЯЖКА', 720, 120),
+      pg: { text: st.text, up, w: st.w, h: st.h, wpx: st.w + 'px', hpx: st.h + 'px', tf: f.tf, k: f.k,
+        fill: ok ? '#1D1B18' : '#BE2F18',
+        verdict: ok ? 'ТАК' : low ? 'СПЛЮЩЕНО' : (!isHorn && k < 1.5) ? 'СЛАБО' : 'ПЕРЕБОР',
+        badgeBg: ok ? '#1D1B18' : '#BE2F18', badgeFg: '#EEE5D1',
+        onText: e => this.setState({ text: e.target.value.slice(0, 16) }),
+        onW: e => this.setState({ w: +e.target.value }), onH: e => this.setState({ h: +e.target.value }) },
+      p1: this.fit('ЧИТАЙ', 358, 136), p2: this.fit('ВЕСЬ', 358, 120), p3: this.fit('НОЯБРЬ', 358, 80),
+      mast: this.fit('ЛИСТ', 358, 120), num: this.fit('47', 112, 104), num2: this.fit('6', 56, 104), sec: this.fit('АРХИТЕКТУРА', 358, 48), sec2: this.fit('АРХИТЕКТУРА', 220, 48),
+      bad1: this.fit('ДА', 40, 88), bad2: this.fit('ЛЕНТА', 240, 32)
+    };
+  }
+}
+</script>
+</body>
+</html>

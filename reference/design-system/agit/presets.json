@@ -1,0 +1,92 @@
+[
+ {
+  "id": "voshod",
+  "ru": "Восход",
+  "use": "заставка, онбординг",
+  "file": "agit/preset-voshod.svg",
+  "dark": "agit/preset-voshod-dark.svg",
+  "w": 360,
+  "h": 240,
+  "head": {
+   "x": 16,
+   "y": 16,
+   "w": 216,
+   "h": 88
+  }
+ },
+ {
+  "id": "klin",
+  "ru": "Клин",
+  "use": "пустая лента",
+  "file": "agit/preset-klin.svg",
+  "dark": "agit/preset-klin-dark.svg",
+  "w": 360,
+  "h": 240,
+  "head": {
+   "x": 16,
+   "y": 16,
+   "w": 216,
+   "h": 88
+  }
+ },
+ {
+  "id": "kolonny",
+  "ru": "Колонны",
+  "use": "нет данных, статистика",
+  "file": "agit/preset-kolonny.svg",
+  "dark": "agit/preset-kolonny-dark.svg",
+  "w": 360,
+  "h": 240,
+  "head": {
+   "x": 16,
+   "y": 16,
+   "w": 216,
+   "h": 88
+  }
+ },
+ {
+  "id": "os",
+  "ru": "Ось",
+  "use": "поиск без результата",
+  "file": "agit/preset-os.svg",
+  "dark": "agit/preset-os-dark.svg",
+  "w": 360,
+  "h": 240,
+  "head": {
+   "x": 16,
+   "y": 16,
+   "w": 216,
+   "h": 88
+  }
+ },
+ {
+  "id": "shag",
+  "ru": "Шаг",
+  "use": "закладки, архив",
+  "file": "agit/preset-shag.svg",
+  "dark": "agit/preset-shag-dark.svg",
+  "w": 360,
+  "h": 240,
+  "head": {
+   "x": 16,
+   "y": 16,
+   "w": 216,
+   "h": 88
+  }
+ },
+ {
+  "id": "razryv",
+  "ru": "Разрыв",
+  "use": "ошибка сети, внимание",
+  "file": "agit/preset-razryv.svg",
+  "dark": "agit/preset-razryv-dark.svg",
+  "w": 360,
+  "h": 240,
+  "head": {
+   "x": 16,
+   "y": 16,
+   "w": 216,
+   "h": 88
+  }
+ }
+]

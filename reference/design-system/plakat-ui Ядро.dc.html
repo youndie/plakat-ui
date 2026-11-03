@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Rubik+Mono+One&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#2B2925}
+a{color:#EEE5D1}
+a:hover{color:#BE2F18}
+button{font:inherit;-webkit-tap-highlight-color:transparent}
+input::placeholder{color:#5E584D;opacity:1}
+@keyframes plspin{to{transform:rotate(360deg)}}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#2B2925;color:#EEE5D1;font-family:'Golos Text',sans-serif">
+  <div style="max-width:1720px;margin:0 auto;padding:48px 32px 120px;display:flex;flex-direction:column;gap:72px">
+
+    <header style="display:flex;flex-direction:column;gap:12px;max-width:860px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:.08em;color:#BDB4A2">PLAKAT-UI · ЭТАП 2 · АРТЕФАКТЫ 4–5</div>
+      <div style="font-family:'Rubik Mono One';font-size:56px;line-height:.95">ЯДРО</div>
+      <div style="font-size:17px;line-height:1.5;color:#BDB4A2;text-wrap:pretty">Button, TextField, Checkbox, Switch, Card, Snackbar и Плакат во всех состояниях и обеих темах. Токены — в <a href="plakat-ui Токены.dc.html">plakat-ui Токены</a>. Внизу — моушен-лаборатория: живые демо, кадры с таймкодами и спека каждой анимации.</div>
+    </header>
+
+    <div style="position:sticky;top:0;z-index:30;background:#2B2925;padding:12px 0;display:flex;flex-wrap:wrap;gap:24px;align-items:center;border-bottom:3px solid #EEE5D1">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:12px;font-weight:600;letter-spacing:.08em">СКОРОСТЬ</span>
+        <div style="display:flex;border:3px solid #EEE5D1">
+          <sc-for list="{{ speeds }}" as="s" hint-placeholder-count="3"><button onClick="{{ s.set }}" style="height:42px;min-width:56px;padding:0 12px;border:0;background:{{ s.bg }};color:{{ s.fg }};font-family:'Rubik Mono One';font-size:13px;cursor:pointer">{{ s.label }}</button></sc-for>
+        </div>
+      </div>
+      <button onClick="{{ toggleReduce }}" role="switch" aria-checked="{{ reduceAria }}" style="display:flex;align-items:center;gap:12px;height:48px;padding:0;border:0;background:transparent;color:#EEE5D1;cursor:pointer">
+        <span style="position:relative;width:56px;height:48px;flex:none">
+          <span style="position:absolute;left:0;right:0;top:22px;height:3px;background:#EEE5D1"></span>
+          <span style="position:absolute;left:0;top:20px;height:8px;width:{{ reduceFill }};background:#BE2F18"></span>
+          <span style="position:absolute;left:0;top:8px;width:20px;height:32px;background:#EEE5D1;transform:{{ reduceKnob }}"></span>
+        </span>
+        <span style="font-size:15px">Reduce motion</span>
+      </button>
+      <button onClick="{{ reseed }}" style="height:48px;padding:0 20px;border:3px solid #EEE5D1;background:transparent;color:#EEE5D1;font-family:'Rubik Mono One';font-size:13px;cursor:pointer" style-active="background:#EEE5D1;color:#1D1B18">ПЕРЕСОБРАТЬ · {{ seed }}</button>
+    </div>
+
+    <section id="button" style="display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">BUTTON</div><div style="font-size:15px;color:#BDB4A2">Filled — красная плашка со срезом 46 × 14; Outlined — рамка 3; Text — подчёркнут линейкой. Pressed — инверсия, текст +1 dp.</div></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,720px),1fr));gap:16px">
+        <sc-for list="{{ themes }}" as="t" hint-placeholder-count="2">
+          <div style="position:relative;overflow:hidden;background:{{ t.paper }};color:{{ t.ink }};padding:24px;display:flex;flex-direction:column;gap:20px">
+            <div style="font-size:12px;font-weight:600;letter-spacing:.08em">{{ t.name }}</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:20px 16px">
+              <div style="display:flex;flex-direction:column;gap:8px"><div style="position:relative;height:48px"><span style="position:absolute;inset:0;background:#BE2F18;clip-path:polygon(0 14px,46px 0,100% 0,100% 100%,0 100%)"></span><span style="position:relative;display:flex;height:100%;align-items:center;justify-content:center;font-family:'Rubik Mono One';font-size:14px;letter-spacing:.04em;color:#EEE5D1">ЧИТАТЬ</span></div><div style="font-size:12px">Filled / Default</div></div>
+              <div style="display:flex;flex-direction:column;gap:8px"><div style="position:relative;height:48px"><span style="position:absolute;inset:0;background:{{ t.ink }};clip-path:polygon(0 14px,46px 0,100% 0,100% 100%,0 100%)"></span><span style="position:relative;display:flex;height:100%;align-items:center;justify-content:center;font-family:'Rubik Mono One';font-size:14px;letter-spacing:.04em;color:{{ t.paper }};transform:translate(1px,1px)">ЧИТАТЬ</span></div><div style="font-size:12px">Filled / Pressed</div></div>
+              <div style="display:flex;flex-direction:column;gap:8px"><div style="position:relative;height:48px;outline:3px solid {{ t.ink }};outline-offset:3px"><span style="position:absolute;inset:0;background:#BE2F18;clip-path:polygon(0 14px,46px 0,100% 0,100% 100%,0 100%)"></span><span style="position:relative;display:flex;height:100%;align-items:center;justify-content:center;font-family:'Rubik Mono One';font-size:14px;letter-spacing:.04em;color:#EEE5D1">ЧИТАТЬ</span></div><div style="font-size:12px">Filled / Focused</div></div>
+              <div style="display:flex;flex-direction:column;gap:8px"><div style="position:relative;height:48px"><span style="position:absolute;inset:0;background:{{ t.concrete }};clip-path:polygon(0 14px,46px 0,100% 0,100% 100%,0 100%)"></span><span style="position:relative;display:flex;height:100%;align-items:center;justify-content:center;font-family:'Rubik Mono One';font-size:14px;letter-spacing:.04em;color:{{ t.muted }}">ЧИТАТЬ</span></div><div style="font-size:12px">Filled / Disabled</div></div>
+              <div style="display:flex;flex-direction:column;gap:8px"><div style="position:relative;height:48px;display:flex;align-items:center;justify-content:center"><span style="position:absolute;inset:0;background:#BE2F18;clip-path:polygon(0 14px,46px 0,100% 0,100% 100%,0 100%)"></span><span style="position:relative;width:22px;height:22px;border-radius:50%;box-shadow:inset 0 0 0 3px #EEE5D1"><span style="position:absolute;inset:0;border-radius:50%;background:#EEE5D1;clip-path:polygon(50% 50%,50% 0,100% 0,100% 50%);transform:rotate(30deg)"></span></span></div><div style="font-size:12px">Filled / Loading</div></div>
+              <div style="display:flex;flex-direction:column;gap:8px"><div style="height:48px;border:3px solid {{ t.ink }};box-sizing:border-box;display:flex;align-items:center;justify-content:center;font-family:'Rubik Mono One';font-size:14px;letter-spacing:.04em">ЧИТАТЬ</div><div style="font-size:12px">Outlined / Default</div></div>
+              <div style="display:flex;flex-direction:column;gap:8px"><div style="height:48px;border:3px solid {{ t.ink }};background:{{ t.ink }};color:{{ t.paper }};box-sizing:border-box;display:flex;align-items:center;justify-content:center;font-family:'Rubik Mono One';font-size:14px;letter-spacing:.04em"><span style="transform:translate(1px,1px)">ЧИТАТЬ</span></div><div style="font-size:12px">Outlined / Pressed</div></div>
+              <div style="display:flex;flex-direction:column;gap:8px"><div style="height:48px;border:3px dashed {{ t.muted }};color:{{ t.muted }};box-sizing:border-box;display:flex;align-items:center;justify-content:center;font-family:'Rubik Mono One';font-size:14px;letter-spacing:.04em">ЧИТАТЬ</div><div style="font-size:12px">Outlined / Disabled</div></div>
+              <div style="display:flex;flex-direction:column;gap:8px"><div style="height:48px;display:flex;align-items:center;justify-content:center"><span style="font-family:'Rubik Mono One';font-size:14px;letter-spacing:.04em;border-bottom:3px solid {{ t.ink }};padding-bottom:4px">ЧИТАТЬ</span></div><div style="font-size:12px">Text / Default</div></div>
+              <div style="display:flex;flex-direction:column;gap:8px"><div style="height:48px;display:flex;align-items:center;justify-content:center;background:{{ t.ink }};color:{{ t.paper }}"><span style="font-family:'Rubik Mono One';font-size:14px;letter-spacing:.04em;border-bottom:3px solid {{ t.paper }};padding-bottom:4px;transform:translate(1px,1px)">ЧИТАТЬ</span></div><div style="font-size:12px">Text / Pressed</div></div>
+              <div style="display:flex;flex-direction:column;gap:8px"><div style="height:48px;display:flex;align-items:center;justify-content:center;color:{{ t.muted }}"><span style="font-family:'Rubik Mono One';font-size:14px;letter-spacing:.04em;border-bottom:1px dashed {{ t.muted }};padding-bottom:4px">ЧИТАТЬ</span></div><div style="font-size:12px">Text / Disabled</div></div>
+            </div>
+            <div style="position:absolute;inset:0;pointer-events:none;mix-blend-mode:{{ t.texBlend }};opacity:{{ t.texOp }};background-image:{{ t.tex }}"></div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section id="textfield" style="display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">TEXTFIELD</div><div style="font-size:15px;color:#BDB4A2">Поле 56. Линейка 3 → в фокусе брус 8, каретка — брус 3 × 24 красный. Ошибка — штриховка + слово, не только цвет.</div></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,720px),1fr));gap:16px">
+        <sc-for list="{{ themes }}" as="t" hint-placeholder-count="2">
+          <div style="position:relative;overflow:hidden;background:{{ t.paper }};color:{{ t.ink }};padding:24px;display:flex;flex-direction:column;gap:20px">
+            <div style="font-size:12px;font-weight:600;letter-spacing:.08em">{{ t.name }}</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:24px 16px">
+              <div style="display:flex;flex-direction:column;gap:8px"><div style="font-size:12px;font-weight:600;letter-spacing:.08em">ПОЧТА</div><div style="position:relative;height:56px;display:flex;align-items:center;font-size:17px;color:{{ t.muted }}">name@mail.ru<span style="position:absolute;left:0;right:0;bottom:0;height:3px;background:{{ t.ink }}"></span></div><div style="font-size:12px;margin-top:8px">TextField / Default</div></div>
+              <div style="display:flex;flex-direction:column;gap:8px"><div style="font-size:12px;font-weight:600;letter-spacing:.08em">ПОЧТА</div><div style="position:relative;height:56px;display:flex;align-items:center;font-size:17px;gap:2px">anna<span style="width:3px;height:24px;background:#BE2F18"></span><span style="position:absolute;left:0;right:0;bottom:0;height:8px;background:{{ t.ink }}"></span></div><div style="font-size:12px;margin-top:8px">TextField / Focused</div></div>
+              <div style="display:flex;flex-direction:column;gap:8px"><div style="font-size:12px;font-weight:600;letter-spacing:.08em">ПОЧТА</div><div style="position:relative;height:56px;display:flex;align-items:center;font-size:17px">anna@list.ru<span style="position:absolute;left:0;right:0;bottom:0;height:3px;background:{{ t.ink }}"></span></div><div style="font-size:12px;margin-top:8px">TextField / Filled</div></div>
+              <div style="display:flex;flex-direction:column;gap:8px"><div style="font-size:12px;font-weight:600;letter-spacing:.08em">ПОЧТА</div><div style="position:relative;height:56px;display:flex;align-items:center;font-size:17px">anna@list<span style="position:absolute;left:0;right:0;bottom:0;height:3px;background:{{ t.ink }}"></span></div><div style="height:8px;background:repeating-linear-gradient(45deg,#BE2F18 0 3px,transparent 3px 6px)"></div><div style="font-size:14px;line-height:1.35"><b>ОШИБКА.</b> Допишите адрес целиком.</div><div style="font-size:12px">TextField / Error</div></div>
+              <div style="display:flex;flex-direction:column;gap:8px;color:{{ t.muted }}"><div style="font-size:12px;font-weight:600;letter-spacing:.08em">ПОЧТА</div><div style="position:relative;height:56px;display:flex;align-items:center;font-size:17px">anna@list.ru<span style="position:absolute;left:0;right:0;bottom:0;height:0;border-bottom:1px dashed {{ t.muted }}"></span></div><div style="font-size:12px;margin-top:8px">TextField / Disabled</div></div>
+            </div>
+            <div style="position:absolute;inset:0;pointer-events:none;mix-blend-mode:{{ t.texBlend }};opacity:{{ t.texOp }};background-image:{{ t.tex }}"></div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section id="checkbox-switch" style="display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">CHECKBOX · SWITCH</div><div style="font-size:15px;color:#BDB4A2">Checkbox 24 в зоне 48, отметка — красный клин с правого верхнего угла. Switch — рельс 3, каретка 20 × 32, включено — красный сегмент 8.</div></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,720px),1fr));gap:16px">
+        <sc-for list="{{ themes }}" as="t" hint-placeholder-count="2">
+          <div style="position:relative;overflow:hidden;background:{{ t.paper }};color:{{ t.ink }};padding:24px;display:flex;flex-direction:column;gap:20px">
+            <div style="font-size:12px;font-weight:600;letter-spacing:.08em">{{ t.name }}</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:20px 16px">
+              <div style="display:flex;flex-direction:column;gap:8px"><div style="width:48px;height:48px;display:flex;align-items:center;justify-content:center"><span style="position:relative;width:24px;height:24px;box-shadow:inset 0 0 0 3px {{ t.ink }}"></span></div><div style="font-size:12px">Checkbox / Off</div></div>
+              <div style="display:flex;flex-direction:column;gap:8px"><div style="width:48px;height:48px;display:flex;align-items:center;justify-content:center"><span style="position:relative;width:24px;height:24px;box-shadow:inset 0 0 0 3px {{ t.ink }}"><span style="position:absolute;inset:3px;background:#BE2F18;clip-path:polygon(0 0,100% 0,100% 100%)"></span></span></div><div style="font-size:12px">Checkbox / On</div></div>
+              <div style="display:flex;flex-direction:column;gap:8px"><div style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;outline:3px solid {{ t.ink }};outline-offset:-3px"><span style="position:relative;width:24px;height:24px;box-shadow:inset 0 0 0 3px {{ t.ink }}"><span style="position:absolute;inset:3px;background:#BE2F18;clip-path:polygon(0 0,100% 0,100% 100%)"></span></span></div><div style="font-size:12px">Checkbox / Focused</div></div>
+              <div style="display:flex;flex-direction:column;gap:8px"><div style="width:48px;height:48px;display:flex;align-items:center;justify-content:center"><span style="position:relative;width:24px;height:24px;box-shadow:inset 0 0 0 1px {{ t.muted }}"><span style="position:absolute;inset:3px;background:{{ t.muted }};clip-path:polygon(0 0,100% 0,100% 100%)"></span></span></div><div style="font-size:12px">Checkbox / Disabled</div></div>
+              <div style="display:flex;flex-direction:column;gap:8px"><div style="display:flex;align-items:center;gap:4px"><div style="width:48px;height:48px;display:flex;align-items:center;justify-content:center"><span style="position:relative;width:24px;height:24px;box-shadow:inset 0 0 0 3px #BE2F18;background:repeating-linear-gradient(45deg,#BE2F18 0 2px,transparent 2px 5px)"></span></div><span style="font-size:13px;font-weight:600">Нужно</span></div><div style="font-size:12px">Checkbox / Error</div></div>
+              <div style="display:flex;flex-direction:column;gap:8px"><span style="position:relative;width:56px;height:48px"><span style="position:absolute;left:0;right:0;top:22px;height:3px;background:{{ t.ink }}"></span><span style="position:absolute;left:0;top:8px;width:20px;height:32px;background:{{ t.ink }}"></span></span><div style="font-size:12px">Switch / Off</div></div>
+              <div style="display:flex;flex-direction:column;gap:8px"><span style="position:relative;width:56px;height:48px"><span style="position:absolute;left:0;right:0;top:22px;height:3px;background:{{ t.ink }}"></span><span style="position:absolute;left:0;top:20px;height:8px;width:36px;background:#BE2F18"></span><span style="position:absolute;left:36px;top:8px;width:20px;height:32px;background:{{ t.ink }}"></span></span><div style="font-size:12px">Switch / On</div></div>
+              <div style="display:flex;flex-direction:column;gap:8px"><span style="position:relative;width:56px;height:48px;outline:3px solid {{ t.ink }};outline-offset:4px"><span style="position:absolute;left:0;right:0;top:22px;height:3px;background:{{ t.ink }}"></span><span style="position:absolute;left:0;top:20px;height:8px;width:36px;background:#BE2F18"></span><span style="position:absolute;left:36px;top:8px;width:20px;height:32px;background:{{ t.ink }}"></span></span><div style="font-size:12px">Switch / Focused</div></div>
+              <div style="display:flex;flex-direction:column;gap:8px"><span style="position:relative;width:56px;height:48px"><span style="position:absolute;left:0;right:0;top:23px;height:1px;background:{{ t.muted }}"></span><span style="position:absolute;left:36px;top:8px;width:20px;height:32px;background:{{ t.concrete }};box-shadow:inset 0 0 0 1px {{ t.muted }}"></span></span><div style="font-size:12px">Switch / Disabled</div></div>
+            </div>
+            <div style="position:absolute;inset:0;pointer-events:none;mix-blend-mode:{{ t.texBlend }};opacity:{{ t.texOp }};background-image:{{ t.tex }}"></div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section id="card-snackbar" style="display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">CARD · SNACKBAR</div><div style="font-size:15px;color:#BDB4A2">Card — бетонная бумага, превью из генератора по id статьи. Snackbar — телеграмма: плашка цвета ink, действие подчёркнуто.</div></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,720px),1fr));gap:16px">
+        <sc-for list="{{ themes }}" as="t" hint-placeholder-count="2">
+          <div style="position:relative;overflow:hidden;background:{{ t.paper }};color:{{ t.ink }};padding:24px;display:flex;flex-direction:column;gap:20px">
+            <div style="font-size:12px;font-weight:600;letter-spacing:.08em">{{ t.name }}</div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px 16px">
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;gap:16px;align-items:center;padding:12px;background:{{ t.concrete }}">
+                  <div style="position:relative;width:64px;height:64px;overflow:hidden;background:{{ t.paper }};flex:none"><sc-for list="{{ t.th0 }}" as="s" hint-placeholder-count="0"><div style="position:absolute;left:{{ s.x }};top:{{ s.y }};width:{{ s.w }};height:{{ s.h }};background:{{ s.c }};border-radius:{{ s.r }};clip-path:{{ s.clip }};transform:{{ s.t }};transform-origin:{{ s.o }}"></div></sc-for></div>
+                  <div style="min-width:0"><div style="font-size:11px;font-weight:600;letter-spacing:.08em">АРХИТЕКТУРА · 8 МИН</div><div style="font-size:17px;font-weight:600;line-height:1.25;margin-top:4px">Город из фанеры: как строят временные павильоны</div></div>
+                </div>
+                <div style="font-size:12px">Card / Default</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;gap:16px;align-items:center;padding:12px;background:{{ t.ink }};color:{{ t.paper }}">
+                  <div style="position:relative;width:64px;height:64px;overflow:hidden;background:{{ t.paper }};flex:none"><sc-for list="{{ t.th0 }}" as="s" hint-placeholder-count="0"><div style="position:absolute;left:{{ s.x }};top:{{ s.y }};width:{{ s.w }};height:{{ s.h }};background:{{ s.c }};border-radius:{{ s.r }};clip-path:{{ s.clip }};transform:{{ s.t }};transform-origin:{{ s.o }}"></div></sc-for></div>
+                  <div style="min-width:0"><div style="font-size:11px;font-weight:600;letter-spacing:.08em">АРХИТЕКТУРА · 8 МИН</div><div style="font-size:17px;font-weight:600;line-height:1.25;margin-top:4px">Город из фанеры: как строят временные павильоны</div></div>
+                </div>
+                <div style="font-size:12px">Card / Pressed</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="position:relative;display:flex;gap:16px;align-items:center;padding:12px 12px 12px 20px;background:{{ t.concrete }}">
+                  <span style="position:absolute;left:0;top:0;bottom:0;width:8px;background:#BE2F18"></span>
+                  <div style="position:relative;width:64px;height:64px;overflow:hidden;background:{{ t.paper }};flex:none"><sc-for list="{{ t.th1 }}" as="s" hint-placeholder-count="0"><div style="position:absolute;left:{{ s.x }};top:{{ s.y }};width:{{ s.w }};height:{{ s.h }};background:{{ s.c }};border-radius:{{ s.r }};clip-path:{{ s.clip }};transform:{{ s.t }};transform-origin:{{ s.o }}"></div></sc-for></div>
+                  <div style="min-width:0"><div style="font-size:11px;font-weight:600;letter-spacing:.08em">ШРИФТ · 5 МИН · ЧИТАЕТЕ</div><div style="font-size:17px;font-weight:600;line-height:1.25;margin-top:4px">Буквы, которые читаются с другого конца площади</div></div>
+                </div>
+                <div style="font-size:12px">Card / Selected</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;gap:16px;align-items:center;padding:12px;background:{{ t.concrete }};outline:3px solid {{ t.ink }};outline-offset:3px">
+                  <div style="position:relative;width:64px;height:64px;overflow:hidden;background:{{ t.paper }};flex:none"><sc-for list="{{ t.th2 }}" as="s" hint-placeholder-count="0"><div style="position:absolute;left:{{ s.x }};top:{{ s.y }};width:{{ s.w }};height:{{ s.h }};background:{{ s.c }};border-radius:{{ s.r }};clip-path:{{ s.clip }};transform:{{ s.t }};transform-origin:{{ s.o }}"></div></sc-for></div>
+                  <div style="min-width:0"><div style="font-size:11px;font-weight:600;letter-spacing:.08em">ДИЗАЙН · 12 МИН</div><div style="font-size:17px;font-weight:600;line-height:1.25;margin-top:4px">Семь способов сложить один лист бумаги</div></div>
+                </div>
+                <div style="font-size:12px">Card / Focused</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="min-height:56px;background:{{ t.ink }};color:{{ t.paper }};display:flex;align-items:center;padding:0 16px;font-size:15px">Статья сохранена в закладки</div>
+                <div style="font-size:12px">Snackbar / Default</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="min-height:56px;background:{{ t.ink }};color:{{ t.paper }};display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 0 0 16px;font-size:15px">Статья удалена<span style="height:56px;min-width:96px;display:flex;align-items:center;justify-content:center;font-family:'Rubik Mono One';font-size:13px"><span style="border-bottom:3px solid {{ t.paper }};padding-bottom:3px">ВЕРНУТЬ</span></span></div>
+                <div style="font-size:12px">Snackbar / Action</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="background:{{ t.ink }};color:{{ t.paper }}"><div style="height:8px;background:repeating-linear-gradient(45deg,#BE2F18 0 3px,{{ t.ink }} 3px 6px)"></div><div style="min-height:48px;display:flex;align-items:center;padding:0 16px;font-size:15px"><b>ОШИБКА.</b>&nbsp;Нет сети — повторим сами.</div></div>
+                <div style="font-size:12px">Snackbar / Error</div>
+              </div>
+            </div>
+            <div style="position:absolute;inset:0;pointer-events:none;mix-blend-mode:{{ t.texBlend }};opacity:{{ t.texOp }};background-image:{{ t.tex }}"></div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section id="plakat" style="display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">ПЛАКАТ</div><div style="font-size:15px;color:#BDB4A2">Три раскладки: Круг (фото в красном круге), Фон (фото растром на всю ширину, заголовок полосами), Баннер (в ленту, 160). Seed — общий, палитра генератора — из темы.</div></div>
+      <sc-for list="{{ themes }}" as="t" hint-placeholder-count="2">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="font-size:12px;font-weight:600;letter-spacing:.08em">{{ t.name }}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
+
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="position:relative;width:390px;height:392px;overflow:hidden;background:{{ t.paper }};color:{{ t.ink }}">
+                <div style="position:absolute;left:0;top:0;width:390px;height:312px;overflow:hidden">
+                  <sc-for list="{{ t.p1.shapes }}" as="s" hint-placeholder-count="0"><div style="position:absolute;left:{{ s.x }};top:{{ s.y }};width:{{ s.w }};height:{{ s.h }};background:{{ s.c }};border-radius:{{ s.r }};clip-path:{{ s.clip }};transform:{{ s.t }};transform-origin:{{ s.o }}"></div></sc-for>
+                  <div style="position:absolute;left:{{ t.p1.circle.x }};top:{{ t.p1.circle.y }};width:{{ t.p1.circle.d }};height:{{ t.p1.circle.d }};border-radius:50%;overflow:hidden;background:#BE2F18;isolation:isolate">
+                    <div style="position:absolute;inset:0;filter:contrast(30);background:#fff;mix-blend-mode:multiply">
+                      <div style="position:absolute;inset:0;background:radial-gradient(circle at 55% 42%,#2a2a2a 0,#2a2a2a 18%,#8a8a8a 34%,#d8d8d8 52%,#f4f4f4 72%)"></div>
+                      <div style="position:absolute;inset:-50%;transform:rotate(45deg);background-image:radial-gradient(circle,#000 0,#808080 2.83px);background-size:4px 4px;mix-blend-mode:plus-lighter"></div>
+                    </div>
+                  </div>
+                </div>
+                <div style="position:absolute;left:16px;top:92px;transform:rotate(-17deg);transform-origin:0 0">
+                  <sc-if value="{{ reg }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;left:1px;top:1px;font-family:'Rubik Mono One';font-size:48px;line-height:.95;color:#BE2F18;white-space:nowrap">ЧИТАЙ<br>ВЕСЬ<br>НОЯБРЬ</div></sc-if>
+                  <div style="position:relative;font-family:'Rubik Mono One';font-size:48px;line-height:.95;white-space:nowrap">ЧИТАЙ<br>ВЕСЬ<br>НОЯБРЬ</div>
+                </div>
+                <div style="position:absolute;left:16px;top:252px;width:290px;font-size:16px;line-height:1.4">12 новых выпусков. Мы собрали их в одну ленту — читай по порядку.</div>
+                <div style="position:absolute;left:16px;right:16px;bottom:24px;height:48px"><span style="position:absolute;inset:0;background:#BE2F18;clip-path:polygon(0 14px,46px 0,100% 0,100% 100%,0 100%)"></span><span style="position:relative;display:flex;height:100%;align-items:center;justify-content:center;font-family:'Rubik Mono One';font-size:16px;letter-spacing:.04em;color:#EEE5D1">ПОДПИСАТЬСЯ</span></div>
+                <div style="position:absolute;inset:0;pointer-events:none;mix-blend-mode:{{ t.texBlend }};opacity:{{ t.texOp }};background-image:{{ t.tex }}"></div>
+              </div>
+              <div style="font-size:12px;color:#BDB4A2">Плакат / Круг · 390 × 392</div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="position:relative;width:390px;height:500px;overflow:hidden;background:{{ t.paper }};color:{{ t.ink }}">
+                <div style="position:absolute;inset:0;background:{{ t.concrete }};clip-path:polygon(0 0,100% 0,100% 300px,0 419px);isolation:isolate;overflow:hidden">
+                  <div style="position:absolute;inset:0;filter:contrast(30);background:#fff;mix-blend-mode:multiply">
+                    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 62% 36%,#2a2a2a 0,#2a2a2a 14%,#8a8a8a 28%,#d8d8d8 44%,#f4f4f4 66%)"></div>
+                    <div style="position:absolute;inset:-50%;transform:rotate(45deg);background-image:radial-gradient(circle,#000 0,#808080 2.83px);background-size:4px 4px;mix-blend-mode:plus-lighter"></div>
+                  </div>
+                  <sc-for list="{{ t.p2 }}" as="s" hint-placeholder-count="0"><div style="position:absolute;left:{{ s.x }};top:{{ s.y }};width:{{ s.w }};height:{{ s.h }};background:{{ s.c }};border-radius:{{ s.r }};clip-path:{{ s.clip }};transform:{{ s.t }};transform-origin:{{ s.o }};mix-blend-mode:{{ t.p2blend }}"></div></sc-for>
+                </div>
+                <div style="position:absolute;left:16px;top:116px;transform:rotate(-17deg);transform-origin:0 0">
+                  <sc-if value="{{ reg }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;left:1px;top:1px;display:flex;flex-direction:column;align-items:flex-start;gap:6px">
+                    <span style="background:#BE2F18;font-family:'Rubik Mono One';font-size:40px;line-height:1;padding:4px 10px;color:transparent">ЧИТАЙ</span>
+                    <span style="background:#BE2F18;font-family:'Rubik Mono One';font-size:40px;line-height:1;padding:4px 10px;color:transparent">ВЕСЬ</span>
+                    <span style="background:#BE2F18;font-family:'Rubik Mono One';font-size:40px;line-height:1;padding:4px 10px;color:transparent">НОЯБРЬ</span>
+                  </div></sc-if>
+                  <div style="position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:6px">
+                    <span style="background:{{ t.ink }};color:{{ t.paper }};font-family:'Rubik Mono One';font-size:40px;line-height:1;padding:4px 10px">ЧИТАЙ</span>
+                    <span style="background:{{ t.ink }};color:{{ t.paper }};font-family:'Rubik Mono One';font-size:40px;line-height:1;padding:4px 10px">ВЕСЬ</span>
+                    <span style="background:{{ t.ink }};color:{{ t.paper }};font-family:'Rubik Mono One';font-size:40px;line-height:1;padding:4px 10px">НОЯБРЬ</span>
+                  </div>
+                </div>
+                <div style="position:absolute;right:16px;top:372px;width:200px;font-size:15px;line-height:1.4">12 новых выпусков. Мы собрали их в одну ленту.</div>
+                <div style="position:absolute;right:16px;bottom:16px;width:200px;height:48px"><span style="position:absolute;inset:0;background:#BE2F18;clip-path:polygon(0 14px,46px 0,100% 0,100% 100%,0 100%)"></span><span style="position:relative;display:flex;height:100%;align-items:center;justify-content:center;font-family:'Rubik Mono One';font-size:14px;letter-spacing:.04em;color:#EEE5D1">ЧИТАТЬ</span></div>
+                <div style="position:absolute;inset:0;pointer-events:none;mix-blend-mode:{{ t.texBlend }};opacity:{{ t.texOp }};background-image:{{ t.tex }}"></div>
+              </div>
+              <div style="font-size:12px;color:#BDB4A2">Плакат / Фон · 390 × 500</div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="position:relative;width:390px;height:160px;overflow:hidden;background:{{ t.concrete }};color:{{ t.ink }}">
+                <div style="position:absolute;left:214px;top:0;width:176px;height:160px;overflow:hidden"><sc-for list="{{ t.p3 }}" as="s" hint-placeholder-count="0"><div style="position:absolute;left:{{ s.x }};top:{{ s.y }};width:{{ s.w }};height:{{ s.h }};background:{{ s.c }};border-radius:{{ s.r }};clip-path:{{ s.clip }};transform:{{ s.t }};transform-origin:{{ s.o }}"></div></sc-for></div>
+                <div style="position:absolute;left:16px;top:16px">
+                  <sc-if value="{{ reg }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;left:1px;top:1px;font-family:'Rubik Mono One';font-size:32px;line-height:1;color:#BE2F18">НОВЫЙ<br>ВЫПУСК</div></sc-if>
+                  <div style="position:relative;font-family:'Rubik Mono One';font-size:32px;line-height:1">НОВЫЙ<br>ВЫПУСК</div>
+                </div>
+                <div style="position:absolute;left:16px;bottom:16px;width:180px;height:48px"><span style="position:absolute;inset:0;background:#BE2F18;clip-path:polygon(0 14px,46px 0,100% 0,100% 100%,0 100%)"></span><span style="position:relative;display:flex;height:100%;align-items:center;justify-content:center;font-family:'Rubik Mono One';font-size:14px;letter-spacing:.04em;color:#EEE5D1">ЧИТАТЬ</span></div>
+                <div style="position:absolute;inset:0;pointer-events:none;mix-blend-mode:{{ t.texBlend }};opacity:{{ t.texOp }};background-image:{{ t.tex }}"></div>
+              </div>
+              <div style="font-size:12px;color:#BDB4A2">Плакат / Баннер · 390 × 160</div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <canvas ref="{{ t.rk }}" width="780" height="784" style="width:390px;height:392px;display:block" aria-label="Читай весь ноябрь"></canvas>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:12px"><span style="font-size:12px;color:#BDB4A2">Плакат / Круг · раскат · <a href="plakat-ui Раскат.dc.html">правила</a></span><button onClick="{{ t.roll }}" style="height:40px;padding:0 12px;border:3px solid #EEE5D1;background:transparent;color:#EEE5D1;font-family:'Rubik Mono One';font-size:11px;cursor:pointer" style-active="background:#EEE5D1;color:#1D1B18">ROLL</button></div>
+            </div>
+
+          </div>
+        </div>
+      </sc-for>
+    </section>
+
+    <section id="motion" style="display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap"><div style="font-family:'Rubik Mono One';font-size:32px;line-height:1">МОУШЕН</div><div style="font-size:15px;color:#BDB4A2">Живые демо подчиняются скорости и Reduce motion из панели сверху. Кадры и таблица — при ×1. Hard-stop = cubic-bezier(.2, .8, .9, .9).</div></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,520px),1fr));gap:16px">
+
+        <div style="background:#EEE5D1;color:#1D1B18;padding:24px;display:flex;flex-direction:column;gap:20px">
+          <div style="font-family:'Rubik Mono One';font-size:20px">BUTTON</div>
+          <div style="background:#D4CEC2;padding:24px;display:flex;flex-direction:column;gap:16px">
+            <button onPointerDown="{{ lab.btn.down }}" onPointerUp="{{ lab.btn.up }}" onPointerLeave="{{ lab.btn.up }}" style="display:block;width:100%;height:48px;padding:0;border:0;background:transparent;cursor:pointer;position:relative">
+              <span style="position:absolute;inset:0;background:{{ lab.btn.bg }};transition:{{ lab.btn.tr }};clip-path:polygon(0 14px,46px 0,100% 0,100% 100%,0 100%)"></span>
+              <span style="position:relative;display:flex;height:100%;align-items:center;justify-content:center;font-family:'Rubik Mono One';font-size:14px;letter-spacing:.04em;color:#EEE5D1;transform:{{ lab.btn.tx }};transition:{{ lab.btn.tr }};clip-path:{{ lab.btn.textClip }}">НАЖМИ И ДЕРЖИ</span>
+              <sc-if value="{{ lab.btn.loading }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:50%;top:13px;margin-left:-11px;width:22px;height:22px;border-radius:50%;box-shadow:inset 0 0 0 3px #EEE5D1">{{ lab.spinner }}</span></sc-if>
+            </button>
+            <button onClick="{{ lab.btn.toggleLoading }}" style="align-self:flex-start;height:48px;padding:0 16px;border:3px solid #1D1B18;background:transparent;font-family:'Rubik Mono One';font-size:12px;cursor:pointer" style-active="background:#1D1B18;color:#EEE5D1">{{ lab.btn.loadLabel }}</button>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <div style="display:flex;flex-direction:column;gap:6px;width:112px"><div style="position:relative;height:40px"><span style="position:absolute;inset:0;background:#BE2F18;clip-path:polygon(0 12px,38px 0,100% 0,100% 100%,0 100%)"></span><span style="position:relative;display:flex;height:100%;align-items:center;justify-content:center;font-family:'Rubik Mono One';font-size:11px;color:#EEE5D1">ЧИТАТЬ</span></div><div style="font-size:12px"><b>0</b> · до нажатия</div></div>
+            <div style="display:flex;flex-direction:column;gap:6px;width:112px"><div style="position:relative;height:40px"><span style="position:absolute;inset:0;background:#1D1B18;clip-path:polygon(0 12px,38px 0,100% 0,100% 100%,0 100%)"></span><span style="position:relative;display:flex;height:100%;align-items:center;justify-content:center;font-family:'Rubik Mono One';font-size:11px;color:#EEE5D1;transform:translate(1px,1px)">ЧИТАТЬ</span></div><div style="font-size:12px"><b>0</b> · stamp</div></div>
+            <div style="display:flex;flex-direction:column;gap:6px;width:112px"><div style="position:relative;height:40px"><span style="position:absolute;inset:0;background:#7A2617;clip-path:polygon(0 12px,38px 0,100% 0,100% 100%,0 100%)"></span><span style="position:relative;display:flex;height:100%;align-items:center;justify-content:center;font-family:'Rubik Mono One';font-size:11px;color:#EEE5D1;transform:translate(.4px,.4px)">ЧИТАТЬ</span></div><div style="font-size:12px"><b>30</b> · release</div></div>
+            <div style="display:flex;flex-direction:column;gap:6px;width:112px"><div style="position:relative;height:40px"><span style="position:absolute;inset:0;background:#BE2F18;clip-path:polygon(0 12px,38px 0,100% 0,100% 100%,0 100%)"></span><span style="position:relative;display:flex;height:100%;align-items:center;justify-content:center;font-family:'Rubik Mono One';font-size:11px;color:#EEE5D1">ЧИТАТЬ</span></div><div style="font-size:12px"><b>60</b> · стоп</div></div>
+          </div>
+          <div style="display:flex;flex-direction:column;font-size:13px"><sc-for list="{{ spec.button }}" as="r" hint-placeholder-count="3"><div style="display:grid;grid-template-columns:72px 80px 1fr 96px 96px;gap:8px;padding:8px 0;border-top:1px solid #1D1B18"><b>{{ r.ev }}</b><span>{{ r.trig }}</span><span>{{ r.what }}</span><span>{{ r.ms }}</span><span>RM: {{ r.rm }}</span></div></sc-for></div>
+        </div>
+
+        <div style="background:#EEE5D1;color:#1D1B18;padding:24px;display:flex;flex-direction:column;gap:20px">
+          <div style="font-family:'Rubik Mono One';font-size:20px">CHECKBOX · SWITCH</div>
+          <div style="background:#D4CEC2;padding:16px 24px;display:flex;flex-wrap:wrap;gap:32px;align-items:center">
+            <button onClick="{{ lab.cb.toggle }}" role="checkbox" aria-checked="{{ lab.cb.aria }}" style="display:flex;align-items:center;gap:8px;height:48px;padding:0 8px 0 0;border:0;background:transparent;cursor:pointer;font-size:16px;color:#1D1B18">
+              <span style="width:48px;height:48px;display:flex;align-items:center;justify-content:center"><span style="position:relative;width:24px;height:24px;box-shadow:inset 0 0 0 3px #1D1B18;overflow:hidden"><span style="position:absolute;inset:3px;overflow:hidden"><span style="position:absolute;inset:0;background:#BE2F18;clip-path:polygon(0 0,100% 0,100% 100%);transform:{{ lab.cb.tx }};transition:{{ lab.cb.tr }}"></span></span></span></span>
+              Присылать дайджест
+            </button>
+            <button onClick="{{ lab.sw.toggle }}" role="switch" aria-checked="{{ lab.sw.aria }}" style="display:flex;align-items:center;gap:12px;height:48px;padding:0;border:0;background:transparent;cursor:pointer;font-size:16px;color:#1D1B18">
+              <span style="position:relative;width:56px;height:48px;flex:none">
+                <span style="position:absolute;left:0;right:0;top:22px;height:3px;background:#1D1B18"></span>
+                <span style="position:absolute;left:0;top:20px;height:8px;width:{{ lab.sw.fill }};background:#BE2F18;transition:{{ lab.sw.trW }}"></span>
+                <span style="position:absolute;left:0;top:8px;width:20px;height:32px;background:#1D1B18;transform:{{ lab.sw.knob }};transition:{{ lab.sw.trK }}"></span>
+              </span>
+              Только непрочитанное
+            </button>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <sc-for list="{{ frames.cb }}" as="f" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;gap:6px;width:64px"><div style="width:64px;height:56px;background:#D4CEC2;display:flex;align-items:center;justify-content:center"><span style="position:relative;width:24px;height:24px;box-shadow:inset 0 0 0 3px #1D1B18"><span style="position:absolute;inset:3px;overflow:hidden"><span style="position:absolute;inset:0;background:#BE2F18;clip-path:polygon(0 0,100% 0,100% 100%);transform:{{ f.tx }}"></span></span></span></div><div style="font-size:12px"><b>{{ f.t }}</b></div></div></sc-for>
+            <span style="width:16px"></span>
+            <sc-for list="{{ frames.sw }}" as="f" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;gap:6px;width:72px"><div style="width:72px;height:56px;background:#D4CEC2;position:relative"><span style="position:absolute;left:8px;width:56px;top:4px;height:48px"><span style="position:absolute;left:0;right:0;top:22px;height:3px;background:#1D1B18"></span><span style="position:absolute;left:0;top:20px;height:8px;width:{{ f.fill }};background:#BE2F18"></span><span style="position:absolute;left:{{ f.fill }};top:8px;width:20px;height:32px;background:#1D1B18"></span></span></div><div style="font-size:12px"><b>{{ f.t }}</b></div></div></sc-for>
+          </div>
+          <div style="display:flex;flex-direction:column;font-size:13px"><sc-for list="{{ spec.cbsw }}" as="r" hint-placeholder-count="3"><div style="display:grid;grid-template-columns:72px 80px 1fr 96px 96px;gap:8px;padding:8px 0;border-top:1px solid #1D1B18"><b>{{ r.ev }}</b><span>{{ r.trig }}</span><span>{{ r.what }}</span><span>{{ r.ms }}</span><span>RM: {{ r.rm }}</span></div></sc-for></div>
+        </div>
+
+        <div style="background:#EEE5D1;color:#1D1B18;padding:24px;display:flex;flex-direction:column;gap:20px">
+          <div style="font-family:'Rubik Mono One';font-size:20px">TEXTFIELD</div>
+          <div style="background:#D4CEC2;padding:16px 24px 24px;display:flex;flex-direction:column;gap:12px">
+            <div style="font-size:12px;font-weight:600;letter-spacing:.08em">ПОЧТА</div>
+            <div style="position:relative;height:56px;transform:{{ lab.f.shakeX }};transition:{{ lab.f.shakeTr }}">
+              <input placeholder="Нажмите, чтобы получить фокус" onFocus="{{ lab.f.onFocus }}" onBlur="{{ lab.f.onBlur }}" style="width:100%;height:100%;border:0;background:transparent;outline:none;font-family:'Golos Text';font-size:17px;color:#1D1B18;padding:0;caret-color:#BE2F18;box-sizing:border-box">
+              <div style="position:absolute;left:0;right:0;bottom:0;height:3px;background:#1D1B18;pointer-events:none"></div>
+              <div style="position:absolute;left:0;right:0;bottom:0;height:8px;background:#1D1B18;transform-origin:0 50%;transform:{{ lab.f.bar }};transition:{{ lab.f.barTr }};pointer-events:none"></div>
+            </div>
+            <div style="height:8px;background:repeating-linear-gradient(45deg,#BE2F18 0 3px,transparent 3px 6px);clip-path:{{ lab.f.hatch }};transition:{{ lab.f.hatchTr }}"></div>
+            <div style="display:flex;align-items:center;gap:16px;min-height:24px"><button onClick="{{ lab.f.toggleErr }}" style="height:48px;padding:0 16px;border:3px solid #1D1B18;background:transparent;font-family:'Rubik Mono One';font-size:12px;cursor:pointer" style-active="background:#1D1B18;color:#EEE5D1">{{ lab.f.errLabel }}</button><sc-if value="{{ lab.f.err }}" hint-placeholder-val="{{ false }}"><span style="font-size:14px"><b>ОШИБКА.</b> Допишите адрес.</span></sc-if></div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <sc-for list="{{ frames.field }}" as="f" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;gap:6px;width:104px"><div style="width:104px;height:56px;background:#D4CEC2;position:relative"><span style="position:absolute;left:8px;right:8px;bottom:16px;height:3px;background:#1D1B18"></span><span style="position:absolute;left:8px;right:8px;bottom:16px;height:8px;background:#1D1B18;transform-origin:0 50%;transform:{{ f.s }}"></span></div><div style="font-size:12px"><b>{{ f.t }}</b> · focus</div></div></sc-for>
+          </div>
+          <div style="display:flex;flex-direction:column;font-size:13px"><sc-for list="{{ spec.field }}" as="r" hint-placeholder-count="3"><div style="display:grid;grid-template-columns:72px 80px 1fr 96px 96px;gap:8px;padding:8px 0;border-top:1px solid #1D1B18"><b>{{ r.ev }}</b><span>{{ r.trig }}</span><span>{{ r.what }}</span><span>{{ r.ms }}</span><span>RM: {{ r.rm }}</span></div></sc-for></div>
+        </div>
+
+        <div style="background:#EEE5D1;color:#1D1B18;padding:24px;display:flex;flex-direction:column;gap:20px">
+          <div style="font-family:'Rubik Mono One';font-size:20px">CARD</div>
+          <div style="background:#EEE5D1;box-shadow:inset 0 0 0 1px #1D1B18;padding:16px;display:flex;flex-direction:column;gap:12px;overflow:hidden">
+            <sc-for list="{{ lab.cards }}" as="c" hint-placeholder-count="3">
+              <div style="height:{{ c.h }};overflow:hidden;transition:{{ c.hTr }}">
+                <div style="display:flex;gap:16px;align-items:center;height:88px;padding:0 12px;background:#D4CEC2;clip-path:{{ c.clip }};opacity:{{ c.op }};transform:{{ c.tx }};transition:{{ c.tr }}">
+                  <div style="position:relative;width:64px;height:64px;overflow:hidden;background:#EEE5D1;flex:none"><sc-for list="{{ c.th }}" as="s" hint-placeholder-count="0"><div style="position:absolute;left:{{ s.x }};top:{{ s.y }};width:{{ s.w }};height:{{ s.h }};background:{{ s.c }};border-radius:{{ s.r }};clip-path:{{ s.clip }};transform:{{ s.t }};transform-origin:{{ s.o }}"></div></sc-for></div>
+                  <div style="min-width:0"><div style="font-size:11px;font-weight:600;letter-spacing:.08em">{{ c.rubric }}</div><div style="font-size:16px;font-weight:600;line-height:1.25;margin-top:4px">{{ c.title }}</div></div>
+                </div>
+              </div>
+            </sc-for>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <button onClick="{{ lab.replayCards }}" style="height:48px;padding:0 16px;border:3px solid #1D1B18;background:transparent;font-family:'Rubik Mono One';font-size:12px;cursor:pointer" style-active="background:#1D1B18;color:#EEE5D1">ПОКАЗАТЬ · PRINT</button>
+              <button onClick="{{ lab.tear }}" style="height:48px;padding:0 16px;border:3px solid #1D1B18;background:transparent;font-family:'Rubik Mono One';font-size:12px;cursor:pointer" style-active="background:#1D1B18;color:#EEE5D1">{{ lab.tearLabel }}</button>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <sc-for list="{{ frames.card }}" as="f" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;gap:6px;width:104px"><div style="width:104px;height:56px;box-shadow:inset 0 0 0 1px #1D1B18;position:relative"><span style="position:absolute;left:8px;right:8px;top:12px;height:32px;background:#D4CEC2;clip-path:{{ f.clip }}"></span></div><div style="font-size:12px"><b>{{ f.t }}</b> · print</div></div></sc-for>
+          </div>
+          <div style="display:flex;flex-direction:column;font-size:13px"><sc-for list="{{ spec.card }}" as="r" hint-placeholder-count="2"><div style="display:grid;grid-template-columns:72px 80px 1fr 96px 96px;gap:8px;padding:8px 0;border-top:1px solid #1D1B18"><b>{{ r.ev }}</b><span>{{ r.trig }}</span><span>{{ r.what }}</span><span>{{ r.ms }}</span><span>RM: {{ r.rm }}</span></div></sc-for></div>
+        </div>
+
+        <div style="background:#EEE5D1;color:#1D1B18;padding:24px;display:flex;flex-direction:column;gap:20px">
+          <div style="font-family:'Rubik Mono One';font-size:20px">SNACKBAR</div>
+          <div style="position:relative;height:184px;background:#D4CEC2;overflow:hidden">
+            <button onClick="{{ lab.snack.toggle }}" style="position:absolute;left:16px;top:16px;height:48px;padding:0 16px;border:3px solid #1D1B18;background:transparent;font-family:'Rubik Mono One';font-size:12px;cursor:pointer" style-active="background:#1D1B18;color:#EEE5D1">{{ lab.snack.label }}</button>
+            <div style="position:absolute;left:16px;right:16px;bottom:16px;min-height:56px;background:#1D1B18;color:#EEE5D1;display:flex;align-items:center;justify-content:space-between;padding-left:16px;transform:{{ lab.snack.y }};opacity:{{ lab.snack.op }};transition:{{ lab.snack.tr }}">
+              <span style="font-size:15px;clip-path:{{ lab.snack.clip }};transition:{{ lab.snack.clipTr }}">Статья удалена</span>
+              <span style="height:56px;min-width:96px;display:flex;align-items:center;justify-content:center;font-family:'Rubik Mono One';font-size:13px;clip-path:{{ lab.snack.clip }};transition:{{ lab.snack.clipTr }}"><span style="border-bottom:3px solid #EEE5D1;padding-bottom:3px">ВЕРНУТЬ</span></span>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <sc-for list="{{ frames.snack }}" as="f" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;gap:6px;width:104px"><div style="width:104px;height:72px;background:#D4CEC2;position:relative;overflow:hidden"><div style="position:absolute;left:6px;right:6px;bottom:6px;height:24px;background:#1D1B18;transform:{{ f.y }};display:flex;align-items:center;padding-left:6px"><span style="width:56px;height:6px;background:#EEE5D1;clip-path:{{ f.clip }}"></span></div></div><div style="font-size:12px"><b>{{ f.t }}</b></div></div></sc-for>
+          </div>
+          <div style="display:flex;flex-direction:column;font-size:13px"><sc-for list="{{ spec.snack }}" as="r" hint-placeholder-count="2"><div style="display:grid;grid-template-columns:72px 80px 1fr 96px 96px;gap:8px;padding:8px 0;border-top:1px solid #1D1B18"><b>{{ r.ev }}</b><span>{{ r.trig }}</span><span>{{ r.what }}</span><span>{{ r.ms }}</span><span>RM: {{ r.rm }}</span></div></sc-for></div>
+        </div>
+
+        <div style="background:#EEE5D1;color:#1D1B18;padding:24px;display:flex;flex-direction:column;gap:20px">
+          <div style="font-family:'Rubik Mono One';font-size:20px">ПЛАКАТ</div>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start">
+            <div style="position:relative;width:234px;height:235px;overflow:hidden;box-shadow:inset 0 0 0 1px #1D1B18">
+              <div style="position:absolute;left:0;top:0;width:390px;height:392px;transform:scale(.6);transform-origin:0 0;background:#EEE5D1">
+                <sc-for list="{{ lab.poster.shapes }}" as="s" hint-placeholder-count="0"><div style="position:absolute;inset:0;clip-path:{{ s.wipe }};transition:{{ s.wTr }}"><div style="position:absolute;left:{{ s.x }};top:{{ s.y }};width:{{ s.w }};height:{{ s.h }};background:{{ s.c }};border-radius:{{ s.r }};clip-path:{{ s.clip }};transform:{{ s.t }};transform-origin:{{ s.o }}"></div></div></sc-for>
+                <div style="position:absolute;inset:0;clip-path:{{ lab.poster.hWipe }};transition:{{ lab.poster.hTr }}"><div style="position:absolute;left:16px;top:92px;transform:rotate(-17deg);transform-origin:0 0;font-family:'Rubik Mono One';font-size:48px;line-height:.95;white-space:nowrap;color:#1D1B18">ЧИТАЙ<br>ВЕСЬ<br>НОЯБРЬ</div></div>
+                <div style="position:absolute;inset:0;clip-path:{{ lab.poster.bWipe }};transition:{{ lab.poster.bTr }}"><div style="position:absolute;left:16px;right:16px;bottom:24px;height:48px"><span style="position:absolute;inset:0;background:#BE2F18;clip-path:polygon(0 14px,46px 0,100% 0,100% 100%,0 100%)"></span><span style="position:relative;display:flex;height:100%;align-items:center;justify-content:center;font-family:'Rubik Mono One';font-size:16px;color:#EEE5D1">ПОДПИСАТЬСЯ</span></div></div>
+              </div>
+            </div>
+            <button onClick="{{ lab.replayPoster }}" style="height:48px;padding:0 16px;border:3px solid #1D1B18;background:transparent;font-family:'Rubik Mono One';font-size:12px;cursor:pointer" style-active="background:#1D1B18;color:#EEE5D1">СОБРАТЬ · PRINT</button>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <sc-for list="{{ frames.poster }}" as="f" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;gap:6px;width:98px"><div style="position:relative;width:98px;height:98px;overflow:hidden;box-shadow:inset 0 0 0 1px #1D1B18"><div style="position:absolute;left:0;top:0;width:390px;height:392px;transform:scale(.25);transform-origin:0 0">
+              <sc-for list="{{ f.shapes }}" as="s" hint-placeholder-count="0"><div style="position:absolute;inset:0;clip-path:{{ s.wipe }}"><div style="position:absolute;left:{{ s.x }};top:{{ s.y }};width:{{ s.w }};height:{{ s.h }};background:{{ s.c }};border-radius:{{ s.r }};clip-path:{{ s.clip }};transform:{{ s.t }};transform-origin:{{ s.o }}"></div></div></sc-for>
+              <div style="position:absolute;inset:0;clip-path:{{ f.hWipe }}"><div style="position:absolute;left:16px;top:92px;transform:rotate(-17deg);transform-origin:0 0;font-family:'Rubik Mono One';font-size:48px;line-height:.95;white-space:nowrap;color:#1D1B18">ЧИТАЙ<br>ВЕСЬ<br>НОЯБРЬ</div></div>
+              <div style="position:absolute;inset:0;clip-path:{{ f.bWipe }}"><div style="position:absolute;left:16px;right:16px;bottom:24px;height:48px;background:#BE2F18"></div></div>
+            </div></div><div style="font-size:12px"><b>{{ f.t }}</b></div></div></sc-for>
+          </div>
+          <div style="display:flex;flex-direction:column;font-size:13px"><sc-for list="{{ spec.poster }}" as="r" hint-placeholder-count="2"><div style="display:grid;grid-template-columns:72px 80px 1fr 96px 96px;gap:8px;padding:8px 0;border-top:1px solid #1D1B18"><b>{{ r.ev }}</b><span>{{ r.trig }}</span><span>{{ r.what }}</span><span>{{ r.ms }}</span><span>RM: {{ r.rm }}</span></div></sc-for></div>
+        </div>
+
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:12px;max-width:860px;font-size:15px;line-height:1.5;color:#BDB4A2">
+      <div style="font-size:12px;font-weight:600;letter-spacing:.08em;color:#EEE5D1">ОТКРЫТО К ЭТАПУ 3</div>
+      <div>Hover для desktop (инверсия рамки) — после решения по платформе-лидеру. Фото в Плакате — подставить CC0 в <a href="plakat-ui Направления.dc.html">Направлениях</a>, здесь — стенд-ин под растром. Имена событий зафиксированы для звука: stamp, release, engage, wedge-in, wedge-out, lever, underline, hatch, print, tear, telegram.</div>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showTexture&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Печать&quot;},&quot;registration&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Печать&quot;}}">
+class Component extends DCLogic {
+  state = { speed: 1, reduce: false, seed: 47, pressed: false, loading: false, cb: false, sw: false, focus: false, err: false, shake: false, cardsIn: true, cNoTr: false, gone: false, snack: false, posterIn: true, pNoTr: false };
+  rng(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+  comp(seed, W, H, pal, safe = [], opt = {}) {
+    const r = this.rng(seed), pick = a => a[Math.floor(r() * a.length)], s8 = v => Math.max(8, Math.round(v / 8) * 8);
+    const T = Math.tan(17 * Math.PI / 180), K = opt.scale || 1, DK = opt.dot || 1, strict = opt.strict || [];
+    const redSlot = opt.redSlot || pick(['circle', 'wedge', 'bar']);
+    const hit = b => safe.some(z => b.x < z.x + z.w && b.x + b.w > z.x && b.y < z.y + z.h && b.y + b.h > z.y);
+    const out = []; let circle = null;
+    const place = (key, make) => {
+      const c = key === 'gray' ? pal.gray : key === 'dot' ? pal.ink : (key === redSlot ? pal.red : pal.ink);
+      for (let i = 0; i < 20; i++) {
+        const o = make();
+        if ((c === pal.ink || strict.includes(key)) && hit(o.bb || o)) continue;
+        if (!(opt.photoCircle && key === 'circle')) out.push({ x: o.x + 'px', y: o.y + 'px', w: o.w + 'px', h: o.h + 'px', c, r: o.r || '0', clip: o.clip || 'none', t: o.t || 'none', o: o.o || '50% 50%' });
+        return o;
+      }
+      return null;
+    };
+    if (pal.gray) place('gray', () => { const w = s8(W * (.35 + r() * .3)), h = s8(H * (.25 + r() * .35)); return { x: pick([0, W - w]), y: s8(r() * H * .4), w, h }; });
+    const c = place('circle', () => { const d = s8(Math.min(W, H) * (.4 + r() * .3) * K); return { x: s8(pick([W - d * .6, W - d * .9, W * .5 - d * .2])), y: s8(H * (.03 + r() * .25)), w: d, h: d, r: '50%' }; });
+    if (c) circle = { x: c.x + 'px', y: c.y + 'px', d: c.w + 'px' };
+    place('bar', () => {
+      const bt = s8(pick([8, 16, 24]) * K), bl = s8(W * (.5 + r() * .5)), rot = pick([-17, -17, -17, 0, 90]);
+      const x = s8(W * (.05 + r() * .5)), y = s8(H * (.3 + r() * .5)), a = rot * Math.PI / 180;
+      const x2 = x + bl * Math.cos(a), y2 = y + bl * Math.sin(a);
+      return { x, y, w: bl, h: bt, t: `rotate(${rot}deg)`, o: '0 50%', bb: { x: Math.min(x, x2) - bt, y: Math.min(y, y2) - bt, w: Math.abs(x2 - x) + 2 * bt, h: Math.abs(y2 - y) + 2 * bt } };
+    });
+    place('wedge', () => { const w = s8(W * (.2 + r() * .3) * K), h = Math.round(w * T); return { x: s8(r() * Math.max(8, W - w)), y: s8(H * (.05 + r() * .85)), w, h, clip: pick(['polygon(0 100%,100% 0,100% 100%)', 'polygon(0 0,100% 0,0 100%)']) }; });
+    if (r() > .35) place('dot', () => { const d = s8(pick([16, 24, 32, 48]) * DK * K); return { x: s8(r() * (W - d)), y: s8(r() * (H - d)), w: d, h: d, r: '50%' }; });
+    return { shapes: out, circle: circle || { x: '-999px', y: '0px', d: '0px' } };
+  }
+  bez(t) {
+    if (t <= 0) return 0; if (t >= 1) return 1;
+    let lo = 0, hi = 1, s = t;
+    for (let i = 0; i < 30; i++) { s = (lo + hi) / 2; const x = 3 * (1 - s) * (1 - s) * s * .2 + 3 * (1 - s) * s * s * .9 + s * s * s; if (x < t) lo = s; else hi = s; }
+    return 3 * (1 - s) * (1 - s) * s * .8 + 3 * (1 - s) * s * s * .9 + s * s * s;
+  }
+  replay(flag, nt) { this.setState({ [flag]: false, [nt]: true }); setTimeout(() => this.setState({ [flag]: true, [nt]: false }), 40); }
+  rk = { l: React.createRef(), d: React.createRef() };
+  componentDidMount() {
+    import('./plakat-raskat.js').then(m => { this.RK = m; this.drawRk(); }).catch(e => console.error('raskat', e));
+    document.fonts && document.fonts.load('48px "Rubik Mono One"', 'ЧИТАЙВЕСЬНОЯБРЬ').then(() => this.drawRk());
+  }
+  componentDidUpdate() { const k = (this.props.showTexture ?? true) + '|' + this.state.speed; if (k !== this.rkKey) { this.rkKey = k; this.drawRk(); } }
+  rkTheme(key) { return key === 'l' ? { paper: '#EEE5D1', concrete: '#D4CEC2', ink: '#1D1B18', b: '#EEE5D1' } : { paper: '#1F1D1A', concrete: '#34312C', ink: '#EEE5D1', b: '#1F1D1A' }; }
+  drawRk(only, t0) {
+    if (!this.RK) return;
+    ['l', 'd'].forEach(key => {
+      if (only && only !== key) return;
+      const c = this.rk[key].current; if (!c) return;
+      const x = c.getContext('2d'), T = this.rkTheme(key), RED = '#BE2F18'; x.setTransform(2, 0, 0, 2, 0, 0);
+      x.fillStyle = T.paper; x.fillRect(0, 0, 390, 392); x.fillStyle = T.concrete; x.fillRect(0, 168, 160, 144);
+      this.RK.drawRaskat(x, { k: 'circle', cx: 310, cy: 252, r: 60 }, { a: RED, b: T.b, angle: -17, t0: t0 ?? .58, hard: 12, grain: 2, seed: 1919, streak: .5 });
+      x.save(); x.translate(16, 100); x.rotate(-17 * Math.PI / 180); x.fillStyle = T.ink; x.font = '48px "Rubik Mono One"'; ['ЧИТАЙ', 'ВЕСЬ', 'НОЯБРЬ'].forEach((l, i) => x.fillText(l, 0, 40 + i * 46)); x.restore();
+      x.fillStyle = T.ink; x.font = '16px "Golos Text"'; ['12 новых выпусков.', 'Мы собрали их в одну', 'ленту — читай по порядку.'].forEach((l, i) => x.fillText(l, 16, 262 + i * 20));
+      x.fillStyle = RED; x.beginPath(); x.moveTo(16, 334); x.lineTo(62, 320); x.lineTo(374, 320); x.lineTo(374, 368); x.lineTo(16, 368); x.closePath(); x.fill();
+      x.fillStyle = '#EEE5D1'; x.font = '16px "Rubik Mono One"'; x.textAlign = 'center'; x.fillText('ПОДПИСАТЬСЯ', 195, 350); x.textAlign = 'left';
+    });
+  }
+  rollRk(key) {
+    if (!this.RK) return;
+    if (this.state.reduce) { this.drawRk(key); return; }
+    this.rkCancel && this.rkCancel();
+    this.rkCancel = this.RK.roll(t0 => this.drawRk(key, t0), .58, 320 * this.state.speed);
+  }
+  renderVals() {
+    const HS = 'cubic-bezier(.2,.8,.9,.9)', RED = '#BE2F18';
+    const st = this.state, k = st.speed, RM = st.reduce, ms = v => Math.round(v * k);
+    const TEXL = "url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27256%27 height=%27256%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%27.8%27 numOctaves=%273%27 stitchTiles=%27stitch%27/%3E%3CfeColorMatrix values=%270 0 0 0 .42 0 0 0 0 .34 0 0 0 0 .2 0 0 0 .6 0%27/%3E%3C/filter%3E%3Crect width=%27256%27 height=%27256%27 filter=%27url(%23n)%27/%3E%3C/svg%3E')";
+    const TEXD = "url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27256%27 height=%27256%27%3E%3Cfilter id=%27d%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%27.8%27 numOctaves=%273%27 stitchTiles=%27stitch%27/%3E%3CfeColorMatrix values=%270 0 0 0 .93 0 0 0 0 .9 0 0 0 0 .82 0 0 0 .5 0%27/%3E%3C/filter%3E%3Crect width=%27256%27 height=%27256%27 filter=%27url(%23d)%27/%3E%3C/svg%3E')";
+    const tex = this.props.showTexture ?? true;
+    const base = [
+      { key: 'l', name: 'БУМАГА · LIGHT', paper: '#EEE5D1', concrete: '#D4CEC2', ink: '#1D1B18', muted: '#5E584D', tex: TEXL, texBlend: 'multiply', texOp: tex ? '.45' : '0', p2blend: 'multiply' },
+      { key: 'd', name: 'ЧЁРНАЯ БУМАГА · DARK', paper: '#1F1D1A', concrete: '#34312C', ink: '#EEE5D1', muted: '#A39B8C', tex: TEXD, texBlend: 'screen', texOp: tex ? '.18' : '0', p2blend: 'normal' }
+    ];
+    const sd = st.seed;
+    const safe1 = [{ x: 0, y: 24, w: 290, h: 288 }];
+    const themes = base.map(t => {
+      const pal = { red: RED, ink: t.ink, gray: t.concrete };
+      const thumb = i => this.comp(sd * 7 + i * 131, 64, 64, pal, [], { dot: .4 }).shapes;
+      return { ...t,
+        p1: this.comp(sd, 390, 312, pal, safe1, { redSlot: 'circle', strict: ['circle'], photoCircle: true }),
+        p2: this.comp(sd + 1, 390, 500, { red: RED, ink: t.ink }, [{ x: 0, y: 80, w: 300, h: 240 }]).shapes,
+        p3: this.comp(sd + 2, 176, 160, { red: RED, ink: t.ink, gray: t.paper }, [], { redSlot: 'circle', dot: .5 }).shapes,
+        th0: thumb(0), th1: thumb(1), th2: thumb(2), rk: this.rk[t.key], roll: () => this.rollRk(t.key) };
+    });
+    const L = themes[0];
+
+    const pressed = st.pressed;
+    const btn = {
+      bg: pressed ? '#1D1B18' : RED,
+      tx: pressed ? 'translate(1px,1px)' : 'translate(0px,0px)',
+      tr: pressed || RM ? 'none' : `background-color ${ms(60)}ms ${HS}, transform ${ms(60)}ms ${HS}, clip-path ${ms(120)}ms linear`,
+      textClip: st.loading ? 'inset(0 0 0 100%)' : 'inset(0 0 0 0)',
+      loading: st.loading,
+      loadLabel: st.loading ? 'СТОП · LOADING' : 'LOADING · ENGAGE',
+      down: () => this.setState({ pressed: true }),
+      up: () => { if (this.state.pressed) this.setState({ pressed: false }); },
+      toggleLoading: () => this.setState(s => ({ loading: !s.loading }))
+    };
+    const spinner = React.createElement('span', { key: 'sp' + k + RM, style: { position: 'absolute', inset: 0, borderRadius: '50%', background: '#EEE5D1', clipPath: 'polygon(50% 50%,50% 0,100% 0,100% 50%)', animation: RM ? 'none' : `plspin ${ms(1200)}ms steps(12,end) infinite` } });
+    const cb = {
+      tx: st.cb ? 'translate(0,0)' : 'translate(100%,-100%)',
+      tr: RM ? 'none' : (st.cb ? `transform ${ms(120)}ms ${HS}` : `transform ${ms(60)}ms linear`),
+      aria: st.cb ? 'true' : 'false', toggle: () => this.setState(s => ({ cb: !s.cb }))
+    };
+    const sw = {
+      knob: `translateX(${st.sw ? 36 : 0}px)`, fill: `${st.sw ? 36 : 0}px`, aria: st.sw ? 'true' : 'false',
+      trK: RM ? 'none' : `transform ${ms(120)}ms ${HS}`, trW: RM ? 'none' : `width ${ms(120)}ms ${HS}`,
+      toggle: () => this.setState(s => ({ sw: !s.sw }))
+    };
+    const f = {
+      bar: `scaleX(${st.focus ? 1 : 0})`, barTr: RM ? 'none' : `transform ${ms(120)}ms linear`,
+      onFocus: () => this.setState({ focus: true }), onBlur: () => this.setState({ focus: false }),
+      hatch: st.err ? 'inset(0 0 0 0)' : 'inset(0 100% 0 0)', hatchTr: RM ? 'none' : `clip-path ${ms(200)}ms linear`,
+      shakeX: st.shake ? 'translateX(2px)' : 'translateX(0px)', shakeTr: RM ? 'none' : `transform ${ms(100)}ms linear`,
+      err: st.err, errLabel: st.err ? 'СБРОСИТЬ' : 'ОШИБКА · HATCH',
+      toggleErr: () => {
+        const on = !this.state.err; this.setState({ err: on });
+        if (on && !this.state.reduce) { this.setState({ shake: true }); setTimeout(() => this.setState({ shake: false }), 100 * this.state.speed); }
+      }
+    };
+    const cardData = [['АРХИТЕКТУРА · 8 МИН', 'Город из фанеры: временные павильоны'], ['ШРИФТ · 5 МИН', 'Буквы, видные с другого конца площади'], ['ДИЗАЙН · 12 МИН', 'Семь способов сложить один лист']];
+    const shownClip = 'polygon(0 0,calc(100% + 60px) 0,100% 100%,0 100%)', hidClip = 'polygon(0 0,0px 0,-60px 100%,0 100%)';
+    const cards = cardData.map(([rubric, title], i) => {
+      const goneMe = i === 0 && st.gone;
+      return {
+        rubric, title, th: L['th' + i],
+        clip: RM ? shownClip : (st.cardsIn ? shownClip : hidClip),
+        op: RM ? (st.cardsIn ? '1' : '0') : '1',
+        tx: goneMe ? 'translateX(110%)' : 'translateX(0px)',
+        tr: st.cNoTr ? 'none' : (RM ? 'opacity 100ms linear' : `clip-path ${ms(200)}ms linear ${ms(i * 30)}ms, transform ${ms(200)}ms ${HS}`),
+        h: goneMe ? '0px' : '100px',
+        hTr: st.cNoTr || RM ? 'none' : `height ${ms(200)}ms ${HS} ${goneMe ? ms(200) : 0}ms`
+      };
+    });
+    const snack = {
+      y: RM ? 'translateY(0px)' : (st.snack ? 'translateY(0px)' : 'translateY(calc(100% + 24px))'),
+      op: RM ? (st.snack ? '1' : '0') : '1',
+      tr: RM ? 'opacity 100ms linear' : `transform ${ms(200)}ms ${HS}`,
+      clip: st.snack || RM ? 'inset(0 0 0 0)' : 'inset(0 100% 0 0)',
+      clipTr: RM || !st.snack ? 'none' : `clip-path ${ms(120)}ms linear ${ms(200)}ms`,
+      label: st.snack ? 'СКРЫТЬ' : 'ПОКАЗАТЬ · TELEGRAM',
+      toggle: () => this.setState(s => ({ snack: !s.snack }))
+    };
+    const pShapes = [...L.p1.shapes, { x: L.p1.circle.x, y: L.p1.circle.y, w: L.p1.circle.d, h: L.p1.circle.d, c: RED, r: '50%', clip: 'none', t: 'none', o: '50% 50%' }];
+    const pin = st.posterIn || RM, ptr = (d, dl) => st.pNoTr || RM ? 'none' : `clip-path ${ms(d)}ms linear ${ms(dl)}ms`;
+    const show = 'inset(0 0 0 0)', hide = 'inset(0 100% 0 0)';
+    const poster = {
+      shapes: pShapes.map((s, i) => ({ ...s, wipe: pin ? show : hide, wTr: ptr(120, i * 30) })),
+      hWipe: pin ? show : hide, hTr: ptr(120, 150), bWipe: pin ? show : hide, bTr: ptr(120, 180)
+    };
+    const wipeAt = (t, start) => { const p = Math.max(0, Math.min(1, (t - start) / 120)); return `inset(0 ${Math.round((1 - p) * 100)}% 0 0)`; };
+    const frames = {
+      cb: [0, 40, 80, 120].map(t => { const p = this.bez(t / 120); return { t: t + ' мс', tx: `translate(${(1 - p) * 100}%,${-(1 - p) * 100}%)` }; }),
+      sw: [0, 40, 80, 120].map(t => ({ t: t + ' мс', fill: Math.round(36 * this.bez(t / 120)) + 'px' })),
+      field: [0, 40, 80, 120].map(t => ({ t: t + ' мс', s: `scaleX(${t / 120})` })),
+      card: [0, 67, 133, 200].map(t => { const p = t / 200, x = Math.round(p * 148); return { t: t + ' мс', clip: `polygon(0 0,${x}px 0,${x - 60}px 100%,0 100%)` }; }),
+      snack: [0, 100, 200, 320].map(t => { const p = this.bez(Math.min(t, 200) / 200), c = t > 200 ? (t - 200) / 120 : 0; return { t: t + ' мс', y: `translateY(${Math.round((1 - p) * 36)}px)`, clip: `inset(0 ${Math.round((1 - c) * 100)}% 0 0)` }; }),
+      poster: [0, 90, 200, 300].map(t => ({ t: t + ' мс', shapes: pShapes.map((s, i) => ({ ...s, wipe: wipeAt(t, i * 30) })), hWipe: wipeAt(t, 150), bWipe: wipeAt(t, 180) }))
+    };
+    const R = (ev, trig, what, msv, rm) => ({ ev, trig, what, ms: msv, rm });
+    const spec = {
+      button: [R('stamp', 'press', 'Инверсия за кадр, текст +1 dp', '0', 'то же'), R('release', 'release', 'Возврат красок и сдвига', '60 · hard-stop', 'мгновенно'), R('engage', 'loading', 'Текст — шторка слева, сектор 90° по 30°', '120 + цикл 1200 · steps 12', 'сектор стоит')],
+      cbsw: [R('wedge-in', 'check', 'Клин входит с правого верхнего угла', '120 · hard-stop', 'мгновенно'), R('wedge-out', 'uncheck', 'Клин уходит тем же путём', '60 · linear', 'мгновенно'), R('lever', 'toggle', 'Каретка по рельсу, сегмент следом', '120 · hard-stop', 'мгновенно')],
+      field: [R('underline', 'focus', 'Линейка → брус слева направо', '120 · linear', 'мгновенно'), R('hatch', 'error', 'Штриховка шторкой слева, сдвиг 2 dp и обратно', '200 · linear', 'без сдвига'), R('caret', '—', 'Брус 3 × 24: вкл 500 / выкл 300', 'период 800', 'не мигает')],
+      card: [R('print', 'appear', 'Шторка по диагонали с левого верха, каскад 30', '200 · linear', 'fade 100'), R('tear', 'dismiss', 'Уезжает по рельсу, соседи сдвигаются', '200 + 200 · hard-stop', 'мгновенно')],
+      snack: [R('telegram', 'show', 'Выезд снизу до упора, затем текст шторкой', '200 + 120 · hard-stop + linear', 'fade 100'), R('telegram', 'hide', 'Уезжает вниз тем же путём', '200 · hard-stop', 'fade 100')],
+      poster: [R('print', 'appear', 'Фигуры шторкой слева каскадом 30, затем заголовок и кнопка', '≤ 300 · linear', 'мгновенно'), R('roll', 'appear', 'Раскат: вторая краска вкатывается до шва, зерно стоит', '320 · hard-stop', 'сразу финал'), R('—', 'seed', 'Смена seed — без анимации, плакат печатается заново', '—', '—')]
+    };
+    return {
+      seed: sd, reg: this.props.registration ?? true,
+      themes,
+      speeds: [1, 3, 10].map(v => ({ label: '×' + v, bg: k === v ? '#EEE5D1' : 'transparent', fg: k === v ? '#1D1B18' : '#EEE5D1', set: () => this.setState({ speed: v }) })),
+      reduceKnob: `translateX(${RM ? 36 : 0}px)`, reduceFill: `${RM ? 36 : 0}px`, reduceAria: RM ? 'true' : 'false',
+      toggleReduce: () => this.setState(s => ({ reduce: !s.reduce })),
+      reseed: () => this.setState({ seed: Math.floor(Math.random() * 9999) + 1 }),
+      lab: {
+        btn, spinner, cb, sw, f, cards, snack, poster,
+        replayCards: () => { this.setState({ gone: false }); this.replay('cardsIn', 'cNoTr'); },
+        tear: () => { if (this.state.gone) { this.setState({ gone: false, cNoTr: true }); setTimeout(() => this.setState({ cNoTr: false }), 40); } else this.setState({ gone: true }); },
+        tearLabel: st.gone ? 'ВЕРНУТЬ' : 'УБРАТЬ · TEAR',
+        replayPoster: () => this.replay('posterIn', 'pNoTr')
+      },
+      frames, spec
+    };
+  }
+}
+</script>
+</body>
+</html>

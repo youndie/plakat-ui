@@ -1,0 +1,98 @@
+[
+ {
+  "name": "plakat/icon/menu",
+  "ru": "Меню",
+  "group": "Навигация",
+  "d": "M3 5h18v3h-18zM3 10.5h12v3h-12zM3 16h18v3h-18z"
+ },
+ {
+  "name": "plakat/icon/back",
+  "ru": "Назад",
+  "group": "Навигация",
+  "d": "M2 12L10 4L10 10.5L22 10.5L22 13.5L10 13.5L10 20z"
+ },
+ {
+  "name": "plakat/icon/close",
+  "ru": "Закрыть",
+  "group": "Навигация",
+  "d": "M4.1 6.2L6.2 4.1L12 9.9L17.8 4.1L19.9 6.2L14.1 12L19.9 17.8L17.8 19.9L12 14.1L6.2 19.9L4.1 17.8L9.9 12z"
+ },
+ {
+  "name": "plakat/icon/search",
+  "ru": "Поиск",
+  "group": "Навигация",
+  "d": "M3 10a7 7 0 1 1 14 0a7 7 0 1 1 -14 0zM6 10a4 4 0 1 0 8 0a4 4 0 1 0 -8 0zM13.45 15.55L15.55 13.45L21.9 19.8L19.8 21.9z"
+ },
+ {
+  "name": "plakat/icon/home",
+  "ru": "Домой",
+  "group": "Навигация",
+  "d": "M3 11L12 2L21 11zM5 11h14v11h-14zM10 15v7h4v-7z"
+ },
+ {
+  "name": "plakat/icon/add",
+  "ru": "Добавить",
+  "group": "Действия",
+  "d": "M10.5 3h3v18h-3zM3 10.5h18v3h-18z"
+ },
+ {
+  "name": "plakat/icon/delete",
+  "ru": "Удалить",
+  "group": "Действия",
+  "d": "M9 2h6v2h-6zM3 4h18v3h-18zM5 9h14v13h-14zM8.5 12v7h2v-7zM13.5 12v7h2v-7z"
+ },
+ {
+  "name": "plakat/icon/edit",
+  "ru": "Редактировать",
+  "group": "Действия",
+  "d": "M3 21L3 17L13 7L17 11L7 21zM14.41 5.59L16 4L20 8L18.41 9.59z"
+ },
+ {
+  "name": "plakat/icon/share",
+  "ru": "Поделиться",
+  "group": "Действия",
+  "d": "M12 2L18 8L6 8zM10.5 8h3v8h-3zM3 10h3v9h-3zM18 10h3v9h-3zM3 19h18v3h-18z"
+ },
+ {
+  "name": "plakat/icon/refresh",
+  "ru": "Обновить",
+  "group": "Действия",
+  "d": "M12 4A8 8 0 1 0 20 12H17A5 5 0 1 1 12 7zM12 2L15.5 5.5L12 9z"
+ },
+ {
+  "name": "plakat/icon/settings",
+  "ru": "Настройки",
+  "group": "Действия",
+  "d": "M6 12a6 6 0 1 1 12 0a6 6 0 1 1 -12 0zM9.5 12a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0 -5 0zM10.5 2h3v5.5h-3zM10.5 16.5h3v5.5h-3zM2 10.5h5.5v3h-5.5zM16.5 10.5h5.5v3h-5.5z"
+ },
+ {
+  "name": "plakat/icon/done",
+  "ru": "Готово",
+  "group": "Статусы",
+  "d": "M3 12L6 9L10 13L18 5L21 8L10 19z"
+ },
+ {
+  "name": "plakat/icon/error",
+  "ru": "Ошибка",
+  "group": "Статусы",
+  "d": "M2 12a10 10 0 1 1 20 0a10 10 0 1 1 -20 0zM10.5 6v8h3v-8zM10.5 15.5v3h3v-3z"
+ },
+ {
+  "name": "plakat/icon/warning",
+  "ru": "Внимание",
+  "group": "Статусы",
+  "d": "M12 2L22 12L12 22L2 12zM10.5 7v6.5h3v-6.5zM10.5 15v2.5h3v-2.5z"
+ },
+ {
+  "name": "plakat/icon/info",
+  "ru": "Инфо",
+  "group": "Статусы",
+  "d": "M3 3h18v18h-18zM10.5 6v3h3v-3zM10.5 10.5v7.5h3v-7.5z"
+ },
+ {
+  "name": "plakat/icon/time",
+  "ru": "Время",
+  "group": "Статусы",
+  "d": "M2 12a10 10 0 1 1 20 0a10 10 0 1 1 -20 0zM10.5 5V13.5H17V10.5H13.5V5z"
+ }
+]
