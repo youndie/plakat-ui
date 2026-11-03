@@ -37,9 +37,15 @@ const ROOT = resolve(import.meta.dirname, '..');
 const DESIGN = join(ROOT, 'reference/design-system');
 const FONTS = join(ROOT, 'plakat-core/src/commonMain/composeResources/font');
 const OUT = join(ROOT, 'plakat-core/src/desktopTest/snapshots/design');
+// Per page: the width at which every grid column a reference sits in is whole. The core and MVP pages
+// grow to 1720 px, so 1584 gives 752 px theme cards (Divider columns 224, Button 164); the Tokens page
+// stops at 1120 + 48 px, so it is narrowed to 1160 for a 1112 px grid (semantic swatches 216, print 272).
+const VIEWPORTS = { 'plakat-ui Токены.dc.html': 1160 };
 const VIEWPORT = 1584;
+const viewport = (page) => VIEWPORTS[page] ?? VIEWPORT;
 
 const CORE = 'plakat-ui Ядро.dc.html';
+const TOKENS = 'plakat-ui Токены.dc.html';
 const MVP = 'plakat-ui Компоненты.dc.html';
 const THEMES = ['Light', 'Dark'];
 
@@ -51,6 +57,11 @@ export const REFERENCES = [
   ...cells('Divider', MVP, 'above', [['Hair', 'Divider / Hair 1'], ['Rule', 'Divider / Rule 3'], ['Bar', 'Divider / Bar 8 — раздел']]),
   // The text floor: one 12 px Golos caption alone.
   ...cells('TextFloor', MVP, 'caption', [['Caption', 'Divider / Hair 1']]),
+  // The print primitives (B-10): the cut alone (the left 40 px of a filled plate, no text), the danger
+  // hatch alone (the right of the Tokens page's danger swatch, past its word), registration («ЛИСТ»).
+  ...cells('Cut', CORE, 'first', [['Plate', 'Filled / Default']]).map((r) => ({ ...r, crop: { x: 0, y: 0, w: 40, h: 48 } })),
+  { group: 'Hatch', name: 'Danger_Light', page: TOKENS, caption: 'danger — штриховка + слово', card: 0, part: 'first', crop: { x: 120, y: 0, w: 96, h: 48 } },
+  { group: 'Registration', name: 'List_Light', page: TOKENS, caption: 'plakat/print/registration', prefix: true, card: 0, part: 'first' },
   // The Button's cells, for B-13.
   ...cells('Button', CORE, 'first', [
     ['FilledDefault', 'Filled / Default'], ['FilledPressed', 'Filled / Pressed'], ['FilledFocused', 'Filled / Focused'],
@@ -111,13 +122,17 @@ async function launch(chrome) {
 
 // Evaluated in the page: the rectangle of a reference, in page pixels, or a reason it has none.
 const LOCATE = `(ref) => {
-  const captions = [...document.querySelectorAll('div')].filter(d => d.children.length === 0 && d.textContent.trim() === ref.caption);
+  // A caption is the innermost div whose text is the caption (or starts with it, for captions with
+  // markup in them, like the Tokens page's <b>plakat/print/…</b> lines).
+  const matches = (d) => ref.prefix ? d.textContent.trim().startsWith(ref.caption) : d.textContent.trim() === ref.caption;
+  const captions = [...document.querySelectorAll('div')].filter(d => matches(d) && ![...d.querySelectorAll('div')].some(matches));
   const caption = captions[ref.card];
   if (!caption) return { error: 'caption ' + JSON.stringify(ref.caption) + ' #' + ref.card + ' not found (' + captions.length + ' on the page)' };
   const cell = caption.parentElement, c = cell.getBoundingClientRect(), t = caption.getBoundingClientRect();
   const r = ref.part === 'caption' ? t : ref.part === 'first' ? cell.firstElementChild.getBoundingClientRect()
     : { left: c.left, top: c.top, width: c.width, height: t.top - c.top };
-  return { x: r.left + scrollX, y: r.top + scrollY, w: r.width, h: r.height };
+  const c0 = ref.crop ?? { x: 0, y: 0, w: r.width, h: r.height };
+  return { x: r.left + scrollX + c0.x, y: r.top + scrollY + c0.y, w: c0.w, h: c0.h };
 }`;
 
 async function open(cdp, page) {
@@ -137,7 +152,7 @@ async function open(cdp, page) {
   await cdp.send('Runtime.enable', {}, sessionId);
   await cdp.send('Fetch.enable', { patterns: [{ urlPattern: '*fonts.googleapis.com*' }] }, sessionId);
   await cdp.send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] }, sessionId);
-  await cdp.send('Emulation.setDeviceMetricsOverride', { width: VIEWPORT, height: 900, deviceScaleFactor: 1, mobile: false }, sessionId);
+  await cdp.send('Emulation.setDeviceMetricsOverride', { width: viewport(page), height: 900, deviceScaleFactor: 1, mobile: false }, sessionId);
   const loaded = cdp.once('Page.loadEventFired', sessionId);
   await cdp.send('Page.navigate', { url: pathToFileURL(join(DESIGN, page)).href }, sessionId);
   await loaded;
@@ -146,13 +161,13 @@ async function open(cdp, page) {
   for (let i = 0; i < 200 && !(await evaluate(`!!document.querySelector('x-dc') && document.body.innerText.includes('/ ')`)); i++) await sleep(100);
   await evaluate('document.fonts.ready.then(() => true)');
   const height = await evaluate('document.documentElement.scrollHeight');
-  await cdp.send('Emulation.setDeviceMetricsOverride', { width: VIEWPORT, height, deviceScaleFactor: 1, mobile: false }, sessionId);
+  await cdp.send('Emulation.setDeviceMetricsOverride', { width: viewport(page), height, deviceScaleFactor: 1, mobile: false }, sessionId);
   // macOS text smoothing thickens every stem in Chrome; Skia draws the font's own outline on every
   // platform Compose runs on, so the references are taken with greyscale antialiasing only.
   await evaluate(`(() => { const s = document.createElement('style'); s.textContent = '*{-webkit-font-smoothing:antialiased}';
     document.head.appendChild(s); return true; })()`);
   await evaluate(`(() => { for (const e of document.querySelectorAll('*')) { const s = getComputedStyle(e);
-    if (s.position === 'absolute' && s.pointerEvents === 'none' && s.mixBlendMode !== 'normal') e.style.visibility = 'hidden'; } return true; })()`);
+    if ((s.position === 'absolute' || s.position === 'fixed') && s.pointerEvents === 'none' && s.mixBlendMode !== 'normal') e.style.visibility = 'hidden'; } return true; })()`);
   await evaluate('new Promise(r => requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(() => r(true), 100))))');
   if (errors.length) throw new Error(`${page}: ${errors.join('; ')}`);
   return { sessionId, targetId, evaluate, close: async () => { cdp.listeners.splice(cdp.listeners.indexOf(listener), 1); await cdp.send('Target.closeTarget', { targetId }); } };
@@ -222,10 +237,10 @@ try {
 
 const sha = (file) => createHash('sha256').update(readFileSync(file)).digest('hex');
 const manifest = {
-  browser: version, scale: 1, viewport: VIEWPORT,
+  browser: version, scale: 1, viewports: Object.fromEntries([...new Set(REFERENCES.map((r) => r.page))].map((p) => [p, viewport(p)])),
   pages: Object.fromEntries([...new Set(REFERENCES.map((r) => r.page))].map((p) => [p, sha(join(DESIGN, p))])),
   fonts: Object.fromEntries(FACES.map(([, file]) => [file, sha(join(FONTS, file))])),
-  references: REFERENCES.map((r) => ({ file: `${r.group}_${r.name}.png`, page: r.page, caption: r.caption, card: r.card, part: r.part, ...rects[`${r.group}_${r.name}`] })),
+  references: REFERENCES.map((r) => ({ file: `${r.group}_${r.name}.png`, page: r.page, caption: r.caption, card: r.card, part: r.part, crop: r.crop, ...rects[`${r.group}_${r.name}`] })),
 };
 if (check) {
   const current = existsSync(join(OUT, 'manifest.json')) ? JSON.parse(readFileSync(join(OUT, 'manifest.json'), 'utf8')) : {};
