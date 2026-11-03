@@ -55,7 +55,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 <!-- BEGIN INDEX -->
 
-## Open (46)
+## Open (47)
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
@@ -66,7 +66,6 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 | [B-08](docs/backlog/B-08-token-generator.md) `[ ]` | Tokens: generate PlakatTokens from plakat-tokens.json, --check in the gate | P0 | S | B-01 |
 | [B-09](docs/backlog/B-09-theme-and-reduce-motion.md) `[ ]` | Theme: PlakatTheme for paper and black paper, reduce motion as a property, print switches | P0 | S | B-08 |
 | [B-10](docs/backlog/B-10-print-primitives.md) `[ ]` | Print primitives: cut corner, registration, hatch, wipes, hard-stop and stepped curves, non-print mask | P0 | M | B-08, B-05 |
-| [B-06](docs/backlog/B-06-frame-cost-measurement.md) `[ ]` | Frame cost on a Pixel 6a: raskat roll, ten cards cascading with texture and registration | P1 | M | B-04, B-10 |
 | [B-07](docs/backlog/B-07-textures.md) `[ ]` | Textures: render the three truncated tiles by a script, seamless, beside the five delivered | P1 | M | B-01 |
 | [B-11](docs/backlog/B-11-icons.md) `[ ]` | Icons: 16 PlakatIcons generated from plakat-icons.json | P1 | S | B-01, B-05 |
 | [B-12](docs/backlog/B-12-motion-events.md) `[ ]` | Motion events: the named events every animation reports, for sound later | P1 | S | B-09 |
@@ -95,6 +94,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 | [B-36](docs/backlog/B-36-accessibility.md) `[ ]` | Accessibility: contrast with textures on, grayscale check, touch targets, semantics | P1 | S | B-07, B-35 |
 | [B-38](docs/backlog/B-38-radio-button.md) `[ ]` | RadioButton: a ring with a red disc that locks in one frame | P1 | S | B-09, B-10, B-12, B-15 |
 | [B-39](docs/backlog/B-39-desktop-and-hover.md) `[ ]` | Hover on pointer devices and a wide poster layout | P1 | M | B-13, B-19, B-20, B-22, B-23 |
+| [B-51](docs/backlog/B-51-frame-cost-on-desktop.md) `[ ]` | Frame cost on the desktop JVM: raskat roll and the ten-card cascade, as a proxy until the device | P1 | S | B-04, B-10 |
 | [B-32](docs/backlog/B-32-projection.md) `[ ]` | Проекция: text meshed onto a horn, cone, column, sphere, box or stairs | P2 | M | B-02, B-31 |
 | [B-43](docs/backlog/B-43-re-import-the-design.md) `[ ]` | Re-import the design project on a branch of its own | P2 | S | B-05, B-08 |
 | [B-44](docs/backlog/B-44-slider.md) `[ ]` | Slider: rail, ticks and a carriage that stops on them | P2 | M | B-09, B-10, B-12, B-16 |
@@ -104,7 +104,8 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 | [B-48](docs/backlog/B-48-tooltip.md) `[ ]` | Tooltip: a caption with a straight leader line, as on a drawing | P2 | M | B-09, B-10, B-12 |
 | [B-49](docs/backlog/B-49-segmented.md) `[ ]` | Segmented button: one frame, the black fill rides linearly | P2 | M | B-09, B-10, B-12, B-22 |
 | [B-50](docs/backlog/B-50-pull-to-refresh.md) `[ ]` | Pull-to-refresh: a red wedge grows with the finger, then a stepped sector | P2 | M | B-09, B-10, B-12, B-24 |
-| [B-37](docs/backlog/B-37-public-repository-and-publishing.md) `[ ]` | Public repository and publishing to Reposilite on every main — last | P3 | S | B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50 |
+| [B-06](docs/backlog/B-06-frame-cost-measurement.md) `[ ]` | Frame cost on a Pixel 6a: raskat roll, ten cards cascading with texture and registration | P3 | M | B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50, B-51 |
+| [B-37](docs/backlog/B-37-public-repository-and-publishing.md) `[ ]` | Public repository and publishing to Reposilite on every main — last | P3 | S | B-06, B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50 |
 
 ## Closed (4)
 

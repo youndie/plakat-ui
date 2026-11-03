@@ -5,7 +5,7 @@ status: open
 priority: P3
 size: S
 stage: stage-4-product
-blocked_by: [B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50]
+blocked_by: [B-06, B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50]
 ---
 
 # B-37 — Public repository and publishing to Reposilite on every main — last
