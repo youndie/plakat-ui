@@ -145,6 +145,28 @@ disagree (texture opacity) the item says which it follows and why (D8).
 **Consequence 10.** The kit has a design for 21 of the brief's 22 MVP rows. RadioButton, the v1 set
 and hover are designed in this repository from the brief and the Principles recipe (D13).
 
+### 1.7 The parity floor (B-05)
+
+Measured on 2026-11-03 with `scripts/design-references.mjs` (Chrome 156.0.8078.80, device scale 1,
+viewport 1584 px) against fixtures in `plakat-core/src/desktopTest/kotlin/io/github/youndie/plakat/parity/FloorFixtures.kt`,
+read by viddik 0.7.0's `viddikDesignParity` (±16 per channel) and by ink parity (differing pixels
+over the pixels either image inks).
+
+| Fact | Where verified |
+|---|---|
+| **Shape floor 0.00 %** in both themes: the MVP page's three Divider rules (1, 3, 8 px) match pixel for pixel | `plakat-core/src/desktopTest/snapshots/design/manifest.json`, the parity report |
+| **Text floor: 7.05 % (light) and 6.99 % (dark) of a 224 × 15 caption cell, 63.7 % of its ink** — 12 px Golos, one line | the same |
+| Baselines agree: no whole-pixel shift in x or y lowers the difference; total ink agrees within 1.6 %. The residual is each glyph's fractional horizontal position, which Chrome keeps and the fixture rounds | a shift search over the caption |
+| Pinning `FontRasterizationSettings` (subpixel positioning on, hinting off — oldge-ui's `PortableTextStyle`) changes no pixel of a viddik 0.7.0 fixture | the caption rendered both ways, byte-identical |
+| macOS text smoothing thickens Chrome's stems, light-on-dark most (the dark caption 10.21 % with it, 6.99 % without); Skia draws the outline on every platform Compose runs on, so references are taken with `-webkit-font-smoothing: antialiased` | the renderer, both ways |
+| The pages are drawn by their runtime from unpkg (React 18.3.1, Babel 7.29.0) with Google Fonts answered by the repository's files; every cell the references use falls on whole pixels once the page is pushed down by the fraction its 14.4 px text lines leave; two renders are byte-identical | `scripts/design-references.mjs` |
+| Mutants on the scale: the hair rule 1 px thicker 0.00 → 5.88 %; the caption in 600 7.05 → 11.99 %; the caption a pixel low 7.05 → 11.16 % | the parity report under each mutant |
+
+**Consequence 11.** A component is read against two floors: its shapes against 0.00 % (any
+difference in a plate, a rule or a cut is a finding), its text against the text floor, so text-
+bearing components sit at several percent by nature and `designStrict` stays off. The `_DIFF` is
+read every time: red on a glyph edge is the floor, red on a box edge is not.
+
 ---
 
 ## 2. Decisions
@@ -168,7 +190,8 @@ is the frame inverted in one frame, no animation, and the poster gets a wide lay
 The components exist only as CSS boxes in the spec pages, so the reference is a photograph of a
 page element in headless Chrome at device scale 1, with the repository's font files substituted for
 Google's. A component closes on the states its page shows, in both themes, within the parity floor
-measured once ([B-05](../backlog/B-05-pixel-references-and-floor.md)).
+measured once ([B-05](../backlog/B-05-pixel-references-and-floor.md)): 0.00 % for shapes, 7 % of a
+caption cell for text (§1.7). H1 held: every reference so far is reachable without editing a page.
 
 Rejected: references taken from the designer's screenshots folder. Nobody rendered them from the source,
 their scale is unknown, and they were not vendored.

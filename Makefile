@@ -72,13 +72,14 @@ DOCS_BOOTSTRAP_SHIM := 2
 DOCS_BOOTSTRAP_GOALS := check gate report fix
 
 .DEFAULT_GOAL := help
-.PHONY: help check gate report fix
+.PHONY: help check gate report fix references
 
 help:
 	@echo "make check   - the gate and the reports: exactly what CI runs"
 	@echo "make gate    - the blocking half alone"
 	@echo "make report  - non-blocking: BDD coverage, code anchors"
 	@echo "make fix     - regenerate the backlog index, fill in missing coverage-map lines"
+	@echo "make references - re-render the Chrome design references (needs Google Chrome)"
 
 check: gate report
 
@@ -90,10 +91,17 @@ gate: docs-gate
 	node scripts/gen-goldens.mjs --check
 	# B-04: raskat's goldens are what the vendored plakat-raskat.js emits today.
 	node scripts/raskat-goldens.mjs --check
+	# B-05: the Chrome references were rendered from today's pages and fonts (no Chrome needed here).
+	node scripts/design-references.mjs --manifest
 
 report: docs-report
 
 fix: docs-fix
+
+# B-05: re-render the design references from the spec pages in headless Chrome. Not in the gate: CI's
+# `make check` runs on Linux, where no Chrome drew these; the gate checks their manifest instead.
+references:
+	node scripts/design-references.mjs
 
 # -- where the checks come from. Nothing below is meant to be edited. ------------------------------
 
