@@ -88,6 +88,8 @@ check: gate report
 gate: docs-gate
 	# B-03: the generator's goldens are what the vendored plakat-gen.js emits today.
 	node scripts/gen-goldens.mjs --check
+	# B-04: raskat's goldens are what the vendored plakat-raskat.js emits today.
+	node scripts/raskat-goldens.mjs --check
 
 report: docs-report
 
