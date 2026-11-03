@@ -89,14 +89,14 @@ lines.push('        mapOf(');
 for (const f of FRAMES) {
   lines.push(`            ${kstr(f.name)} to`);
   lines.push('                listOf(');
-  for (let seed = 1; seed <= WHOLE; seed++) lines.push(`                    ${kstr(composition(G.generate(seed, f)), 20)},`);
+  for (let seed = 1; seed <= WHOLE; seed++) lines.push(`                    ${kstr(composition(G.generate(seed, f)), 24)},`);
   lines.push('                ),');
 }
 lines.push('        )', '');
 lines.push('    /** rapport(seed, 24) for seeds 1..RAPPORT_SEEDS, hashed. */');
 let rh = '';
 for (let seed = 1; seed <= RAPPORT_SEEDS; seed++) rh += fnv(tile(G.rapport(seed, 24)));
-lines.push('    val rapportHashes: String =', `        ${kstr(rh, 8)}`, '');
+lines.push('    val rapportHashes: String =', `        ${kstr(rh, 12)}`, '');
 lines.push('    /** The vendored rapports (agit/rapport-<seed>.svg is rapport(seed, 24)), whole, at cells 12 and 24. */');
 lines.push('    val rapports: Map<Pair<Int, Int>, String> =');
 lines.push('        mapOf(');
