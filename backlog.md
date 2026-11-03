@@ -59,7 +59,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-02](docs/backlog/B-02-fonts.md) `[ ]` | Fonts: Rubik Mono One and static Golos Text 400/600, licences, coverage test | P0 | S | B-01 |
+| [B-02](docs/backlog/B-02-fonts.md) `[~]` | Fonts: Rubik Mono One and static Golos Text 400/600, licences, coverage test | P0 | S | B-01 |
 | [B-03](docs/backlog/B-03-generator-port-and-numeric-parity.md) `[ ]` | Generator: commonMain port of generate/rapport held to Node goldens on every target | P0 | M | B-01 |
 | [B-04](docs/backlog/B-04-raskat-port.md) `[ ]` | Raskat: port the JS field to the CPU, goldens from Node, the roll animation | P0 | M | B-01 |
 | [B-05](docs/backlog/B-05-pixel-references-and-floor.md) `[ ]` | Pixel references rendered from the spec pages in headless Chrome; the parity floor | P0 | L | B-01, B-02 |

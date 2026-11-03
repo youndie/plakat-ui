@@ -1,7 +1,7 @@
 ---
 id: B-02
 title: "Fonts: Rubik Mono One and static Golos Text 400/600, licences, coverage test"
-status: open
+status: wip
 priority: P0
 size: S
 stage: stage-0-risks
