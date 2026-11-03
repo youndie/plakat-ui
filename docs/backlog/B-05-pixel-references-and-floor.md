@@ -1,7 +1,7 @@
 ---
 id: B-05
 title: "Pixel references rendered from the spec pages in headless Chrome; the parity floor"
-status: open
+status: wip
 priority: P0
 size: L
 stage: stage-0-risks
