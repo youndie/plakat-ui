@@ -55,11 +55,10 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 <!-- BEGIN INDEX -->
 
-## Open (47)
+## Open (46)
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-01](docs/backlog/B-01-repository-skeleton.md) `[ ]` | Repository skeleton: plakat-core, sample, sborka conventions, four targets, CI on macOS | P0 | M | - |
 | [B-02](docs/backlog/B-02-fonts.md) `[ ]` | Fonts: Rubik Mono One and static Golos Text 400/600, licences, coverage test | P0 | S | B-01 |
 | [B-03](docs/backlog/B-03-generator-port-and-numeric-parity.md) `[ ]` | Generator: commonMain port of generate/rapport held to Node goldens on every target | P0 | M | B-01 |
 | [B-04](docs/backlog/B-04-raskat-port.md) `[ ]` | Raskat: port the JS field to the CPU, goldens from Node, the roll animation | P0 | M | B-01 |
@@ -107,7 +106,11 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 | [B-50](docs/backlog/B-50-pull-to-refresh.md) `[ ]` | Pull-to-refresh: a red wedge grows with the finger, then a stepped sector | P2 | M | B-09, B-10, B-12, B-24 |
 | [B-37](docs/backlog/B-37-public-repository-and-publishing.md) `[ ]` | Public repository and publishing to Reposilite on every main — last | P3 | S | B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50 |
 
-## Closed (3)
+## Closed (4)
+
+**Goldens and references regenerate deterministically; the generator and raskat ports match them on every target; the floor and the frame cost have measured numbers**
+
+- [B-01](docs/backlog/B-01-repository-skeleton.md) `[x]` - Repository skeleton: plakat-core, sample, sborka conventions, four targets, CI on macOS
 
 **The owner's questions answered; the design re-imported when it changes**
 

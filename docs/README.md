@@ -7,7 +7,7 @@ a hard stop. The documentation is layered, and links run top to bottom.
 ```
 [ Research (why the architecture is what it is) ]
                      │
-[ Service (the plakat-core module, once it exists) ]
+[ Service (the plakat-core module) ]
 ```
 
 | Layer | Directory | Answers | Source of truth |
@@ -17,9 +17,7 @@ a hard stop. The documentation is layered, and links run top to bottom.
 
 There is no `features/`, `screens/` or `api/` layer. A component library has no end-user feature
 flow or HTTP contract. Its "screens" are the design project's spec pages, vendored in
-`reference/design-system/` and measured against rather than re-described here. `services/` does not
-exist until [B-01](backlog/B-01-repository-skeleton.md) creates `plakat-core`: `main` describes what
-exists.
+`reference/design-system/` and measured against rather than re-described here.
 
 **Backlog** — [backlog.md](../backlog.md): the order of work and the stages. The items themselves
 are one file each in [`backlog/`](backlog/), cited as `[B-13](backlog/B-13-button.md)`.
@@ -55,6 +53,10 @@ make fix        # regenerate the backlog index, append missing coverage-map line
 
 The list below is **checked** against the files on disk: a document missing here, or an entry with
 no file behind it, fails the coverage check.
+
+### Services (1)
+
+- [x] [plakat-core](services/plakat-core.md) — the library module: targets, build, ABI dump, quirks
 
 ### Research (1)
 
