@@ -37,8 +37,8 @@ last), so no pull requests. The loop over the backlog works one item per branch 
 4. `git merge --no-ff` into `main`, with `Refs: B-NN` in the merge message. The branch is kept.
 
 Red is never merged, and a check is never loosened to get green. An item whose status is
-`question`, or that needs the owner (a device, a review of a component designed here), stops the
-loop with the question instead.
+`question` stops the loop with the question instead. The owner asked (2026-11-03) for the loop to
+run to the end: device measurement (B-06) and the review of components designed here come last.
 
 ## Gates
 
@@ -88,8 +88,8 @@ is taken on a branch of its own, never by overwriting ([B-43](docs/backlog/B-43-
   tolerance to get green. A gap is a number in the commit body with its cause.
 - **What the design does not draw is designed here, and says so** (D13). RadioButton, hover, the
   wide poster and the v1 set are built from the brief's row, the Principles page and the tokens; the
-  item lists every number the design does not state. Their goldens are recorded after the owner has
-  seen them. What the design does draw stays held to the design.
+  item lists every number the design does not state. Their goldens are recorded when built and
+  revised in the owner's review round at the end. What the design does draw stays held to the design.
 - **Textures rendered here never go into `reference/design-system/`** (D16); they live in the
   module's resources, made by the script that renders them.
 - **Fonts only under an open licence**: Rubik Mono One and Golos Text, both OFL (research §1.4).

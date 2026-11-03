@@ -251,9 +251,10 @@ toon-ui. The owner decided otherwise on 2026-11-03 ("сам") for RadioButton, t
 Such a component is built from what the design does say: the brief's row for it (its treatment and
 motion), the Principles page's seven steps and its do/don't pairs, the tokens, and the nearest drawn
 component it shares parts with (the Slider is the Principles page's worked example; Segmented is
-drawn inside the Settings demo). It has no Chrome reference, so its goldens are recorded once the
-owner has looked at it in the sample, and its item lists every number it chose that the design does
-not state. Everything the design does draw stays held to the design.
+drawn inside the Settings demo). It has no Chrome reference, so its goldens are recorded when it is built
+(the owner asked on 2026-11-03 for the loop to run to the end rather than wait) and revised in the
+owner's review round over the finished sample; its item lists every number it chose that the design
+does not state. Everything the design does draw stays held to the design.
 
 ### D14. The registration offset is 1 dp
 
@@ -310,7 +311,9 @@ scripts and the fonts are reachable, and every drawn state can be forced from ou
 
 **Hypothesis H3.** A per-pixel raskat comparison over a 120 dp circle at density 2.75 (≈ 330 × 330
 px, 109 k comparisons) fits in 2 ms per frame on a Pixel 6a, and ten cards cascading with texture and
-registration hold 60 fps (the brief's target). Settled in [B-06](../backlog/B-06-frame-cost-measurement.md).
+registration hold 60 fps (the brief's target). Refuted or kept on the desktop JVM first
+([B-51](../backlog/B-51-frame-cost-on-desktop.md)); settled on the device once the kit is complete
+([B-06](../backlog/B-06-frame-cost-measurement.md)), as the owner set on 2026-11-03.
 
 **Hypothesis H4.** `Canvas.drawVertices` with an `ImageShader` behaves the same on Android, iOS and
 wasm as on desktop, where it was verified to exist. Settled in [B-32](../backlog/B-32-projection.md).
