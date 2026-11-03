@@ -106,10 +106,6 @@ not run it, because the output is committed and pinned by the metrics test.
 - `./gradlew check` does **not** compile `iosArm64` or Android main. Those are
   `:plakat-core:compileKotlinIosArm64` and `:plakat-core:compileAndroidMain`, run by hand in B-01. A
   change that breaks only a device target passes `check`.
-- `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/PlakatCore.kt` holds one internal
-  placeholder constant. ktlint refuses an empty file, and without a main source the iOS, wasm and
-  Android compilations are `NO-SOURCE`, which proves nothing. B-08 replaces it.
 - Common test names must not contain a comma: Kotlin/Native refuses the name, JVM accepts it.
 - The klib ABI dump lists the compose compiler's `$stableprop` of internal classes too; adding an
   internal class changes it and needs `updateKotlinAbi`.
-- The sample's paper colour is written once as a literal until the tokens exist (B-08).
