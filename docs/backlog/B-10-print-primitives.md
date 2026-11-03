@@ -1,7 +1,7 @@
 ---
 id: B-10
 title: "Print primitives: cut corner, registration, hatch, wipes, hard-stop and stepped curves, non-print mask"
-status: open
+status: wip
 priority: P0
 size: M
 stage: stage-1-materials

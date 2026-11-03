@@ -59,7 +59,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-10](docs/backlog/B-10-print-primitives.md) `[ ]` | Print primitives: cut corner, registration, hatch, wipes, hard-stop and stepped curves, non-print mask | P0 | M | B-08, B-05 |
+| [B-10](docs/backlog/B-10-print-primitives.md) `[~]` | Print primitives: cut corner, registration, hatch, wipes, hard-stop and stepped curves, non-print mask | P0 | M | B-08, B-05 |
 | [B-07](docs/backlog/B-07-textures.md) `[ ]` | Textures: render the three truncated tiles by a script, seamless, beside the five delivered | P1 | M | B-01 |
 | [B-11](docs/backlog/B-11-icons.md) `[ ]` | Icons: 16 PlakatIcons generated from plakat-icons.json | P1 | S | B-01, B-05 |
 | [B-12](docs/backlog/B-12-motion-events.md) `[ ]` | Motion events: the named events every animation reports, for sound later | P1 | S | B-09 |
