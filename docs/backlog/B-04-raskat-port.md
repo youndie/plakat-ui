@@ -1,7 +1,7 @@
 ---
 id: B-04
 title: "Raskat: port the JS field to the CPU, goldens from Node, the roll animation"
-status: open
+status: wip
 priority: P0
 size: M
 stage: stage-0-risks
