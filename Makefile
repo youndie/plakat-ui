@@ -86,6 +86,8 @@ check: gate report
 # `make check`, runs them too - for example, below `gate: docs-gate`:
 #	$(PY) scripts/no_todo_in_main.py
 gate: docs-gate
+	# B-03: the generator's goldens are what the vendored plakat-gen.js emits today.
+	node scripts/gen-goldens.mjs --check
 
 report: docs-report
 
