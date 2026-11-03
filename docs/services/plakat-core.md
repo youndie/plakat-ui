@@ -41,6 +41,8 @@ Packages are `io.github.youndie.plakat.*` (research D1).
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/type/PlakatFonts.kt` | the display and body families |
 | `plakat-core/src/commonMain/composeResources/font/` | Rubik Mono One and the static Golos Text 400 and 600, with their OFL texts in `files/licences/` |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/agit/PlakatGen.kt` | the composition and rapport generator, ported from the design's JS |
+| `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/print/PlakatRaskat.kt` | raskat's field, ink map and roll, ported from the design's JS; `RaskatImage.kt` prints it |
+| `scripts/raskat-goldens.mjs` | raskat's goldens, emitted by the vendored JS with a stubbed canvas and clock; `--check` in `make check` |
 | `scripts/gen-goldens.mjs` | the generator's goldens, emitted by the vendored JS; `--check` runs in `make check` |
 | `scripts/fonts.py` | fetches the fonts at a pinned google/fonts commit and cuts the Golos statics (`scripts/fonts.lock`) |
 
