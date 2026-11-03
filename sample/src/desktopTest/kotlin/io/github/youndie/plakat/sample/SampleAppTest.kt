@@ -11,10 +11,10 @@ import kotlin.test.Test
 @OptIn(ExperimentalTestApi::class)
 class SampleAppTest {
     @Test
-    fun `the sample shows the kit's name on paper`() =
+    fun `the sample shows the kit name in capitals on paper`() =
         runComposeUiTest {
             setContent { PlakatUiSample() }
             onNodeWithTag("sample-root").assertIsDisplayed()
-            onNodeWithText("plakat-ui").assertIsDisplayed()
+            onNodeWithText("PLAKAT-UI").assertIsDisplayed()
         }
 }
