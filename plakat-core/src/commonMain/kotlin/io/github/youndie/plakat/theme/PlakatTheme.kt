@@ -3,8 +3,11 @@ package io.github.youndie.plakat.theme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Color
 import io.github.youndie.plakat.tokens.PlakatColors
 import io.github.youndie.plakat.tokens.PlakatPalettes
 import io.github.youndie.plakat.tokens.PlakatPrint
@@ -20,6 +23,13 @@ public class PlakatPrintSwitches(
     public val registration: Boolean = PlakatPrint.REGISTRATION_ON,
     public val raskat: Boolean = PlakatPrint.RASKAT_ON,
 )
+
+/**
+ * The colour of the content in place, the pages' CSS `currentColor`: a component that fills a surface
+ * provides the ink that prints on it, and icons and text inside take it. Unspecified outside any,
+ * where they take the theme's ink.
+ */
+public val LocalPlakatContentColor: ProvidableCompositionLocal<Color> = compositionLocalOf { Color.Unspecified }
 
 private val LocalPlakatColors = staticCompositionLocalOf { PlakatPalettes.Paper }
 private val LocalPlakatTypography = staticCompositionLocalOf<PlakatTypography?> { null }

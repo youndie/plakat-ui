@@ -1,3 +1,36 @@
+public final class io/github/youndie/plakat/icons/PlakatIconKt {
+	public static final fun PlakatIcon-ww6aTOc (Lio/github/youndie/plakat/icons/PlakatStencil;Ljava/lang/String;Landroidx/compose/ui/Modifier;JLandroidx/compose/runtime/Composer;II)V
+}
+
+public final class io/github/youndie/plakat/icons/PlakatIcons {
+	public static final field $stable I
+	public static final field INSTANCE Lio/github/youndie/plakat/icons/PlakatIcons;
+	public final fun getAdd ()Lio/github/youndie/plakat/icons/PlakatStencil;
+	public final fun getAll ()Ljava/util/List;
+	public final fun getBack ()Lio/github/youndie/plakat/icons/PlakatStencil;
+	public final fun getClose ()Lio/github/youndie/plakat/icons/PlakatStencil;
+	public final fun getDelete ()Lio/github/youndie/plakat/icons/PlakatStencil;
+	public final fun getDone ()Lio/github/youndie/plakat/icons/PlakatStencil;
+	public final fun getEdit ()Lio/github/youndie/plakat/icons/PlakatStencil;
+	public final fun getError ()Lio/github/youndie/plakat/icons/PlakatStencil;
+	public final fun getHome ()Lio/github/youndie/plakat/icons/PlakatStencil;
+	public final fun getInfo ()Lio/github/youndie/plakat/icons/PlakatStencil;
+	public final fun getMenu ()Lio/github/youndie/plakat/icons/PlakatStencil;
+	public final fun getRefresh ()Lio/github/youndie/plakat/icons/PlakatStencil;
+	public final fun getSearch ()Lio/github/youndie/plakat/icons/PlakatStencil;
+	public final fun getSettings ()Lio/github/youndie/plakat/icons/PlakatStencil;
+	public final fun getShare ()Lio/github/youndie/plakat/icons/PlakatStencil;
+	public final fun getTime ()Lio/github/youndie/plakat/icons/PlakatStencil;
+	public final fun getWarning ()Lio/github/youndie/plakat/icons/PlakatStencil;
+}
+
+public final class io/github/youndie/plakat/icons/PlakatStencil {
+	public static final field $stable I
+	public final fun getName ()Ljava/lang/String;
+	public final fun getPathData ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class io/github/youndie/plakat/print/PlakatCutShape : androidx/compose/ui/graphics/Shape {
 	public static final field $stable I
 	public fun <init> ()V
@@ -126,6 +159,7 @@ public final class io/github/youndie/plakat/theme/PlakatTheme {
 
 public final class io/github/youndie/plakat/theme/PlakatThemeKt {
 	public static final fun PlakatTheme (Lio/github/youndie/plakat/tokens/PlakatColors;Ljava/lang/Boolean;Lio/github/youndie/plakat/theme/PlakatPrintSwitches;Lio/github/youndie/plakat/theme/PlakatStrings;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun getLocalPlakatContentColor ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 }
 
 public final class io/github/youndie/plakat/theme/PlakatTypography {
