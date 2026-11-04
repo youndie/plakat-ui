@@ -1,7 +1,7 @@
 ---
 id: B-12
 title: "Motion events: the named events every animation reports, for sound later"
-status: open
+status: wip
 priority: P1
 size: S
 stage: stage-1-materials
