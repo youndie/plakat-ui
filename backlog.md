@@ -59,7 +59,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-13](docs/backlog/B-13-button.md) `[ ]` | Button: filled, outlined, text, danger; stamp, release, engage | P1 | M | B-09, B-10, B-12 |
+| [B-13](docs/backlog/B-13-button.md) `[~]` | Button: filled, outlined, text, danger; stamp, release, engage | P1 | M | B-09, B-10, B-12 |
 | [B-14](docs/backlog/B-14-text-field.md) `[ ]` | TextField: underline to bar, hatch error, square caret | P1 | M | B-09, B-10, B-12 |
 | [B-15](docs/backlog/B-15-checkbox.md) `[ ]` | Checkbox: the red wedge in and out | P1 | M | B-09, B-10, B-12 |
 | [B-16](docs/backlog/B-16-switch.md) `[ ]` | Switch: rail, carriage and the red segment | P1 | M | B-09, B-10, B-12 |

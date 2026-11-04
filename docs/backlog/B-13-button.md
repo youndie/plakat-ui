@@ -1,7 +1,7 @@
 ---
 id: B-13
 title: "Button: filled, outlined, text, danger; stamp, release, engage"
-status: open
+status: wip
 priority: P1
 size: M
 stage: stage-2-components
