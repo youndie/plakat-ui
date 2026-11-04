@@ -138,6 +138,39 @@ class PlakatButtonTest {
         }
 
     @Test
+    fun `the plate follows the hard-stop curve frame by frame`() =
+        runComposeUiTest {
+            mainClock.autoAdvance = false
+            setContent {
+                CompositionLocalProvider(LocalDensity provides Density(1f)) {
+                    PlakatTheme(
+                        reduceMotion = false,
+                    ) { PlakatButton("читать", {}, Modifier.width(164.dp).testTag("b")) }
+                }
+            }
+            mainClock.advanceTimeBy(100)
+            onNodeWithTag("b").performTouchInput { down(center) }
+            mainClock.advanceTimeByFrame()
+            onNodeWithTag("b").performTouchInput { up() }
+            // The way from ink to red, read off the plate's green channel at each 16 ms frame.
+            val way =
+                (0 until 6).map {
+                    mainClock.advanceTimeByFrame()
+                    (plate().green - paper.ink.green) / (paper.red.green - paper.ink.green)
+                }
+            // The play starts on one of the first frames; from there every frame is the curve at its age.
+            val fits =
+                (0..2).any { start ->
+                    way.withIndex().all { (i, f) ->
+                        val age = (i - start) * 16 / 60.0
+                        val want = if (age <= 0) 0.0 else hardStop(minOf(age, 1.0))
+                        abs(f - want) < 0.04
+                    }
+                }
+            assertTrue(fits, "the plate's way per frame: $way")
+        }
+
+    @Test
     fun `under reduced motion the release is instant`() =
         runComposeUiTest {
             mainClock.autoAdvance = false
