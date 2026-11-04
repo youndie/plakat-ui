@@ -1,7 +1,7 @@
 ---
 id: B-07
 title: "Textures: render the three truncated tiles by a script, seamless, beside the five delivered"
-status: open
+status: wip
 priority: P1
 size: M
 stage: stage-1-materials
