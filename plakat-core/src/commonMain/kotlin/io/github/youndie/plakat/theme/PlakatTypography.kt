@@ -75,3 +75,47 @@ internal fun plakatTypography(): PlakatTypography {
         )
     }
 }
+
+/**
+ * A face's vertical metrics (`hhea`, per em), which Blink rounds and Compose does not. Held to the
+ * bundled files by `PlakatFontMetricsTest`.
+ */
+internal class FaceMetrics(
+    val ascent: Float,
+    val descent: Float,
+)
+
+internal object PlakatFaceMetrics {
+    /** Golos Text, both cuts: ascender 980, descender −220 of 1000. */
+    val Body = FaceMetrics(.98f, .22f)
+
+    /** Rubik Mono One: ascender 932, descender −306 of 1000. */
+    val Display = FaceMetrics(.932f, .306f)
+}
+
+/**
+ * This style laid out as Blink lays a CSS line box, so a text's baseline lands on Chrome's pixel.
+ * [lineHeight] is the CSS `line-height` as a multiple of the size, null for `normal`.
+ *
+ * Blink rounds the ascent and the descent to whole pixels each, takes `normal` as their sum, and
+ * floors the half-leading; Compose centres the face's unrounded metrics in the line. Each puts the
+ * baseline in a different pixel (a field's text, an error message: a pixel low). The line height is
+ * Blink's, and the share of the leading above the text is chosen so the baseline falls where Blink's
+ * does (cmp-ui-parity's catalogue, "Blink rounds ascent and descent").
+ */
+internal fun TextStyle.cssLine(
+    face: FaceMetrics,
+    lineHeight: Float? = null,
+): TextStyle {
+    val px = fontSize.value
+    val ascent = face.ascent * px
+    val content = kotlin.math.round(ascent) + kotlin.math.round(face.descent * px)
+    val line = lineHeight?.let { it * px } ?: content
+    val baseline = kotlin.math.floor((line - content) / 2) + kotlin.math.round(ascent)
+    val leading = line - (face.ascent + face.descent) * px
+    val ratio = if (leading <= 0.01f) 0f else ((baseline - ascent) / leading).coerceIn(0f, 1f)
+    return copy(
+        lineHeight = line.sp,
+        lineHeightStyle = LineHeightStyle(LineHeightStyle.Alignment(ratio), LineHeightStyle.Trim.None),
+    )
+}
