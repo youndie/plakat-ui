@@ -1,7 +1,7 @@
 ---
 id: B-14
 title: "TextField: underline to bar, hatch error, square caret"
-status: open
+status: wip
 priority: P1
 size: M
 stage: stage-2-components
