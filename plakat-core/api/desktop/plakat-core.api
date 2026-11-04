@@ -5,6 +5,10 @@ public final class io/github/youndie/plakat/components/PlakatButtonKt {
 	public static final fun PlakatTextButton (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class io/github/youndie/plakat/components/PlakatCheckboxKt {
+	public static final fun PlakatCheckbox (ZLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZZLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
+}
+
 public final class io/github/youndie/plakat/components/PlakatTextFieldKt {
 	public static final fun PlakatTextField (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLandroidx/compose/foundation/text/KeyboardOptions;Landroidx/compose/foundation/text/KeyboardActions;Landroidx/compose/ui/text/input/VisualTransformation;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;III)V
 }
@@ -58,8 +62,8 @@ public final class io/github/youndie/plakat/print/PlakatCutShape : androidx/comp
 public final class io/github/youndie/plakat/print/PlakatHatchKt {
 	public static final fun plakatHatch--WgHM3s (Landroidx/compose/ui/Modifier;JJF)Landroidx/compose/ui/Modifier;
 	public static synthetic fun plakatHatch--WgHM3s$default (Landroidx/compose/ui/Modifier;JJFILjava/lang/Object;)Landroidx/compose/ui/Modifier;
-	public static final fun plakatHatchBrush-u5lswCc (JJJFF)Landroidx/compose/ui/graphics/Brush;
-	public static synthetic fun plakatHatchBrush-u5lswCc$default (JJJFFILjava/lang/Object;)Landroidx/compose/ui/graphics/Brush;
+	public static final fun plakatHatchBrush-KpH-CiI (JJJFFF)Landroidx/compose/ui/graphics/Brush;
+	public static synthetic fun plakatHatchBrush-KpH-CiI$default (JJJFFFILjava/lang/Object;)Landroidx/compose/ui/graphics/Brush;
 }
 
 public final class io/github/youndie/plakat/print/PlakatPrintLayerKt {

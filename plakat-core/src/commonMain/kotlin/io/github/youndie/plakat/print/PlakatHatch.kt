@@ -20,6 +20,8 @@ import kotlin.math.sin
  * The stripes are placed as CSS places a gradient on a box of [size]: the gradient line through the
  * box's centre at [angle] (0° up, clockwise), as long as the box's projection on it, the pattern
  * starting at the line's start. Hard stops, so every pixel is one paint or the other, as in Chrome.
+ * [inkShare] is the ink's part of each period: a half for the danger hatch, 2 of 5 for the error
+ * checkbox's `repeating-linear-gradient(45deg, red 0 2px, transparent 2px 5px)`.
  */
 public fun plakatHatchBrush(
     size: Size,
@@ -27,6 +29,7 @@ public fun plakatHatchBrush(
     ground: Color,
     period: Float,
     angle: Float = 45f,
+    inkShare: Float = .5f,
 ): Brush {
     val a = angle * PI / 180
     val dx = sin(a).toFloat()
@@ -36,8 +39,8 @@ public fun plakatHatchBrush(
     val start = centre - Offset(dx, dy) * (length / 2)
     return Brush.linearGradient(
         0f to ink,
-        .5f to ink,
-        .5f to ground,
+        inkShare to ink,
+        inkShare to ground,
         1f to ground,
         start = start,
         end = start + Offset(dx, dy) * period,
