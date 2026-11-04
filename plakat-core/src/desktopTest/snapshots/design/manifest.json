@@ -458,6 +458,138 @@
       "shift": 0.3125
     },
     {
+      "file": "TextField_Default_Light.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "TextField / Default",
+      "card": 0,
+      "part": "above",
+      "x": 56,
+      "y": 1007,
+      "w": 224,
+      "h": 95,
+      "shift": 0.3125
+    },
+    {
+      "file": "TextField_Default_Dark.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "TextField / Default",
+      "card": 1,
+      "part": "above",
+      "x": 824,
+      "y": 1007,
+      "w": 224,
+      "h": 95,
+      "shift": 0.3125
+    },
+    {
+      "file": "TextField_Focused_Light.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "TextField / Focused",
+      "card": 0,
+      "part": "above",
+      "x": 296,
+      "y": 1007,
+      "w": 224,
+      "h": 95,
+      "shift": 0.3125
+    },
+    {
+      "file": "TextField_Focused_Dark.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "TextField / Focused",
+      "card": 1,
+      "part": "above",
+      "x": 1064,
+      "y": 1007,
+      "w": 224,
+      "h": 95,
+      "shift": 0.3125
+    },
+    {
+      "file": "TextField_Filled_Light.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "TextField / Filled",
+      "card": 0,
+      "part": "above",
+      "x": 536,
+      "y": 1007,
+      "w": 224,
+      "h": 95,
+      "shift": 0.3125
+    },
+    {
+      "file": "TextField_Filled_Dark.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "TextField / Filled",
+      "card": 1,
+      "part": "above",
+      "x": 1304,
+      "y": 1007,
+      "w": 224,
+      "h": 95,
+      "shift": 0.3125
+    },
+    {
+      "file": "TextField_Error_Light.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "TextField / Error",
+      "card": 0,
+      "part": "above",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "w": 224,
+        "h": 149
+      },
+      "x": 56,
+      "y": 1141,
+      "w": 224,
+      "h": 149,
+      "shift": 0.3125
+    },
+    {
+      "file": "TextField_Error_Dark.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "TextField / Error",
+      "card": 1,
+      "part": "above",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "w": 224,
+        "h": 149
+      },
+      "x": 824,
+      "y": 1141,
+      "w": 224,
+      "h": 149,
+      "shift": 0.3125
+    },
+    {
+      "file": "TextField_Disabled_Light.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "TextField / Disabled",
+      "card": 0,
+      "part": "above",
+      "x": 296,
+      "y": 1141,
+      "w": 224,
+      "h": 95,
+      "shift": 0.3125
+    },
+    {
+      "file": "TextField_Disabled_Dark.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "TextField / Disabled",
+      "card": 1,
+      "part": "above",
+      "x": 1064,
+      "y": 1141,
+      "w": 224,
+      "h": 95,
+      "shift": 0.3125
+    },
+    {
       "file": "Icon_Menu_48.png",
       "page": "plakat-ui Иконки.dc.html",
       "caption": "plakat/icon/menu",

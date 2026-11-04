@@ -78,6 +78,14 @@ export const REFERENCES = [
     ['TextDefault', 'Text / Default'], ['TextPressed', 'Text / Pressed'], ['TextDisabled', 'Text / Disabled'],
   // The focus ring is an outline 3 px wide, 3 px off the element: the crop takes the 6 px around it.
   ]).map((r) => (r.name.startsWith('FilledFocused_') ? { ...r, crop: { x: -6, y: -6, w: 176, h: 60 } } : r)),
+  // The TextField's cells (B-14): label, field and, in error, the hatch and its message: the cell
+  // above its caption.
+  ...cells('TextField', CORE, 'above', [
+    ['Default', 'TextField / Default'], ['Focused', 'TextField / Focused'], ['Filled', 'TextField / Filled'],
+    ['Error', 'TextField / Error'], ['Disabled', 'TextField / Disabled'],
+  // The error message's 1.35 line leaves its cell 148.78 px tall: the crop takes 149, the last row
+  // the gap's paper below the message.
+  ]).map((r) => (r.name.startsWith('Error_') ? { ...r, crop: { x: 0, y: 0, w: 224, h: 149 } } : r)),
   // The icons (B-11): each of the sixteen at 48, 24 and 16 px, ink on concrete, from the Icons page's
   // grid; a cell is found by its token caption, and the icon is the n-th svg of the row above it.
   ...ICON_IDS.flatMap((id) => [48, 24, 16].map((size, index) =>
