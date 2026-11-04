@@ -86,6 +86,11 @@ export const REFERENCES = [
   // The error message's 1.35 line leaves its cell 148.78 px tall: the crop takes 149, the last row
   // the gap's paper below the message.
   ]).map((r) => (r.name.startsWith('Error_') ? { ...r, crop: { x: 0, y: 0, w: 224, h: 149 } } : r)),
+  // The Checkbox's cells (B-15): the 48 px zone (the error cell: the zone and its word).
+  ...cells('Checkbox', CORE, 'first', [
+    ['Off', 'Checkbox / Off'], ['On', 'Checkbox / On'], ['Focused', 'Checkbox / Focused'],
+    ['Disabled', 'Checkbox / Disabled'], ['Error', 'Checkbox / Error'],
+  ]),
   // The icons (B-11): each of the sixteen at 48, 24 and 16 px, ink on concrete, from the Icons page's
   // grid; a cell is found by its token caption, and the icon is the n-th svg of the row above it.
   ...ICON_IDS.flatMap((id) => [48, 24, 16].map((size, index) =>
