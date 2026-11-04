@@ -41,3 +41,6 @@ MVP component (brief «Инвентарь компонентов»), drawn on `p
   disabled checked only); the error look when checked (the wedge over the hatch); no press feedback,
   since the spec row has none.
 - **Events**: `wedge-in` and `wedge-out` on each change of `checked`, not on the first composition.
+- **Mutants**: the wedge in linearly, out in 120 ms, in from the top-left — killed by the frame
+  reading (and the last by the offset test); the wedge as the other half of the square, the error
+  hatch at one-in-two — killed by the goldens.
