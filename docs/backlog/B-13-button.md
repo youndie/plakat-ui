@@ -54,3 +54,8 @@ MVP component (brief «Инвентарь компонентов»), drawn on `p
 - **Events**: `stamp` on press and `release` on release, from the input; `engage` once when loading
   starts. Reduced motion: release instant, the slogan's wipe instant, the sector standing at 0°.
 - Not built: an icon in a button (the design draws none).
+- **Mutants**, each run against the committed code: release eased linearly — survived the first tests,
+  killed by `the plate follows the hard-stop curve frame by frame`, written for it; release 200 ms, no
+  `stamp`, eight sector steps, a loading button still clickable — each killed by its aimed test; the
+  pressed shift 2 dp and Blink's gap ratio changed — killed by the goldens (pressed and disabled
+  outlined cells).
