@@ -59,7 +59,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-15](docs/backlog/B-15-checkbox.md) `[ ]` | Checkbox: the red wedge in and out | P1 | M | B-09, B-10, B-12 |
+| [B-15](docs/backlog/B-15-checkbox.md) `[~]` | Checkbox: the red wedge in and out | P1 | M | B-09, B-10, B-12 |
 | [B-16](docs/backlog/B-16-switch.md) `[ ]` | Switch: rail, carriage and the red segment | P1 | M | B-09, B-10, B-12 |
 | [B-17](docs/backlog/B-17-card.md) `[ ]` | Card: sheet of concrete paper, print appear, tear dismiss | P1 | M | B-09, B-10, B-12 |
 | [B-18](docs/backlog/B-18-snackbar.md) `[ ]` | Snackbar: the telegram | P1 | M | B-09, B-10, B-12 |
