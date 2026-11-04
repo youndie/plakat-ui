@@ -1,3 +1,10 @@
+public final class io/github/youndie/plakat/components/PlakatButtonKt {
+	public static final fun PlakatButton (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZZLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PlakatDangerButton (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PlakatOutlinedButton (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PlakatTextButton (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
+}
+
 public final class io/github/youndie/plakat/icons/PlakatIconKt {
 	public static final fun PlakatIcon-ww6aTOc (Lio/github/youndie/plakat/icons/PlakatStencil;Ljava/lang/String;Landroidx/compose/ui/Modifier;JLandroidx/compose/runtime/Composer;II)V
 }

@@ -76,7 +76,8 @@ export const REFERENCES = [
     ['FilledDisabled', 'Filled / Disabled'], ['FilledLoading', 'Filled / Loading'],
     ['OutlinedDefault', 'Outlined / Default'], ['OutlinedPressed', 'Outlined / Pressed'], ['OutlinedDisabled', 'Outlined / Disabled'],
     ['TextDefault', 'Text / Default'], ['TextPressed', 'Text / Pressed'], ['TextDisabled', 'Text / Disabled'],
-  ]),
+  // The focus ring is an outline 3 px wide, 3 px off the element: the crop takes the 6 px around it.
+  ]).map((r) => (r.name.startsWith('FilledFocused_') ? { ...r, crop: { x: -6, y: -6, w: 176, h: 60 } } : r)),
   // The icons (B-11): each of the sixteen at 48, 24 and 16 px, ink on concrete, from the Icons page's
   // grid; a cell is found by its token caption, and the icon is the n-th svg of the row above it.
   ...ICON_IDS.flatMap((id) => [48, 24, 16].map((size, index) =>
