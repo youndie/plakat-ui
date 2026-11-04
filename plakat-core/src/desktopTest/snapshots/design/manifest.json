@@ -710,6 +710,114 @@
       "shift": 0.53125
     },
     {
+      "file": "Switch_Off_Light.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "Switch / Off",
+      "card": 0,
+      "part": "first",
+      "x": 656,
+      "y": 1512,
+      "w": 56,
+      "h": 48,
+      "shift": 0.53125
+    },
+    {
+      "file": "Switch_Off_Dark.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "Switch / Off",
+      "card": 1,
+      "part": "first",
+      "x": 1424,
+      "y": 1512,
+      "w": 56,
+      "h": 48,
+      "shift": 0.53125
+    },
+    {
+      "file": "Switch_On_Light.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "Switch / On",
+      "card": 0,
+      "part": "first",
+      "x": 56,
+      "y": 1618,
+      "w": 56,
+      "h": 48,
+      "shift": 0.53125
+    },
+    {
+      "file": "Switch_On_Dark.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "Switch / On",
+      "card": 1,
+      "part": "first",
+      "x": 824,
+      "y": 1618,
+      "w": 56,
+      "h": 48,
+      "shift": 0.53125
+    },
+    {
+      "file": "Switch_Focused_Light.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "Switch / Focused",
+      "card": 0,
+      "part": "first",
+      "crop": {
+        "x": -7,
+        "y": -7,
+        "w": 70,
+        "h": 62
+      },
+      "x": 169,
+      "y": 1611,
+      "w": 70,
+      "h": 62,
+      "shift": 0.53125
+    },
+    {
+      "file": "Switch_Focused_Dark.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "Switch / Focused",
+      "card": 1,
+      "part": "first",
+      "crop": {
+        "x": -7,
+        "y": -7,
+        "w": 70,
+        "h": 62
+      },
+      "x": 937,
+      "y": 1611,
+      "w": 70,
+      "h": 62,
+      "shift": 0.53125
+    },
+    {
+      "file": "Switch_Disabled_Light.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "Switch / Disabled",
+      "card": 0,
+      "part": "first",
+      "x": 296,
+      "y": 1618,
+      "w": 56,
+      "h": 48,
+      "shift": 0.53125
+    },
+    {
+      "file": "Switch_Disabled_Dark.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "Switch / Disabled",
+      "card": 1,
+      "part": "first",
+      "x": 1064,
+      "y": 1618,
+      "w": 56,
+      "h": 48,
+      "shift": 0.53125
+    },
+    {
       "file": "Icon_Menu_48.png",
       "page": "plakat-ui Иконки.dc.html",
       "caption": "plakat/icon/menu",

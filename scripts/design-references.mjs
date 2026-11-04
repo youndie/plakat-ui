@@ -91,6 +91,11 @@ export const REFERENCES = [
     ['Off', 'Checkbox / Off'], ['On', 'Checkbox / On'], ['Focused', 'Checkbox / Focused'],
     ['Disabled', 'Checkbox / Disabled'], ['Error', 'Checkbox / Error'],
   ]),
+  // The Switch's cells (B-16): the 56 × 48 track; the focus ring 3 px wide 4 px off it, so that cell
+  // is cropped 7 px wider each side.
+  ...cells('Switch', CORE, 'first', [
+    ['Off', 'Switch / Off'], ['On', 'Switch / On'], ['Focused', 'Switch / Focused'], ['Disabled', 'Switch / Disabled'],
+  ]).map((r) => (r.name.startsWith('Focused_') ? { ...r, crop: { x: -7, y: -7, w: 70, h: 62 } } : r)),
   // The icons (B-11): each of the sixteen at 48, 24 and 16 px, ink on concrete, from the Icons page's
   // grid; a cell is found by its token caption, and the icon is the n-th svg of the row above it.
   ...ICON_IDS.flatMap((id) => [48, 24, 16].map((size, index) =>

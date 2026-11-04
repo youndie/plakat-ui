@@ -1,7 +1,7 @@
 ---
 id: B-16
 title: "Switch: rail, carriage and the red segment"
-status: open
+status: done
 priority: P1
 size: M
 stage: stage-2-components
@@ -19,3 +19,21 @@ MVP component (brief «Инвентарь компонентов»), drawn on `p
 
 - AC: every state the page draws, in both themes, within the parity floor ([B-05](B-05-pixel-references-and-floor.md)); the motion row's values read at its timestamps by a test; reduce motion as specified; touch target ≥ 48 dp; a mutant in the ported curve or geometry is caught.
 - Anchors: `reference/design-system/plakat-ui Ядро.dc.html`
+
+## Findings (2026-11-04)
+
+- **API**: `PlakatSwitch(checked, onCheckedChange, modifier, enabled, interactionSource)`, Material's
+  shape; `onCheckedChange = null` only shows. The target is the 56 × 48 track itself
+  (`plakat/size/switch` × `plakat/size/touch`).
+- **Parity**: Off, On, Focused, Disabled at **0.00 %** in both themes. The rail is where the page puts
+  it, `top: 22px` in 48 — half a pixel above the middle — and the focus ring the page's
+  `outline: 3px; outline-offset: 4px` (the reference crop grew 7 px a side for it).
+- **Motion**: the carriage and the segment move together, 120 ms hard-stop both ways (the live lab
+  transitions `transform` and `width` with the same curve); the test reads the carriage's
+  antialiased left edge each frame and holds it to `cubic-bezier(.2,.8,.9,.9)`, and the red segment
+  to the edge within a pixel.
+- **Designed here** (D13): disabled and off (the concrete carriage at the left end; the page draws
+  disabled on only); no press feedback (the spec row has none).
+- **Events**: `lever` on each change of `checked`.
+- **Mutants**: the carriage eased linearly, the segment lagging the carriage — killed by the frame
+  reading; the rail on the other half-pixel, the ring 3 px off — killed by the goldens.
