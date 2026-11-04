@@ -20,7 +20,8 @@
 //
 // A reference names its cell by the cell's caption ("Filled / Default") and which theme card it is
 // in (0 light, 1 dark), and a part: the cell's first child (the component), the caption itself
-// (the text floor), or everything above the caption (a divider's rule). The PNGs go to
+// (the text floor), everything above the caption (a divider's rule), or the n-th icon of the row
+// above the caption's block (an icon cell). The PNGs go to
 // plakat-core/src/desktopTest/snapshots/design, named as viddik names a fixture's golden,
 // `<Group>_<Name>.png`. --check renders into memory and fails if any PNG differs.
 // Node 24 has WebSocket, so the DevTools protocol needs no dependency.
@@ -47,6 +48,13 @@ const viewport = (page) => VIEWPORTS[page] ?? VIEWPORT;
 const CORE = 'plakat-ui Ядро.dc.html';
 const TOKENS = 'plakat-ui Токены.dc.html';
 const MVP = 'plakat-ui Компоненты.dc.html';
+const ICONS = 'plakat-ui Иконки.dc.html';
+// What says a page's template has rendered: the runtime has replaced its <x-dc> and the cells'
+// captions are there ("Filled / Default"); the Icons page imports its paths after mount.
+const READY = { [ICONS]: 'plakat/icon/time' };
+const ready = (page) => `!document.querySelector('x-dc') && document.body.innerText.includes(${JSON.stringify(READY[page] ?? '/ ')})`;
+const ICON_IDS = JSON.parse(readFileSync(join(DESIGN, 'plakat-icons.json'), 'utf8')).map((i) => i.name.split('/').pop());
+const camel = (id) => id[0].toUpperCase() + id.slice(1);
 const THEMES = ['Light', 'Dark'];
 
 const cells = (group, page, part, entries) =>
@@ -69,6 +77,10 @@ export const REFERENCES = [
     ['OutlinedDefault', 'Outlined / Default'], ['OutlinedPressed', 'Outlined / Pressed'], ['OutlinedDisabled', 'Outlined / Disabled'],
     ['TextDefault', 'Text / Default'], ['TextPressed', 'Text / Pressed'], ['TextDisabled', 'Text / Disabled'],
   ]),
+  // The icons (B-11): each of the sixteen at 48, 24 and 16 px, ink on concrete, from the Icons page's
+  // grid; a cell is found by its token caption, and the icon is the n-th svg of the row above it.
+  ...ICON_IDS.flatMap((id) => [48, 24, 16].map((size, index) =>
+    ({ group: 'Icon', name: `${camel(id)}_${size}`, page: ICONS, caption: `plakat/icon/${id}`, card: 0, part: 'icon', index }))),
 ];
 
 // The repository's faces under the names the pages ask Google for.
@@ -130,6 +142,7 @@ const LOCATE = `(ref) => {
   if (!caption) return { error: 'caption ' + JSON.stringify(ref.caption) + ' #' + ref.card + ' not found (' + captions.length + ' on the page)' };
   const cell = caption.parentElement, c = cell.getBoundingClientRect(), t = caption.getBoundingClientRect();
   const r = ref.part === 'caption' ? t : ref.part === 'first' ? cell.firstElementChild.getBoundingClientRect()
+    : ref.part === 'icon' ? cell.parentElement.firstElementChild.children[ref.index].getBoundingClientRect()
     : { left: c.left, top: c.top, width: c.width, height: t.top - c.top };
   const c0 = ref.crop ?? { x: 0, y: 0, w: r.width, h: r.height };
   return { x: r.left + scrollX + c0.x, y: r.top + scrollY + c0.y, w: c0.w, h: c0.h };
@@ -158,7 +171,8 @@ async function open(cdp, page) {
   await loaded;
   const evaluate = async (expression) => (await cdp.send('Runtime.evaluate', { expression, awaitPromise: true, returnByValue: true }, sessionId)).result.value;
   // The runtime compiles the page with Babel after load: wait until the template has rendered.
-  for (let i = 0; i < 200 && !(await evaluate(`!!document.querySelector('x-dc') && document.body.innerText.includes('/ ')`)); i++) await sleep(100);
+  for (let i = 0; i < 200 && !(await evaluate(ready(page))); i++) await sleep(100);
+  if (!(await evaluate(ready(page)))) throw new Error(`${page}: the template never rendered`);
   await evaluate('document.fonts.ready.then(() => true)');
   const height = await evaluate('document.documentElement.scrollHeight');
   await cdp.send('Emulation.setDeviceMetricsOverride', { width: viewport(page), height, deviceScaleFactor: 1, mobile: false }, sessionId);

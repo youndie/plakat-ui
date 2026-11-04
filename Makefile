@@ -94,6 +94,8 @@ gate: docs-gate
 	node scripts/gen-goldens.mjs --check
 	# B-04: raskat's goldens are what the vendored plakat-raskat.js emits today.
 	node scripts/raskat-goldens.mjs --check
+	# B-11: the icons and their fixtures are what plakat-icons.json says today, and plakat-icons.js agrees.
+	node scripts/icons.mjs --check
 	# B-05: the Chrome references were rendered from today's pages and fonts (no Chrome needed here).
 	node scripts/design-references.mjs --manifest
 
