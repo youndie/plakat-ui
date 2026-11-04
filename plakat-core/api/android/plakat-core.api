@@ -111,6 +111,41 @@ public final class io/github/youndie/plakat/print/PlakatWipeKt {
 	public static final fun plakatWipePath-x_KDEd0 (Lio/github/youndie/plakat/print/PlakatWipe;JFLandroidx/compose/ui/unit/Density;)Landroidx/compose/ui/graphics/Path;
 }
 
+public final class io/github/youndie/plakat/theme/PlakatEvent : java/lang/Enum {
+	public static final field Announce Lio/github/youndie/plakat/theme/PlakatEvent;
+	public static final field Engage Lio/github/youndie/plakat/theme/PlakatEvent;
+	public static final field Fold Lio/github/youndie/plakat/theme/PlakatEvent;
+	public static final field Hatch Lio/github/youndie/plakat/theme/PlakatEvent;
+	public static final field Lever Lio/github/youndie/plakat/theme/PlakatEvent;
+	public static final field Lock Lio/github/youndie/plakat/theme/PlakatEvent;
+	public static final field Notch Lio/github/youndie/plakat/theme/PlakatEvent;
+	public static final field Print Lio/github/youndie/plakat/theme/PlakatEvent;
+	public static final field Rail Lio/github/youndie/plakat/theme/PlakatEvent;
+	public static final field Release Lio/github/youndie/plakat/theme/PlakatEvent;
+	public static final field Roll Lio/github/youndie/plakat/theme/PlakatEvent;
+	public static final field Stamp Lio/github/youndie/plakat/theme/PlakatEvent;
+	public static final field Tear Lio/github/youndie/plakat/theme/PlakatEvent;
+	public static final field Telegram Lio/github/youndie/plakat/theme/PlakatEvent;
+	public static final field Tick Lio/github/youndie/plakat/theme/PlakatEvent;
+	public static final field Underline Lio/github/youndie/plakat/theme/PlakatEvent;
+	public static final field WedgeIn Lio/github/youndie/plakat/theme/PlakatEvent;
+	public static final field WedgeOut Lio/github/youndie/plakat/theme/PlakatEvent;
+	public static final field Wipe Lio/github/youndie/plakat/theme/PlakatEvent;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getToken ()Ljava/lang/String;
+	public static fun valueOf (Ljava/lang/String;)Lio/github/youndie/plakat/theme/PlakatEvent;
+	public static fun values ()[Lio/github/youndie/plakat/theme/PlakatEvent;
+}
+
+public abstract interface class io/github/youndie/plakat/theme/PlakatEventListener {
+	public static final field Companion Lio/github/youndie/plakat/theme/PlakatEventListener$Companion;
+	public abstract fun onEvent (Lio/github/youndie/plakat/theme/PlakatEvent;)V
+}
+
+public final class io/github/youndie/plakat/theme/PlakatEventListener$Companion {
+	public final fun getSilent ()Lio/github/youndie/plakat/theme/PlakatEventListener;
+}
+
 public final class io/github/youndie/plakat/theme/PlakatPrintSwitches {
 	public static final field $stable I
 	public fun <init> ()V
@@ -151,6 +186,7 @@ public final class io/github/youndie/plakat/theme/PlakatTheme {
 	public static final field $stable I
 	public static final field INSTANCE Lio/github/youndie/plakat/theme/PlakatTheme;
 	public final fun getColors (Landroidx/compose/runtime/Composer;I)Lio/github/youndie/plakat/tokens/PlakatColors;
+	public final fun getEvents (Landroidx/compose/runtime/Composer;I)Lio/github/youndie/plakat/theme/PlakatEventListener;
 	public final fun getPrint (Landroidx/compose/runtime/Composer;I)Lio/github/youndie/plakat/theme/PlakatPrintSwitches;
 	public final fun getReduceMotion (Landroidx/compose/runtime/Composer;I)Z
 	public final fun getStrings (Landroidx/compose/runtime/Composer;I)Lio/github/youndie/plakat/theme/PlakatStrings;
@@ -158,7 +194,7 @@ public final class io/github/youndie/plakat/theme/PlakatTheme {
 }
 
 public final class io/github/youndie/plakat/theme/PlakatThemeKt {
-	public static final fun PlakatTheme (Lio/github/youndie/plakat/tokens/PlakatColors;Ljava/lang/Boolean;Lio/github/youndie/plakat/theme/PlakatPrintSwitches;Lio/github/youndie/plakat/theme/PlakatStrings;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PlakatTheme (Lio/github/youndie/plakat/tokens/PlakatColors;Ljava/lang/Boolean;Lio/github/youndie/plakat/theme/PlakatPrintSwitches;Lio/github/youndie/plakat/theme/PlakatStrings;Lio/github/youndie/plakat/theme/PlakatEventListener;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 	public static final fun getLocalPlakatContentColor ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 }
 

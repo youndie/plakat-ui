@@ -36,6 +36,7 @@ private val LocalPlakatTypography = staticCompositionLocalOf<PlakatTypography?> 
 private val LocalPlakatReduceMotion = staticCompositionLocalOf { false }
 private val LocalPlakatPrint = staticCompositionLocalOf { PlakatPrintSwitches() }
 private val LocalPlakatStrings = staticCompositionLocalOf { PlakatStrings() }
+private val LocalPlakatEvents = staticCompositionLocalOf { PlakatEventListener.Silent }
 
 /**
  * The kit's theme. [colors] picks the paper: [PlakatPalettes.Paper] or [PlakatPalettes.BlackPaper].
@@ -46,6 +47,7 @@ private val LocalPlakatStrings = staticCompositionLocalOf { PlakatStrings() }
  * @param print the print layers; texture, non-print, registration and raskat are on by default, as
  *   the design ships them.
  * @param strings the words of the kit's own controls, for localisation.
+ * @param events hears every [PlakatEvent] the kit's animations report, for sound; silent by default.
  */
 @Composable
 public fun PlakatTheme(
@@ -53,6 +55,7 @@ public fun PlakatTheme(
     reduceMotion: Boolean? = null,
     print: PlakatPrintSwitches = PlakatPrintSwitches(),
     strings: PlakatStrings = PlakatStrings(),
+    events: PlakatEventListener = PlakatEventListener.Silent,
     content: @Composable () -> Unit,
 ) {
     CompositionLocalProvider(
@@ -61,6 +64,7 @@ public fun PlakatTheme(
         LocalPlakatReduceMotion provides (reduceMotion ?: platformReducedMotion()),
         LocalPlakatPrint provides print,
         LocalPlakatStrings provides strings,
+        LocalPlakatEvents provides events,
         content = content,
     )
 }
@@ -86,4 +90,9 @@ public object PlakatTheme {
     public val strings: PlakatStrings
         @Composable @ReadOnlyComposable
         get() = LocalPlakatStrings.current
+
+    /** Where the kit's components report their [PlakatEvent]s. */
+    public val events: PlakatEventListener
+        @Composable @ReadOnlyComposable
+        get() = LocalPlakatEvents.current
 }
