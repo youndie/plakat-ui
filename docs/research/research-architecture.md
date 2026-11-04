@@ -304,6 +304,19 @@ by `plakat/sources` — so a committed script renders the three missing tiles fr
 ([B-07](../backlog/B-07-textures.md)). The vendored five are not re-rendered; texture opacity follows
 `plakat-tokens.json` (D8).
 
+**Amended in B-07 (2026-11-04): made from the delivered dark paper, not from the recipe.** Read
+pixel by pixel, `paper-dark-2x.png` is not that recipe's noise: it is the token #1F1D1A with a mottle
+of ±1 level (σ 1.1) and short straight fibres and specks up to +19, where the Tokens page's
+`feTurbulence` overlay spreads over tens of levels. A tile rendered from the recipe would have been a
+different paper beside the designer's. So `scripts/textures.py` takes the dark tile's deviation from
+its token and prints it on the other papers, pixel for pixel: `paper-light` and `concrete-light` are
+their token minus that deviation (the fibres print dark on light paper), opaque; `paper-grain` is the
+Tokens page's grain colour (.42, .34, .20) with an alpha that, multiplied at the token's 0.45 over
+flat light paper, takes off the same luminance. The source wraps without a seam (wraps 1.10 and 1.06
+times the median neighbour difference), so the three do too. Rejected: the recipe (above); asking
+for the files again (the owner's choice). The designer's own tiles may still differ in tone from
+these; Risk 4 holds.
+
 ---
 
 ## 3. Risks and open questions
@@ -323,9 +336,9 @@ and the Compose port takes density as an input to the field, never a constant.
 item measures the contrast of muted text over the multiplied texture and either lightens the texture
 under text or swaps the token, with the owner's choice recorded ([B-36](../backlog/B-36-accessibility.md)).
 
-**Risk 4. Three textures are rendered here, not delivered** (D16), so their tone may not be the
-designer's. Mitigation: the script matches the mean and spread of each to its delivered sibling
-(paper-light to paper-dark, concrete-light to its token), the texture layer is switchable by token,
+**Risk 4. Three textures are made here, not delivered** (D16), so their tone may not be the
+designer's. Mitigation: the script takes their grain from the delivered dark paper and their base
+from the tokens (paper-light's mean is its token within 1.1 levels), the texture layer is switchable by token,
 and references and goldens are taken with it off, so a texture never moves a component's parity.
 
 **Hypothesis H1.** The spec pages render in headless Chrome from `file://` once the three runtime

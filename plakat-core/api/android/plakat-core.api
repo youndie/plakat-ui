@@ -26,6 +26,13 @@ public final class io/github/youndie/plakat/print/PlakatRegistrationKt {
 	public static final fun PlakatRegisteredText-jA1GFJw (Ljava/lang/String;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/ui/Modifier;JJLandroidx/compose/runtime/Composer;II)V
 }
 
+public final class io/github/youndie/plakat/print/PlakatTexturesKt {
+	public static final fun plakatConcrete (Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/Modifier;
+	public static final fun plakatGrain (Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/Modifier;
+	public static final fun plakatNonprint (Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/Modifier;
+	public static final fun plakatPaper (Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/Modifier;
+}
+
 public abstract class io/github/youndie/plakat/print/PlakatWipe {
 	public static final field $stable I
 }

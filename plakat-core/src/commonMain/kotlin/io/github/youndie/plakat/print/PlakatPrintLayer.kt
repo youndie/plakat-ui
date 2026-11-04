@@ -4,6 +4,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
@@ -25,20 +26,30 @@ public fun Modifier.plakatPrintLayer(
 ): Modifier =
     drawWithContent {
         drawContent()
-        val step = tileSize.toPx().roundToInt().coerceAtLeast(1)
-        val cols = ceil(size.width / step).toInt()
-        val rows = ceil(size.height / step).toInt()
-        clipRect {
-            for (r in 0 until rows) {
-                for (c in 0 until cols) {
-                    drawImage(
-                        tile,
-                        dstOffset = IntOffset(c * step, r * step),
-                        dstSize = IntSize(step, step),
-                        alpha = alpha,
-                        blendMode = blend,
-                    )
-                }
+        drawTiles(tile, tileSize, alpha, blend)
+    }
+
+/** [tile] edge to edge over the whole draw area from its top-left, clipped to it. */
+internal fun DrawScope.drawTiles(
+    tile: ImageBitmap,
+    tileSize: Dp,
+    alpha: Float,
+    blend: BlendMode,
+) {
+    val step = tileSize.toPx().roundToInt().coerceAtLeast(1)
+    val cols = ceil(size.width / step).toInt()
+    val rows = ceil(size.height / step).toInt()
+    clipRect {
+        for (r in 0 until rows) {
+            for (c in 0 until cols) {
+                drawImage(
+                    tile,
+                    dstOffset = IntOffset(c * step, r * step),
+                    dstSize = IntSize(step, step),
+                    alpha = alpha,
+                    blendMode = blend,
+                )
             }
         }
     }
+}

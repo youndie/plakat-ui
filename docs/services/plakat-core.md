@@ -46,6 +46,8 @@ Packages are `io.github.youndie.plakat.*` (research D1).
 | `plakat-core/src/commonMain/composeResources/font/` | Rubik Mono One and the static Golos Text 400 and 600, with their OFL texts in `files/licences/` |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/agit/PlakatGen.kt` | the composition and rapport generator, ported from the design's JS |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/print/PlakatCutShape.kt` | the print primitives: the cut plate, and beside it `PlakatHatch.kt`, `PlakatWipe.kt`, `PlakatRegistration.kt`, `PlakatPrintLayer.kt` |
+| `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/print/PlakatTextures.kt` | the texture layers: `plakatPaper`, `plakatConcrete` (opaque grounds), `plakatGrain` (multiply), `plakatNonprint`, each on its print switch |
+| `plakat-core/src/commonMain/composeResources/drawable/paper_light.png` | the eight texture tiles at @2x; three made by `scripts/textures.py` (`make textures`), five as delivered |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/print/PlakatRaskat.kt` | raskat's field, ink map and roll, ported from the design's JS; `RaskatImage.kt` prints it |
 | `scripts/design-references.mjs` | the pixel references, rendered from the spec pages in headless Chrome (`make references`) |
 | `plakat-core/src/desktopTest/snapshots/design/` | the references and their `manifest.json`; viddik's goldens are one level up |
@@ -110,5 +112,10 @@ not run it, because the output is committed and pinned by the metrics test.
   `:plakat-core:compileKotlinIosArm64` and `:plakat-core:compileAndroidMain`, run by hand in B-01. A
   change that breaks only a device target passes `check`.
 - Common test names must not contain a comma: Kotlin/Native refuses the name, JVM accepts it.
+- The texture tiles are @2x and are laid at half their pixel size (512 px = 256 dp, the Textures
+  page), the non-print included. `plakat/print/nonprint/tile` says 200: that is the Tokens page's
+  SVG recipe for it, not the delivered PNG, which the Textures page lays at 256.
+- On the web a texture arrives a frame late (an empty bitmap first); the layers draw nothing until
+  the tile has loaded, so the first frame is the flat form.
 - The klib ABI dump lists the compose compiler's `$stableprop` of internal classes too; adding an
   internal class changes it and needs `updateKotlinAbi`.
