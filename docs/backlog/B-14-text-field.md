@@ -48,3 +48,6 @@ MVP component (brief «Инвентарь компонентов»), drawn on `p
   hatch and message go at once — the page's lab keeps an empty hatch row, the static cells have none;
   the static cells are followed, so a field without an error takes no space for one (decided here).
 - **Events**: `underline` on gaining focus, `hatch` on an error appearing, once each.
+- **Mutants**: the bar eased hard-stop, the caret off for 500 ms, no jolt — each killed by its aimed
+  test; the half-leading rounded instead of floored — killed by `CssLineTest` and the error goldens;
+  the caret's gap 0 and the bar 2 px short — killed by the focused goldens.
