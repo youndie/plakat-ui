@@ -16,4 +16,5 @@ The Demo page builds three screens of the magazine «Лист» only from kit co
 - A smoke test walks every section in each theme with the clock paused.
 
 - AC: the three screens match the Demo page within the floor in both themes; the smoke test passes; `./gradlew :sample:run` shows the kit.
+- AC (moved from [B-12](B-12-motion-events.md), whose sample had no animated component yet): the sample takes a `PlakatEventListener`, and a test collects the events of a scripted session on it and gets the spec's names in order.
 - Anchors: `reference/design-system/plakat-ui Демо.dc.html`
