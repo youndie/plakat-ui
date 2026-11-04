@@ -72,7 +72,7 @@ DOCS_BOOTSTRAP_SHIM := 2
 DOCS_BOOTSTRAP_GOALS := check gate report fix
 
 .DEFAULT_GOAL := help
-.PHONY: help check gate report fix references
+.PHONY: help check gate report fix references textures
 
 help:
 	@echo "make check   - the gate and the reports: exactly what CI runs"
@@ -80,6 +80,7 @@ help:
 	@echo "make report  - non-blocking: BDD coverage, code anchors"
 	@echo "make fix     - regenerate the backlog index, fill in missing coverage-map lines"
 	@echo "make references - re-render the Chrome design references (needs Google Chrome)"
+	@echo "make textures - remake the three texture tiles from the delivered dark paper (needs Pillow)"
 
 check: gate report
 
@@ -104,6 +105,14 @@ fix: docs-fix
 # `make check` runs on Linux, where no Chrome drew these; the gate checks their manifest instead.
 references:
 	node scripts/design-references.mjs
+
+# B-07: remake paper-light, concrete-light and paper-grain from the delivered paper-dark, and copy the
+# five delivered tiles, into plakat-core's resources. Not in the gate: it needs Pillow; the gate holds
+# the tiles through PlakatTextureTilesTest, which reads the derivation a second time in Kotlin.
+TEXTURES_PY ?= .venv/bin/python
+textures:
+	$(TEXTURES_PY) scripts/textures.py
+	$(TEXTURES_PY) scripts/textures.py --check
 
 # -- where the checks come from. Nothing below is meant to be edited. ------------------------------
 
