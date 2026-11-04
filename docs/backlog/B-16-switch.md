@@ -35,3 +35,5 @@ MVP component (brief «Инвентарь компонентов»), drawn on `p
 - **Designed here** (D13): disabled and off (the concrete carriage at the left end; the page draws
   disabled on only); no press feedback (the spec row has none).
 - **Events**: `lever` on each change of `checked`.
+- **Mutants**: the carriage eased linearly, the segment lagging the carriage — killed by the frame
+  reading; the rail on the other half-pixel, the ring 3 px off — killed by the goldens.
