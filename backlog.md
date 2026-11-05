@@ -55,11 +55,10 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 <!-- BEGIN INDEX -->
 
-## Open (18)
+## Open (17)
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-35](docs/backlog/B-35-demo-screens-and-sample.md) `[~]` | Demo screens and the sample kit: onboarding, feed, settings in both themes | P1 | M | B-13, B-14, B-16, B-17, B-19, B-25, B-26, B-27, B-29, B-30 |
 | [B-36](docs/backlog/B-36-accessibility.md) `[ ]` | Accessibility: contrast with textures on, grayscale check, touch targets, semantics | P1 | S | B-07, B-35 |
 | [B-38](docs/backlog/B-38-radio-button.md) `[ ]` | RadioButton: a ring with a red disc that locks in one frame | P1 | S | B-09, B-10, B-12, B-15 |
 | [B-39](docs/backlog/B-39-desktop-and-hover.md) `[ ]` | Hover on pointer devices and a wide poster layout | P1 | M | B-13, B-19, B-20, B-22, B-23 |
@@ -78,7 +77,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 | [B-06](docs/backlog/B-06-frame-cost-measurement.md) `[ ]` | Frame cost on a Pixel 6a: raskat roll, ten cards cascading with texture and registration | P3 | M | B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50, B-51 |
 | [B-37](docs/backlog/B-37-public-repository-and-publishing.md) `[ ]` | Public repository and publishing to Reposilite on every main — last | P3 | S | B-06, B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50 |
 
-## Closed (35)
+## Closed (36)
 
 **Goldens and references regenerate deterministically; the generator and raskat ports match them on every target; the floor and the frame cost have measured numbers**
 
@@ -120,6 +119,10 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 - [B-31](docs/backlog/B-31-stretch-text.md) `[x]` - Растяжка: one Display line filling its box from cap top to baseline
 - [B-33](docs/backlog/B-33-agit-presets-and-photomontage.md) `[x]` - Agit graphics: the six presets, generated compositions, rapports, halftone photomontage
 - [B-34](docs/backlog/B-34-screen-wipe.md) `[x]` - Screen transition: the red diagonal wipe, push and pop
+
+**The three demo screens within the floor in both themes; contrast holds with the textures on**
+
+- [B-35](docs/backlog/B-35-demo-screens-and-sample.md) `[x]` - Demo screens and the sample kit: onboarding, feed, settings in both themes
 
 **The owner's questions answered; the design re-imported when it changes**
 
