@@ -1,7 +1,7 @@
 ---
 id: B-56
 title: "A pressed card's words stay dark in the kit and the demo"
-status: wip
+status: done
 priority: P1
 size: XS
 stage: stage-3-demo
@@ -17,3 +17,8 @@ The owner's remark from the kit's review (2026-11-05): «при клике по 
 - **The decision.** The kit and demo read `LocalPlakatContentColor`, and `PlakatCard`'s KDoc says a word with a colour of its own stays that colour. Rejected: inverting whatever the content draws by a blend, as a thumbnail in the card must not invert (the page's does not), and a kit-wide text component, which is a bigger thing than this remark.
 - AC: pressed, a card's words in the kit's and the demo's content are paper; at rest no golden moves; a test presses a real demo card; a mutant is caught.
 - Anchors: `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatCard.kt`, `sample/src/commonMain/kotlin/io/github/youndie/plakat/sample/Demo.kt`
+
+## Findings
+
+Fixed in the kit and the demo, and no golden moved, as at rest the content colour is the same ink. `DemoCardPressTest` presses the feed's first card through the real pointer and reads paper letters on an ink ground; leaving the title in the theme's ink fails it. `FrameBenchmark`'s cards are left as they are, as B-06's numbers were taken on them and they are never pressed.
+
