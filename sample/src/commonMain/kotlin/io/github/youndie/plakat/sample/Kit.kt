@@ -65,6 +65,8 @@ import io.github.youndie.plakat.components.PlakatIconButton
 import io.github.youndie.plakat.components.PlakatLinearProgress
 import io.github.youndie.plakat.components.PlakatListItem
 import io.github.youndie.plakat.components.PlakatMasthead
+import io.github.youndie.plakat.components.PlakatMenu
+import io.github.youndie.plakat.components.PlakatMenuItem
 import io.github.youndie.plakat.components.PlakatNavigationBar
 import io.github.youndie.plakat.components.PlakatNavigationItem
 import io.github.youndie.plakat.components.PlakatOutlinedButton
@@ -241,6 +243,17 @@ fun KitComponents(beat: Int) {
                 var free by remember { mutableFloatStateOf(.37f) }
                 PlakatSlider(free, { free = it })
                 PlakatSlider(.5f, {}, enabled = false, steps = 5)
+            }
+        }
+        KitGroup("Меню") {
+            var open by remember { mutableStateOf(false) }
+            Box {
+                PlakatOutlinedButton("ЕЩЁ", { open = !open })
+                PlakatMenu(open, { open = false }) {
+                    PlakatMenuItem("Сохранить", { open = false })
+                    PlakatMenuItem("Поделиться", { open = false })
+                    PlakatMenuItem("В архив", { open = false }, enabled = false, divider = false)
+                }
             }
         }
         KitGroup("Проекция") {

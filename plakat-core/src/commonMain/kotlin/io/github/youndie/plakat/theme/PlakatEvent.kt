@@ -64,7 +64,7 @@ public enum class PlakatEvent(
     /** TopAppBar scroll: the rapport and title fold away. */
     Fold("fold"),
 
-    /** Screen push and pop: the red bar crosses on the diagonal. */
+    /** Screen push and pop: the red bar crosses on the diagonal. A menu opening and closing, designed here (B-45). */
     Wipe("wipe"),
 
     /** Raskat appear: the second ink rolls in to the seam. */

@@ -1,7 +1,7 @@
 ---
 id: B-45
 title: "Menu / Dropdown: a list on paper in a bar frame, opened by a wipe"
-status: open
+status: wip
 priority: P2
 size: M
 stage: stage-2-components
