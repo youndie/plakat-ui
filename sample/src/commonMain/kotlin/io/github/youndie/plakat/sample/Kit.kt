@@ -89,6 +89,8 @@ import io.github.youndie.plakat.components.PlakatTabContent
 import io.github.youndie.plakat.components.PlakatTabs
 import io.github.youndie.plakat.components.PlakatTextButton
 import io.github.youndie.plakat.components.PlakatTextField
+import io.github.youndie.plakat.components.PlakatTooltip
+import io.github.youndie.plakat.components.PlakatTooltipAxis
 import io.github.youndie.plakat.components.PlakatTopAppBar
 import io.github.youndie.plakat.components.PlakatWindow
 import io.github.youndie.plakat.components.PlakatWindowPanel
@@ -256,6 +258,16 @@ fun KitComponents(beat: Int) {
                     PlakatMenuItem("Поделиться", { open = false })
                     PlakatMenuItem("В архив", { open = false }, enabled = false, divider = false)
                 }
+            }
+        }
+        KitGroup("Подпись") {
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                PlakatTooltip("Сохранить в лист") { PlakatOutlinedButton("ВВЕРХ", {}) }
+                PlakatTooltip("Сохранить в лист", axis = PlakatTooltipAxis.Level) { PlakatOutlinedButton("ВБОК", {}) }
+                PlakatTooltip(
+                    "Сохранить в лист",
+                    axis = PlakatTooltipAxis.Tilted,
+                ) { PlakatOutlinedButton("ПО ОСИ", {}) }
             }
         }
         KitGroup("Проекция") {
