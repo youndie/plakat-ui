@@ -1,7 +1,7 @@
 ---
 id: B-32
 title: "Проекция: text meshed onto a horn, cone, column, sphere, box or stairs"
-status: open
+status: wip
 priority: P2
 size: M
 stage: stage-2-components
