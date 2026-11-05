@@ -203,7 +203,7 @@ class PlakatDialogTest {
         }
 
     @Test
-    fun `a click on the screen or Escape asks to dismiss, the sheet keeps its clicks and nothing under it is reached`() =
+    fun `a click on the screen or Escape dismisses, the sheet keeps its clicks, nothing under is reached`() =
         runComposeUiTest {
             val dismissed = mutableListOf<Int>()
             var under = 0
