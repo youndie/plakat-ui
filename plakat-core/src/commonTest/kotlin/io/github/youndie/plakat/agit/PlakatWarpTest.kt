@@ -40,7 +40,7 @@ class PlakatWarpTest {
             "columnBack" to
                 warpGrid(warpColumn(130.0, 60.0, 16.0, 112.0, 40.0, 88.0, 89.0, .3, 30.0).map, 8, 8),
             "sphereBand" to warpGrid(warpSphere(254.0, 210.0, 100.0, 72.0), 8, 10),
-            "sphereEdge" to warpGrid(warpSphere(100.0, 100.0, 60.0, 88.0, 80.0, 40.0), 8, 10),
+            "sphereEdge" to warpGrid(warpSphere(100.0, 100.0, 60.0, 86.0, 80.0, 0.0), 16, 10),
             "boxSide" to warpGrid(box.map, 4, 8, folds = box.folds),
             "boxLid" to warpGrid(lid.map, 4, 8, vfolds = lid.vfolds),
             "boxAt" to
@@ -116,6 +116,22 @@ class PlakatWarpTest {
                 close(p.y, m[1] * s.x + m[3] * s.y + m[5], "triangle $t, corner $k, y")
             }
         }
+    }
+
+    @Test
+    fun aMeshCoversItsWholeFormOnceInTheDesignsTwoTriangles() {
+        val flat = WarpMap { u, v -> WarpPoint(u * 100, v * 100) }
+        val mesh = warpMesh(warpGrid(flat, 3, 8), 10, 10)
+        // A first quad's corners are made in `warp`'s order: its a, b, c and d.
+        assertEquals(listOf(0, 1, 2, 0, 2, 3), mesh.indices.take(6))
+        val area =
+            mesh.indices.chunked(3).sumOf { (a, b, c) ->
+                val p = mesh.positions[a]
+                val q = mesh.positions[b]
+                val r = mesh.positions[c]
+                abs((q.x - p.x) * (r.y - p.y) - (r.x - p.x) * (q.y - p.y)) / 2
+            }
+        close(100 * 100 * (WARP_V_MAX - WARP_V_MIN), area, "the area, with no hole and no overlap")
     }
 
     @Test

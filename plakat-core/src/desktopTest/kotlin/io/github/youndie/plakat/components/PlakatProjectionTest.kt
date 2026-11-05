@@ -209,6 +209,7 @@ class PlakatProjectionTest {
     fun `its picture is made once, and again only for a new text, form or size`() =
         runComposeUiTest {
             var bakes = 0
+            var asked = 0
             var tick by mutableIntStateOf(0)
             var word by mutableStateOf("НОЯБРЬ")
             var form by mutableStateOf<PlakatProjectionForm>(horn)
@@ -216,7 +217,7 @@ class PlakatProjectionTest {
             mainClock.autoAdvance = false
             projection(
                 {
-                    tick
+                    asked = tick + 1
                     listOf(word)
                 },
                 { form },
@@ -230,6 +231,7 @@ class PlakatProjectionTest {
             tick = 1
             form = horn.copy()
             repeat(3) { mainClock.advanceTimeByFrame() }
+            assertEquals(2, asked, "it has recomposed")
             assertEquals(1, bakes, "a recomposition with an equal list and form is not a change")
             word = "ДЕКАБРЬ"
             repeat(3) { mainClock.advanceTimeByFrame() }

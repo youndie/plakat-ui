@@ -51,7 +51,7 @@ const CASES = [
   ['columnFace', W.column({ cx: 264, r: 96, top: 112, bottom: 312, band: [168, 264], arc: 70 }).map, { nu: 8, nv: 8 }],
   ['columnBack', W.column({ cx: 130, r: 60, top: 16, bottom: 112, band: [40, 88], arc: 89, tilt: .3, spin: 30 }).map, { nu: 8, nv: 8 }],
   ['sphereBand', W.sphere({ cx: 254, cy: 210, R: 100, lon: 72, lat: 22, tilt: 14 }).map, { nu: 8, nv: 10 }],
-  ['sphereEdge', W.sphere({ cx: 100, cy: 100, R: 60, lon: 88, lat: 80, tilt: 40 }).map, { nu: 8, nv: 10 }],
+  ['sphereEdge', W.sphere({ cx: 100, cy: 100, R: 60, lon: 86, lat: 80, tilt: 0 }).map, { nu: 16, nv: 10 }],
   ['boxSide', box.map, { nu: 4, nv: 8, folds: box.folds }],
   ['boxLid', lid.map, { nu: 4, nv: 8, vfolds: [lid.vfold] }],
   ['boxAt', W.box({ x: 16, y: 152, w: 260, h: 160, d: 96, band: [184, 288], at: .6 }).map, { nu: 4, nv: 8, folds: [.6] }],
