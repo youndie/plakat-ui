@@ -55,11 +55,10 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 <!-- BEGIN INDEX -->
 
-## Open (22)
+## Open (21)
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-29](docs/backlog/B-29-window.md) `[~]` | Окно: onboarding and empty-state panels in the manner of ROSTA windows | P1 | M | B-03, B-09, B-10, B-12, B-13 |
 | [B-30](docs/backlog/B-30-counter.md) `[ ]` | Счётчик: the Isotype stat tile with a mechanical counter | P1 | M | B-09, B-10, B-12, B-31 |
 | [B-31](docs/backlog/B-31-stretch-text.md) `[ ]` | Растяжка: one Display line filling its box from cap top to baseline | P1 | S | B-02, B-05 |
 | [B-33](docs/backlog/B-33-agit-presets-and-photomontage.md) `[ ]` | Agit graphics: the six presets, generated compositions, rapports, halftone photomontage | P1 | M | B-03, B-05 |
@@ -82,7 +81,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 | [B-06](docs/backlog/B-06-frame-cost-measurement.md) `[ ]` | Frame cost on a Pixel 6a: raskat roll, ten cards cascading with texture and registration | P3 | M | B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50, B-51 |
 | [B-37](docs/backlog/B-37-public-repository-and-publishing.md) `[ ]` | Public repository and publishing to Reposilite on every main — last | P3 | S | B-06, B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50 |
 
-## Closed (30)
+## Closed (31)
 
 **Goldens and references regenerate deterministically; the generator and raskat ports match them on every target; the floor and the frame cost have measured numbers**
 
@@ -119,6 +118,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 - [B-26](docs/backlog/B-26-navigation-bar.md) `[x]` - NavigationBar: black strip, red square behind the active icon
 - [B-27](docs/backlog/B-27-tabs.md) `[x]` - Tabs: rubrics with a red bar riding linearly
 - [B-28](docs/backlog/B-28-dialog.md) `[x]` - Dialog: the announcement
+- [B-29](docs/backlog/B-29-window.md) `[x]` - Окно: onboarding and empty-state panels in the manner of ROSTA windows
 
 **The owner's questions answered; the design re-imported when it changes**
 
