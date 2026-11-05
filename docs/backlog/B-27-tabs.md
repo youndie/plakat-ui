@@ -1,7 +1,7 @@
 ---
 id: B-27
 title: "Tabs: rubrics with a red bar riding linearly"
-status: open
+status: wip
 priority: P1
 size: M
 stage: stage-2-components

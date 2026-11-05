@@ -59,7 +59,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-27](docs/backlog/B-27-tabs.md) `[ ]` | Tabs: rubrics with a red bar riding linearly | P1 | M | B-09, B-10, B-12 |
+| [B-27](docs/backlog/B-27-tabs.md) `[~]` | Tabs: rubrics with a red bar riding linearly | P1 | M | B-09, B-10, B-12 |
 | [B-28](docs/backlog/B-28-dialog.md) `[ ]` | Dialog: the announcement | P1 | M | B-09, B-10, B-12 |
 | [B-29](docs/backlog/B-29-window.md) `[ ]` | Окно: onboarding and empty-state panels in the manner of ROSTA windows | P1 | M | B-03, B-09, B-10, B-12, B-13 |
 | [B-30](docs/backlog/B-30-counter.md) `[ ]` | Счётчик: the Isotype stat tile with a mechanical counter | P1 | M | B-09, B-10, B-12, B-31 |
