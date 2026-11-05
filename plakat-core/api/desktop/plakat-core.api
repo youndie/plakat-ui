@@ -359,6 +359,10 @@ public final class io/github/youndie/plakat/components/PlakatProjectionKt {
 	public static final fun PlakatProjection (Ljava/util/List;Lio/github/youndie/plakat/components/PlakatProjectionForm;Landroidx/compose/ui/Modifier;ZLandroidx/compose/runtime/Composer;II)V
 }
 
+public final class io/github/youndie/plakat/components/PlakatPullToRefreshKt {
+	public static final fun PlakatPullToRefreshBox (ZLkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+}
+
 public final class io/github/youndie/plakat/components/PlakatRadioButtonKt {
 	public static final fun PlakatRadioButton (ZLkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
 }

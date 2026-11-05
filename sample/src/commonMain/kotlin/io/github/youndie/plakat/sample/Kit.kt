@@ -14,9 +14,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -78,6 +81,7 @@ import io.github.youndie.plakat.components.PlakatPosterLayout
 import io.github.youndie.plakat.components.PlakatProjection
 import io.github.youndie.plakat.components.PlakatProjectionAxis
 import io.github.youndie.plakat.components.PlakatProjectionForm
+import io.github.youndie.plakat.components.PlakatPullToRefreshBox
 import io.github.youndie.plakat.components.PlakatRadioButton
 import io.github.youndie.plakat.components.PlakatScreenWipe
 import io.github.youndie.plakat.components.PlakatSegmentedButton
@@ -97,6 +101,7 @@ import io.github.youndie.plakat.components.PlakatWindow
 import io.github.youndie.plakat.components.PlakatWindowPanel
 import io.github.youndie.plakat.icons.PlakatIcons
 import io.github.youndie.plakat.theme.PlakatTheme
+import kotlinx.coroutines.delay
 
 // Every component, grouped as the design's pages group them. [beat] moves what would otherwise only show on a click:
 // it advances by itself while the sample runs, so a number ticks and a window turns with nobody touching them.
@@ -275,6 +280,20 @@ fun KitComponents(beat: Int) {
             var segment by remember { mutableIntStateOf(0) }
             PlakatSegmentedButton(listOf("ДЕНЬ", "НЕДЕЛЯ", "МЕСЯЦ"), segment, { segment = it })
             PlakatSegmentedButton(listOf("ДЕНЬ", "НЕДЕЛЯ", "МЕСЯЦ"), 1, {}, enabled = false)
+        }
+        KitGroup("Обновление") {
+            var refreshing by remember { mutableStateOf(false) }
+            LaunchedEffect(refreshing) {
+                if (refreshing) {
+                    delay(2000)
+                    refreshing = false
+                }
+            }
+            PlakatPullToRefreshBox(refreshing, { refreshing = true }, Modifier.width(Width).height(240.dp)) {
+                Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
+                    repeat(8) { PlakatListItem("Выпуск ${it + 1}") }
+                }
+            }
         }
         KitGroup("Проекция") {
             FlowRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
