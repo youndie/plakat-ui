@@ -67,3 +67,7 @@ Report and raw logs: [measurements-2026-11-05-device](../research/measurements-2
 - **`:sample` gains an Android target and `bench-android` is a new module**, so `./gradlew check` builds both. The module is a harness and publishes nothing.
 - **Mutants:** no kit code changed here. The reader's rules each fail on known input in `make check`, among them the blind recorder and the restarts.
 
+## The owner's verdict (2026-11-05)
+
+The main thread's reading stands: raskat GREEN at density 1, RED at 2 and 2.75, on time at all three. The code stays as it is: a frame over its 2 ms that misses no frame calls for no change to the roll.
+
