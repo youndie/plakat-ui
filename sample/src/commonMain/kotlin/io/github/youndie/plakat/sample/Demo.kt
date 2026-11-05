@@ -60,6 +60,7 @@ import io.github.youndie.plakat.components.PlakatTabs
 import io.github.youndie.plakat.components.PlakatWindow
 import io.github.youndie.plakat.components.PlakatWindowPanel
 import io.github.youndie.plakat.icons.PlakatIcons
+import io.github.youndie.plakat.theme.LocalPlakatContentColor
 import io.github.youndie.plakat.theme.PlakatTheme
 
 // The Demo page's three screens of the magazine «Лист», from the kit's public API. What the kit has no component for
@@ -255,11 +256,13 @@ private fun FeedCard(
             titleZone = PlakatTitleZone.None,
         )
         Column {
-            BasicText(rubric, style = label(11.sp))
+            // The card's own colour, which turns paper when it is pressed.
+            val ink = LocalPlakatContentColor.current
+            BasicText(rubric, style = label(11.sp).copy(color = ink))
             Spacer(Modifier.height(4.dp))
             BasicText(
                 title,
-                style = body(17.sp, 21.25.sp).copy(fontWeight = FontWeight.SemiBold),
+                style = body(17.sp, 21.25.sp).copy(fontWeight = FontWeight.SemiBold, color = ink),
             )
         }
     }

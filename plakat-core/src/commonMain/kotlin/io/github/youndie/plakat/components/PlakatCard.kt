@@ -73,7 +73,8 @@ private const val TEAR_RIDE = 1.1f
  * A card: a sheet of concrete paper (a change of paper, no shadow, no border) laying its [content]
  * out in a row, 12 dp in from its edges, 16 dp apart, centred vertically; at least 48 dp tall.
  *
- * Pressed, the sheet turns ink and its content paper ([LocalPlakatContentColor]); [selected] puts a
+ * Pressed, the sheet turns ink and its content paper: set words in [LocalPlakatContentColor], as a word with a colour of
+ * its own keeps it, ink on ink. A picture stays as it is. [selected] puts a
  * red 8 dp bar on its left edge, the content moved right by it — red is not the only sign of it,
  * so say it in the content too (the design's «· ЧИТАЕТЕ»). Focused from the keyboard, a 3 dp ink
  * ring stands 3 dp off the sheet. [onClick] null makes it a sheet that only shows; [enabled] false

@@ -100,6 +100,7 @@ import io.github.youndie.plakat.components.PlakatTopAppBar
 import io.github.youndie.plakat.components.PlakatWindow
 import io.github.youndie.plakat.components.PlakatWindowPanel
 import io.github.youndie.plakat.icons.PlakatIcons
+import io.github.youndie.plakat.theme.LocalPlakatContentColor
 import io.github.youndie.plakat.theme.PlakatTheme
 import kotlinx.coroutines.delay
 
@@ -174,7 +175,7 @@ fun KitCore() {
                     "Город из фанеры",
                     style =
                         PlakatTheme.typography.bodyS.style
-                            .copy(color = PlakatTheme.colors.ink),
+                            .copy(color = LocalPlakatContentColor.current),
                 )
             }
         }
