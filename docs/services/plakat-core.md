@@ -59,6 +59,7 @@ Packages are `io.github.youndie.plakat.*` (research D1).
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatProgress.kt` | Progress: the linear wedge, the circular sector, the stepped indeterminate one |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatTopAppBar.kt` | TopAppBar: the header, its rapport strip, the fold with the scroll; `plakatStrip` in `agit/PlakatPosterComposition.kt` is the MVP page's `raport` |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatNavigationBar.kt` | NavigationBar: the strip, stencils with their words, the red square that moves |
+| `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatTabs.kt` | Tabs: rubrics on a hairline, the bar that rides; `PlakatTabContent` shifts what they choose |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatBadge.kt` | Badge: the number or the dot, and `PlakatBadgedBox`; `PlakatTick.kt` is how a number changes (`ticks` of the MVP page) |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatPoster.kt` | Плакат: Круг, Фон, Баннер; the print cascade on one clock, the raskat roll, CSS line boxes drawn line by line |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/agit/PlakatPosterComposition.kt` | the Core page's own composition generator (`comp`), its recipes per layout and for thumbnails; `PlakatPosterDrawing.kt` draws its shapes |
@@ -119,6 +120,7 @@ rendered with reduced motion, so parity sees none of these.
 | Progress circular | — | indeterminate, cycle 1200 · steps 12; stands | `PlakatProgressTest`: the sector found at step ⌊t / 100⌋ on every frame of 1440 ms; at step 0 for good under reduced motion |
 | TopAppBar | `fold` | scroll, by the scroll · linear; the same | `PlakatTopAppBarTest`: the bar's height and fraction at each scrolled step, the rows under the row being the open bar's moved up by the fold, the rule growing, the collapsed title's wipe; identical under reduced motion; a real swipe on a list folds it first and back |
 | NavigationBar | `lock` | select, 120 · hard-stop | `PlakatNavigationBarTest`: the square's left edge per frame on the curve across 195 dp; at once under reduced motion |
+| Tabs | `rail` | switch, 200 · linear / hard-stop | `PlakatTabsTest`: the bar's left per frame linear across 260 dp; the old page's width per frame on the hard-stop; both at once under reduced motion |
 | Button | `engage` | 120 + cycle 1200 · steps 12 | `PlakatButtonTest`: the slogan wiped from the left within 120 ms, the sector at 0°, 30°, 180°, 330° at 0, 100, 650, 1199 ms; the loading golden at 100 ms |
 
 ## 4. Dependencies
@@ -234,7 +236,7 @@ not run it, because the output is committed and pinned by the metrics test.
 - Short capitals at 11 px are the worst case for the text floor: the navigation bar's words are 59–82 % of their
   ink against 63.7 %, with no whole-pixel shift better. Chrome draws the cap's top row full where Compose
   draws it partly, and keeps each glyph's fractional x; viddik does not see `FontRasterizationSettings`.
-  Named in B-26's findings as a gap, not closed.
+  Named in B-26's findings as a gap, not closed; the tabs' 12 px words are the same, 61–77 % (B-27).
 - A row of equal slots is laid out by hand where it must match the page: `weight` hands out whole pixels, the page's
   grid keeps 97.5 and each child is placed from the true slot.
 - The klib ABI dump lists the compose compiler's `$stableprop` of internal classes too; adding an

@@ -142,6 +142,8 @@ export const REFERENCES = [
   ...cells('TopAppBar', MVP, 'prev', [['Collapsed', 'TopAppBar / Collapsed · 56']]),
   // The navigation bar (B-26): the element before its caption, the 64 px strip.
   ...cells('NavigationBar', MVP, 'prev', [['Default', 'NavigationBar · 64']]),
+  // The tabs (B-27): the element before their caption, 48 and the hairline.
+  ...cells('Tabs', MVP, 'prev', [['Default', 'Tabs / Ленты выбрана, «Черновики» disabled']]),
   ...cells('Badge', MVP, 'first', [['Number', 'Badge / Число'], ['Dot', '/ Точка']]),
   // The icons (B-11): each of the sixteen at 48, 24 and 16 px, ink on concrete, from the Icons page's
   // grid; a cell is found by its token caption, and the icon is the n-th svg of the row above it.

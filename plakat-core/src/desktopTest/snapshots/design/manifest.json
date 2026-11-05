@@ -1772,6 +1772,30 @@
       "shift": 0.3125
     },
     {
+      "file": "Tabs_Default_Light.png",
+      "page": "plakat-ui Компоненты.dc.html",
+      "caption": "Tabs / Ленты выбрана, «Черновики» disabled",
+      "card": 0,
+      "part": "prev",
+      "x": 32,
+      "y": 1573,
+      "w": 390,
+      "h": 49,
+      "shift": 0.3125
+    },
+    {
+      "file": "Tabs_Default_Dark.png",
+      "page": "plakat-ui Компоненты.dc.html",
+      "caption": "Tabs / Ленты выбрана, «Черновики» disabled",
+      "card": 1,
+      "part": "prev",
+      "x": 446,
+      "y": 1573,
+      "w": 390,
+      "h": 49,
+      "shift": 0.3125
+    },
+    {
       "file": "Badge_Number_Light.png",
       "page": "plakat-ui Компоненты.dc.html",
       "caption": "Badge / Число",
