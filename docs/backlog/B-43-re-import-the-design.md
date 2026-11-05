@@ -1,8 +1,8 @@
 ---
 id: B-43
 title: "Re-import the design project on a branch of its own"
-status: question
-priority: P2
+status: open
+priority: P3
 size: S
 stage: stage-4-product
 blocked_by: [B-05, B-08]
@@ -17,13 +17,6 @@ blocked_by: [B-05, B-08]
 - AC: a re-import branch whose commit body lists every changed token and spec row, with the gate green.
 - Anchors: `reference/design-system/README.md`
 
-## Question for the owner (2026-11-05)
+## Set aside by the owner (2026-11-05)
 
-**What was found.** Nothing was fetched, and nothing in `reference/design-system/` has changed. The DesignSync tool states that it is used only with the `/design-sync` skill, which the user starts, and that `get_file` is called only for a component the user named. This item's first step reads every file of the project, and the loop did not take that on itself. No `/design-sync` skill is listed in this environment.
-
-The tool also states that standalone Claude Design closes by 2026-12-14, so a re-import through it may not be possible after that date.
-
-**The choices, the owner's:**
-
-1. Go ahead: the owner says so in words, and the loop fetches read-only, diffs against the snapshot, and either reports no change or carries out the decision above on this branch.
-2. Leave it: the item goes back to `open` or to `dropped`, the snapshot of 2026-11-03 stands, and the loop goes on to [B-44](B-44-slider.md).
+Asked whether the loop should read the whole design project, the owner said to skip it and go on. Nothing was fetched, and the snapshot of 2026-11-03 stands. Moved to P3, after the components. The DesignSync tool says it is used only with a `/design-sync` skill the user starts, and that standalone Claude Design closes by 2026-12-14, so taking this up needs the owner's word and may not be possible after that date.
