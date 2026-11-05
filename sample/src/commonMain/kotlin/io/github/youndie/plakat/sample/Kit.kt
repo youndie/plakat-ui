@@ -172,6 +172,15 @@ fun KitCore() {
                 PlakatPoster(listOf("ЧИТАЙ", "ВЕСЬ", "НОЯБРЬ"), "ПОДПИСАТЬСЯ", {
                 }, body = "12 новых выпусков.", seed = 1919, raskat = true)
                 PlakatPoster(listOf("ВЫПУСК", "№ 47"), "ЧИТАТЬ", {}, layout = PlakatPosterLayout.Banner, seed = 1925)
+                PlakatPoster(
+                    listOf("ЧИТАЙ", "ВЕСЬ", "НОЯБРЬ"),
+                    "ПОДПИСАТЬСЯ",
+                    {},
+                    Modifier.width(720.dp),
+                    layout = PlakatPosterLayout.Wide,
+                    body = "12 новых выпусков. Мы собрали их в одну ленту — читай по порядку.",
+                    seed = 1919,
+                )
             }
         }
     }

@@ -190,6 +190,9 @@ internal object PosterRecipes {
     /** Баннер: the 176 × 160 window at its right, the red circle, small dots. */
     val Banner = PosterRecipe(176.0, 160.0, redSlot = "circle", dot = .5)
 
+    /** Широкий, designed here (B-39): the 360 × 392 right half, the whole frame free, as Баннер's window is. */
+    val Wide = PosterRecipe(360.0, 392.0, redSlot = "circle", dot = .5)
+
     /** A card's 64 × 64 thumbnail, smaller dots still. */
     val Thumbnail = PosterRecipe(64.0, 64.0, dot = .4)
 }

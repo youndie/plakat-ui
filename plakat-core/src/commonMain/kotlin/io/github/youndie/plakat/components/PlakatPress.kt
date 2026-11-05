@@ -4,6 +4,7 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.interaction.FocusInteraction
+import androidx.compose.foundation.interaction.HoverInteraction
 import androidx.compose.foundation.interaction.Interaction
 import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
@@ -33,6 +34,9 @@ internal class PlakatPress {
     val press: Animatable<Float, AnimationVector1D> = Animatable(0f)
     var held: Boolean by mutableStateOf(false)
     var focused: Boolean by mutableStateOf(false)
+
+    /** A pointer over it: never under a finger, which presses at once (B-39). */
+    var hovered: Boolean by mutableStateOf(false)
 }
 
 /**
@@ -66,6 +70,14 @@ internal fun rememberPlakatPress(
                             state.press.animateTo(0f, tween(PlakatDurations.SNAP, easing = PlakatEasings.HardStop))
                         }
                     }
+                }
+
+                is HoverInteraction.Enter -> {
+                    state.hovered = true
+                }
+
+                is HoverInteraction.Exit -> {
+                    state.hovered = false
                 }
 
                 is FocusInteraction.Focus -> {

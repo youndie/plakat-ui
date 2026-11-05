@@ -135,6 +135,7 @@ public final class io/github/youndie/plakat/components/PlakatPosterLayout : java
 	public static final field Background Lio/github/youndie/plakat/components/PlakatPosterLayout;
 	public static final field Banner Lio/github/youndie/plakat/components/PlakatPosterLayout;
 	public static final field Circle Lio/github/youndie/plakat/components/PlakatPosterLayout;
+	public static final field Wide Lio/github/youndie/plakat/components/PlakatPosterLayout;
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lio/github/youndie/plakat/components/PlakatPosterLayout;
 	public static fun values ()[Lio/github/youndie/plakat/components/PlakatPosterLayout;

@@ -2,6 +2,7 @@ package io.github.youndie.plakat.components
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.interaction.FocusInteraction
+import androidx.compose.foundation.interaction.HoverInteraction
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.defaultMinSize
@@ -51,7 +52,7 @@ private val WedgeGap = 6.dp
 private val FocusOffset = PlakatLines.Rule
 
 /** A chip's look, forced for the fixtures of the page's static cells. */
-internal enum class ChipLook { Focused, }
+internal enum class ChipLook { Focused, Hovered }
 
 /**
  * A chip, the stamp: [text] in capitals in a 3 dp ink frame, a 32 dp plate in a 48 dp touch target,
@@ -86,11 +87,14 @@ internal fun PlakatChipFrame(
     val colors = PlakatTheme.colors
     val keyboard = LocalInputModeManager.current.inputMode == InputMode.Keyboard
     var focused by remember { mutableStateOf(false) }
+    var hoveredNow by remember { mutableStateOf(false) }
     LaunchedEffect(source) {
         source.interactions.collect {
             when (it) {
                 is FocusInteraction.Focus -> focused = true
                 is FocusInteraction.Unfocus -> focused = false
+                is HoverInteraction.Enter -> hoveredNow = true
+                is HoverInteraction.Exit -> hoveredNow = false
             }
         }
     }
@@ -135,7 +139,7 @@ internal fun PlakatChipFrame(
     Box(
         modifier
             .defaultMinSize(minWidth = natural.coerceAtLeast(PlakatSizes.Touch), minHeight = PlakatSizes.Touch)
-            .drawBehind { drawChip(colors, enabled, filled, ring) }
+            .drawBehind { drawChip(colors, enabled, filled, ring, enabled && (look == ChipLook.Hovered || hoveredNow)) }
             .selectable(selected, source, indication = null, enabled = enabled, role = Role.Button, onClick = onClick),
         contentAlignment = Alignment.CenterStart,
     ) {
@@ -163,10 +167,13 @@ private fun DrawScope.drawChip(
     enabled: Boolean,
     filled: Boolean,
     ring: Boolean,
+    hovered: Boolean,
 ) {
     val h = PlakatSizes.Chip.toPx()
     val top = (size.height - h) / 2
     val rule = PlakatLines.Rule.toPx()
+    // Designed here (B-39): the outlined plate fills with concrete under its frame.
+    if (hovered && !filled) drawRect(colors.concrete, Offset(0f, top), Size(size.width, h))
     when {
         !enabled -> {
             val w = PlakatLines.Hair.toPx()
@@ -179,6 +186,15 @@ private fun DrawScope.drawChip(
 
         filled -> {
             drawRect(colors.ink, Offset(0f, top), Size(size.width, h))
+            // And the filled one gets a frame that shows on ink.
+            if (hovered) {
+                drawRect(
+                    colors.concrete,
+                    Offset(rule / 2, top + rule / 2),
+                    Size(size.width - rule, h - rule),
+                    style = Stroke(rule),
+                )
+            }
         }
 
         else -> {

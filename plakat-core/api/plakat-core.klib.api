@@ -65,6 +65,7 @@ final enum class io.github.youndie.plakat.components/PlakatPosterLayout : kotlin
     enum entry Background // io.github.youndie.plakat.components/PlakatPosterLayout.Background|null[0]
     enum entry Banner // io.github.youndie.plakat.components/PlakatPosterLayout.Banner|null[0]
     enum entry Circle // io.github.youndie.plakat.components/PlakatPosterLayout.Circle|null[0]
+    enum entry Wide // io.github.youndie.plakat.components/PlakatPosterLayout.Wide|null[0]
 
     final val entries // io.github.youndie.plakat.components/PlakatPosterLayout.entries|#static{}entries[0]
         final fun <get-entries>(): kotlin.enums/EnumEntries<io.github.youndie.plakat.components/PlakatPosterLayout> // io.github.youndie.plakat.components/PlakatPosterLayout.entries.<get-entries>|<get-entries>#static(){}[0]

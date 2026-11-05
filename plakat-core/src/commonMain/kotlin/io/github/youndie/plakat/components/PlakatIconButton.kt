@@ -70,6 +70,7 @@ internal fun PlakatIconButtonFrame(
             else -> colors.ink
         }
     val ring = look == ButtonLook.Focused || state.focusShown()
+    val hovered = enabled && (look == ButtonLook.Hovered || state.hovered) && !held
     Box(
         modifier
             .size(PlakatSizes.Touch)
@@ -77,6 +78,12 @@ internal fun PlakatIconButtonFrame(
             .drawBehind {
                 // Only the ground is a transition; the icon's colour changes the moment the finger lifts.
                 drawRect(srgbLerp(rest, colors.ink, if (forced) 1f else state.press.value))
+                // Designed here (B-39): an empty square fills with concrete, a selected one gets the ink frame.
+                if (hovered && !selected) drawRect(colors.concrete)
+                if (hovered && selected) {
+                    val w = PlakatLines.Rule.toPx()
+                    drawRect(colors.ink, Offset(w / 2, w / 2), Size(size.width - w, size.height - w), style = Stroke(w))
+                }
                 if (ring) {
                     val w = PlakatLines.Rule.toPx()
                     drawRect(colors.ink, Offset(w / 2, w / 2), Size(size.width - w, size.height - w), style = Stroke(w))

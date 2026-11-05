@@ -37,6 +37,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.graphics.graphicsLayer
@@ -147,7 +148,7 @@ internal class ButtonMetrics(
 private fun TextStyle.untracked(metrics: ButtonMetrics) = if (metrics.tracked) this else copy(letterSpacing = 0.sp)
 
 /** A state forced from outside, for the fixtures of the page's static cells: the look, not the behaviour. */
-internal enum class ButtonLook { Pressed, Focused }
+internal enum class ButtonLook { Pressed, Focused, Hovered }
 
 /** The loading sector's turn and steps: the spec row `engage`, "цикл 1200 · steps 12". */
 internal const val SPINNER_TURN_MS = 1200
@@ -273,6 +274,8 @@ internal fun PlakatButtonFrame(
     val loadingWord = PlakatTheme.strings.loading
     val pressed = if (look == ButtonLook.Pressed) 1f else press.value
     val paint = buttonPaint(kind, colors, enabled, pressed, state.held || look == ButtonLook.Pressed)
+    // Designed here (B-39): on a pointer, in one frame, the frame turns over; a press still reads over it.
+    val hovered = enabled && !loading && (look == ButtonLook.Hovered || state.hovered) && pressed < 1f
     val label = PlakatTheme.typography.button
     val style =
         if (kind == PlakatButtonKind.Danger) {
@@ -311,6 +314,10 @@ internal fun PlakatButtonFrame(
             .height(PlakatSizes.Button)
             .drawWithContent {
                 drawContent()
+                if (hovered && kind == PlakatButtonKind.Danger) {
+                    val w = PlakatLines.Rule.toPx()
+                    drawRect(colors.ink, Offset(w / 2, w / 2), Size(size.width - w, size.height - w), style = Stroke(w))
+                }
                 if (ringShown) {
                     val o = FocusOffset.toPx()
                     val w = PlakatLines.Rule.toPx()
@@ -321,7 +328,7 @@ internal fun PlakatButtonFrame(
                         style = Stroke(w),
                     )
                 }
-            }.drawBehind { drawGround(kind, paint, enabled, colors) }
+            }.drawBehind { drawGround(kind, paint, enabled, colors, hovered) }
             .then(
                 if (kind ==
                     PlakatButtonKind.Danger
@@ -367,6 +374,7 @@ internal fun PlakatButtonFrame(
                     shifted,
                     metrics.underlineGap,
                     wordPx != null,
+                    hovered,
                 )
             }
 
@@ -408,15 +416,20 @@ private fun DrawScope.drawGround(
     paint: ButtonPaint,
     enabled: Boolean,
     colors: PlakatColors,
+    hovered: Boolean,
 ) {
     when (kind) {
         PlakatButtonKind.Filled -> {
             val outline = PlakatCutShape().createOutline(size, layoutDirection, this)
-            drawPath((outline as androidx.compose.ui.graphics.Outline.Generic).path, paint.ground)
+            val path = (outline as androidx.compose.ui.graphics.Outline.Generic).path
+            drawPath(path, paint.ground)
+            // The plate gets the ink frame, inside its own cut.
+            if (hovered) clipPath(path) { drawPath(path, colors.ink, style = Stroke(2 * PlakatLines.Rule.toPx())) }
         }
 
         PlakatButtonKind.Outlined -> {
-            drawRect(paint.ground)
+            // The frame fills, with concrete: ink is the press.
+            drawRect(if (hovered) colors.concrete else paint.ground)
             val w = PlakatLines.Rule.toPx()
             if (enabled) {
                 drawRect(paint.line, Offset(w / 2, w / 2), Size(size.width - w, size.height - w), style = Stroke(w))
@@ -434,7 +447,7 @@ private fun DrawScope.drawGround(
             drawRect(paint.ground)
         }
 
-        // The hatch is `plakatHatch` on the box; the danger ground is the word's plate.
+        // The hatch is `plakatHatch` on the box; the danger ground is the word's plate. Drawn after the hatch, by the box.
         PlakatButtonKind.Danger -> {}
     }
 }
@@ -448,6 +461,7 @@ private fun UnderlinedLabel(
     shifted: Modifier,
     gap: Dp,
     wordWide: Boolean,
+    hovered: Boolean = false,
 ) {
     // The rule is as long as the text's own advance, a fraction included, as a CSS border under an
     // inline box is: the laid-out width is ceiled to a whole pixel and would draw one column long.
@@ -458,7 +472,9 @@ private fun UnderlinedLabel(
             val w = thickness.toPx()
             val y = size.height - w / 2
             if (enabled) {
-                drawLine(line, Offset(0f, y), Offset(advance, y), w)
+                // The rule becomes the bar, growing down from where it stood, with the layout left as it was.
+                val drawn = if (hovered) PlakatLines.Bar.toPx() else w
+                drawLine(line, Offset(0f, y - w / 2 + drawn / 2), Offset(advance, y - w / 2 + drawn / 2), drawn)
             } else {
                 dashedLine(line, Offset(0f, y), Offset(advance, y), w)
             }
