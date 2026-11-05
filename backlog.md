@@ -55,11 +55,10 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 <!-- BEGIN INDEX -->
 
-## Open (13)
+## Open (12)
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-52](docs/backlog/B-52-empty-state.md) `[~]` | Empty state: a call rather than an apology, with the screen's one raskat wedge | P1 | S | B-04, B-13 |
 | [B-53](docs/backlog/B-53-stretch-in-place.md) `[ ]` | Stretch in place: the poster's fourth layout and the app bar's masthead | P1 | S | B-19, B-25, B-31 |
 | [B-32](docs/backlog/B-32-projection.md) `[ ]` | Проекция: text meshed onto a horn, cone, column, sphere, box or stairs | P2 | M | B-02, B-31 |
 | [B-43](docs/backlog/B-43-re-import-the-design.md) `[ ]` | Re-import the design project on a branch of its own | P2 | S | B-05, B-08 |
@@ -73,7 +72,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 | [B-06](docs/backlog/B-06-frame-cost-measurement.md) `[ ]` | Frame cost on a Pixel 6a: raskat roll, ten cards cascading with texture and registration | P3 | M | B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50, B-51 |
 | [B-37](docs/backlog/B-37-public-repository-and-publishing.md) `[ ]` | Public repository and publishing to Reposilite on every main — last | P3 | S | B-06, B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50 |
 
-## Closed (40)
+## Closed (41)
 
 **Goldens and references regenerate deterministically; the generator and raskat ports match them on every target; the floor and the frame cost have measured numbers**
 
@@ -118,6 +117,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 - [B-34](docs/backlog/B-34-screen-wipe.md) `[x]` - Screen transition: the red diagonal wipe, push and pop
 - [B-38](docs/backlog/B-38-radio-button.md) `[x]` - RadioButton: a ring with a red disc that locks in one frame
 - [B-39](docs/backlog/B-39-desktop-and-hover.md) `[x]` - Hover on pointer devices and a wide poster layout
+- [B-52](docs/backlog/B-52-empty-state.md) `[x]` - Empty state: a call rather than an apology, with the screen's one raskat wedge
 
 **The three demo screens within the floor in both themes; contrast holds with the textures on**
 

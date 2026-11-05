@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -84,6 +85,8 @@ public fun PlakatEmptyState(
             Modifier
                 .fillMaxWidth()
                 .height(BandHeight)
+                // Past 392 wide the wedge's rise is more than the band's height, and it is cut there.
+                .clipToBounds()
                 .drawWithCache {
                     val rise = size.width * WedgeRise
                     val dpr = max(density, RASKAT_LEAST_DPR)

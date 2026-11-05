@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PixelMap
 import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.platform.LocalDensity
@@ -74,6 +75,9 @@ class PlakatEmptyStateTest {
             assertEquals(paper.ink, px[300, 48])
             assertEquals(paper.ink, px[300 + 22, 48])
             assertEquals(paper.concrete, px[300 + 27, 8 + 5])
+            // Its top at 24 above that, with concrete over it.
+            assertEquals(paper.ink, px[300, 8 + 18])
+            assertEquals(paper.concrete, px[300, 8 + 14])
         }
 
     @Test
@@ -112,6 +116,16 @@ class PlakatEmptyStateTest {
             val px = frame()
             assertEquals(300, px.width)
             assertEquals(paper.ink, px[300 - 58, 48])
+        }
+
+    @Test
+    fun `on a wide screen the wedge is cut at the band's top`() =
+        runComposeUiTest {
+            state(width = 600, colors = paper)
+            val px = frame()
+            // The rise of 183 is past the band's 120: in the band it is red, over it the block's padding stays empty.
+            assertEquals(paper.red, px[590, 8 + 2])
+            assertEquals(Color.Transparent, px[590, 4])
         }
 
     @Test
