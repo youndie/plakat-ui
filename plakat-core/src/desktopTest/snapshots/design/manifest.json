@@ -5,12 +5,14 @@
     "plakat-ui Компоненты.dc.html": 1584,
     "plakat-ui Ядро.dc.html": 1584,
     "plakat-ui Токены.dc.html": 1160,
+    "plakat-ui Растяжка.dc.html": 1584,
     "plakat-ui Иконки.dc.html": 1584
   },
   "pages": {
     "plakat-ui Компоненты.dc.html": "c9256e8c5c483a978b27de29d824415d71f485c08ac2a4399a85157b12888d70",
     "plakat-ui Ядро.dc.html": "d697709d7ba92b8d66b24c8c31405b8fad4c5d46d553f2d41eb3dcf2a4fa6172",
     "plakat-ui Токены.dc.html": "f1c130ed5923916c16f9d72d40fe818314a333cb602922ad1ef706188bdcdff4",
+    "plakat-ui Растяжка.dc.html": "9f9de42d25dd11df33503b26219681762c549e76b24368480fd62b7c5749c733",
     "plakat-ui Иконки.dc.html": "45cc8ec71b1defd281585d3fee1613d5b4789abef5b638c25bf5d9470db703ba"
   },
   "fonts": {
@@ -1842,6 +1844,96 @@
       "w": 358,
       "h": 247,
       "shift": 0.3125
+    },
+    {
+      "file": "Stretch_Hero.png",
+      "page": "plakat-ui Растяжка.dc.html",
+      "x": 192,
+      "y": 79,
+      "w": 720,
+      "h": 120,
+      "shift": 0
+    },
+    {
+      "file": "Stretch_PosterFirst.png",
+      "page": "plakat-ui Растяжка.dc.html",
+      "x": 208,
+      "y": 4850,
+      "w": 358,
+      "h": 136,
+      "shift": 0.578125
+    },
+    {
+      "file": "Stretch_PosterSecond.png",
+      "page": "plakat-ui Растяжка.dc.html",
+      "x": 208,
+      "y": 5034,
+      "w": 358,
+      "h": 120,
+      "shift": 0.578125
+    },
+    {
+      "file": "Stretch_PosterThird.png",
+      "page": "plakat-ui Растяжка.dc.html",
+      "x": 208,
+      "y": 5170,
+      "w": 358,
+      "h": 80,
+      "shift": 0.578125
+    },
+    {
+      "file": "Stretch_Masthead.png",
+      "page": "plakat-ui Растяжка.dc.html",
+      "x": 622,
+      "y": 4873,
+      "w": 358,
+      "h": 120,
+      "shift": 0.578125
+    },
+    {
+      "file": "Stretch_Number.png",
+      "page": "plakat-ui Растяжка.dc.html",
+      "x": 622,
+      "y": 5138,
+      "w": 112,
+      "h": 104,
+      "shift": 0.6875
+    },
+    {
+      "file": "Stretch_NumberRed.png",
+      "page": "plakat-ui Растяжка.dc.html",
+      "x": 821,
+      "y": 5138,
+      "w": 56,
+      "h": 104,
+      "shift": 0.6875
+    },
+    {
+      "file": "Stretch_Section.png",
+      "page": "plakat-ui Растяжка.dc.html",
+      "x": 622,
+      "y": 5390,
+      "w": 358,
+      "h": 48,
+      "shift": 0.796875
+    },
+    {
+      "file": "Stretch_Sandbox.png",
+      "page": "plakat-ui Растяжка.dc.html",
+      "x": 192,
+      "y": 1150,
+      "w": 358,
+      "h": 160,
+      "shift": 0.4375
+    },
+    {
+      "file": "Stretch_SandboxLatin.png",
+      "page": "plakat-ui Растяжка.dc.html",
+      "x": 192,
+      "y": 1150,
+      "w": 358,
+      "h": 160,
+      "shift": 0.4375
     },
     {
       "file": "Badge_Number_Light.png",
