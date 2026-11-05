@@ -175,6 +175,30 @@ class PlakatAgitTest {
         }
 
     @Test
+    fun `the zone asked for is the one kept, wherever it stands`() {
+        // Across the seeds, a zone in the frame's middle holds no ink and no red, where the generator's own would.
+        for (seed in 301..306) {
+            runComposeUiTest {
+                show {
+                    PlakatGeneratedImage(
+                        seed,
+                        Modifier.size(358.dp, 360.dp),
+                        frameWidth = 358.dp,
+                        frameHeight = 360.dp,
+                        titleZone = PlakatTitleZone.at(DpRect(120.dp, 120.dp, 280.dp, 240.dp)),
+                    )
+                }
+                val px = frame()
+                for (y in 120 until 240 step 2) {
+                    for (x in 120 until 280 step 2) {
+                        assertTrue(px[x, y] != paper.ink && px[x, y] != paper.red, "seed $seed at $x, $y")
+                    }
+                }
+            }
+        }
+    }
+
+    @Test
     fun `no zone lets a thumbnail use its whole frame`() {
         fun picture(zone: PlakatTitleZone): PixelMap {
             var out: PixelMap? = null
