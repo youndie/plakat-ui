@@ -2,6 +2,7 @@ package io.github.youndie.plakat.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -251,11 +252,44 @@ class PlakatCounterTest {
         }
 
     @Test
-    fun `a square's legend opens with a square and a circle's with a circle`() =
+    fun `the legend reads with its mark, drawn as the pictogram`() =
+        runComposeUiTest {
+            stage {
+                Row {
+                    Tile(47)
+                    PlakatCounter(
+                        6,
+                        "ДНЕЙ",
+                        Modifier.width(175.dp),
+                        legend = "= день",
+                        pictogram = PlakatPictogram.Circle,
+                    )
+                }
+            }
+            onNodeWithText("■ = 5 статей").assertIsDisplayed()
+            onNodeWithText("● = день").assertIsDisplayed()
+            val px = frame()
+
+            /** The width in dark pixels of each row of the mark, under the caption, at the tile's left [x]. */
+            fun mark(x: Int) =
+                (108 until px.height)
+                    .map { y -> (x until x + 7).count { px[it, y].red < .5f } }
+                    .filter { it > 0 }
+            val square = mark(16)
+            val circle = mark(191)
+            // Its top row falls on a fraction of a pixel, so a square's rows may differ by one; a circle's by more.
+            assertTrue(square.max() - square.min() <= 1, "a square's rows are about as wide: $square")
+            assertTrue(circle.max() - circle.min() >= 2, "a circle's are not: $circle")
+            assertEquals(4, square.size, "as high as Chrome's: $square")
+        }
+
+    @Test
+    fun `what is left over stands in the row's line of 12`() =
         runComposeUiTest {
             stage { Tile(47) }
-            onNodeWithText("■ = 5 статей").assertIsDisplayed()
-            onNodeWithText("СТАТЕЙ").assertIsDisplayed()
+            val px = frame()
+            val rows = (66 until 90).filter { y -> (130 until 152).any { px[it, y].red < .5f } }
+            assertEquals(74..81, rows.first()..rows.last(), "the reference's rows")
         }
 
     @Test
