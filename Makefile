@@ -103,6 +103,8 @@ gate: docs-gate
 	# B-33: the presets are what the vendored SVGs say, and the halftone's goldens what plakat-gen.js draws.
 	node scripts/presets.mjs --check
 	node scripts/halftone-goldens.mjs --check
+	# B-32: the projection's goldens are what the vendored plakat-warp.js emits today.
+	node scripts/warp-goldens.mjs --check
 	# B-51: the frame report's rules can each fail on known input.
 	python3 scripts/frame-report.py --control
 	# B-05: the Chrome references were rendered from today's pages and fonts (no Chrome needed here).

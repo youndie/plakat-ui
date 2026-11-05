@@ -15,6 +15,7 @@ The brief's performance target is 60 fps on a Pixel 6a with ten cards cascading,
 - **The decision and its reason.** The owner moved this to the end on 2026-11-03: the device is measured once the kit is complete, and until then the same benchmark runs on the desktop JVM ([B-51](B-51-frame-cost-on-desktop.md)). Measured by the `measurement-study` protocol: a benchmark screen in the sample, frame times from the device, p50 and p95, interleaved runs, a positive control. Thresholds are written before the first number: p95 ≤ 16.7 ms for the cascade, ≤ 2 ms for one raskat frame.
 - If the cascade misses, the brief's rule applies: the texture goes off, the target stays.
 - From [B-51](B-51-frame-cost-on-desktop.md): on an M1 the raskat frame is 8.26 ms at 2.75, over its line, and the comparison alone 1.32. `FrameBenchmark` is ready in `commonMain` and wants an Android host. About 6 ms of that frame are unexplained: worth a look here if the roll misses.
+- From [B-32](B-32-projection.md): the projection's `drawVertices` on a bitmap is compiled for Android and has never run there. Open the kit's Проекция group on the device, and note how long its first frame takes.
 - Rejected: measuring on the emulator or desktop.
 
 - AC: a verdict per question (green, grey, red, not measured) with raw logs committed; the device and build named.
