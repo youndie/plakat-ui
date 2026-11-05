@@ -59,7 +59,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-43](docs/backlog/B-43-re-import-the-design.md) `[ ]` | Re-import the design project on a branch of its own | P2 | S | B-05, B-08 |
+| [B-43](docs/backlog/B-43-re-import-the-design.md) `[?]` | Re-import the design project on a branch of its own | P2 | S | B-05, B-08 |
 | [B-44](docs/backlog/B-44-slider.md) `[ ]` | Slider: rail, ticks and a carriage that stops on them | P2 | M | B-09, B-10, B-12, B-16 |
 | [B-45](docs/backlog/B-45-menu.md) `[ ]` | Menu / Dropdown: a list on paper in a bar frame, opened by a wipe | P2 | M | B-09, B-10, B-12, B-23 |
 | [B-46](docs/backlog/B-46-bottom-sheet.md) `[ ]` | BottomSheet: a sheet riding up on rails, the handle is a bar | P2 | M | B-09, B-10, B-12, B-28 |
