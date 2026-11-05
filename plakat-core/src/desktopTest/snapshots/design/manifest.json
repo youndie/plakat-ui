@@ -1846,6 +1846,42 @@
       "shift": 0.3125
     },
     {
+      "file": "Counter_Isostat_Light.png",
+      "page": "plakat-ui Компоненты.dc.html",
+      "caption": "Счётчик / Изостат",
+      "card": 0,
+      "part": "prev",
+      "x": 48,
+      "y": 3584,
+      "w": 358,
+      "h": 161,
+      "shift": 0.9375
+    },
+    {
+      "file": "Counter_Isostat_Dark.png",
+      "page": "plakat-ui Компоненты.dc.html",
+      "caption": "Счётчик / Изостат",
+      "card": 1,
+      "part": "prev",
+      "x": 462,
+      "y": 3584,
+      "w": 358,
+      "h": 161,
+      "shift": 0.9375
+    },
+    {
+      "file": "Counter_Column.png",
+      "page": "plakat-ui Растяжка.dc.html",
+      "caption": "Счётчик / Колонна",
+      "card": 0,
+      "part": "prev",
+      "x": 606,
+      "y": 5122,
+      "w": 390,
+      "h": 159,
+      "shift": 0.6875
+    },
+    {
       "file": "Stretch_Hero.png",
       "page": "plakat-ui Растяжка.dc.html",
       "x": 192,

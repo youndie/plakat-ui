@@ -28,6 +28,11 @@ public final class io/github/youndie/plakat/components/PlakatChipKt {
 	public static final fun PlakatChip (Ljava/lang/String;ZLkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class io/github/youndie/plakat/components/PlakatCounterKt {
+	public static final fun PlakatCounter (ILjava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/String;Lio/github/youndie/plakat/components/PlakatPictogram;IZLandroidx/compose/runtime/Composer;II)V
+	public static final fun PlakatCounterColumn-ww6aTOc (ILjava/lang/String;Landroidx/compose/ui/Modifier;JLandroidx/compose/runtime/Composer;II)V
+}
+
 public final class io/github/youndie/plakat/components/PlakatDialogKt {
 	public static final fun PlakatDialog (ZLjava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Ljava/lang/String;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 	public static final fun PlakatDialogAction (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZZLandroidx/compose/runtime/Composer;II)V
@@ -64,6 +69,14 @@ public final class io/github/youndie/plakat/components/PlakatNavigationItem {
 	public fun <init> (Lio/github/youndie/plakat/icons/PlakatStencil;Ljava/lang/String;)V
 	public final fun getIcon ()Lio/github/youndie/plakat/icons/PlakatStencil;
 	public final fun getLabel ()Ljava/lang/String;
+}
+
+public final class io/github/youndie/plakat/components/PlakatPictogram : java/lang/Enum {
+	public static final field Circle Lio/github/youndie/plakat/components/PlakatPictogram;
+	public static final field Square Lio/github/youndie/plakat/components/PlakatPictogram;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lio/github/youndie/plakat/components/PlakatPictogram;
+	public static fun values ()[Lio/github/youndie/plakat/components/PlakatPictogram;
 }
 
 public final class io/github/youndie/plakat/components/PlakatPosterKt {

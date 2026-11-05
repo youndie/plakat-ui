@@ -150,6 +150,9 @@ export const REFERENCES = [
     { group: 'Dialog', name, page: MVP, caption, card: 0, part: 'first' })),
   // The window (B-29): the two panels before their caption, in the page's two columns.
   ...cells('Window', MVP, 'prev', [['Onboarding', 'Окно / Онбординг · 2 из 4 панелей']]).map((r) => ({ ...r, floor: true })),
+  // The counter's tiles (B-30): the MVP page's two, and the Stretch page's column, its grid over its caption.
+  ...cells('Counter', MVP, 'prev', [['Isostat', 'Счётчик / Изостат']]).map((r) => ({ ...r, floor: true })),
+  { group: 'Counter', name: 'Column', page: STRETCH, caption: 'Счётчик / Колонна', prefix: true, card: 0, part: 'prev', floor: true },
   // The Stretch page's lines (B-31): each span's box, found by its text and size, for the page has no
   // caption per cell. The sandbox is typed into for a Latin line, then put back.
   ...[
