@@ -1,7 +1,7 @@
 ---
 id: B-36
 title: "Accessibility: contrast with textures on, grayscale check, touch targets, semantics"
-status: open
+status: wip
 priority: P1
 size: S
 stage: stage-3-screens
