@@ -271,6 +271,7 @@ class PlakatNavigationDrawerTest {
             val px = frame()
             assertEquals(paper.onRed, px[250, 100], "the row's ground, cream")
             assertEquals(paper.ink, px[250, 50], "the row above, as it was")
+            assertTrue((72 until 180).any { x -> (86 until 114).any { y -> px[x, y] == paper.ink } }, "its word in ink")
             onNodeWithContentDescription("ПОИСК").performMouseInput { release() }
         }
 
