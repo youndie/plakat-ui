@@ -1,5 +1,6 @@
 package io.github.youndie.plakat.components
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
@@ -62,6 +63,27 @@ class PlakatPosterWideTest {
         runComposeUiTest {
             wide(800)
             onNodeWithTag("p").assertWidthIsEqualTo(800.dp).assertHeightIsEqualTo(392.dp)
+        }
+
+    @Test
+    fun `given no width of its own it takes its parent's`() =
+        runComposeUiTest {
+            setContent {
+                CompositionLocalProvider(LocalDensity provides Density(1f)) {
+                    PlakatTheme(colors = paper, reduceMotion = true) {
+                        Box(Modifier.width(900.dp)) {
+                            PlakatPoster(
+                                listOf("ЧИТАЙ"),
+                                "ДА",
+                                {},
+                                Modifier.testTag("p"),
+                                layout = PlakatPosterLayout.Wide,
+                            )
+                        }
+                    }
+                }
+            }
+            onNodeWithTag("p").assertWidthIsEqualTo(900.dp).assertHeightIsEqualTo(392.dp)
         }
 
     @Test
