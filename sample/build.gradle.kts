@@ -5,6 +5,8 @@ plugins {
     alias(wip.plugins.kotlinMultiplatform)
     alias(wip.plugins.composeMultiplatform)
     alias(wip.plugins.composeCompiler)
+    alias(wip.plugins.ksp)
+    alias(libs.plugins.viddik)
     id("io.github.youndie.sborka.kmp")
     id("io.github.youndie.sborka.lint")
 }
@@ -41,4 +43,20 @@ kotlin {
 compose.desktop.application {
     mainClass = "io.github.youndie.plakat.sample.MainKt"
     nativeDistributions { packageName = "plakat-ui" }
+}
+
+// B-35: the Demo page's screens, held as plakat-core's components are (its `viddik` block says why these numbers).
+viddik {
+    verifyOnCheck.set(true)
+    shards.set(1)
+    designTolerancePercent.set(5.0)
+    designChannelTolerance.set(16)
+    designStrict.set(false)
+}
+
+tasks.withType<Test>().configureEach {
+    inputs
+        .dir(layout.projectDirectory.dir("src/desktopTest/snapshots"))
+        .withPropertyName("viddikSnapshots")
+        .withPathSensitivity(org.gradle.api.tasks.PathSensitivity.RELATIVE)
 }

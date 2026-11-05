@@ -13,12 +13,19 @@ import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.IntrinsicMeasurable
+import androidx.compose.ui.layout.IntrinsicMeasureScope
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.Measurable
+import androidx.compose.ui.layout.MeasurePolicy
+import androidx.compose.ui.layout.MeasureResult
+import androidx.compose.ui.layout.MeasureScope
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
@@ -91,6 +98,7 @@ public enum class PlakatPictogram {
  * a word, then [caption] and a [legend] that opens with the pictogram (`■ = 5 статей`). A new value ticks (`tick`):
  * digit by digit, the lowest first, 40 ms a step and at most 400 ms in all, the pictograms added one by one across it;
  * at once under reduced motion. [accentLast] puts the last pictogram in red (`красный — сегодня`): the word says it too.
+ * [stretched] sets the number as [PlakatCounterColumn] does, 104 high and 56 wide a place, in [numberColor].
  */
 @Composable
 public fun PlakatCounter(
@@ -101,6 +109,8 @@ public fun PlakatCounter(
     pictogram: PlakatPictogram = PlakatPictogram.Square,
     perPictogram: Int = 1,
     accentLast: Boolean = false,
+    stretched: Boolean = false,
+    numberColor: Color = PlakatTheme.colors.ink,
 ) {
     val colors = PlakatTheme.colors
     val type = PlakatTheme.typography
@@ -109,13 +119,18 @@ public fun PlakatCounter(
     val tick = ticker.tick
     val body = type.bodyS.style.copy(color = colors.ink)
     Column(modifier.background(colors.concrete).padding(TilePadding)) {
-        CssParagraph(
-            tick.textAt(ticker.ms),
-            type.displayL.style.copy(fontSize = NUMBER_SP.sp),
-            NUMBER_LINE,
-            colors.ink,
-            face = PlakatFaceMetrics.Display,
-        )
+        val shown = tick.textAt(ticker.ms)
+        if (stretched) {
+            PlakatStretch(shown, Modifier.size(ColumnPlace * shown.length, ColumnHeight), numberColor)
+        } else {
+            CssParagraph(
+                shown,
+                type.displayL.style.copy(fontSize = NUMBER_SP.sp),
+                NUMBER_LINE,
+                numberColor,
+                face = PlakatFaceMetrics.Display,
+            )
+        }
         Spacer(Modifier.height(TileGap))
         PictogramRow(
             tick.unitsAt(ticker.ms, per),
@@ -193,26 +208,49 @@ private fun PictogramRow(
             }
             if (remainder > 0) Remainder(remainder, remainderStyle)
         },
-    ) { measurables, constraints ->
-        // `display: flex; flex-wrap: wrap; align-items: center`: each line as high as its tallest, each item centred.
-        val gap = PictogramGap.roundToPx()
-        val wide = min(constraints.maxWidth, pictogram.rowWide.roundToPx())
-        val placeables = measurables.map { it.measure(Constraints()) }
-        val lines = mutableListOf<MutableList<Int>>()
+        measurePolicy = remember(pictogram) { PictogramRowPolicy(pictogram) },
+    )
+}
+
+/**
+ * `display: flex; flex-wrap: wrap; align-items: center`: lines as high as their tallest, each item centred. The heights
+ * for intrinsics come from the same wrapping, so a tile can stretch beside a taller one (a grid's `stretch`).
+ */
+private class PictogramRowPolicy(
+    val pictogram: PlakatPictogram,
+) : MeasurePolicy {
+    /** For each line, the indices of the items on it, in a row [wide] across with [gap] between. */
+    private fun lines(
+        widths: List<Int>,
+        wide: Int,
+        gap: Int,
+    ): List<List<Int>> {
+        val out = mutableListOf<MutableList<Int>>()
         var x = 0
-        placeables.forEachIndexed { i, p ->
-            if (lines.isEmpty() || (x > 0 && x + gap + p.width > wide)) {
-                lines += mutableListOf<Int>()
+        widths.forEachIndexed { i, w ->
+            if (out.isEmpty() || (x > 0 && x + gap + w > wide)) {
+                out += mutableListOf<Int>()
                 x = 0
             } else if (x > 0) {
                 x += gap
             }
-            lines.last() += i
-            x += p.width
+            out.last() += i
+            x += w
         }
+        return out
+    }
+
+    override fun MeasureScope.measure(
+        measurables: List<Measurable>,
+        constraints: Constraints,
+    ): MeasureResult {
+        val gap = PictogramGap.roundToPx()
+        val wide = min(constraints.maxWidth, pictogram.rowWide.roundToPx())
+        val placeables = measurables.map { it.measure(Constraints()) }
+        val lines = lines(placeables.map { it.width }, wide, gap)
         val heights = lines.map { line -> line.maxOf { placeables[it].height } }
         val height = heights.sum() + gap * (lines.size - 1).coerceAtLeast(0)
-        layout(constraints.maxWidth, height) {
+        return layout(constraints.maxWidth, height) {
             var y = 0
             lines.forEachIndexed { l, line ->
                 var at = 0
@@ -225,6 +263,26 @@ private fun PictogramRow(
             }
         }
     }
+
+    override fun IntrinsicMeasureScope.maxIntrinsicHeight(
+        measurables: List<IntrinsicMeasurable>,
+        width: Int,
+    ): Int {
+        val gap = PictogramGap.roundToPx()
+        val lines =
+            lines(
+                measurables.map { it.maxIntrinsicWidth(Constraints.Infinity) },
+                min(width, pictogram.rowWide.roundToPx()),
+                gap,
+            )
+        val heights = lines.map { line -> line.maxOf { measurables[it].maxIntrinsicHeight(Constraints.Infinity) } }
+        return heights.sum() + gap * (lines.size - 1).coerceAtLeast(0)
+    }
+
+    override fun IntrinsicMeasureScope.minIntrinsicHeight(
+        measurables: List<IntrinsicMeasurable>,
+        width: Int,
+    ): Int = maxIntrinsicHeight(measurables, width)
 }
 
 /**

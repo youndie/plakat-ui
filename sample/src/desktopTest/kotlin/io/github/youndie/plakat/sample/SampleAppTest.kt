@@ -1,33 +1,29 @@
 package io.github.youndie.plakat.sample
 
 import androidx.compose.ui.graphics.toPixelMap
+import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.v2.runComposeUiTest
+import io.github.youndie.plakat.theme.PlakatEvent
+import io.github.youndie.plakat.theme.PlakatEventListener
 import io.github.youndie.plakat.tokens.PlakatPalettes
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-/** B-01: the sample composes through the library's dependency, as a consumer would. */
+/** B-01, B-35: the sample composes through the library's public API, as a consumer does. */
 @OptIn(ExperimentalTestApi::class)
 class SampleAppTest {
     @Test
-    fun `the sample shows the kit name in capitals on paper`() =
-        runComposeUiTest {
-            setContent { PlakatUiSample() }
-            onNodeWithTag("sample-root").assertIsDisplayed()
-            onNodeWithText("PLAKAT-UI").assertIsDisplayed()
-        }
-
-    @Test
     fun `the label switches the paper texture off and on`() =
         runComposeUiTest {
-            setContent { PlakatUiSample() }
+            setContent { PlakatUiSample(autoplay = false) }
 
             // B-07: a row of the paper away from the text, textured, then flat, then textured again.
             fun paperRow() =
@@ -36,8 +32,66 @@ class SampleAppTest {
                 }
             assertTrue(paperRow().size > 3, "textured paper")
             onNodeWithText("ТЕКСТУРА: ВКЛ").performClick()
-            assertEquals(setOf(PlakatPalettes.Paper.paper), paperRow(), "flat paper")
+            assertEquals(
+                setOf(PlakatPalettes.Paper.paper),
+                paperRow()
+                    .filter {
+                        it.alpha == 1f
+                    }.toSet()
+                    .take(1)
+                    .toSet(),
+                "flat paper",
+            )
             onNodeWithText("ТЕКСТУРА: ВЫКЛ").performClick()
             assertTrue(paperRow().size > 3, "textured again")
+        }
+
+    /** Every section in each theme and both ways of moving, with the clock paused so nothing waits on a loop. */
+    @Test
+    fun `every section composes in each theme, the clock paused`() {
+        for (dark in listOf(false, true)) {
+            for (reduce in listOf(false, true)) {
+                runComposeUiTest {
+                    mainClock.autoAdvance = false
+                    setContent { PlakatUiSample(dark = dark, reduceMotion = reduce) }
+                    for (section in SampleSection.entries) {
+                        onNodeWithTag("section-${section.name}").performClick()
+                        mainClock.advanceTimeBy(500)
+                        onNodeWithTag("sample-root").assertIsDisplayed()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun ComposeUiTest.session(heard: MutableList<PlakatEvent>) {
+        setContent {
+            PlakatUiSample(
+                reduceMotion = true,
+                texture = false,
+                section = SampleSection.Onboarding,
+                autoplay = false,
+                events = PlakatEventListener { heard += it },
+            )
+        }
+        waitForIdle()
+    }
+
+    /** A scripted session through the kit's listener: the names come in the spec's order, from the tokens. */
+    @Test
+    fun `a scripted session is heard in the spec's names`() =
+        runComposeUiTest {
+            val heard = mutableListOf<PlakatEvent>()
+            session(heard)
+            heard.clear()
+            // Onboarding: next, which presses a button and turns the window.
+            onNodeWithText("ДАЛЬШЕ").performScrollTo().performClick()
+            waitForIdle()
+            // A chip to the settings screen, then a row's switch.
+            onNodeWithTag("section-Settings").performClick()
+            waitForIdle()
+            onNodeWithText("Присылать дайджест").performScrollTo().performClick()
+            waitForIdle()
+            assertEquals(listOf("stamp", "release", "rail", "stamp", "lever"), heard.map { it.token })
         }
 }

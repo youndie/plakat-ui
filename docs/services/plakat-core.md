@@ -278,5 +278,9 @@ not run it, because the output is committed and pinned by the metrics test.
 - The dark of the page's compositions is not referenced: the presets and rapports are, and the drawing is one.
 - The strip scales with the screen: the page's lab and its strip of frames agree only as shares, so its width is 2/9 of the
   screen's, its lean 5/16 of the height. On a phone of 390 × 844 that is 87 wide and 264 of lean, near the −17° axis.
+- The Demo page uses components at other measures than their cells: `PlakatWindow(large = true)`, `PlakatCounter(stretched = true)`,
+  `PlakatDialogAction` for its plain words at 13 px, `PlakatGeneratedImage(titleZone, ground)`, `PlakatRapportFill(cell)`.
+- `PlakatCounter`'s row reports real intrinsics: a tile can stretch beside a taller one under `IntrinsicSize.Max`, as a
+  grid's `stretch` does. A hand `Layout` with no intrinsics laid each pictogram on its own line there.
 - The klib ABI dump lists the compose compiler's `$stableprop` of internal classes too; adding an
   internal class changes it and needs `updateKotlinAbi`.

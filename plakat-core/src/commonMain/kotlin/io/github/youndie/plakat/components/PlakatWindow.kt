@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -23,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.youndie.plakat.print.PlakatWipe
@@ -38,21 +40,48 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
-/** The picture's box: the MVP page's `height: 160px`, on concrete. */
-private val PictureHeight = 160.dp
+/**
+ * A panel's measures. Compact, the MVP page's cell: a picture `height: 160px`, its number `left: 8px; top: 8px; font-size:
+ * 14px; padding: 2px 6px`, `gap: 8px` between the parts and the panels, caption and body at 14 px, lines of 1.15 and 1.4.
+ * Large, the Demo page's onboarding, each panel the whole width: `padding: 0 16px`, a picture of 360, its number
+ * `left: 12px; top: 12px; padding: 4px 8px`, `gap: 20px`, the caption `font-size: 32px; line-height: 1`, the body
+ * `font-size: 17px; line-height: 1.45; max-width: 320px`.
+ */
+private class WindowMeasures(
+    val picture: Dp,
+    val numberInset: Dp,
+    val numberPadX: Dp,
+    val numberPadY: Dp,
+    val gap: Dp,
+    val panelPad: Dp,
+    val panelGap: Dp,
+    val captionSp: Int,
+    val captionLine: Float,
+    val bodySp: Int,
+    val bodyLine: Float,
+    val bodyWide: Dp,
+)
 
-/** The panel's number: `left: 8px; top: 8px; font-size: 14px; padding: 2px 6px`, on paper. */
-private val NumberInset = PlakatGrid.Step
-private val NumberPadX = 6.dp
-private val NumberPadY = 2.dp
+private val Compact =
+    WindowMeasures(
+        160.dp,
+        PlakatGrid.Step,
+        6.dp,
+        2.dp,
+        PlakatGrid.Step,
+        0.dp,
+        PlakatGrid.Step,
+        14,
+        1.15f,
+        14,
+        1.4f,
+        Dp.Infinity,
+    )
+private val Large =
+    WindowMeasures(360.dp, 12.dp, PlakatGrid.Step, 4.dp, 20.dp, PlakatGrid.Margin, 0.dp, 32, 1f, 17, 1.45f, 320.dp)
 
-/** Between the picture, the caption and the body: `gap: 8px`, and between the panels too. */
-private val PanelGap = PlakatGrid.Step
-
-/** The caption: `font-size: 14px; line-height: 1.15`; and the body: `font-size: 14px; line-height: 1.4`. */
-private const val TEXT_SP = 14
-private const val CAPTION_LINE = 1.15f
-private const val BODY_LINE = 1.4f
+/** The number in its tag is always 14 px. */
+private const val NUMBER_SP = 14
 
 /** A panel of a [PlakatWindow]: a [picture] (a preset, a generated composition), a caption and maybe a body. */
 @Immutable
@@ -66,7 +95,7 @@ public class PlakatWindowPanel(
  * The window, after ROSTA's: [panels], picture and caption, numbered, [panelsInView] of them side by side (the
  * page's onboarding shows 2 of 4). A new [page], the first panel in view, shifts them across in 200 ms
  * hard-stop (`rail`), and only then do the captions open by a wipe from the left, 120 ms linear; under
- * reduced motion it is all there at once.
+ * reduced motion it is all there at once. [large] sets a panel as the whole width of a screen, as the onboarding does.
  */
 @Composable
 public fun PlakatWindow(
@@ -74,6 +103,7 @@ public fun PlakatWindow(
     page: Int,
     modifier: Modifier = Modifier,
     panelsInView: Int = 1,
+    large: Boolean = false,
 ) {
     val colors = PlakatTheme.colors
     val type = PlakatTheme.typography
@@ -104,16 +134,18 @@ public fun PlakatWindow(
             }
         }
     }
-    val display = type.displayL.style.copy(fontSize = TEXT_SP.sp, color = colors.ink)
-    val text = type.bodyS.style.copy(fontSize = TEXT_SP.sp)
+    val m = if (large) Large else Compact
+    val number = type.displayL.style.copy(fontSize = NUMBER_SP.sp, color = colors.ink)
+    val display = number.copy(fontSize = m.captionSp.sp)
+    val text = type.bodyS.style.copy(fontSize = m.bodySp.sp)
     Layout(
         content = {
             panels.forEachIndexed { i, panel ->
-                Column {
+                Column(Modifier.padding(horizontal = m.panelPad)) {
                     Box(
                         Modifier
                             .fillMaxWidth()
-                            .height(PictureHeight)
+                            .height(m.picture)
                             .clipToBounds()
                             .background(colors.concrete),
                     ) {
@@ -121,30 +153,30 @@ public fun PlakatWindow(
                         BasicText(
                             (i + 1).toString().padStart(2, '0'),
                             Modifier
-                                .padding(start = NumberInset, top = NumberInset)
+                                .padding(start = m.numberInset, top = m.numberInset)
                                 .background(colors.paper)
-                                .padding(horizontal = NumberPadX, vertical = NumberPadY),
-                            style = display.cssLine(PlakatFaceMetrics.Display),
+                                .padding(horizontal = m.numberPadX, vertical = m.numberPadY),
+                            style = number.cssLine(PlakatFaceMetrics.Display),
                             softWrap = false,
                         )
                     }
-                    Spacer(Modifier.height(PanelGap))
+                    Spacer(Modifier.height(m.gap))
                     CssParagraph(
                         panel.caption,
                         display,
-                        CAPTION_LINE,
+                        m.captionLine,
                         colors.ink,
                         Modifier.plakatWipe(PlakatWipe.Left) { words.value },
                         PlakatFaceMetrics.Display,
                     )
                     if (panel.body != null) {
-                        Spacer(Modifier.height(PanelGap))
+                        Spacer(Modifier.height(m.gap))
                         CssParagraph(
                             panel.body,
                             text,
-                            BODY_LINE,
+                            m.bodyLine,
                             colors.ink,
-                            Modifier.plakatWipe(PlakatWipe.Left) { words.value },
+                            Modifier.widthIn(max = m.bodyWide).plakatWipe(PlakatWipe.Left) { words.value },
                         )
                     }
                 }
@@ -153,7 +185,7 @@ public fun PlakatWindow(
         modifier = modifier.clipToBounds(),
     ) { measurables, constraints ->
         val inView = panelsInView.coerceAtLeast(1)
-        val gap = PanelGap.roundToPx()
+        val gap = m.panelGap.roundToPx()
         val width = constraints.maxWidth
         val panelWidth = (width - gap * (inView - 1)) / inView
         val placeables = measurables.map { it.measure(Constraints(minWidth = panelWidth, maxWidth = panelWidth)) }

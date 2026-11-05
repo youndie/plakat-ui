@@ -34,6 +34,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.v2.runComposeUiTest
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.DpRect
 import androidx.compose.ui.unit.dp
 import io.github.youndie.plakat.theme.PlakatTheme
 import io.github.youndie.plakat.tokens.PlakatColors
@@ -154,6 +155,92 @@ class PlakatAgitTest {
         assertTrue(same, "the same seed")
         assertTrue(differs, "another seed")
     }
+
+    @Test
+    fun `a composition keeps its zone clear, on its ground`() =
+        runComposeUiTest {
+            show {
+                PlakatGeneratedImage(
+                    301,
+                    Modifier.size(358.dp, 360.dp),
+                    frameWidth = 358.dp,
+                    frameHeight = 360.dp,
+                    titleZone = PlakatTitleZone.at(DpRect(0.dp, 0.dp, 72.dp, 40.dp)),
+                    ground = paper.concrete,
+                )
+            }
+            val px = frame()
+            for (y in 0 until 40) for (x in 0 until 72) assertEquals(paper.concrete, px[x, y], "in the zone at $x, $y")
+            assertTrue((0 until 360).any { y -> (0 until 358).any { x -> px[x, y] == paper.red } }, "its red")
+        }
+
+    @Test
+    fun `the zone asked for is the one kept, wherever it stands`() {
+        // Across the seeds, a zone in the frame's middle holds no ink and no red, where the generator's own would.
+        for (seed in 301..306) {
+            runComposeUiTest {
+                show {
+                    PlakatGeneratedImage(
+                        seed,
+                        Modifier.size(358.dp, 360.dp),
+                        frameWidth = 358.dp,
+                        frameHeight = 360.dp,
+                        titleZone = PlakatTitleZone.at(DpRect(120.dp, 120.dp, 280.dp, 240.dp)),
+                    )
+                }
+                val px = frame()
+                for (y in 120 until 240 step 2) {
+                    for (x in 120 until 280 step 2) {
+                        assertTrue(px[x, y] != paper.ink && px[x, y] != paper.red, "seed $seed at $x, $y")
+                    }
+                }
+            }
+        }
+    }
+
+    @Test
+    fun `no zone lets a thumbnail use its whole frame`() {
+        fun picture(zone: PlakatTitleZone): PixelMap {
+            var out: PixelMap? = null
+            runComposeUiTest {
+                show {
+                    PlakatGeneratedImage(
+                        71,
+                        Modifier.size(64.dp),
+                        frameWidth = 64.dp,
+                        frameHeight = 64.dp,
+                        titleZone = zone,
+                    )
+                }
+                out = frame()
+            }
+            return out!!
+        }
+        val free = picture(PlakatTitleZone.None)
+        val kept = picture(PlakatTitleZone.Generated)
+        assertTrue((0 until 64).any { y -> (0 until 64).any { x -> free[x, y] != kept[x, y] } }, "the zone changes it")
+    }
+
+    @Test
+    fun `a rapport on a smaller cell has the page's smaller tile`() =
+        runComposeUiTest {
+            // Seed 1923 on a cell of 4: a tile of 32 × 24.
+            show { PlakatRapportFill(1923, Modifier.size(120.dp, 48.dp), cell = 4.dp) }
+            val px = frame()
+            for (y in 0 until 24 step 2) {
+                for (x in 0 until 80 step 2) assertTrue(near(px[x, y], px[x + 32, y]), "across at $x, $y")
+            }
+        }
+
+    @Test
+    fun `a raskat disc prints in its two inks, round`() =
+        runComposeUiTest {
+            show { PlakatRaskatDisc(Modifier.size(120.dp)) }
+            val px = frame()
+            assertEquals(Color.Transparent, px[1, 1], "outside the circle")
+            val inks = (20 until 100).flatMap { y -> (20 until 100).map { x -> px[x, y] } }.toSet()
+            assertTrue(paper.red in inks && paper.paper in inks, "both inks: ${inks.size}")
+        }
 
     @Test
     fun `a rapport repeats without a seam`() =
