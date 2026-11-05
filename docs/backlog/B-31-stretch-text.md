@@ -1,7 +1,7 @@
 ---
 id: B-31
 title: "Растяжка: one Display line filling its box from cap top to baseline"
-status: open
+status: wip
 priority: P1
 size: S
 stage: stage-2-components
