@@ -1,3 +1,9 @@
+public final class io/github/youndie/plakat/components/ComposableSingletons$PlakatTopAppBarKt {
+	public static final field INSTANCE Lio/github/youndie/plakat/components/ComposableSingletons$PlakatTopAppBarKt;
+	public fun <init> ()V
+	public final fun getLambda$782067659$io_github_youndie_plakat_core ()Lkotlin/jvm/functions/Function3;
+}
+
 public final class io/github/youndie/plakat/components/PlakatBadgeKt {
 	public static final fun PlakatBadge (Ljava/lang/Integer;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 	public static final fun PlakatBadgedBox (Ljava/lang/Integer;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
@@ -73,6 +79,18 @@ public final class io/github/youndie/plakat/components/PlakatSwitchKt {
 
 public final class io/github/youndie/plakat/components/PlakatTextFieldKt {
 	public static final fun PlakatTextField (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLandroidx/compose/foundation/text/KeyboardOptions;Landroidx/compose/foundation/text/KeyboardActions;Landroidx/compose/ui/text/input/VisualTransformation;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;III)V
+}
+
+public final class io/github/youndie/plakat/components/PlakatTopAppBarKt {
+	public static final fun PlakatTopAppBar (Ljava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/String;Ljava/lang/String;ILio/github/youndie/plakat/components/PlakatTopAppBarState;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun rememberPlakatTopAppBarState (Landroidx/compose/runtime/Composer;I)Lio/github/youndie/plakat/components/PlakatTopAppBarState;
+}
+
+public final class io/github/youndie/plakat/components/PlakatTopAppBarState {
+	public static final field $stable I
+	public fun <init> ()V
+	public final fun getFraction ()F
+	public final fun getNestedScrollConnection ()Landroidx/compose/ui/input/nestedscroll/NestedScrollConnection;
 }
 
 public final class io/github/youndie/plakat/icons/PlakatIconKt {

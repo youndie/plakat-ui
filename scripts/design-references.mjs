@@ -136,6 +136,10 @@ export const REFERENCES = [
   // Progress (B-24). The linear cells sit in a column of 218.67 px, rounded as Blink snaps the box.
   ...cells('Progress', MVP, 'first', [['Linear0', 'Linear / 0 %'], ['Linear40', 'Linear / 40 %'], ['Linear100', 'Linear / 100 %']]).map((r) => ({ ...r, round: true })),
   ...cells('Progress', MVP, 'first', [['Circular25', 'Circular / 25 %'], ['Circular70', '/ 70 %'], ['Spinner', '/ Indeterminate'], ['SpinnerInline', '/ 24 inline']]),
+  // The top app bar (B-25): the expanded one is what stands above its caption in the page's block, less a
+  // 24 px spacer; the collapsed one is the element before its caption, 56 and its 3 px rule.
+  ...cells('TopAppBar', MVP, 'above', [['Expanded', 'TopAppBar / Expanded · 140']]).map((r) => ({ ...r, crop: { x: 0, y: 0, w: 390, h: 128 } })),
+  ...cells('TopAppBar', MVP, 'prev', [['Collapsed', 'TopAppBar / Collapsed · 56']]),
   ...cells('Badge', MVP, 'first', [['Number', 'Badge / Число'], ['Dot', '/ Точка']]),
   // The icons (B-11): each of the sixteen at 48, 24 and 16 px, ink on concrete, from the Icons page's
   // grid; a cell is found by its token caption, and the icon is the n-th svg of the row above it.
@@ -202,7 +206,7 @@ const LOCATE = `(ref) => {
   if (!caption) return { error: 'caption ' + JSON.stringify(ref.caption) + ' #' + ref.card + ' not found (' + captions.length + ' on the page)' };
   const cell = caption.parentElement, c = cell.getBoundingClientRect(), t = caption.getBoundingClientRect();
   window.plakatCell = cell;
-  const r = ref.part === 'caption' ? t : ref.part === 'next' ? caption.nextElementSibling.getBoundingClientRect() : ref.part === 'first' ? cell.firstElementChild.getBoundingClientRect()
+  const r = ref.part === 'caption' ? t : ref.part === 'next' ? caption.nextElementSibling.getBoundingClientRect() : ref.part === 'prev' ? caption.previousElementSibling.getBoundingClientRect() : ref.part === 'first' ? cell.firstElementChild.getBoundingClientRect()
     : ref.part === 'icon' ? cell.parentElement.firstElementChild.children[ref.index].getBoundingClientRect()
     : { left: c.left, top: c.top, width: c.width, height: t.top - c.top };
   const g = ref.grow ?? 0;

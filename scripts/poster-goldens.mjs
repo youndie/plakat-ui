@@ -13,6 +13,8 @@
 // with the palette as role letters (R red, I ink, G gray), so the Kotlin side only has to print the
 // same strings. Seeds 1..SEEDS are hashed with FNV-1a 64; the first WHOLE are kept whole.
 //
+// The MVP page's rapport strip is held the same way (see `raport` below).
+//
 // --check writes nothing and fails when the committed file differs from what the page emits.
 
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -40,6 +42,23 @@ export const FRAMES = [
 ];
 const SEEDS = 2000;
 const WHOLE = 12;
+
+// The MVP page's rapport strip under a top app bar, `raport(seed, cols, rows, cell, pal)` beside its own
+// `rng`: not plakat-gen.js's `rapport` either (B-25). Cut out the same way.
+const MVP_PAGE = join(ROOT, 'reference/design-system/plakat-ui Компоненты.dc.html');
+const mvp = readFileSync(MVP_PAGE, 'utf8');
+const method = (text, head) => {
+  const start = text.indexOf(`  ${head}`);
+  if (start < 0) throw new Error(`${head} not found in ${MVP_PAGE}`);
+  const end = text.indexOf('\n  }\n', start);
+  const line = text.indexOf('\n', start);
+  // A method on one line ends there; a longer one at its closing brace.
+  return text.slice(start, text.slice(start, line).trimEnd().endsWith('}') ? line : end + 4);
+};
+const Mvp = new Function(`return class { ${method(mvp, 'rng(seed)')}\n${method(mvp, 'raport(seed')} }`)();
+const strip = new Mvp();
+const canonicalStrip = (cells) => cells.map((c) => [c.x, c.y, c.w, c.h, c.c, c.r, c.clip].join(',')).join(';');
+const runStrip = (seed) => canonicalStrip(strip.raport(seed, 33, 2, 12, { red: 'R', alts: ['I', 'C'] }));
 
 const canonical = (c) =>
   c.shapes.map((s) => [s.x, s.y, s.w, s.h, s.c, s.r, s.clip, s.t, s.o].join(',')).join(';') +
@@ -86,6 +105,14 @@ for (const f of FRAMES) {
   for (let seed = 1; seed <= WHOLE; seed++) lines.push(`                    ${kstr(run(f, seed), 24)},`);
   lines.push('                ),');
 }
+lines.push('        )', '');
+lines.push('    /** The strip, `raport(seed, 33, 2, 12, …)`: every seed 1..SEEDS hashed, and the first ones whole. */');
+let sh = '';
+for (let seed = 1; seed <= SEEDS; seed++) sh += fnv(runStrip(seed));
+lines.push('    val stripHashes: String =', `        ${kstr(sh, 12)}`, '');
+lines.push('    val stripWhole: List<String> =');
+lines.push('        listOf(');
+for (let seed = 1; seed <= WHOLE; seed++) lines.push(`            ${kstr(runStrip(seed), 16)},`);
 lines.push('        )');
 lines.push('}', '');
 

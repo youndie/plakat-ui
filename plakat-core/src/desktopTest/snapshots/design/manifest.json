@@ -1688,6 +1688,66 @@
       "nudge": 0.875
     },
     {
+      "file": "TopAppBar_Expanded_Light.png",
+      "page": "plakat-ui Компоненты.dc.html",
+      "caption": "TopAppBar / Expanded · 140",
+      "card": 0,
+      "part": "above",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 128
+      },
+      "x": 32,
+      "y": 1288,
+      "w": 390,
+      "h": 128,
+      "shift": 0.3125
+    },
+    {
+      "file": "TopAppBar_Expanded_Dark.png",
+      "page": "plakat-ui Компоненты.dc.html",
+      "caption": "TopAppBar / Expanded · 140",
+      "card": 1,
+      "part": "above",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 128
+      },
+      "x": 446,
+      "y": 1288,
+      "w": 390,
+      "h": 128,
+      "shift": 0.3125
+    },
+    {
+      "file": "TopAppBar_Collapsed_Light.png",
+      "page": "plakat-ui Компоненты.dc.html",
+      "caption": "TopAppBar / Collapsed · 56",
+      "card": 0,
+      "part": "prev",
+      "x": 32,
+      "y": 1467,
+      "w": 390,
+      "h": 59,
+      "shift": 0.3125
+    },
+    {
+      "file": "TopAppBar_Collapsed_Dark.png",
+      "page": "plakat-ui Компоненты.dc.html",
+      "caption": "TopAppBar / Collapsed · 56",
+      "card": 1,
+      "part": "prev",
+      "x": 446,
+      "y": 1467,
+      "w": 390,
+      "h": 59,
+      "shift": 0.3125
+    },
+    {
       "file": "Badge_Number_Light.png",
       "page": "plakat-ui Компоненты.dc.html",
       "caption": "Badge / Число",
