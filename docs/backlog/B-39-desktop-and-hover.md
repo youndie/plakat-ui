@@ -1,7 +1,7 @@
 ---
 id: B-39
 title: "Hover on pointer devices and a wide poster layout"
-status: open
+status: wip
 priority: P1
 size: M
 stage: stage-2-components
