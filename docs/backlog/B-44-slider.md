@@ -1,7 +1,7 @@
 ---
 id: B-44
 title: "Slider: rail, ticks and a carriage that stops on them"
-status: open
+status: wip
 priority: P2
 size: M
 stage: stage-2-components

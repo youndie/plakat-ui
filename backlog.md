@@ -59,7 +59,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-44](docs/backlog/B-44-slider.md) `[ ]` | Slider: rail, ticks and a carriage that stops on them | P2 | M | B-09, B-10, B-12, B-16 |
+| [B-44](docs/backlog/B-44-slider.md) `[~]` | Slider: rail, ticks and a carriage that stops on them | P2 | M | B-09, B-10, B-12, B-16 |
 | [B-45](docs/backlog/B-45-menu.md) `[ ]` | Menu / Dropdown: a list on paper in a bar frame, opened by a wipe | P2 | M | B-09, B-10, B-12, B-23 |
 | [B-46](docs/backlog/B-46-bottom-sheet.md) `[ ]` | BottomSheet: a sheet riding up on rails, the handle is a bar | P2 | M | B-09, B-10, B-12, B-28 |
 | [B-47](docs/backlog/B-47-navigation-drawer.md) `[ ]` | NavigationDrawer: black panel with cream capital items | P2 | M | B-09, B-10, B-12, B-26 |

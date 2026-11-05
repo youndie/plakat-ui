@@ -55,6 +55,7 @@ const ICONS = 'plakat-ui Иконки.dc.html';
 const STRETCH = 'plakat-ui Растяжка.dc.html';
 const AGIT = 'plakat-ui Агит-графика.dc.html';
 const DEMO = 'plakat-ui Демо.dc.html';
+const PRINCIPLES = 'plakat-ui Принципы.dc.html';
 // What says a page's template has rendered: the runtime has replaced its <x-dc> and the cells'
 // captions are there ("Filled / Default"); the Icons page imports its paths after mount.
 const READY = { [ICONS]: 'plakat/icon/time' };
@@ -158,6 +159,9 @@ export const REFERENCES = [
   // In place (B-53): the Stretch page's fourth poster and its masthead, each the block over its caption.
   { group: 'Poster', name: 'Stretch_Light', page: STRETCH, caption: 'Плакат / Растяжка', prefix: true, card: 0, part: 'prev' },
   { group: 'TopAppBar', name: 'Masthead_Light', page: STRETCH, caption: 'TopAppBar / Шапка', prefix: true, card: 0, part: 'prev', floor: true },
+  // The slider (B-44): no component page draws it, the Principles page has a live one and step 5's two specimens.
+  { group: 'Slider', name: 'Live_Light', page: PRINCIPLES, caption: 'РАЗМЕР ШРИФТА', prefix: true, card: 0, part: 'next' },
+  { group: 'Slider', name: 'Specimens_Light', page: PRINCIPLES, caption: 'СОСТОЯНИЯ БЕЗ ЦВЕТА', card: 0, part: 'panel', crop: { x: 24, y: 10, w: 352, h: 48 } },
   // The Stretch page's projection (B-32): canvases of 2×, so each is shot as the browser halves it. 0 is its playground.
   ...['Horn', 'Column', 'Box', 'Cone', 'Sphere', 'Stairs', 'HornLines', 'Floor', 'Ceiling', 'Axis', 'Upright'].map((name, i) =>
     ({ group: 'Projection', name: `${name}_Light`, page: STRETCH, canvas: i + 1 })),
@@ -281,7 +285,7 @@ const LOCATE = `(ref) => {
   if (!caption) return { error: 'caption ' + JSON.stringify(ref.caption) + ' #' + ref.card + ' not found (' + captions.length + ' on the page)' };
   const cell = caption.parentElement, c = cell.getBoundingClientRect(), t = caption.getBoundingClientRect();
   window.plakatCell = cell;
-  const r = ref.part === 'cell' ? c : ref.part === 'caption' ? t : ref.part === 'next' ? caption.nextElementSibling.getBoundingClientRect() : ref.part === 'prev' ? caption.previousElementSibling.getBoundingClientRect() : ref.part === 'first' ? cell.firstElementChild.getBoundingClientRect()
+  const r = ref.part === 'panel' ? cell.nextElementSibling.getBoundingClientRect() : ref.part === 'cell' ? c : ref.part === 'caption' ? t : ref.part === 'next' ? caption.nextElementSibling.getBoundingClientRect() : ref.part === 'prev' ? caption.previousElementSibling.getBoundingClientRect() : ref.part === 'first' ? cell.firstElementChild.getBoundingClientRect()
     : ref.part === 'icon' ? cell.parentElement.firstElementChild.children[ref.index].getBoundingClientRect()
     : { left: c.left, top: c.top, width: c.width, height: t.top - c.top };
   const g = ref.grow ?? 0;

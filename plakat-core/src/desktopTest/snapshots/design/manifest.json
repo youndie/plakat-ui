@@ -6,6 +6,7 @@
     "plakat-ui Ядро.dc.html": 1584,
     "plakat-ui Токены.dc.html": 1160,
     "plakat-ui Растяжка.dc.html": 1584,
+    "plakat-ui Принципы.dc.html": 1584,
     "plakat-ui Демо.dc.html": 1584,
     "plakat-ui Агит-графика.dc.html": 1584,
     "plakat-ui Иконки.dc.html": 1584
@@ -15,6 +16,7 @@
     "plakat-ui Ядро.dc.html": "d697709d7ba92b8d66b24c8c31405b8fad4c5d46d553f2d41eb3dcf2a4fa6172",
     "plakat-ui Токены.dc.html": "f1c130ed5923916c16f9d72d40fe818314a333cb602922ad1ef706188bdcdff4",
     "plakat-ui Растяжка.dc.html": "9f9de42d25dd11df33503b26219681762c549e76b24368480fd62b7c5749c733",
+    "plakat-ui Принципы.dc.html": "6401dd52fc5f4bfb8c17a815bbcc09022781604760138d63d0f47f39cb071985",
     "plakat-ui Демо.dc.html": "43eb39c6afa42997b8419d910e5db1a4273f83fbccf1931c3868e99032468d3e",
     "plakat-ui Агит-графика.dc.html": "de931b66b0b3aeb24de440b3d976970a8725d9329c792109851c050ecc85c057",
     "plakat-ui Иконки.dc.html": "45cc8ec71b1defd281585d3fee1613d5b4789abef5b638c25bf5d9470db703ba"
@@ -1872,6 +1874,36 @@
       "w": 390,
       "h": 195,
       "shift": 0.578125
+    },
+    {
+      "file": "Slider_Live_Light.png",
+      "page": "plakat-ui Принципы.dc.html",
+      "caption": "РАЗМЕР ШРИФТА",
+      "card": 0,
+      "part": "next",
+      "x": 232,
+      "y": 1722,
+      "w": 358,
+      "h": 48,
+      "shift": 0.625
+    },
+    {
+      "file": "Slider_Specimens_Light.png",
+      "page": "plakat-ui Принципы.dc.html",
+      "caption": "СОСТОЯНИЯ БЕЗ ЦВЕТА",
+      "card": 0,
+      "part": "panel",
+      "crop": {
+        "x": 24,
+        "y": 10,
+        "w": 352,
+        "h": 48
+      },
+      "x": 976,
+      "y": 1088,
+      "w": 352,
+      "h": 48,
+      "shift": 0.625
     },
     {
       "file": "Projection_Horn_Light.png",
