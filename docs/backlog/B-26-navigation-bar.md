@@ -1,7 +1,7 @@
 ---
 id: B-26
 title: "NavigationBar: black strip, red square behind the active icon"
-status: open
+status: wip
 priority: P1
 size: M
 stage: stage-2-components
