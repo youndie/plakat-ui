@@ -40,7 +40,6 @@ import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.dialog
@@ -191,8 +190,7 @@ internal fun PlakatBottomSheetFrame(
                     layout(placeable.width, placeable.height) {
                         placeable.place(0, (placeable.height * down).roundToInt())
                     }
-                }.pointerInput(Unit) {}
-                .background(if (ground == PlakatSheetGround.Paper) colors.paper else colors.concrete)
+                }.background(if (ground == PlakatSheetGround.Paper) colors.paper else colors.concrete)
                 .semantics {
                     dialog()
                     if (paneTitle != null) this.paneTitle = paneTitle

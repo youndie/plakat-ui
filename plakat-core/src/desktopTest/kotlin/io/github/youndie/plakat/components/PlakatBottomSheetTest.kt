@@ -170,14 +170,28 @@ class PlakatBottomSheetTest {
             assertEquals(tops.sortedDescending(), tops, "never past the stop")
             assertEquals(252, tops.last())
             assertEquals(listOf(PlakatEvent.Rail), heard)
-            // The screen closes the background from the left, over the same clock: more dots along a row each frame.
+            // The screen closes the background from the left, linear over the same 320 ms: along row 40 its edge is
+            // (390 + 120) p − 120 × 40 / 500, and its dots are every second column.
             val dots = opening.map { px -> (0 until 390).count { px[it, 40] != Color.White } }
-            assertEquals(dots.sorted(), dots, "only ever more: $dots")
-            assertTrue(dots[8] in 40..340, "partway a third of the way in: $dots")
-            assertEquals(195, dots.last(), "whole, a dot of 2 in every 4 along this row")
+            val closes =
+                (0..3).any { start ->
+                    dots.withIndex().all { (i, got) ->
+                        val p = (((i - start) * 16.0) / 320).coerceIn(0.0, 1.0)
+                        abs(got - ((510 * p - 9.6) / 2).coerceIn(0.0, 195.0)) <= 3
+                    }
+                }
+            assertTrue(closes, "the dots along a row per frame: $dots")
+            assertEquals(195, dots.last(), "whole")
             open = false
             val closing = read().map { it.top() }
-            assertEquals(closing.sorted(), closing, "going down: $closing")
+            val rides =
+                (0..3).any { start ->
+                    closing.withIndex().all { (i, got) ->
+                        val p = hardStop((((i - start) * 16.0) / 320).coerceIn(0.0, 1.0))
+                        abs(got - (252 + 248 * p)) <= 1.5
+                    }
+                }
+            assertTrue(rides, "going down the same way: $closing")
             assertEquals(500, closing.last())
             assertEquals(listOf(PlakatEvent.Rail, PlakatEvent.Rail), heard)
             mainClock.advanceTimeByFrame()
