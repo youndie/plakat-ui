@@ -189,7 +189,7 @@ internal fun PlakatDialogFrame(
                 }
             }.focusable(),
     ) {
-        Screen(colors, reduce, { open.value }) { if (visible) dismiss() }
+        PlakatDotScreen(colors, reduce, { open.value }) { if (visible) dismiss() }
         Column(
             Modifier
                 .padding(start = SheetInset, top = SheetTop, end = SheetInset)
@@ -245,7 +245,7 @@ internal fun PlakatDialogFrame(
 
 /** The screen over the background: a click on it asks to dismiss, and nothing under it is reached. */
 @Composable
-private fun BoxScope.Screen(
+internal fun BoxScope.PlakatDotScreen(
     colors: PlakatColors,
     reduce: Boolean,
     open: () -> Float,

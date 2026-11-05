@@ -57,6 +57,10 @@ public final class io/github/youndie/plakat/components/PlakatBadgeKt {
 	public static final fun PlakatBadgedBox (Ljava/lang/Integer;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class io/github/youndie/plakat/components/PlakatBottomSheetKt {
+	public static final fun PlakatBottomSheet (ZLkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Lio/github/youndie/plakat/components/PlakatSheetGround;Ljava/lang/String;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+}
+
 public final class io/github/youndie/plakat/components/PlakatBoxFold : java/lang/Enum {
 	public static final field Side Lio/github/youndie/plakat/components/PlakatBoxFold;
 	public static final field Top Lio/github/youndie/plakat/components/PlakatBoxFold;
@@ -357,6 +361,14 @@ public final class io/github/youndie/plakat/components/PlakatRadioButtonKt {
 
 public final class io/github/youndie/plakat/components/PlakatScreenWipeKt {
 	public static final fun PlakatScreenWipe (Ljava/lang/Object;ILandroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class io/github/youndie/plakat/components/PlakatSheetGround : java/lang/Enum {
+	public static final field Concrete Lio/github/youndie/plakat/components/PlakatSheetGround;
+	public static final field Paper Lio/github/youndie/plakat/components/PlakatSheetGround;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lio/github/youndie/plakat/components/PlakatSheetGround;
+	public static fun values ()[Lio/github/youndie/plakat/components/PlakatSheetGround;
 }
 
 public final class io/github/youndie/plakat/components/PlakatSliderKt {
