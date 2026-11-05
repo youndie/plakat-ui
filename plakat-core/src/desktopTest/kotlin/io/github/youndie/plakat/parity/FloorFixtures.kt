@@ -1,18 +1,20 @@
 package io.github.youndie.plakat.parity
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.github.youndie.plakat.components.PlakatDivider
+import io.github.youndie.plakat.components.PlakatDividerWeight
+import io.github.youndie.plakat.theme.PlakatTheme
+import io.github.youndie.plakat.tokens.PlakatPalettes
 import io.github.youndie.plakat.type.plakatFonts
 import io.github.youndie.viddik.annotations.ViddikScreenshot
 
@@ -20,8 +22,9 @@ import io.github.youndie.viddik.annotations.ViddikScreenshot
 // (`height: 1 | 3 | 8 px`, `margin-top: 8 | 7 | 4 px`), an 8 px gap, then a 12 px Golos caption. A
 // rule is a rectangle with nothing to disagree about, so whatever these fixtures differ from their
 // Chrome references by is the two rasterisers, not the drawing; the caption alone is the text floor.
-// The colours are the tokens' paper and ink, written out because the token layer (B-08) and the
-// Divider (B-23) do not exist yet.
+// The colours are the tokens' paper and ink, written out as they were when the floor was measured,
+// before the token layer (B-08) existed. Since B-23 the rule is the Divider itself, which these cells
+// are.
 
 private class Paper(
     val paper: Color,
@@ -32,6 +35,7 @@ private val light = Paper(Color(0xFFEEE5D1), Color(0xFF1D1B18))
 private val dark = Paper(Color(0xFF1F1D1A), Color(0xFFEEE5D1))
 
 private const val W = 224
+private val WEIGHTS = mapOf(1 to "Hair", 3 to "Rule", 8 to "Bar")
 
 @Composable
 private fun RuleCell(
@@ -40,8 +44,11 @@ private fun RuleCell(
     thickness: Int,
 ) {
     val h = top + thickness + 8
-    Canvas(Modifier.size(W.dp, h.dp).background(p.paper)) {
-        drawRect(p.ink, Offset(0f, top.toFloat()), Size(W.toFloat(), thickness.toFloat()))
+    val weight = PlakatDividerWeight.entries.first { it.name == WEIGHTS.getValue(thickness) }
+    PlakatTheme(colors = if (p === light) PlakatPalettes.Paper else PlakatPalettes.BlackPaper) {
+        Box(Modifier.size(W.dp, h.dp).background(p.paper)) {
+            PlakatDivider(Modifier.padding(top = top.dp), weight)
+        }
     }
 }
 

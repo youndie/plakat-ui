@@ -1366,6 +1366,150 @@
       "nudge": 0.15625
     },
     {
+      "file": "ListItem_Default_Light.png",
+      "page": "plakat-ui Компоненты.dc.html",
+      "caption": "LIST ITEM · БУМАГА",
+      "card": 0,
+      "part": "next",
+      "crop": {
+        "x": 0,
+        "y": 8,
+        "w": 390,
+        "h": 73
+      },
+      "x": 860,
+      "y": 1296,
+      "w": 390,
+      "h": 73,
+      "shift": 0.3125
+    },
+    {
+      "file": "ListItem_Default_Dark.png",
+      "page": "plakat-ui Компоненты.dc.html",
+      "caption": "LIST ITEM · ЧЁРНАЯ БУМАГА",
+      "card": 0,
+      "part": "next",
+      "crop": {
+        "x": 0,
+        "y": 8,
+        "w": 390,
+        "h": 73
+      },
+      "x": 32,
+      "y": 1835,
+      "w": 390,
+      "h": 73,
+      "shift": 0.3125
+    },
+    {
+      "file": "ListItem_Pressed_Light.png",
+      "page": "plakat-ui Компоненты.dc.html",
+      "caption": "LIST ITEM · БУМАГА",
+      "card": 0,
+      "part": "next",
+      "crop": {
+        "x": 0,
+        "y": 81,
+        "w": 390,
+        "h": 72
+      },
+      "x": 860,
+      "y": 1369,
+      "w": 390,
+      "h": 72,
+      "shift": 0.3125
+    },
+    {
+      "file": "ListItem_Pressed_Dark.png",
+      "page": "plakat-ui Компоненты.dc.html",
+      "caption": "LIST ITEM · ЧЁРНАЯ БУМАГА",
+      "card": 0,
+      "part": "next",
+      "crop": {
+        "x": 0,
+        "y": 81,
+        "w": 390,
+        "h": 72
+      },
+      "x": 32,
+      "y": 1908,
+      "w": 390,
+      "h": 72,
+      "shift": 0.3125
+    },
+    {
+      "file": "ListItem_Switch_Light.png",
+      "page": "plakat-ui Компоненты.dc.html",
+      "caption": "LIST ITEM · БУМАГА",
+      "card": 0,
+      "part": "next",
+      "crop": {
+        "x": 0,
+        "y": 153,
+        "w": 390,
+        "h": 57
+      },
+      "x": 860,
+      "y": 1441,
+      "w": 390,
+      "h": 57,
+      "shift": 0.3125
+    },
+    {
+      "file": "ListItem_Switch_Dark.png",
+      "page": "plakat-ui Компоненты.dc.html",
+      "caption": "LIST ITEM · ЧЁРНАЯ БУМАГА",
+      "card": 0,
+      "part": "next",
+      "crop": {
+        "x": 0,
+        "y": 153,
+        "w": 390,
+        "h": 57
+      },
+      "x": 32,
+      "y": 1980,
+      "w": 390,
+      "h": 57,
+      "shift": 0.3125
+    },
+    {
+      "file": "ListItem_Disabled_Light.png",
+      "page": "plakat-ui Компоненты.dc.html",
+      "caption": "LIST ITEM · БУМАГА",
+      "card": 0,
+      "part": "next",
+      "crop": {
+        "x": 0,
+        "y": 210,
+        "w": 390,
+        "h": 57
+      },
+      "x": 860,
+      "y": 1498,
+      "w": 390,
+      "h": 57,
+      "shift": 0.3125
+    },
+    {
+      "file": "ListItem_Disabled_Dark.png",
+      "page": "plakat-ui Компоненты.dc.html",
+      "caption": "LIST ITEM · ЧЁРНАЯ БУМАГА",
+      "card": 0,
+      "part": "next",
+      "crop": {
+        "x": 0,
+        "y": 210,
+        "w": 390,
+        "h": 57
+      },
+      "x": 32,
+      "y": 2037,
+      "w": 390,
+      "h": 57,
+      "shift": 0.3125
+    },
+    {
       "file": "Badge_Number_Light.png",
       "page": "plakat-ui Компоненты.dc.html",
       "caption": "Badge / Число",

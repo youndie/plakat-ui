@@ -55,6 +55,7 @@ Packages are `io.github.youndie.plakat.*` (research D1).
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatIconButton.kt` | IconButton: stamp and return, selected, inner focus ring; `PlakatPress.kt` is the press every pressable control shares |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatFab.kt` | FAB: the round shape, `stamp` and `rail` |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatChip.kt` | Chip: the stamp, a 32 dp plate in a 48 dp target |
+| `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatListItem.kt` | List item: number or marker, two lines, trailing, inverted when pressed; and the Divider in its three weights |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatBadge.kt` | Badge: the number or the dot, and `PlakatBadgedBox`; `PlakatTick.kt` is how a number changes (`ticks` of the MVP page) |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatPoster.kt` | Плакат: Круг, Фон, Баннер; the print cascade on one clock, the raskat roll, CSS line boxes drawn line by line |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/agit/PlakatPosterComposition.kt` | the Core page's own composition generator (`comp`), its recipes per layout and for thumbnails; `PlakatPosterDrawing.kt` draws its shapes |
@@ -110,6 +111,7 @@ rendered with reduced motion, so parity sees none of these.
 | Badge | `tick` | value, 40 / step | `PlakatTickTest`: the page's `ticks` worked by hand (lowest digit first, ≤ 400 ms); `PlakatIconButtonTest`: the number shown per frame, at once under reduced motion, a change during a tick going on from what shows |
 | FAB | `rail` | appear, 200 · hard-stop | `PlakatFabTest`: the circle's left and top edges per frame on the curve, 156 dp and 156 · tan 17° off at the start; in place at once under reduced motion |
 | Chip | `stamp` | select, 0; the same | `PlakatChipTest`: fill and wedge read within a frame of the click, under reduced motion alike; `stamp` once, nothing on letting go |
+| List item | `stamp`, `release` | press 0 / 60, the same | `PlakatListItemTest`: the row inverted within a frame of the press, the ground's share per frame back over 60 ms on the curve, identically under reduced motion; the words back the moment the finger lifts |
 | Button | `engage` | 120 + cycle 1200 · steps 12 | `PlakatButtonTest`: the slogan wiped from the left within 120 ms, the sector at 0°, 30°, 180°, 330° at 0, 100, 650, 1199 ms; the loading golden at 100 ms |
 
 ## 4. Dependencies
