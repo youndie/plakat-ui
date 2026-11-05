@@ -9,7 +9,7 @@
 set -euo pipefail
 
 PKG=io.github.youndie.plakat.bench
-ACT="$PKG/.BenchActivity"
+ACT="$PKG/io.github.youndie.plakat.bench.android.BenchActivity"
 ADB="${ADB:-$HOME/Library/Android/sdk/platform-tools/adb}"
 FILES="/sdcard/Android/data/$PKG/files"
 
