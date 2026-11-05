@@ -262,6 +262,20 @@ class PlakatSliderTest {
         }
 
     @Test
+    fun `an even half goes up too, as the page's Math round does`() =
+        runComposeUiTest {
+            var v by mutableFloatStateOf(0f)
+            slider({ v }, { v = it }, steps = 1)
+            onNodeWithTag("s").performMouseInput {
+                moveTo(Offset(89.5f, 24f))
+                press()
+                release()
+            }
+            waitForIdle()
+            assertEquals(.5f, v, "a half of the stop at 0 and the stop at a half: half-to-even would stay at 0")
+        }
+
+    @Test
     fun `a finger sets it on lifting, or past the slop as it drags`() =
         runComposeUiTest {
             var v by mutableFloatStateOf(0f)
