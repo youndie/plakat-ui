@@ -110,6 +110,16 @@ export const REFERENCES = [
   ...cells('Poster', CORE, 'first', [
     ['Circle', 'Плакат / Круг · 390 × 392'], ['Background', 'Плакат / Фон · 390 × 500'], ['Banner', 'Плакат / Баннер · 390 × 160'],
   ]),
+  // IconButton and Badge (B-20), on the MVP page. Captions like «/ Pressed» are shared with the FAB and
+  // the Chip in the same card, so each names its occurrence on the page: card is an index among them.
+  ...[
+    ['Default', 'IconButton / Default', 0, 1], ['Pressed', '/ Pressed', 0, 2], ['Selected', '/ Selected', 0, 2],
+    ['Focused', '/ Focused', 0, 2], ['Disabled', '/ Disabled', 0, 3],
+  ].flatMap(([name, caption, light, dark]) => [
+    { group: 'IconButton', name: `${name}_Light`, page: MVP, caption, card: light, part: 'first' },
+    { group: 'IconButton', name: `${name}_Dark`, page: MVP, caption, card: dark, part: 'first' },
+  ]),
+  ...cells('Badge', MVP, 'first', [['Number', 'Badge / Число'], ['Dot', '/ Точка']]),
   // The icons (B-11): each of the sixteen at 48, 24 and 16 px, ink on concrete, from the Icons page's
   // grid; a cell is found by its token caption, and the icon is the n-th svg of the row above it.
   ...ICON_IDS.flatMap((id) => [48, 24, 16].map((size, index) =>
@@ -174,6 +184,7 @@ const LOCATE = `(ref) => {
   const caption = captions[ref.card];
   if (!caption) return { error: 'caption ' + JSON.stringify(ref.caption) + ' #' + ref.card + ' not found (' + captions.length + ' on the page)' };
   const cell = caption.parentElement, c = cell.getBoundingClientRect(), t = caption.getBoundingClientRect();
+  window.plakatCell = cell;
   const r = ref.part === 'caption' ? t : ref.part === 'first' ? cell.firstElementChild.getBoundingClientRect()
     : ref.part === 'icon' ? cell.parentElement.firstElementChild.children[ref.index].getBoundingClientRect()
     : { left: c.left, top: c.top, width: c.width, height: t.top - c.top };
@@ -236,8 +247,16 @@ async function shoot(cdp, tab, ref) {
     r = await tab.evaluate(`(${LOCATE})(${JSON.stringify(ref)})`);
   }
   r.shift = shift;
+  // A cell after a label in a wrapping row starts on a fraction across: a margin below a pixel puts it
+  // on a whole one (IconButton's cells, after the first cell's wider caption).
+  const nudge = Math.ceil(r.x) - r.x;
+  if (nudge > 0) {
+    await tab.evaluate(`new Promise(ok => { window.plakatCell.style.marginLeft = '${nudge}px'; requestAnimationFrame(() => requestAnimationFrame(() => ok(true))); })`);
+    r = { ...(await tab.evaluate(`(${LOCATE})(${JSON.stringify(ref)})`)), shift, nudge };
+  }
   if (![r.x, r.y, r.w, r.h].every((v) => Number.isInteger(v))) throw new Error(`${ref.group}_${ref.name}: ${JSON.stringify(r)} is not whole pixels`);
   const shot = await cdp.send('Page.captureScreenshot', { format: 'png', clip: { x: r.x, y: r.y, width: r.w, height: r.h, scale: 1 } }, tab.sessionId);
+  if (nudge > 0) await tab.evaluate(`(() => { window.plakatCell.style.marginLeft = ''; return true; })()`);
   return { png: Buffer.from(shot.data, 'base64'), rect: r };
 }
 
