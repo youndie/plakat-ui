@@ -1,7 +1,7 @@
 ---
 id: B-51
 title: "Frame cost on the desktop JVM: raskat roll and the ten-card cascade, as a proxy until the device"
-status: open
+status: wip
 priority: P1
 size: S
 stage: stage-0-risks
