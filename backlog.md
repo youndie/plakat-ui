@@ -59,7 +59,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-29](docs/backlog/B-29-window.md) `[ ]` | Окно: onboarding and empty-state panels in the manner of ROSTA windows | P1 | M | B-03, B-09, B-10, B-12, B-13 |
+| [B-29](docs/backlog/B-29-window.md) `[~]` | Окно: onboarding and empty-state panels in the manner of ROSTA windows | P1 | M | B-03, B-09, B-10, B-12, B-13 |
 | [B-30](docs/backlog/B-30-counter.md) `[ ]` | Счётчик: the Isotype stat tile with a mechanical counter | P1 | M | B-09, B-10, B-12, B-31 |
 | [B-31](docs/backlog/B-31-stretch-text.md) `[ ]` | Растяжка: one Display line filling its box from cap top to baseline | P1 | S | B-02, B-05 |
 | [B-33](docs/backlog/B-33-agit-presets-and-photomontage.md) `[ ]` | Agit graphics: the six presets, generated compositions, rapports, halftone photomontage | P1 | M | B-03, B-05 |

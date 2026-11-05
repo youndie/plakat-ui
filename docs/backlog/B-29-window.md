@@ -1,7 +1,7 @@
 ---
 id: B-29
 title: "Окно: onboarding and empty-state panels in the manner of ROSTA windows"
-status: open
+status: wip
 priority: P1
 size: M
 stage: stage-2-components
