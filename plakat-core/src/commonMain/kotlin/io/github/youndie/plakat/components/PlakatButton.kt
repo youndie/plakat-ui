@@ -237,44 +237,8 @@ internal fun PlakatButtonFrame(
     val colors = PlakatTheme.colors
     val reduce = PlakatTheme.reduceMotion
     val events by rememberUpdatedState(PlakatTheme.events)
-    val press = remember { Animatable(0f) }
-    var focused by remember { mutableStateOf(false) }
-    var held by remember { mutableStateOf(false) }
-    val keyboard = LocalInputModeManager.current.inputMode == InputMode.Keyboard
-    val reduceNow by rememberUpdatedState(reduce)
-
-    // Press and release come from the input, so their events are reported here, once per gesture.
-    LaunchedEffect(source) {
-        source.interactions.collect { interaction: Interaction ->
-            when (interaction) {
-                is PressInteraction.Press -> {
-                    held = true
-                    events.onEvent(PlakatEvent.Stamp)
-                    launch { press.snapTo(1f) }
-                }
-
-                is PressInteraction.Release, is PressInteraction.Cancel -> {
-                    held = false
-                    events.onEvent(PlakatEvent.Release)
-                    launch {
-                        if (reduceNow) {
-                            press.snapTo(0f)
-                        } else {
-                            press.animateTo(0f, tween(PlakatDurations.SNAP, easing = PlakatEasings.HardStop))
-                        }
-                    }
-                }
-
-                is FocusInteraction.Focus -> {
-                    focused = true
-                }
-
-                is FocusInteraction.Unfocus -> {
-                    focused = false
-                }
-            }
-        }
-    }
+    val state = rememberPlakatPress(source)
+    val press = state.press
 
     // Loading wipes the slogan off from the left (`clip-path: inset(0 0 0 100%)`, 120 ms linear).
     val wipe = remember { Animatable(if (loading) 1f else 0f) }
@@ -288,7 +252,7 @@ internal fun PlakatButtonFrame(
 
     val loadingWord = PlakatTheme.strings.loading
     val pressed = if (look == ButtonLook.Pressed) 1f else press.value
-    val paint = buttonPaint(kind, colors, enabled, pressed, held || look == ButtonLook.Pressed)
+    val paint = buttonPaint(kind, colors, enabled, pressed, state.held || look == ButtonLook.Pressed)
     val label = PlakatTheme.typography.button
     val style =
         if (kind == PlakatButtonKind.Danger) {
@@ -300,7 +264,7 @@ internal fun PlakatButtonFrame(
             label.style.copy(fontSize = size, lineHeight = line, color = paint.ink)
         }
     val shift = pressed
-    val ringShown = look == ButtonLook.Focused || (focused && keyboard)
+    val ringShown = look == ButtonLook.Focused || state.focusShown()
 
     Box(
         modifier

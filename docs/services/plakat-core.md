@@ -52,6 +52,8 @@ Packages are `io.github.youndie.plakat.*` (research D1).
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatSwitch.kt` | Switch: rail, carriage, red segment |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatCard.kt` | Card: concrete sheet, ink when pressed, red bar when selected; print and tear |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatSnackbar.kt` | Snackbar, the telegram: ink plate, underlined action, hatched error with its word; show and hide |
+| `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatIconButton.kt` | IconButton: stamp and return, selected, inner focus ring; `PlakatPress.kt` is the press every pressable control shares |
+| `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatBadge.kt` | Badge: the number or the dot, and `PlakatBadgedBox`; `PlakatTick.kt` is how a number changes (`ticks` of the MVP page) |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatPoster.kt` | Плакат: Круг, Фон, Баннер; the print cascade on one clock, the raskat roll, CSS line boxes drawn line by line |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/agit/PlakatPosterComposition.kt` | the Core page's own composition generator (`comp`), its recipes per layout and for thumbnails; `PlakatPosterDrawing.kt` draws its shapes |
 | `scripts/poster-goldens.mjs` | the poster compositions' goldens, emitted by the page's own `comp` run in Node; `--check` in `make check` |
@@ -102,6 +104,8 @@ rendered with reduced motion, so parity sees none of these.
 | Snackbar | `telegram` | hide, 200 · hard-stop; fade 100 | `PlakatSnackbarTest`: the words gone on the first frame the plate moves, the plate down on the curve, nothing drawn after, `onHidden` once; under reduced motion a 100 ms fade out |
 | Плакат | `print` | appear, ≤ 300 · linear; instant | `PlakatPosterTest`: on rows of the plate, the dot, the circle and the slogan, the printed width follows a 390 dp edge moving in 120 ms from 0, 30, 60 and 180 ms; under reduced motion and with `print = false` whole on the first frame; a new seed whole at once |
 | Плакат | `roll` | appear, 320 · hard-stop; final at once | `PlakatPosterTest`: the paper pixels inside the raskat circle, frame by frame, are the field's at `raskatRollT0` of the frame's age (the roll itself held to the JS in `PlakatRaskatTest`); the seam's pixels on the first frame under reduced motion |
+| IconButton | `stamp`, `release` | press 0, release 60 · hard-stop | `PlakatIconButtonTest`: inverted and the icon 1 dp over on the frame it lands, the ground's share per frame on the curve; back at once under reduced motion |
+| Badge | `tick` | value, 40 / step | `PlakatTickTest`: the page's `ticks` worked by hand (lowest digit first, ≤ 400 ms); `PlakatIconButtonTest`: the number shown per frame, at once under reduced motion, a change during a tick going on from what shows |
 | Button | `engage` | 120 + cycle 1200 · steps 12 | `PlakatButtonTest`: the slogan wiped from the left within 120 ms, the sector at 0°, 30°, 180°, 330° at 0, 100, 650, 1199 ms; the loading golden at 100 ms |
 
 ## 4. Dependencies
@@ -193,5 +197,10 @@ not run it, because the output is committed and pinned by the metrics test.
 - The posters' composition is the Core page's own `comp`, not `plakat-gen.js` (research §1), so the
   page's posters can be reproduced at all; the card thumbnails take it too. Its circle can fall half off
   the poster (seed 47: 312 + 136 > 390), and a raskat there shows its seam near the poster's edge.
+- IconButton's pressed cell on the MVP page draws no shift, though the spec row (and the FAB's cell) says
+  `иконка +1 dp`: the live press follows the row, the forced look of the fixture follows the cell.
+- A badge's width comes from the number's real width (`getLineRight`), rounded as Blink snaps a box: a
+  layout's own width is ceiled, a pixel too wide (3.95 → 2.52 %). It is the target's, so the plate
+  stands still through a tick.
 - The klib ABI dump lists the compose compiler's `$stableprop` of internal classes too; adding an
   internal class changes it and needs `updateKotlinAbi`.
