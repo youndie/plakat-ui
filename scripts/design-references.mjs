@@ -105,6 +105,11 @@ export const REFERENCES = [
   // The Snackbar's cells (B-18): the plate, the action's plate with its 56 px target, and the error
   // plate with its 8 px hatch above the message.
   ...cells('Snackbar', CORE, 'first', [['Default', 'Snackbar / Default'], ['Action', 'Snackbar / Action'], ['Error', 'Snackbar / Error']]),
+  // The poster's three layouts (B-19), whole. The fourth cell, «Круг · раскат», is a canvas the page
+  // draws by hand with a layout of its own and is not a reference (B-19's findings).
+  ...cells('Poster', CORE, 'first', [
+    ['Circle', 'Плакат / Круг · 390 × 392'], ['Background', 'Плакат / Фон · 390 × 500'], ['Banner', 'Плакат / Баннер · 390 × 160'],
+  ]),
   // The icons (B-11): each of the sixteen at 48, 24 and 16 px, ink on concrete, from the Icons page's
   // grid; a cell is found by its token caption, and the icon is the n-th svg of the row above it.
   ...ICON_IDS.flatMap((id) => [48, 24, 16].map((size, index) =>

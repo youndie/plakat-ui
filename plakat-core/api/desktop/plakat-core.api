@@ -13,6 +13,20 @@ public final class io/github/youndie/plakat/components/PlakatCheckboxKt {
 	public static final fun PlakatCheckbox (ZLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZZLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class io/github/youndie/plakat/components/PlakatPosterKt {
+	public static final fun PlakatPoster (Ljava/util/List;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Lio/github/youndie/plakat/components/PlakatPosterLayout;Ljava/lang/String;IZZLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun plakatPosterSeed (Ljava/util/List;)I
+}
+
+public final class io/github/youndie/plakat/components/PlakatPosterLayout : java/lang/Enum {
+	public static final field Background Lio/github/youndie/plakat/components/PlakatPosterLayout;
+	public static final field Banner Lio/github/youndie/plakat/components/PlakatPosterLayout;
+	public static final field Circle Lio/github/youndie/plakat/components/PlakatPosterLayout;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lio/github/youndie/plakat/components/PlakatPosterLayout;
+	public static fun values ()[Lio/github/youndie/plakat/components/PlakatPosterLayout;
+}
+
 public final class io/github/youndie/plakat/components/PlakatSnackbarKt {
 	public static final fun PlakatSnackbar (Ljava/lang/String;Landroidx/compose/ui/Modifier;ZLjava/lang/String;Lkotlin/jvm/functions/Function0;ZLkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
