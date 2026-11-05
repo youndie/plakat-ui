@@ -3,6 +3,9 @@ package io.github.youndie.plakat.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -125,6 +128,86 @@ class PlakatWindowTest {
             assertTrue(rest.last() > 40, "whole at the end: $rest")
             assertTrue(inks.subList(14, 20).toSet().size >= 3, "opening over frames: $inks")
             assertEquals(listOf(PlakatEvent.Rail), heard)
+        }
+
+    @Test
+    fun `the caption and the body open from the left, linear over 120 ms from the stop`() =
+        runComposeUiTest {
+            // Lines across the panel, of letters all stems, so the reach is the wipe's to within a letter.
+            val wide =
+                listOf(
+                    PlakatWindowPanel("С", "С") { },
+                    PlakatWindowPanel("Ш".repeat(24), "Ш".repeat(20)) { },
+                )
+            var page by mutableIntStateOf(0)
+            mainClock.autoAdvance = false
+            setContent {
+                CompositionLocalProvider(LocalDensity provides Density(1f)) {
+                    PlakatTheme(colors = paper) {
+                        Box(Modifier.background(Color.White)) {
+                            PlakatWindow(wide, page, Modifier.width(300.dp).testTag("w"))
+                        }
+                    }
+                }
+            }
+            mainClock.advanceTimeBy(100)
+            page = 1
+            val frames =
+                (0 until 24).map {
+                    mainClock.advanceTimeByFrame()
+                    frame()
+                }
+
+            fun PixelMap.reach(rows: IntRange) =
+                rows.maxOf { y -> (0 until width).lastOrNull { x -> this[x, y].red < .5f } ?: -1 }
+            val caption = 168 until 184
+            val body = 192 until frames.last().height
+            val wholeCaption = frames.last().reach(caption)
+            val wholeBody = frames.last().reach(body)
+            assertTrue(wholeCaption > 250 && wholeBody > 150, "the lines: $wholeCaption, $wholeBody")
+            val fits =
+                (0..2).any { start ->
+                    frames.withIndex().all { (i, px) ->
+                        val ms = (i - start) * 16.0
+                        val p = ((ms - 200) / 120).coerceIn(0.0, 1.0)
+
+                        // The stems stand up to a letter short of the wipe's edge and never past it.
+                        fun held(
+                            got: Int,
+                            whole: Int,
+                        ) = got <= 300 * p + 1 && got >= minOf(300 * p, whole.toDouble()) - 16
+                        ms < 200 || (held(px.reach(caption), wholeCaption) && held(px.reach(body), wholeBody))
+                    }
+                }
+            assertTrue(
+                fits,
+                "caption ${frames.map { it.reach(caption) }}; body ${frames.map { it.reach(body) }}",
+            )
+        }
+
+    @Test
+    fun `nothing shows past the window's edge or the picture's box`() =
+        runComposeUiTest {
+            val tall =
+                listOf(
+                    PlakatWindowPanel(
+                        "А",
+                    ) { Box(Modifier.requiredHeight(400.dp).fillMaxWidth().background(Color.Red)) },
+                    PlakatWindowPanel("Б") { Box(Modifier.fillMaxSize().background(Color.Blue)) },
+                )
+            setContent {
+                CompositionLocalProvider(LocalDensity provides Density(1f)) {
+                    PlakatTheme(colors = paper, reduceMotion = true) {
+                        Box(Modifier.size(400.dp, 300.dp).background(Color.White).testTag("s")) {
+                            PlakatWindow(tall, 0, Modifier.width(300.dp))
+                        }
+                    }
+                }
+            }
+            val px = onNodeWithTag("s").captureToImage().toPixelMap()
+            assertEquals(Color.Red, px[150, 120])
+            assertEquals(Color.White, px[150, 164], "under the picture's box")
+            assertEquals(Color.White, px[350, 120], "past the window's edge, where the next panel stands")
         }
 
     @Test
