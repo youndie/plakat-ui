@@ -1848,6 +1848,54 @@
       "shift": 0.3125
     },
     {
+      "file": "ScreenWipe_F0.png",
+      "page": "plakat-ui Компоненты.dc.html",
+      "caption": "0 мс",
+      "card": 2,
+      "part": "first",
+      "x": 56,
+      "y": 4875,
+      "w": 60,
+      "h": 106,
+      "shift": 0.9375
+    },
+    {
+      "file": "ScreenWipe_F107.png",
+      "page": "plakat-ui Компоненты.dc.html",
+      "caption": "107 мс",
+      "card": 1,
+      "part": "first",
+      "x": 124,
+      "y": 4875,
+      "w": 60,
+      "h": 106,
+      "shift": 0.9375
+    },
+    {
+      "file": "ScreenWipe_F213.png",
+      "page": "plakat-ui Компоненты.dc.html",
+      "caption": "213 мс",
+      "card": 1,
+      "part": "first",
+      "x": 192,
+      "y": 4875,
+      "w": 60,
+      "h": 106,
+      "shift": 0.9375
+    },
+    {
+      "file": "ScreenWipe_F320.png",
+      "page": "plakat-ui Компоненты.dc.html",
+      "caption": "320 мс",
+      "card": 1,
+      "part": "first",
+      "x": 260,
+      "y": 4875,
+      "w": 60,
+      "h": 106,
+      "shift": 0.9375
+    },
+    {
       "file": "Preset_Voshod_Light.png",
       "page": "plakat-ui Агит-графика.dc.html",
       "x": 0,

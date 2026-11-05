@@ -151,6 +151,9 @@ export const REFERENCES = [
     { group: 'Dialog', name, page: MVP, caption, card: 0, part: 'first' })),
   // The window (B-29): the two panels before their caption, in the page's two columns.
   ...cells('Window', MVP, 'prev', [['Onboarding', 'Окно / Онбординг · 2 из 4 панелей']]).map((r) => ({ ...r, floor: true })),
+  // The screen wipe's frame strip (B-34), by its captions: the dialog's and the counter's strips stand before it.
+  ...[['F0', '0 мс', 2], ['F107', '107 мс', 1], ['F213', '213 мс', 1], ['F320', '320 мс', 1]].map(([name, caption, card]) =>
+    ({ group: 'ScreenWipe', name, page: MVP, caption, card, part: 'first' })),
   // Agit graphics (B-33): each preset and rapport from its own SVG, laid over the page; the page's first
   // compositions, the skeleton's pattern at step 0 and its three photomontage frames.
   ...['voshod', 'klin', 'kolonny', 'os', 'shag', 'razryv'].flatMap((id) => THEMES.map((theme, card) =>
