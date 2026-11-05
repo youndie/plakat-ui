@@ -373,8 +373,9 @@ wasm as on desktop, where it was verified to exist. Settled in [B-32](../backlog
 Settled on 2026-11-05, on a bitmap's canvas: the same picture on desktop, the iOS simulator and wasm in Chrome
 (`PlakatVerticesTest`), compiled and not run on Android, whose device reading falls to
 [B-06](../backlog/B-06-frame-cost-measurement.md). Two differences stood behind "the same": on Skiko `ImageShader` samples by
-the nearest pixel and on Android by the linear, and on Android's hardware canvas `drawVertices` needs API 29. So the projection
-never draws on the frame's canvas: it bakes at twice the pixels and halves.
+the nearest pixel, where Android's follows its paint, and on Android's hardware canvas `drawVertices` needs API 29
+([the platform's table](https://developer.android.com/topic/performance/hardware-accel#drawing-support), which says to do what is done here). So the
+projection never draws on the frame's canvas: it bakes at twice the pixels and halves.
 
 **Answered on 2026-11-03.** Licence MIT (D15); registration in dp (D14); missing textures rendered
 here (D16); RadioButton, the v1 set and hover designed here (D2, D13); the repository goes public and

@@ -55,11 +55,10 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 <!-- BEGIN INDEX -->
 
-## Open (11)
+## Open (10)
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-32](docs/backlog/B-32-projection.md) `[~]` | Проекция: text meshed onto a horn, cone, column, sphere, box or stairs | P2 | M | B-02, B-31 |
 | [B-43](docs/backlog/B-43-re-import-the-design.md) `[ ]` | Re-import the design project on a branch of its own | P2 | S | B-05, B-08 |
 | [B-44](docs/backlog/B-44-slider.md) `[ ]` | Slider: rail, ticks and a carriage that stops on them | P2 | M | B-09, B-10, B-12, B-16 |
 | [B-45](docs/backlog/B-45-menu.md) `[ ]` | Menu / Dropdown: a list on paper in a bar frame, opened by a wipe | P2 | M | B-09, B-10, B-12, B-23 |
@@ -71,7 +70,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 | [B-06](docs/backlog/B-06-frame-cost-measurement.md) `[ ]` | Frame cost on a Pixel 6a: raskat roll, ten cards cascading with texture and registration | P3 | M | B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50, B-51 |
 | [B-37](docs/backlog/B-37-public-repository-and-publishing.md) `[ ]` | Public repository and publishing to Reposilite on every main — last | P3 | S | B-06, B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50 |
 
-## Closed (42)
+## Closed (43)
 
 **Goldens and references regenerate deterministically; the generator and raskat ports match them on every target; the floor and the frame cost have measured numbers**
 
@@ -112,6 +111,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 - [B-29](docs/backlog/B-29-window.md) `[x]` - Окно: onboarding and empty-state panels in the manner of ROSTA windows
 - [B-30](docs/backlog/B-30-counter.md) `[x]` - Счётчик: the Isotype stat tile with a mechanical counter
 - [B-31](docs/backlog/B-31-stretch-text.md) `[x]` - Растяжка: one Display line filling its box from cap top to baseline
+- [B-32](docs/backlog/B-32-projection.md) `[x]` - Проекция: text meshed onto a horn, cone, column, sphere, box or stairs
 - [B-33](docs/backlog/B-33-agit-presets-and-photomontage.md) `[x]` - Agit graphics: the six presets, generated compositions, rapports, halftone photomontage
 - [B-34](docs/backlog/B-34-screen-wipe.md) `[x]` - Screen transition: the red diagonal wipe, push and pop
 - [B-38](docs/backlog/B-38-radio-button.md) `[x]` - RadioButton: a ring with a red disc that locks in one frame

@@ -295,7 +295,7 @@ not run it, because the output is committed and pinned by the metrics test.
   the press; a filled plate gets the ink frame; a rule becomes the bar, growing down with the layout left as it was.
 - `PlakatPosterLayout.Wide` is as wide as its box and asks for 600 at least; a box that forces it narrower gets what it
   forces. Its composition's frame of 360 stands against the right edge, cut by the half.
-- `PlakatProjection` draws on a bitmap, once per text, form and size, at twice the pixels, then halved, and shows that image (B-32). Not on the frame's canvas: `drawVertices` needs API 29 on Android's hardware canvas, and an `ImageShader` samples nearest on Skiko and linear on Android. At 2× the difference is under a quarter of a pixel. Memory: the bitmap of its box in device pixels, kept while shown.
+- `PlakatProjection` draws on a bitmap, once per text, form and size, at twice the pixels, then halved, and shows that image (B-32). Not on the frame's canvas: `drawVertices` needs API 29 on Android's hardware canvas, and an `ImageShader` samples nearest on Skiko where Android's follows its paint. At 2× an edge moves by at most a quarter of a pixel. Memory: the bitmap of its box in device pixels, kept while shown.
 - The page's rule P6 says a mesh of 40 × 8; its `warp` raises `nv` to 16 whatever is asked, and the port does as the JS does.
 - `PlakatMasthead`, designed here where the page stops (B-53): the page says it rides up and an ordinary bar stays; the bar
   coming down in the last 56 and the rule growing are this library's. Until it comes down the row is not composed, since

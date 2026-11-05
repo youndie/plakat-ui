@@ -651,7 +651,7 @@ private fun Canvas.drawMesh(
 /**
  * The picture, once per text, form and size: at twice the pixels on the CPU, then halved. `drawVertices` on a bitmap's
  * canvas is the same call on every target, where on Android's hardware canvas it needs API 29, and where Skiko's image
- * shader samples by the nearest pixel and Android's by the linear, twice the pixels leaves that difference under a pixel.
+ * shader samples by the nearest pixel and Android's by its paint, twice the pixels leaves the difference under a pixel.
  */
 private fun bakeProjection(
     lines: List<String>,
