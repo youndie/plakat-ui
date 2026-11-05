@@ -1,7 +1,7 @@
 ---
 id: B-52
 title: "Empty state: a call rather than an apology, with the screen's one raskat wedge"
-status: open
+status: wip
 priority: P1
 size: S
 stage: stage-2-components
