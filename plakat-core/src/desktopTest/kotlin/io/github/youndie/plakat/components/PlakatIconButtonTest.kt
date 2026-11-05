@@ -236,7 +236,9 @@ class PlakatIconButtonTest {
                     mainClock.advanceTimeByFrame()
                     shownNumber()
                 }
-            assertEquals(back.first(), under, "no jump: $under then $back")
+            // Never up to the target it was on its way to: only back down the way it came.
+            assertTrue("47" !in back, "no jump: $under then $back")
+            assertEquals(under, back.first(), "no jump: $under then $back")
             assertEquals("39", back.last())
         }
 }
