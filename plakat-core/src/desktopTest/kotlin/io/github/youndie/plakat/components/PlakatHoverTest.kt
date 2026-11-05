@@ -174,6 +174,18 @@ class PlakatHoverTest {
         }
 
     @Test
+    fun `a finger leaves a chip as it found it`() =
+        runComposeUiTest {
+            show { PlakatChip("ШРИФТ", false, {}, Modifier.testTag("c")) }
+            onNodeWithTag("c").performTouchInput {
+                down(center)
+                up()
+            }
+            mainClock.advanceTimeBy(200)
+            assertEquals(Color.White, frame()[14, 22])
+        }
+
+    @Test
     fun `a disabled control does not answer the pointer`() =
         runComposeUiTest {
             show { PlakatOutlinedButton("ЧИТАТЬ", {}, Modifier.testTag("c"), enabled = false) }
