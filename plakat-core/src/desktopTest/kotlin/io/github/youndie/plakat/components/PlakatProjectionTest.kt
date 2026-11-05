@@ -51,7 +51,7 @@ class PlakatProjectionTest {
         form: () -> PlakatProjectionForm,
         width: () -> Dp = { 390.dp },
         reduce: Boolean = true,
-        print: Boolean = false,
+        print: () -> Boolean = { false },
         density: Float = 1f,
         heard: MutableList<PlakatEvent> = mutableListOf(),
         onBake: () -> Unit = {},
@@ -70,7 +70,7 @@ class PlakatProjectionTest {
                     },
                 ) {
                     Box(Modifier.size(width(), 392.dp).background(Color.White).testTag("p")) {
-                        PlakatProjectionFrame(lines(), form(), Modifier.size(width(), 392.dp), print, onBake)
+                        PlakatProjectionFrame(lines(), form(), Modifier.size(width(), 392.dp), print(), onBake)
                     }
                 }
             }
@@ -159,7 +159,7 @@ class PlakatProjectionTest {
         runComposeUiTest {
             val heard = mutableListOf<PlakatEvent>()
             mainClock.autoAdvance = false
-            projection({ listOf("НОЯБРЬ") }, { horn }, reduce = false, print = true, heard = heard)
+            projection({ listOf("НОЯБРЬ") }, { horn }, reduce = false, print = { true }, heard = heard)
             val frames =
                 (0 until 12).map {
                     mainClock.advanceTimeByFrame()
@@ -188,7 +188,7 @@ class PlakatProjectionTest {
         runComposeUiTest {
             val heard = mutableListOf<PlakatEvent>()
             mainClock.autoAdvance = false
-            projection({ listOf("НОЯБРЬ") }, { horn }, reduce = true, print = true, heard = heard)
+            projection({ listOf("НОЯБРЬ") }, { horn }, reduce = true, print = { true }, heard = heard)
             mainClock.advanceTimeByFrame()
             assertEquals(373, frame().reach(300))
             assertTrue(heard.isEmpty(), "nothing moves, nothing is heard: $heard")
@@ -199,7 +199,7 @@ class PlakatProjectionTest {
         runComposeUiTest {
             val heard = mutableListOf<PlakatEvent>()
             mainClock.autoAdvance = false
-            projection({ listOf("НОЯБРЬ") }, { horn }, reduce = false, print = false, heard = heard)
+            projection({ listOf("НОЯБРЬ") }, { horn }, reduce = false, print = { false }, heard = heard)
             mainClock.advanceTimeByFrame()
             assertEquals(373, frame().reach(300))
             assertTrue(heard.isEmpty())
@@ -214,6 +214,7 @@ class PlakatProjectionTest {
             var word by mutableStateOf("НОЯБРЬ")
             var form by mutableStateOf<PlakatProjectionForm>(horn)
             var width by mutableStateOf(390.dp)
+            var printing by mutableStateOf(true)
             mainClock.autoAdvance = false
             projection(
                 {
@@ -223,7 +224,7 @@ class PlakatProjectionTest {
                 { form },
                 { width },
                 reduce = false,
-                print = true,
+                print = { printing },
                 onBake = { bakes++ },
             )
             repeat(12) { mainClock.advanceTimeByFrame() }
@@ -233,6 +234,9 @@ class PlakatProjectionTest {
             repeat(3) { mainClock.advanceTimeByFrame() }
             assertEquals(2, asked, "it has recomposed")
             assertEquals(1, bakes, "a recomposition with an equal list and form is not a change")
+            printing = false
+            repeat(3) { mainClock.advanceTimeByFrame() }
+            assertEquals(1, bakes, "nor is one that comes through for its other parameters")
             word = "ДЕКАБРЬ"
             repeat(3) { mainClock.advanceTimeByFrame() }
             assertEquals(2, bakes, "a new text")

@@ -35,10 +35,10 @@ class PlakatWarpTest {
                     8,
                     10,
                 ),
-            "coneShaft" to warpGrid(warpCone(30.0, 100.0, 300.0, 40.0, 40.0, arc = 89.0).map, 8, 10),
+            "coneShaft" to warpGrid(warpCone(30.0, 100.0, 300.0, 40.0, 40.0, arc = 80.0).map, 8, 10),
             "columnFace" to warpGrid(warpColumn(264.0, 96.0, 112.0, 312.0, 168.0, 264.0).map, 8, 8),
             "columnBack" to
-                warpGrid(warpColumn(130.0, 60.0, 16.0, 112.0, 40.0, 88.0, 89.0, .3, 30.0).map, 8, 8),
+                warpGrid(warpColumn(130.0, 60.0, 16.0, 112.0, 40.0, 88.0, 82.0, .3, 4.0).map, 8, 8),
             "sphereBand" to warpGrid(warpSphere(254.0, 210.0, 100.0, 72.0), 8, 10),
             "sphereEdge" to warpGrid(warpSphere(100.0, 100.0, 60.0, 86.0, 80.0, 0.0), 16, 10),
             "boxSide" to warpGrid(box.map, 4, 8, folds = box.folds),
