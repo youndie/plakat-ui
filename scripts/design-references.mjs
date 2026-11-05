@@ -124,6 +124,10 @@ export const REFERENCES = [
     { group: 'Fab', name: `${name}_Light`, page: MVP, caption, card: light, part: 'first' },
     { group: 'Fab', name: `${name}_Dark`, page: MVP, caption, card: dark, part: 'first' },
   ]),
+  // The Chip's cells (B-22): its width is its word's, a fraction, so the crop takes it rounded as Blink
+  // snaps the box; the focus ring is 3 px wide 3 px off, so that cell grows 6 px each side.
+  ...[['Default', 'Chip / Default', 0, 1], ['Selected', '/ Selected', 1, 3], ['Focused', '/ Focused', 1, 3], ['Disabled', '/ Disabled', 2, 5]].flatMap(([name, caption, light, dark]) =>
+    [[name + '_Light', light], [name + '_Dark', dark]].map(([stem, card]) => ({ group: 'Chip', name: stem, page: MVP, caption, card, part: 'first', round: true, ...(name === 'Focused' ? { grow: 6 } : {}) }))),
   ...cells('Badge', MVP, 'first', [['Number', 'Badge / Число'], ['Dot', '/ Точка']]),
   // The icons (B-11): each of the sixteen at 48, 24 and 16 px, ink on concrete, from the Icons page's
   // grid; a cell is found by its token caption, and the icon is the n-th svg of the row above it.
@@ -194,7 +198,7 @@ const LOCATE = `(ref) => {
     : ref.part === 'icon' ? cell.parentElement.firstElementChild.children[ref.index].getBoundingClientRect()
     : { left: c.left, top: c.top, width: c.width, height: t.top - c.top };
   const g = ref.grow ?? 0;
-  const c0 = ref.crop ?? { x: -g, y: -g, w: r.width + 2 * g, h: (ref.floor ? Math.floor(r.height) : r.height) + 2 * g };
+  const c0 = ref.crop ?? { x: -g, y: -g, w: (ref.round ? Math.round(r.width) : r.width) + 2 * g, h: (ref.floor ? Math.floor(r.height) : r.height) + 2 * g };
   return { x: r.left + scrollX + c0.x, y: r.top + scrollY + c0.y, w: c0.w, h: c0.h };
 }`;
 
