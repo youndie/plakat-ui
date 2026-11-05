@@ -5,13 +5,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.captureToImage
-import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performMouseInput
 import androidx.compose.ui.test.v2.runComposeUiTest
 import androidx.compose.ui.unit.Density
@@ -20,6 +21,7 @@ import io.github.youndie.plakat.theme.PlakatPrintSwitches
 import io.github.youndie.plakat.theme.PlakatTheme
 import io.github.youndie.plakat.tokens.PlakatPalettes
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 /** B-56, the owner's remark: pressed, a card's words in the demo turn paper with its sheet, as its fixture's do. */
@@ -38,24 +40,35 @@ class DemoCardPressTest {
                 }
             }
             waitForIdle()
-            // The first card's word: where it stands, and the box of its row of the sheet.
-            val word = onAllNodesWithText(FIRST_TITLE, substring = true)[0].fetchSemanticsNode().boundsInRoot
+            // The title itself: unmerged, as the merged node is the whole card, with its picture's paper in it.
+            val word =
+                onNodeWithText(
+                    FIRST_TITLE,
+                    substring = true,
+                    useUnmergedTree = true,
+                ).fetchSemanticsNode().boundsInRoot
+            val rows = word.top.toInt() until word.bottom.toInt()
+            val xs = word.left.toInt() until word.right.toInt()
+
+            fun count(color: Color): Int {
+                val px = onNodeWithTag("screen").captureToImage().toPixelMap()
+                return xs.sumOf { x -> rows.count { y -> px[x, y] == color } }
+            }
+            assertEquals(0, count(paper.paper), "at rest it is ink on concrete")
+            assertTrue(count(paper.ink) > 40, "at rest its letters are ink")
             onNodeWithTag("screen").performMouseInput {
                 moveTo(Offset(word.left + 20, word.top + 8))
                 press()
             }
             waitForIdle()
-            val px = onNodeWithTag("screen").captureToImage().toPixelMap()
-            val rows = word.top.toInt() until word.bottom.toInt()
-            val xs = word.left.toInt() until word.right.toInt()
-            val light = xs.sumOf { x -> rows.count { y -> px[x, y] == paper.paper } }
-            val ground = xs.sumOf { x -> rows.count { y -> px[x, y] == paper.ink } }
+            val light = count(paper.paper)
+            val ground = count(paper.ink)
             assertTrue(ground > light, "the sheet is ink under them: $ground, $light")
             assertTrue(light > 40, "and the letters are paper: $light")
             onNodeWithTag("screen").performMouseInput { release() }
         }
 
     private companion object {
-        const val FIRST_TITLE = "Город"
+        const val FIRST_TITLE = "Город из фанеры: как"
     }
 }
