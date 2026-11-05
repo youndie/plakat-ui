@@ -56,6 +56,7 @@ import io.github.youndie.plakat.components.PlakatDialog
 import io.github.youndie.plakat.components.PlakatDialogAction
 import io.github.youndie.plakat.components.PlakatDivider
 import io.github.youndie.plakat.components.PlakatDividerWeight
+import io.github.youndie.plakat.components.PlakatEmptyState
 import io.github.youndie.plakat.components.PlakatFab
 import io.github.youndie.plakat.components.PlakatIconButton
 import io.github.youndie.plakat.components.PlakatLinearProgress
@@ -269,6 +270,10 @@ fun KitComponents(beat: Int) {
                     }
                 }
             PlakatWindow(panels, beat % 2, Modifier.width(Width), panelsInView = 2)
+        }
+        KitGroup("Пустое состояние") {
+            PlakatEmptyState("СОХРАНИТЕ ПЕРВУЮ СТАТЬЮ", "Закладки появятся здесь и откроются без сети.", "К ЛЕНТЕ", {
+            }, Modifier.width(Width))
         }
         KitGroup("Счётчик") {
             Row(Modifier.width(Width), horizontalArrangement = Arrangement.spacedBy(8.dp)) {

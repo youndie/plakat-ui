@@ -1850,6 +1850,30 @@
       "shift": 0.3125
     },
     {
+      "file": "EmptyState_Window_Light.png",
+      "page": "plakat-ui Компоненты.dc.html",
+      "caption": "Окно / Пустое состояние — призыв, не извинение · клин-раскат киноварь → бетон, единственный на экране",
+      "card": 0,
+      "part": "prev",
+      "x": 48,
+      "y": 3213,
+      "w": 358,
+      "h": 285,
+      "shift": 0.9375
+    },
+    {
+      "file": "EmptyState_Window_Dark.png",
+      "page": "plakat-ui Компоненты.dc.html",
+      "caption": "Окно / Пустое состояние — призыв, не извинение · клин-раскат киноварь → бетон, единственный на экране",
+      "card": 1,
+      "part": "prev",
+      "x": 462,
+      "y": 3213,
+      "w": 358,
+      "h": 285,
+      "shift": 0.9375
+    },
+    {
       "file": "Demo_Onboarding_Light.png",
       "sample": true,
       "page": "plakat-ui Демо.dc.html",
