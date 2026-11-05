@@ -20,7 +20,7 @@
 | The roll on time, at each density | **GREEN** | 0.0 % of frames past their deadline, 0.0 % of intervals ≥ 25 ms | 5 % |
 | The projection on Android (H4's half) | **GREEN** | draws, `raw/h4-*.png`; first frame 91 ms for the horn, 104 ms for the box, p50 | none set |
 
-**Which raskat verdict stands is the owner's.** The protocol as first committed names `work`, on which all three read GREEN: 0.14, 0.06 and −0.05 ms (`raw/run2/report.txt`; 0.15, 0.11 and −0.06 in run 1). That instrument is shown blind here to what it would have to see, below, so the table gives the amended reading. Nothing moved the 2 ms.
+**The table's raskat verdicts are the ones that stand, by the owner's decision of 2026-11-05, and the code stays as it is.** The protocol as first committed names `work`, on which all three read GREEN: 0.14, 0.06 and −0.05 ms (`raw/run2/report.txt`; 0.15, 0.11 and −0.06 in run 1). That instrument is shown blind here to what it would have to see, below, so the table gives the amended reading. Nothing moved the 2 ms.
 
 **H3's sentence as written, about the comparison alone, is not measured here**: only the whole frame is, as the comparison is not separated on the device. **The frame's 2 ms is refuted on the phone at 2 and 2.75, and the roll misses no frame**: over its budget and on time are both true, as on the Mac.
 
