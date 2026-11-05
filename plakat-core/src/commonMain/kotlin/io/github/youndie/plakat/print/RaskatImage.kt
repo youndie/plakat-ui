@@ -60,7 +60,7 @@ internal fun raskatImage(
 
 /**
  * A roll's image, kept between frames (B-51). Ink B only gains ground as a roll runs, so a frame writes only the pixels
- * new to it: writing all of them was the frame's whole cost, up to 38 ms at 352 px where the comparison takes 1.3. A step
+ * new to it: at 352 px writing all of them takes 7.8 ms, 14.6 at p95, and the new ones 0.5 (B-51's report). A step
  * that takes ink back starts the image over.
  */
 internal class RaskatRollImage(

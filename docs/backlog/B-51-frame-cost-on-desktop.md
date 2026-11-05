@@ -1,7 +1,7 @@
 ---
 id: B-51
 title: "Frame cost on the desktop JVM: raskat roll and the ten-card cascade, as a proxy until the device"
-status: wip
+status: done
 priority: P1
 size: S
 stage: stage-0-risks
@@ -45,3 +45,12 @@ The item's text above is the pre-registration; this section makes it runnable an
 - **Arms and rounds.** Thirteen arms: `idle-a`, `idle-b`, `busy-10`, `busy-25`, `cascade-a`, `cascade-b`, `cascade-flat`, `roll-1`, `roll-2`, `roll-2.75`, `base-1`, `base-2`, `base-2.75`. 4 s an arm, six rounds, the order rotating by one each round, one JVM; round 1 discarded for warm-up. No more rounds are added after a number is seen.
 - **Stand.** A real window on this Mac, as the subject sees it, in `alwaysOnTop`; machine, JVM, display and load in the log's header. Other load on the machine is not controlled: it is read by the ruler.
 - **Where.** `docs/research/measurements-2026-11-05/`, raw frames in `raw/`, report beside them; `scripts/frame-report.py` turns one into the other, with a control on known input.
+
+## Findings (2026-11-05)
+
+Report and raw frames: [measurements-2026-11-05](../research/measurements-2026-11-05/README.md). Against the lines above, no threshold moved: **cascade GREEN** (0.60 ms), **raskat GREEN at density 1** (1.49 ms), **RED at 2** (5.06 ms) **and at 2.75** (8.26 ms). So H3's frame budget is refuted on this Mac, and the comparison alone holds it (1.32 ms at 352 px).
+
+- **Two defects the first run showed, fixed and re-measured under the same protocol:** the raskat field was rebuilt on every drawn frame, and every inked pixel rewritten. The field is now once per size, and a roll writes only what is new (`RaskatRollImage`, equal to the image written whole at every step). 16.62 → 8.26 ms at 2.75. All three runs are committed and reported, each before the next change.
+- **About 6 ms of the frame are not explained.** Compare and write-new are 1.8 ms together, the live frame 8.26. This study stops there: its question is answered, and the device is what decides whether more work is worth doing.
+- **For B-06:** `FrameBenchmark` is in `commonMain`, unchanged, and needs only a host on Android and a way to get its log off the device. If the roll misses there, the choices are the owner's: the roll off on weak devices, a GPU path, or a slower cadence.
+- **Nothing here changes what a poster draws:** the goldens did not move, and `RaskatRollImageTest` holds the kept image to the whole one.
