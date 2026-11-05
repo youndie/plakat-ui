@@ -292,5 +292,6 @@ not run it, because the output is committed and pinned by the metrics test.
   the press; a filled plate gets the ink frame; a rule becomes the bar, growing down with the layout left as it was.
 - `PlakatPosterLayout.Wide` is as wide as its box and asks for 600 at least; a box that forces it narrower gets what it
   forces. Its composition's frame of 360 stands against the right edge, cut by the half.
+- A raskat roll costs what its pixels cost: the field once per size, a comparison per frame, and only the new pixels written (`RaskatRollImage`). B-51's numbers are in `docs/research/measurements-2026-11-05/`; at density 2.75 the frame is over its 2 ms line on an M1.
 - The klib ABI dump lists the compose compiler's `$stableprop` of internal classes too; adding an
   internal class changes it and needs `updateKotlinAbi`.

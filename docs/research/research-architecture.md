@@ -364,6 +364,8 @@ registration hold 60 fps (the brief's target). Refuted or kept on the desktop JV
 ([B-51](../backlog/B-51-frame-cost-on-desktop.md)); settled on the device once the kit is complete
 ([B-06](../backlog/B-06-frame-cost-measurement.md)), as the owner set on 2026-11-03.
 
+Measured on the desktop JVM ([B-51](../backlog/B-51-frame-cost-on-desktop.md), M1): the cascade holds (0.60 ms of main-thread work, no missed frames), and the comparison alone holds its 2 ms (1.32 ms at 352 px), but the whole raskat frame does not (8.26 ms at 2.75, with about 6 ms unexplained). The device settles it.
+
 **Hypothesis H4.** `Canvas.drawVertices` with an `ImageShader` behaves the same on Android, iOS and
 wasm as on desktop, where it was verified to exist. Settled in [B-32](../backlog/B-32-projection.md).
 

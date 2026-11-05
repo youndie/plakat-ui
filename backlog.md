@@ -55,11 +55,10 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 <!-- BEGIN INDEX -->
 
-## Open (14)
+## Open (13)
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-51](docs/backlog/B-51-frame-cost-on-desktop.md) `[ ]` | Frame cost on the desktop JVM: raskat roll and the ten-card cascade, as a proxy until the device | P1 | S | B-04, B-10 |
 | [B-52](docs/backlog/B-52-empty-state.md) `[ ]` | Empty state: a call rather than an apology, with the screen's one raskat wedge | P1 | S | B-04, B-13 |
 | [B-53](docs/backlog/B-53-stretch-in-place.md) `[ ]` | Stretch in place: the poster's fourth layout and the app bar's masthead | P1 | S | B-19, B-25, B-31 |
 | [B-32](docs/backlog/B-32-projection.md) `[ ]` | Проекция: text meshed onto a horn, cone, column, sphere, box or stairs | P2 | M | B-02, B-31 |
@@ -74,7 +73,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 | [B-06](docs/backlog/B-06-frame-cost-measurement.md) `[ ]` | Frame cost on a Pixel 6a: raskat roll, ten cards cascading with texture and registration | P3 | M | B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50, B-51 |
 | [B-37](docs/backlog/B-37-public-repository-and-publishing.md) `[ ]` | Public repository and publishing to Reposilite on every main — last | P3 | S | B-06, B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50 |
 
-## Closed (39)
+## Closed (40)
 
 **Goldens and references regenerate deterministically; the generator and raskat ports match them on every target; the floor and the frame cost have measured numbers**
 
@@ -83,6 +82,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 - [B-03](docs/backlog/B-03-generator-port-and-numeric-parity.md) `[x]` - Generator: commonMain port of generate/rapport held to Node goldens on every target
 - [B-04](docs/backlog/B-04-raskat-port.md) `[x]` - Raskat: port the JS field to the CPU, goldens from Node, the roll animation
 - [B-05](docs/backlog/B-05-pixel-references-and-floor.md) `[x]` - Pixel references rendered from the spec pages in headless Chrome; the parity floor
+- [B-51](docs/backlog/B-51-frame-cost-on-desktop.md) `[x]` - Frame cost on the desktop JVM: raskat roll and the ten-card cascade, as a proxy until the device
 
 **Tokens generated and checked; the theme, print primitives and icons match their cells**
 

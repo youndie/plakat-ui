@@ -59,6 +59,54 @@ internal fun raskatImage(
 }
 
 /**
+ * A roll's image, kept between frames (B-51). Ink B only gains ground as a roll runs, so a frame writes only the pixels
+ * new to it: at 352 px writing all of them takes 7.8 ms, 14.6 at p95, and the new ones 0.5 (B-51's report). A step
+ * that takes ink back starts the image over.
+ */
+internal class RaskatRollImage(
+    private val w: Int,
+    private val h: Int,
+    private val a: Color,
+    private val b: Color,
+) {
+    var image: ImageBitmap = raskatImage(w, h, BooleanArray(w * h), a, b)
+        private set
+    private var drawn = BooleanArray(w * h)
+
+    fun advance(inkB: BooleanArray) {
+        var fresh = 0
+        for (k in inkB.indices) {
+            if (drawn[k] && !inkB[k]) {
+                image = raskatImage(w, h, inkB, a, b)
+                drawn = inkB.copyOf()
+                return
+            }
+            if (inkB[k] && !drawn[k]) fresh++
+        }
+        if (fresh == 0) return
+        val points = FloatArray(fresh * 2)
+        var n = 0
+        for (k in inkB.indices) {
+            if (inkB[k] && !drawn[k]) {
+                points[n++] = k % w + .5f
+                points[n++] = k / w + .5f
+                drawn[k] = true
+            }
+        }
+        Canvas(image).drawRawPoints(
+            PointMode.Points,
+            points,
+            Paint().apply {
+                color = b
+                strokeWidth = 1f
+                strokeCap = StrokeCap.Square
+                isAntiAlias = false
+            },
+        )
+    }
+}
+
+/**
  * [image] printed into [outline], its box's top-left at [topLeft] in pixels, unscaled and unsmoothed
  * — the JS's `drawRaskat` with `imageSmoothingEnabled = false`. Only the outline's edge is
  * antialiased, by the clip, as the JS's canvas clip is.

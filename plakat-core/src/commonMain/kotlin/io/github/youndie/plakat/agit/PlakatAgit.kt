@@ -14,6 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
@@ -289,17 +290,15 @@ private const val DISC_STREAK = .5
 @Composable
 public fun PlakatRaskatDisc(modifier: Modifier = Modifier) {
     val colors = PlakatTheme.colors
+    // Worked out once per size: it stands still, and a redraw of what is around it must not pay for it again.
     Spacer(
-        modifier.drawBehind {
+        modifier.drawWithCache {
             val px = size.minDimension.roundToInt()
-            if (px <= 0) return@drawBehind
+            if (px <= 0) return@drawWithCache onDrawBehind {}
             val field = raskatField(px, px, RaskatOptions(streak = DISC_STREAK, dpr = density.toDouble()))
             val image = raskatImage(px, px, raskatInkB(field, DISC_T0, DISC_HARD), colors.red, colors.paper)
-            drawRaskat(
-                image,
-                Path().apply { addOval(Rect(Offset.Zero, Size(px.toFloat(), px.toFloat()))) },
-                IntOffset.Zero,
-            )
+            val outline = Path().apply { addOval(Rect(Offset.Zero, Size(px.toFloat(), px.toFloat()))) }
+            onDrawBehind { drawRaskat(image, outline, IntOffset.Zero) }
         },
     )
 }

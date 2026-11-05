@@ -45,6 +45,21 @@ compose.desktop.application {
     nativeDistributions { packageName = "plakat-ui" }
 }
 
+// B-51: the frame benchmark, in a real window: `./gradlew :sample:frameBench --args="<rounds> <seconds> <out> <commit>"`.
+tasks.register<JavaExec>("frameBench") {
+    group = "verification"
+    description = "Runs the frame benchmark in a window; measures nothing in `check`."
+    mainClass = "io.github.youndie.plakat.sample.bench.BenchMainKt"
+    val desktop =
+        kotlin.targets
+            .getByName("desktop")
+            .compilations
+            .getByName("main")
+    classpath = desktop.output.allOutputs + desktop.runtimeDependencyFiles!!
+    dependsOn(desktop.compileAllTaskName)
+    notCompatibleWithConfigurationCache("a window, run by hand")
+}
+
 // B-35: the Demo page's screens, held as plakat-core's components are (its `viddik` block says why these numbers).
 viddik {
     verifyOnCheck.set(true)

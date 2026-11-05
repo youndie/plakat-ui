@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
@@ -56,11 +57,11 @@ import io.github.youndie.plakat.agit.drawPosterShape
 import io.github.youndie.plakat.agit.posterComposition
 import io.github.youndie.plakat.print.PlakatWipe
 import io.github.youndie.plakat.print.RaskatOptions
+import io.github.youndie.plakat.print.RaskatRollImage
 import io.github.youndie.plakat.print.drawRaskat
 import io.github.youndie.plakat.print.plakatGrain
 import io.github.youndie.plakat.print.plakatWipe
 import io.github.youndie.plakat.print.raskatField
-import io.github.youndie.plakat.print.raskatImage
 import io.github.youndie.plakat.print.raskatInkB
 import io.github.youndie.plakat.print.raskatRollT0
 import io.github.youndie.plakat.theme.FaceMetrics
@@ -603,12 +604,20 @@ private fun PhotoCircle(
             .drawBehind { drawRect(colors.red) },
     ) {
         if (t0 != null) {
+            // The field is the costly part and depends only on the size: once per size, and each frame only compares
+            // against it (B-51).
+            val density = LocalDensity.current.density
+            val px = with(LocalDensity.current) { d.toPx() }.roundToInt()
+            val field =
+                remember(
+                    px,
+                    density,
+                ) { raskatField(px, px, RaskatOptions(streak = RASKAT_STREAK, dpr = density.toDouble())) }
+            val roll = remember(px, colors) { RaskatRollImage(px, px, colors.red, colors.paper) }
             Canvas(Modifier.matchParentSize()) {
-                val px = size.width.roundToInt()
-                val field = raskatField(px, px, RaskatOptions(streak = RASKAT_STREAK, dpr = density.toDouble()))
-                val image = raskatImage(px, px, raskatInkB(field, t0(), RASKAT_HARD), colors.red, colors.paper)
+                roll.advance(raskatInkB(field, t0(), RASKAT_HARD))
                 drawRaskat(
-                    image,
+                    roll.image,
                     Path().apply {
                         addOval(
                             androidx.compose.ui.geometry

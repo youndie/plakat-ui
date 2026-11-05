@@ -1,0 +1,18 @@
+# circle of the benchmark's poster: 128.0 dp; 60 frames of a roll per step, after 200 to warm
+px,step,p50_ms,p95_ms
+128,field-once,5.08,
+128,compare,0.17,0.19
+128,write-whole,1.04,1.95
+128,write-new,0.14,0.34
+256,field-once,6.33,
+256,compare,0.70,0.72
+256,write-whole,4.32,7.75
+256,write-new,0.25,0.37
+352,field-once,1.24,
+352,compare,1.32,1.37
+352,write-whole,7.75,14.57
+352,write-new,0.49,0.56
+330,field-once,0.82,
+330,compare,1.19,1.23
+330,write-whole,6.91,12.81
+330,write-new,0.43,0.50
