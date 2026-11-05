@@ -1,7 +1,8 @@
 public final class io/github/youndie/plakat/agit/PlakatAgitKt {
-	public static final fun PlakatGeneratedImage-vz2T9sI (ILandroidx/compose/ui/Modifier;FFLjava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PlakatGeneratedImage-31EszOI (ILandroidx/compose/ui/Modifier;FFLjava/lang/String;Lio/github/youndie/plakat/agit/PlakatTitleZone;JLandroidx/compose/runtime/Composer;II)V
 	public static final fun PlakatPresetImage (Lio/github/youndie/plakat/agit/PlakatPreset;Landroidx/compose/ui/Modifier;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
-	public static final fun PlakatRapportFill (ILandroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PlakatRapportFill-6a0pyJM (ILandroidx/compose/ui/Modifier;FLandroidx/compose/runtime/Composer;II)V
+	public static final fun PlakatRaskatDisc (Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 	public static final fun PlakatSkeleton (ILandroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 }
 
@@ -31,6 +32,17 @@ public final class io/github/youndie/plakat/agit/PlakatPreset : java/lang/Enum {
 	public final fun getWidth-D9Ej5fM ()F
 	public static fun valueOf (Ljava/lang/String;)Lio/github/youndie/plakat/agit/PlakatPreset;
 	public static fun values ()[Lio/github/youndie/plakat/agit/PlakatPreset;
+}
+
+public final class io/github/youndie/plakat/agit/PlakatTitleZone {
+	public static final field $stable I
+	public static final field Companion Lio/github/youndie/plakat/agit/PlakatTitleZone$Companion;
+}
+
+public final class io/github/youndie/plakat/agit/PlakatTitleZone$Companion {
+	public final fun at (Landroidx/compose/ui/unit/DpRect;)Lio/github/youndie/plakat/agit/PlakatTitleZone;
+	public final fun getGenerated ()Lio/github/youndie/plakat/agit/PlakatTitleZone;
+	public final fun getNone ()Lio/github/youndie/plakat/agit/PlakatTitleZone;
 }
 
 public final class io/github/youndie/plakat/components/ComposableSingletons$PlakatTopAppBarKt {
@@ -64,7 +76,7 @@ public final class io/github/youndie/plakat/components/PlakatChipKt {
 }
 
 public final class io/github/youndie/plakat/components/PlakatCounterKt {
-	public static final fun PlakatCounter (ILjava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/String;Lio/github/youndie/plakat/components/PlakatPictogram;IZLandroidx/compose/runtime/Composer;II)V
+	public static final fun PlakatCounter-VRxQTpk (ILjava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/String;Lio/github/youndie/plakat/components/PlakatPictogram;IZZJLandroidx/compose/runtime/Composer;II)V
 	public static final fun PlakatCounterColumn-ww6aTOc (ILjava/lang/String;Landroidx/compose/ui/Modifier;JLandroidx/compose/runtime/Composer;II)V
 }
 
@@ -180,7 +192,7 @@ public final class io/github/youndie/plakat/components/PlakatTopAppBarState {
 }
 
 public final class io/github/youndie/plakat/components/PlakatWindowKt {
-	public static final fun PlakatWindow (Ljava/util/List;ILandroidx/compose/ui/Modifier;ILandroidx/compose/runtime/Composer;II)V
+	public static final fun PlakatWindow (Ljava/util/List;ILandroidx/compose/ui/Modifier;IZLandroidx/compose/runtime/Composer;II)V
 }
 
 public final class io/github/youndie/plakat/components/PlakatWindowPanel {

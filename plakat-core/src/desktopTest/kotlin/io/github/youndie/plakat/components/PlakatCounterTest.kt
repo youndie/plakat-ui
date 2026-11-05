@@ -2,7 +2,10 @@ package io.github.youndie.plakat.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -290,6 +293,42 @@ class PlakatCounterTest {
             val px = frame()
             val rows = (66 until 90).filter { y -> (130 until 152).any { px[it, y].red < .5f } }
             assertEquals(74..81, rows.first()..rows.last(), "the reference's rows")
+        }
+
+    @Test
+    fun `a stretched tile stands 104 high and a tile stretches beside a taller one`() =
+        runComposeUiTest {
+            stage(reduce = true) {
+                Row(Modifier.height(IntrinsicSize.Max)) {
+                    PlakatCounter(
+                        47,
+                        "СТАТЕЙ",
+                        Modifier.width(175.dp).fillMaxHeight(),
+                        perPictogram = 5,
+                        stretched = true,
+                    )
+                    PlakatCounter(
+                        6,
+                        "ДНЕЙ",
+                        Modifier.width(175.dp).fillMaxHeight(),
+                        legend = "= день, красный — сегодня, и ещё два слова",
+                        pictogram = PlakatPictogram.Circle,
+                        stretched = true,
+                        numberColor = paper.red,
+                    )
+                }
+            }
+            val px = frame()
+            // The row's height is the taller tile's: padding 16 + 104 + the row, the caption, two lines; under 300.
+            assertTrue(px.height in 180..240, "the height, ${px.height}: a pictogram to a line would be far more")
+            assertEquals(paper.concrete, px[20, px.height - 2], "the shorter tile reaches the foot")
+            assertTrue((16 until 120).any { y -> px[100, y] == paper.ink }, "47 at its full height")
+            assertTrue(
+                (16 until 120).any { y ->
+                    (191 until 247).any { x -> px[x, y] == paper.red }
+                },
+                "6 in its colour",
+            )
         }
 
     @Test

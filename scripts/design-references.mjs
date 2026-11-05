@@ -38,6 +38,9 @@ const ROOT = resolve(import.meta.dirname, '..');
 const DESIGN = join(ROOT, 'reference/design-system');
 const FONTS = join(ROOT, 'plakat-core/src/commonMain/composeResources/font');
 const OUT = join(ROOT, 'plakat-core/src/desktopTest/snapshots/design');
+// The Demo page's screens are the sample's (B-35), and held there, against its own goldens.
+const SAMPLE_OUT = join(ROOT, 'sample/src/desktopTest/snapshots/design');
+const outOf = (ref) => (ref.sample ? SAMPLE_OUT : OUT);
 // Per page: the width at which every grid column a reference sits in is whole. The core and MVP pages
 // grow to 1720 px, so 1584 gives 752 px theme cards (Divider columns 224, Button 164); the Tokens page
 // stops at 1120 + 48 px, so it is narrowed to 1160 for a 1112 px grid (semantic swatches 216, print 272).
@@ -51,6 +54,7 @@ const MVP = 'plakat-ui Компоненты.dc.html';
 const ICONS = 'plakat-ui Иконки.dc.html';
 const STRETCH = 'plakat-ui Растяжка.dc.html';
 const AGIT = 'plakat-ui Агит-графика.dc.html';
+const DEMO = 'plakat-ui Демо.dc.html';
 // What says a page's template has rendered: the runtime has replaced its <x-dc> and the cells'
 // captions are there ("Filled / Default"); the Icons page imports its paths after mount.
 const READY = { [ICONS]: 'plakat/icon/time' };
@@ -151,6 +155,9 @@ export const REFERENCES = [
     { group: 'Dialog', name, page: MVP, caption, card: 0, part: 'first' })),
   // The window (B-29): the two panels before their caption, in the page's two columns.
   ...cells('Window', MVP, 'prev', [['Onboarding', 'Окно / Онбординг · 2 из 4 панелей']]).map((r) => ({ ...r, floor: true })),
+  // The Demo page's three screens (B-35), each `data-screen-label` in its two themes.
+  ...[['Onboarding', 'Онбординг'], ['Feed', 'Лента'], ['Settings', 'Настройки']].flatMap(([name, label]) => THEMES.map((theme, card) =>
+    ({ group: 'Demo', name: `${name}_${theme}`, page: DEMO, sample: true, screen: [label, card] }))),
   // The screen wipe's frame strip (B-34), by its captions: the dialog's and the counter's strips stand before it.
   ...[['F0', '0 мс', 2], ['F107', '107 мс', 1], ['F213', '213 мс', 1], ['F320', '320 мс', 1]].map(([name, caption, card]) =>
     ({ group: 'ScreenWipe', name, page: MVP, caption, card, part: 'first' })),
@@ -231,6 +238,13 @@ async function launch(chrome) {
 
 // Evaluated in the page: the rectangle of a reference, in page pixels, or a reason it has none.
 const LOCATE = `(ref) => {
+  if (ref.screen) {
+    const box = document.querySelectorAll('[data-screen-label="' + ref.screen[0] + '"]')[ref.screen[1]];
+    if (!box) return { error: 'no screen ' + ref.screen };
+    window.plakatCell = box;
+    const r = box.getBoundingClientRect();
+    return { x: r.left + scrollX, y: r.top + scrollY, w: r.width, h: r.height };
+  }
   if (ref.svg) {
     const r = document.getElementById('plakatSvg').getBoundingClientRect();
     return { x: r.left + scrollX, y: r.top + scrollY, w: r.width, h: r.height };
@@ -371,7 +385,7 @@ if (argv.includes('--manifest')) {
   const moved = [
     ...Object.entries(m.pages).filter(([p, h]) => sha(join(DESIGN, p)) !== h).map(([p]) => p),
     ...Object.entries(m.fonts).filter(([f, h]) => sha(join(FONTS, f)) !== h).map(([f]) => f),
-    ...m.references.filter((r) => !existsSync(join(OUT, r.file))).map((r) => r.file),
+    ...m.references.filter((r) => !existsSync(join(r.sample ? SAMPLE_OUT : OUT, r.file))).map((r) => r.file),
   ];
   const listed = new Set(m.references.map((r) => r.file));
   const unlisted = REFERENCES.map((r) => `${r.group}_${r.name}.png`).filter((f) => !listed.has(f));
@@ -387,7 +401,7 @@ const { cdp, version, close } = await launch(chrome);
 const stale = [];
 const rects = {};
 try {
-  if (!check) mkdirSync(OUT, { recursive: true });
+  if (!check) for (const dir of [OUT, SAMPLE_OUT]) mkdirSync(dir, { recursive: true });
   for (const page of [...new Set(REFERENCES.map((r) => r.page))]) {
     const tab = await open(cdp, page);
     try {
@@ -395,7 +409,7 @@ try {
         const { png, rect } = await shoot(cdp, tab, ref);
         const stem = `${ref.group}_${ref.name}`;
         rects[stem] = rect;
-        const target = join(OUT, `${stem}.png`);
+        const target = join(outOf(ref), `${stem}.png`);
         if (check) { if (!existsSync(target) || !readFileSync(target).equals(png)) stale.push(stem); } else writeFileSync(target, png);
       }
     } finally { await tab.close(); }
@@ -407,7 +421,7 @@ const manifest = {
   browser: version, scale: 1, viewports: Object.fromEntries([...new Set(REFERENCES.map((r) => r.page))].map((p) => [p, viewport(p)])),
   pages: Object.fromEntries([...new Set(REFERENCES.map((r) => r.page))].map((p) => [p, sha(join(DESIGN, p))])),
   fonts: Object.fromEntries(FACES.map(([, file]) => [file, sha(join(FONTS, file))])),
-  references: REFERENCES.map((r) => ({ file: `${r.group}_${r.name}.png`, page: r.page, caption: r.caption, card: r.card, part: r.part, crop: r.crop, ...rects[`${r.group}_${r.name}`] })),
+  references: REFERENCES.map((r) => ({ file: `${r.group}_${r.name}.png`, sample: r.sample, page: r.page, caption: r.caption, card: r.card, part: r.part, crop: r.crop, ...rects[`${r.group}_${r.name}`] })),
 };
 if (check) {
   const current = existsSync(join(OUT, 'manifest.json')) ? JSON.parse(readFileSync(join(OUT, 'manifest.json'), 'utf8')) : {};
