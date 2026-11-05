@@ -62,7 +62,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 | [B-37](docs/backlog/B-37-public-repository-and-publishing.md) `[ ]` | Public repository and publishing to Reposilite on every main — last | P3 | S | B-06, B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50 |
 | [B-43](docs/backlog/B-43-re-import-the-design.md) `[ ]` | Re-import the design project on a branch of its own | P3 | S | B-05, B-08 |
 
-## Closed (53)
+## Closed (54)
 
 **Goldens and references regenerate deterministically; the generator and raskat ports match them on every target; the floor and the frame cost have measured numbers**
 
@@ -131,5 +131,9 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 - [B-40](docs/backlog/B-40-licence.md) `[x]` - Licence: MIT
 - [B-41](docs/backlog/B-41-registration-unit.md) `[x]` - Registration offset: 1 dp
 - [B-42](docs/backlog/B-42-v1-components-designed-here.md) `[x]` - v1 components: designed here, one item each
+
+**stage-3-demo**
+
+- [B-56](docs/backlog/B-56-card-press-words.md) `[x]` - A pressed card's words stay dark in the kit and the demo
 
 <!-- END INDEX -->
