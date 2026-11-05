@@ -55,7 +55,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 <!-- BEGIN INDEX -->
 
-## Open (21)
+## Open (22)
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
@@ -69,6 +69,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 | [B-38](docs/backlog/B-38-radio-button.md) `[ ]` | RadioButton: a ring with a red disc that locks in one frame | P1 | S | B-09, B-10, B-12, B-15 |
 | [B-39](docs/backlog/B-39-desktop-and-hover.md) `[ ]` | Hover on pointer devices and a wide poster layout | P1 | M | B-13, B-19, B-20, B-22, B-23 |
 | [B-51](docs/backlog/B-51-frame-cost-on-desktop.md) `[ ]` | Frame cost on the desktop JVM: raskat roll and the ten-card cascade, as a proxy until the device | P1 | S | B-04, B-10 |
+| [B-52](docs/backlog/B-52-empty-state.md) `[ ]` | Empty state: a call rather than an apology, with the screen's one raskat wedge | P1 | S | B-04, B-13 |
 | [B-32](docs/backlog/B-32-projection.md) `[ ]` | Проекция: text meshed onto a horn, cone, column, sphere, box or stairs | P2 | M | B-02, B-31 |
 | [B-43](docs/backlog/B-43-re-import-the-design.md) `[ ]` | Re-import the design project on a branch of its own | P2 | S | B-05, B-08 |
 | [B-44](docs/backlog/B-44-slider.md) `[ ]` | Slider: rail, ticks and a carriage that stops on them | P2 | M | B-09, B-10, B-12, B-16 |
