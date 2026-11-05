@@ -4,7 +4,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PixelMap
@@ -27,9 +32,9 @@ import io.github.youndie.plakat.tokens.PlakatPalettes
 import java.awt.Font
 import java.awt.font.FontRenderContext
 import java.io.File
+import kotlin.math.abs
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
@@ -246,28 +251,96 @@ class PlakatStretchTest {
             assertEquals(PlakatPalettes.BlackPaper.ink, frame()[20, 60])
         }
 
-    @Test
-    fun `the page's two bad cells are refused and its good one is not`() {
-        assertFailsWith<IllegalArgumentException> {
-            runComposeUiTest {
-                line("ДА", 40, 88)
-                waitForIdle()
-            }
-        }
-        assertFailsWith<IllegalArgumentException> {
-            runComposeUiTest {
-                line("ЛЕНТА", 240, 32)
-                waitForIdle()
-            }
-        }
-        runComposeUiTest {
-            line("ЛЕНТА", 240, 80)
-            assertNotEquals(Color.White, frame()[30, 60])
-        }
+    /** Rows and columns the ink reaches inside the box, whose corner stands at 16, 16. */
+    private fun PixelMap.inkBox(): Pair<IntRange, IntRange> {
+        val xs = (0 until width).filter { x -> (0 until height).any { y -> dark(x, y) } }
+        val ys = (0 until height).filter { y -> (0 until width).any { x -> dark(x, y) } }
+        return (xs.first() - 16..xs.last() - 16) to (ys.first() - 16..ys.last() - 16)
     }
 
     @Test
-    fun `a blank line and an empty box draw nothing and refuse nothing`() =
+    fun `too short a word for its box keeps the height and comes short of the width, from the left`() =
+        runComposeUiTest {
+            // The page's bad cell, ЛЕНТА at ×0.8: flattened, were it to fill. Held at 1.5, 240 × 0.8 / 1.5 of the width.
+            val factor = plakatStretchFactor("ЛЕНТА", 240.dp, 32.dp)
+            assertTrue(factor < 1.5f, "$factor")
+            line("ЛЕНТА", 240, 32)
+            val (xs, ys) = frame().inkBox()
+            val wide = (240 * factor / 1.5f).toInt()
+            assertTrue(xs.first in 0..1, "from the left: $xs")
+            assertTrue(abs(xs.last - wide) <= 2, "$wide wide: $xs")
+            assertTrue(ys.first in 0..2 && ys.last in 30..32, "the height kept: $ys")
+        }
+
+    @Test
+    fun `too long a word for its box keeps the width and comes short of the height, its baseline at the foot`() =
+        runComposeUiTest {
+            // Letters torn, were it to fill, as the page's other bad cell, ДА at ×5.2. Held at 4.
+            val factor = plakatStretchFactor("HH", 40.dp, 200.dp)
+            assertTrue(factor > 4f, "$factor")
+            line("HH", 40, 200)
+            val (xs, ys) = frame().inkBox()
+            val high = (200 * 4f / factor).toInt()
+            assertTrue(xs.first in 0..1 && xs.last in 38..40, "the width kept: $xs")
+            assertTrue(ys.last in 198..200, "the foot: $ys")
+            assertTrue(abs(ys.last - ys.first + 1 - high) <= 2, "$high high: $ys")
+        }
+
+    @Test
+    fun `the fit is the stretch held at its limits, and nothing inside them`() {
+        val ink = assertNotNull(stretchInk("ЛЕНТА"))
+
+        fun stretch(
+            w: Float,
+            h: Float,
+        ): Float {
+            val fit = stretchFit(ink, w, h)
+            return (fit.height / (0.7f + ink.over)) / (fit.width / (ink.right - ink.left))
+        }
+        for (h in listOf(10f, 40f, 120f, 400f, 900f, 3000f)) {
+            val s = stretch(240f, h)
+            assertTrue(s in 1.4999f..4.0001f, "at $h: $s")
+        }
+        val inside = stretchFit(ink, 240f, 80f)
+        assertEquals(240f, inside.width)
+        assertEquals(80f, inside.height)
+    }
+
+    @Test
+    fun `a masthead draws at every width, with every length of word`() =
+        runComposeUiTest {
+            var width by mutableIntStateOf(320)
+            var word by mutableStateOf("ЛЕС")
+            setContent {
+                CompositionLocalProvider(LocalDensity provides Density(1f)) {
+                    PlakatTheme(colors = PlakatPalettes.Paper, reduceMotion = true) {
+                        Box(Modifier.width(width.dp).testTag("s")) { PlakatMasthead(word) }
+                    }
+                }
+            }
+            // Drawing is where it used to throw, so each is captured, down to the phone's 411 and the page's own word.
+            for (w in listOf(320, 360, 390, 411, 480, 600, 840)) {
+                for (text in listOf("ЛЕС", "ЛИСТ", "ВЫПУСК", "ПРОЛЕТАРИЙ", "ОБЩЕЖИТИЕКОМ")) {
+                    width = w
+                    word = text
+                    waitForIdle()
+                    val px = frame()
+                    assertEquals(w, px.width)
+                    assertTrue((0 until w).any { x -> (39 until 159).any { y -> px.dark(x, y) } }, "$text at $w")
+                }
+            }
+        }
+
+    @Test
+    fun `the page's own bad cell, with a descender, draws in its box's width`() =
+        runComposeUiTest {
+            line("ДА", 40, 88)
+            val (xs, _) = frame().inkBox()
+            assertTrue(xs.first in 0..1 && xs.last in 38..40, "$xs")
+        }
+
+    @Test
+    fun `a blank line and an empty box draw nothing`() =
         runComposeUiTest {
             line("   ", 40, 400)
             assertEquals(Color.White, frame()[30, 60])

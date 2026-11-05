@@ -380,8 +380,7 @@ private fun Edges(which: String) {
         Box(Modifier.fillMaxSize().plakatPaper()) {
             Column(Modifier.fillMaxSize()) {
                 if (which == "masthead") {
-                    // Not the page's «ЛИСТ»: on this phone's width it stretches under 1.5, and throws (B-55).
-                    PlakatMasthead("ВЫПУСК", startLabel = "№ 47", endLabel = "НОЯБРЬ")
+                    PlakatMasthead("ЛИСТ", startLabel = "№ 47", endLabel = "НОЯБРЬ")
                 } else {
                     PlakatTopAppBar("ЛИСТ", subtitle = "№ 47")
                 }

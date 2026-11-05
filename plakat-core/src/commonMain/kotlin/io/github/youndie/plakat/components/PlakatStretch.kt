@@ -6,8 +6,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.scale
+import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.text
 import androidx.compose.ui.text.AnnotatedString
@@ -95,8 +97,26 @@ private fun stretchOf(
 ) = (height / ink.height) / (width / (ink.right - ink.left))
 
 /**
- * What [PlakatStretch] would stretch [text] by in a box of [width] × [height]: vertical scale over horizontal, to be
- * within 1.5 to 4. For a box or a text that is not known in advance; 0 for a text with no ink.
+ * The part of a box of [width] × [height] that [ink] fills, the stretch held within its limits (rule 02). Under 1.5 the
+ * line keeps the height and comes short of the width; over 4 it keeps the width and comes short of the height.
+ */
+internal fun stretchFit(
+    ink: StretchInk,
+    width: Float,
+    height: Float,
+): Size {
+    val stretch = stretchOf(ink, width, height)
+    return when {
+        stretch < STRETCH_MIN -> Size(width * stretch / STRETCH_MIN, height)
+        stretch > STRETCH_MAX -> Size(width, height * STRETCH_MAX / stretch)
+        else -> Size(width, height)
+    }
+}
+
+/**
+ * What [PlakatStretch] would stretch [text] by in a box of [width] × [height]: vertical scale over horizontal, which
+ * the design wants within 1.5 to 4, before it is held there. For a box or a text not known in advance, to see whether it
+ * will fill its box; 0 for a text with no ink.
  */
 public fun plakatStretchFactor(
     text: String,
@@ -110,8 +130,9 @@ public fun plakatStretchFactor(
  * line, its mark staying in the box; a descender hangs below it. Static typography: it appears by a wipe, and the box
  * is never animated. One to a screen.
  *
- * @throws IllegalArgumentException at drawing, if the text in this box stretches outside 1.5 to 4
- *   ([plakatStretchFactor]); the design forbids it (a flattened line, torn letters).
+ * The design forbids a stretch outside 1.5 to 4 (a flattened line, torn letters), and a box and a text met at run time can
+ * ask for one, so it is held there and the line comes short of its box: of the width from the left, or of the height with
+ * its baseline at the foot. [plakatStretchFactor] says beforehand.
  */
 @Composable
 public fun PlakatStretch(
@@ -139,16 +160,15 @@ public fun PlakatStretch(
             .semantics { this.text = AnnotatedString(text) }
             .drawBehind {
                 if (ink == null || size.minDimension <= 0f) return@drawBehind
-                val stretch = stretchOf(ink, size.width, size.height)
-                require(stretch in STRETCH_MIN..STRETCH_MAX) {
-                    "PlakatStretch: \"$text\" in $size stretches by $stretch, outside $STRETCH_MIN to $STRETCH_MAX"
-                }
-                val sx = size.width / ((ink.right - ink.left) * MEASURE_PX)
-                val sy = size.height / (ink.height * MEASURE_PX)
-                scale(sx, sy, pivot = Offset.Zero) {
-                    // The layout's own top is the rounded ascent over its baseline (cssLine).
-                    val top = ink.height * MEASURE_PX - round(face.ascent * MEASURE_PX)
-                    drawText(layout, color, Offset(-ink.left * MEASURE_PX, top))
+                val fit = stretchFit(ink, size.width, size.height)
+                val sx = fit.width / ((ink.right - ink.left) * MEASURE_PX)
+                val sy = fit.height / (ink.height * MEASURE_PX)
+                translate(top = size.height - fit.height) {
+                    scale(sx, sy, pivot = Offset.Zero) {
+                        // The layout's own top is the rounded ascent over its baseline (cssLine).
+                        val top = ink.height * MEASURE_PX - round(face.ascent * MEASURE_PX)
+                        drawText(layout, color, Offset(-ink.left * MEASURE_PX, top))
+                    }
                 }
             },
     )
