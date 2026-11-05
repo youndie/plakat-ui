@@ -193,3 +193,69 @@ internal object PosterRecipes {
     /** A card's 64 × 64 thumbnail, smaller dots still. */
     val Thumbnail = PosterRecipe(64.0, 64.0, dot = .4)
 }
+
+/** The shape of a strip's cell: the MVP page's motifs. */
+internal enum class StripMotif { Square, WedgeLowerRight, WedgeUpperLeft, Half, Circle, Bar }
+
+/** The paint of a strip's cell: the page's `pal.red` and its two `pal.alts`, ink and concrete. */
+internal enum class StripPaint { Red, Ink, Concrete }
+
+/** One drawn cell of a strip, at its [column] and [row]. */
+internal data class StripCell(
+    val column: Int,
+    val row: Int,
+    val motif: StripMotif,
+    val paint: StripPaint,
+)
+
+/**
+ * The rapport strip under a top app bar, the MVP page's `raport(seed, cols, rows, cell, pal)` — not the
+ * [rapport] of `plakat-gen.js`, which chooses its red differently. A tile of 2…4 × 2…3 motifs repeats
+ * over the strip, its wedges flipping in every other tile. `scripts/poster-goldens.mjs` runs the page's
+ * code and the common tests hold this to it. The tile does not depend on [columns], so a wider strip
+ * only goes on with it.
+ */
+internal fun plakatStrip(
+    seed: Int,
+    columns: Int,
+    rows: Int = 2,
+): List<StripCell> {
+    val r = Mulberry32(seed)
+
+    fun <T> pick(xs: List<T>) = xs[floor(r.next() * xs.size).toInt()]
+    val tw = pick(listOf(2, 3, 4))
+    val th = pick(listOf(2, 3))
+    val motifs =
+        listOf(
+            StripMotif.Square,
+            StripMotif.WedgeLowerRight,
+            StripMotif.WedgeUpperLeft,
+            StripMotif.Half,
+            StripMotif.Circle,
+            StripMotif.Bar,
+            null,
+        )
+    val tile =
+        MutableList(tw * th) {
+            // The motif is drawn before its paint, as in the JS's object literal.
+            val motif = pick(motifs)
+            motif to if (r.next() < .3) StripPaint.Red else pick(listOf(StripPaint.Ink, StripPaint.Concrete))
+        }
+    if (tile.none { it.second == StripPaint.Red && it.first != null }) tile[0] = StripMotif.Circle to StripPaint.Red
+    val out = mutableListOf<StripCell>()
+    for (y in 0 until rows) {
+        for (x in 0 until columns) {
+            val (m0, paint) = tile[(y % th) * tw + (x % tw)]
+            if (m0 == null) continue
+            val flip = ((x / tw) + (y / th)) % 2 == 1
+            val motif =
+                when {
+                    flip && m0 == StripMotif.WedgeLowerRight -> StripMotif.WedgeUpperLeft
+                    flip && m0 == StripMotif.WedgeUpperLeft -> StripMotif.WedgeLowerRight
+                    else -> m0
+                }
+            out += StripCell(x, y, motif, paint)
+        }
+    }
+    return out
+}

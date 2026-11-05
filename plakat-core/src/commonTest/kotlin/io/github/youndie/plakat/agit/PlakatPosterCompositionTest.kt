@@ -79,6 +79,51 @@ class PlakatPosterCompositionTest {
         seed: Int,
     ) = posterComposition(seed, recipe)
 
+    /** The strip's canonical text: `raport(seed, 33, 2, 12, …)`, as the page's values print. */
+    private fun stripText(seed: Int) =
+        plakatStrip(seed, 33).joinToString(";") { c ->
+            val inset = if (c.motif == StripMotif.Circle) 1.5 else 0.0
+            val size = 12 - 2 * inset
+            val clip =
+                when (c.motif) {
+                    StripMotif.Square, StripMotif.Circle -> "none"
+                    StripMotif.WedgeLowerRight -> LOWER_RIGHT
+                    StripMotif.WedgeUpperLeft -> UPPER_LEFT
+                    StripMotif.Half -> "polygon(0 0,50% 0,50% 100%,0 100%)"
+                    StripMotif.Bar -> "polygon(0 37.5%,100% 37.5%,100% 62.5%,0 62.5%)"
+                }
+            val paint =
+                when (c.paint) {
+                    StripPaint.Red -> "R"
+                    StripPaint.Ink -> "I"
+                    StripPaint.Concrete -> "C"
+                }
+            val radius = if (c.motif == StripMotif.Circle) "50%" else "0"
+            listOf(
+                px(c.column * 12 + inset),
+                px(c.row * 12 + inset),
+                px(size),
+                px(size),
+                paint,
+                radius,
+                clip,
+            ).joinToString(",")
+        }
+
+    @Test
+    fun `the strip matches the page cell for cell`() {
+        PosterGoldens.stripWhole.forEachIndexed {
+            i,
+            expected,
+            ->
+            assertEquals(expected, stripText(i + 1), "seed ${i + 1}")
+        }
+        for (seed in 1..PosterGoldens.SEEDS) {
+            val expected = PosterGoldens.stripHashes.substring((seed - 1) * 16, seed * 16)
+            assertEquals(expected, fnv(stripText(seed)), "seed $seed")
+        }
+    }
+
     private fun fnv(text: String): String {
         var h = 0xcbf29ce484222325UL
         for (b in text.encodeToByteArray()) {

@@ -57,6 +57,7 @@ Packages are `io.github.youndie.plakat.*` (research D1).
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatChip.kt` | Chip: the stamp, a 32 dp plate in a 48 dp target |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatListItem.kt` | List item: number or marker, two lines, trailing, inverted when pressed; and the Divider in its three weights |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatProgress.kt` | Progress: the linear wedge, the circular sector, the stepped indeterminate one |
+| `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatTopAppBar.kt` | TopAppBar: the header, its rapport strip, the fold with the scroll; `plakatStrip` in `agit/PlakatPosterComposition.kt` is the MVP page's `raport` |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatBadge.kt` | Badge: the number or the dot, and `PlakatBadgedBox`; `PlakatTick.kt` is how a number changes (`ticks` of the MVP page) |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatPoster.kt` | Плакат: Круг, Фон, Баннер; the print cascade on one clock, the raskat roll, CSS line boxes drawn line by line |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/agit/PlakatPosterComposition.kt` | the Core page's own composition generator (`comp`), its recipes per layout and for thumbnails; `PlakatPosterDrawing.kt` draws its shapes |
@@ -115,6 +116,7 @@ rendered with reduced motion, so parity sees none of these.
 | List item | `stamp`, `release` | press 0 / 60, the same | `PlakatListItemTest`: the row inverted within a frame of the press, the ground's share per frame back over 60 ms on the curve, identically under reduced motion; the words back the moment the finger lifts |
 | Progress linear | — | value, by data · linear; instant | `PlakatProgressTest`: the wedge's reach on the top and bottom rows per frame, linear over 200 ms, the front on its slant; at once under reduced motion |
 | Progress circular | — | indeterminate, cycle 1200 · steps 12; stands | `PlakatProgressTest`: the sector found at step ⌊t / 100⌋ on every frame of 1440 ms; at step 0 for good under reduced motion |
+| TopAppBar | `fold` | scroll, by the scroll · linear; the same | `PlakatTopAppBarTest`: the bar's height and fraction at each scrolled step, the rows under the row being the open bar's moved up by the fold, the rule growing, the collapsed title's wipe; identical under reduced motion; a real swipe on a list folds it first and back |
 | Button | `engage` | 120 + cycle 1200 · steps 12 | `PlakatButtonTest`: the slogan wiped from the left within 120 ms, the sector at 0°, 30°, 180°, 330° at 0, 100, 650, 1199 ms; the loading golden at 100 ms |
 
 ## 4. Dependencies
@@ -222,5 +224,10 @@ not run it, because the output is committed and pinned by the metrics test.
   could not see it, the tests of it at its default size did.
 - The page's loop (`plspin`) runs on the page's own switch, not on the media query, so the renderer stops every
   animation at its first frame before shooting; without it the spinner's reference was whatever the clock said.
+- A display line shorter than its face (Rubik 32 at `line-height: 1`, a face of 40) is beyond `cssLine`, whose
+  leading goes negative: it is laid out as a `normal` line and lifted by what the CSS line takes off the top.
+- Like the posters' `comp`, the top app bar's strip is the page's own `raport`, not `plakat-gen.js`'s `rapport`: its
+  red is chosen differently. A strip's circles are boxes on `1.5 px`, which Blink snaps to the pixel before
+  rounding their corners.
 - The klib ABI dump lists the compose compiler's `$stableprop` of internal classes too; adding an
   internal class changes it and needs `updateKotlinAbi`.
