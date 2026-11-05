@@ -34,12 +34,10 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpRect
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import io.github.youndie.plakat.agit.PlakatGeneratedImage
 import io.github.youndie.plakat.agit.PlakatRapportFill
@@ -55,6 +53,7 @@ import io.github.youndie.plakat.components.PlakatIconButton
 import io.github.youndie.plakat.components.PlakatNavigationBar
 import io.github.youndie.plakat.components.PlakatNavigationItem
 import io.github.youndie.plakat.components.PlakatPictogram
+import io.github.youndie.plakat.components.PlakatSegmentedButton
 import io.github.youndie.plakat.components.PlakatSwitch
 import io.github.youndie.plakat.components.PlakatTab
 import io.github.youndie.plakat.components.PlakatTabs
@@ -64,7 +63,7 @@ import io.github.youndie.plakat.icons.PlakatIcons
 import io.github.youndie.plakat.theme.PlakatTheme
 
 // The Demo page's three screens of the magazine «Лист», from the kit's public API. What the kit has no component for
-// yet (the page indicator, the theme's segmented control, B-49) is drawn here, as an application would.
+// yet (the page indicator) is drawn here, as an application would.
 
 private val NavItems =
     listOf(
@@ -327,7 +326,7 @@ fun DemoSettings(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     BasicText("Тема", Modifier.offset(y = (-1).dp), style = body(16.sp))
-                    ThemeSwitch(dark, onDarkChange)
+                    PlakatSegmentedButton(listOf("БУМАГА", "ЧЁРНАЯ"), if (dark) 1 else 0, { onDarkChange(it == 1) })
                 }
                 PlakatDivider()
                 Spacer(Modifier.height(32.dp))
@@ -362,54 +361,3 @@ private fun SwitchRow(
         PlakatDivider()
     }
 }
-
-/** The page's segmented control, until the kit has one (B-49): drawn 40 high, in a target of 48. */
-@Composable
-private fun ThemeSwitch(
-    dark: Boolean,
-    onChange: (Boolean) -> Unit,
-) {
-    val colors = PlakatTheme.colors
-    Row(
-        Modifier.drawBehind {
-            val line = 3.dp.toPx()
-            val inset = 4.dp.toPx()
-            val high = size.height - 2 * inset
-            drawRect(colors.ink, Offset(0f, inset), Size(size.width, line))
-            drawRect(colors.ink, Offset(0f, inset + high - line), Size(size.width, line))
-            drawRect(colors.ink, Offset(0f, inset), Size(line, high))
-            drawRect(colors.ink, Offset(size.width - line, inset), Size(line, high))
-        },
-    ) {
-        Segment("БУМАГА", !dark) { onChange(false) }
-        Segment("ЧЁРНАЯ", dark) { onChange(true) }
-    }
-}
-
-@Composable
-private fun Segment(
-    text: String,
-    on: Boolean,
-    onClick: () -> Unit,
-) {
-    val colors = PlakatTheme.colors
-    Box(
-        Modifier.height(48.dp).clickable(onClick = onClick).padding(vertical = 4.dp),
-        contentAlignment = Alignment.Center,
-    ) {
-        Box(
-            Modifier
-                .height(40.dp)
-                .background(if (on) colors.ink else Color.Transparent)
-                .padding(horizontal = 12.dp),
-            contentAlignment = Alignment.Center,
-        ) {
-            BasicText(text, style = segmentStyle(if (on) colors.paper else colors.ink))
-        }
-    }
-}
-
-@Composable
-private fun segmentStyle(color: Color): TextStyle =
-    PlakatTheme.typography.label.style
-        .copy(letterSpacing = .06.em, color = color)
