@@ -8,6 +8,7 @@ import androidx.compose.ui.test.v2.runComposeUiTest
 import io.github.youndie.plakat.sample.bench.BenchArm
 import io.github.youndie.plakat.sample.bench.FrameBenchmark
 import io.github.youndie.plakat.sample.bench.armsOfRound
+import io.github.youndie.plakat.tokens.PlakatPalettes
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -31,6 +32,42 @@ class FrameBenchmarkTest {
             mainClock.advanceTimeBy(2000)
             waitForIdle()
             assertTrue(done || lines.isNotEmpty(), "it runs")
+        }
+
+    /** The levers, read from what the arm draws: without them the numbers would be of something else. */
+    @Test
+    fun `the cascade's cards are on the screen, and the flat arm's are not textured`() =
+        runComposeUiTest {
+            mainClock.autoAdvance = false
+            setContent { FrameBenchmark(1, 60, { }, only = BenchArm.CascadeA) { } }
+            mainClock.advanceTimeBy(600)
+            val px = onNodeWithTag(BenchArm.CascadeA.id).captureToImage().toPixelMap()
+            val inks =
+                (0 until px.height step 2)
+                    .flatMap { y ->
+                        (0 until px.width step 3).map { x -> px[x, y] }
+                    }.toSet()
+            assertTrue(PlakatPalettes.Paper.concrete in inks, "the cards' ground")
+            assertTrue(PlakatPalettes.Paper.ink in inks, "their ink")
+            assertTrue(inks.size > 20, "and a textured paper: ${inks.size}")
+        }
+
+    @Test
+    fun `the roll's poster is on the screen, at its density`() =
+        runComposeUiTest {
+            mainClock.autoAdvance = false
+            setContent { FrameBenchmark(1, 60, { }, only = BenchArm.Roll2) { } }
+            // Past the print's wipe of the circle, and before the arm restarts it at 21 frames.
+            mainClock.advanceTimeBy(300)
+            val px = onNodeWithTag(BenchArm.Roll2.id).captureToImage().toPixelMap()
+            val reds =
+                (0 until px.height step 2).sumOf { y ->
+                    (0 until px.width step 2).count { x ->
+                        px[x, y] ==
+                            PlakatPalettes.Paper.red
+                    }
+                }
+            assertTrue(reds > 100, "its red: $reds")
         }
 
     @Test

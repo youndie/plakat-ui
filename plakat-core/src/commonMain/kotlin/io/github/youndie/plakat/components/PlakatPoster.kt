@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
@@ -603,9 +604,16 @@ private fun PhotoCircle(
             .drawBehind { drawRect(colors.red) },
     ) {
         if (t0 != null) {
+            // The field is the costly part and depends only on the size: once per size, and each frame only compares
+            // against it (B-51).
+            val density = LocalDensity.current.density
+            val px = with(LocalDensity.current) { d.toPx() }.roundToInt()
+            val field =
+                remember(
+                    px,
+                    density,
+                ) { raskatField(px, px, RaskatOptions(streak = RASKAT_STREAK, dpr = density.toDouble())) }
             Canvas(Modifier.matchParentSize()) {
-                val px = size.width.roundToInt()
-                val field = raskatField(px, px, RaskatOptions(streak = RASKAT_STREAK, dpr = density.toDouble()))
                 val image = raskatImage(px, px, raskatInkB(field, t0(), RASKAT_HARD), colors.red, colors.paper)
                 drawRaskat(
                     image,

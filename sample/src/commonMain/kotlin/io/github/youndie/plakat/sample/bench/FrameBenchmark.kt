@@ -80,9 +80,13 @@ fun FrameBenchmark(
     rounds: Int,
     armSeconds: Int,
     onFrame: (String) -> Unit,
+    only: BenchArm? = null,
     onDone: () -> Unit,
 ) {
-    val plan = remember(rounds) { (0 until rounds).flatMap { r -> armsOfRound(r).map { r to it } } }
+    val plan =
+        remember(rounds, only) {
+            (0 until rounds).flatMap { r -> armsOfRound(r).filter { only == null || it == only }.map { r to it } }
+        }
     var at by remember { mutableIntStateOf(0) }
     if (at >= plan.size) {
         LaunchedEffect(Unit) { onDone() }
