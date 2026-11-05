@@ -99,11 +99,12 @@ class PlakatListItemTest {
             assertEquals(1.0, frame().ground(), .01)
             assertEquals(paper.paper, shown.last())
             onNodeWithTag("r").performTouchInput { up() }
-            val way =
+            val frames =
                 (0 until 7).map {
                     mainClock.advanceTimeByFrame()
-                    frame().ground()
+                    frame().ground() to shown.last()
                 }
+            val way = frames.map { it.first }
             val fits =
                 (0..2).any { start ->
                     way.withIndex().all { (i, g) ->
@@ -111,8 +112,10 @@ class PlakatListItemTest {
                     }
                 }
             assertTrue(fits, "the ground per frame: $way")
-            // The words change the moment the finger lifts.
-            assertEquals(paper.ink, shown.last())
+            // The words change the moment the finger lifts: while the ground is under way they are ink already.
+            val underWay = frames.filter { it.first in .05..0.95 }
+            assertTrue(underWay.isNotEmpty(), "the ground was seen under way: $way")
+            for ((_, words) in underWay) assertEquals(paper.ink, words)
             assertEquals(listOf(PlakatEvent.Stamp, PlakatEvent.Release), heard)
         }
 
