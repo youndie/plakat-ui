@@ -66,6 +66,7 @@ Packages are `io.github.youndie.plakat.*` (research D1).
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/agit/PlakatAgit.kt` | the agit pictures: `PlakatPresetImage`, `PlakatGeneratedImage`, `PlakatRapportFill`, `PlakatSkeleton` |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/agit/PlakatHalftone.kt` | `Modifier.plakatHalftone`: dots or the 1-bit mask, on the CPU, once per source and size; held to `scripts/halftone-goldens.mjs` |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatScreenWipe.kt` | Screen wipe: the container a navigation host wraps round what it shows, push and pop by a depth |
+| `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatEmptyState.kt` | Empty state: the band with the screen's one raskat wedge, a title, a body and one slogan |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatRadioButton.kt` | RadioButton, designed here (D13): a ring of 24 and a disc of 12, grouped by `selectableGroup` |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatCounter.kt` | Counter: the Isotype tile and, from the Stretch page, the column; `PlakatTick.kt`'s `rememberPlakatTicker` is shared with the badge |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatStretch.kt` | Stretch: one Display line filling its box from cap top to baseline, by its ink; `plakatStretchFactor` |

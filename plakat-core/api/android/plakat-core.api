@@ -94,6 +94,10 @@ public final class io/github/youndie/plakat/components/PlakatDividerWeight : jav
 	public static fun values ()[Lio/github/youndie/plakat/components/PlakatDividerWeight;
 }
 
+public final class io/github/youndie/plakat/components/PlakatEmptyStateKt {
+	public static final fun PlakatEmptyState (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
 public final class io/github/youndie/plakat/components/PlakatFabKt {
 	public static final fun PlakatFab (Lio/github/youndie/plakat/icons/PlakatStencil;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZZLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
 }
