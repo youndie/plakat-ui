@@ -13,6 +13,7 @@ private fun role(r: PlakatRole) =
         PlakatRole.Red -> "R"
         PlakatRole.Ink -> "I"
         PlakatRole.Concrete -> "C"
+        PlakatRole.Paper -> "P"
     }
 
 internal fun canonical(s: PlakatShape): String =

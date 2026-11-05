@@ -5,6 +5,7 @@
     "plakat-ui Компоненты.dc.html": 1584,
     "plakat-ui Ядро.dc.html": 1584,
     "plakat-ui Токены.dc.html": 1160,
+    "plakat-ui Агит-графика.dc.html": 1584,
     "plakat-ui Растяжка.dc.html": 1584,
     "plakat-ui Иконки.dc.html": 1584
   },
@@ -12,6 +13,7 @@
     "plakat-ui Компоненты.dc.html": "c9256e8c5c483a978b27de29d824415d71f485c08ac2a4399a85157b12888d70",
     "plakat-ui Ядро.dc.html": "d697709d7ba92b8d66b24c8c31405b8fad4c5d46d553f2d41eb3dcf2a4fa6172",
     "plakat-ui Токены.dc.html": "f1c130ed5923916c16f9d72d40fe818314a333cb602922ad1ef706188bdcdff4",
+    "plakat-ui Агит-графика.dc.html": "de931b66b0b3aeb24de440b3d976970a8725d9329c792109851c050ecc85c057",
     "plakat-ui Растяжка.dc.html": "9f9de42d25dd11df33503b26219681762c549e76b24368480fd62b7c5749c733",
     "plakat-ui Иконки.dc.html": "45cc8ec71b1defd281585d3fee1613d5b4789abef5b638c25bf5d9470db703ba"
   },
@@ -1844,6 +1846,279 @@
       "w": 358,
       "h": 247,
       "shift": 0.3125
+    },
+    {
+      "file": "Preset_Voshod_Light.png",
+      "page": "plakat-ui Агит-графика.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 360,
+      "h": 240,
+      "shift": 0
+    },
+    {
+      "file": "Preset_Voshod_Dark.png",
+      "page": "plakat-ui Агит-графика.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 360,
+      "h": 240,
+      "shift": 0
+    },
+    {
+      "file": "Preset_Klin_Light.png",
+      "page": "plakat-ui Агит-графика.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 360,
+      "h": 240,
+      "shift": 0
+    },
+    {
+      "file": "Preset_Klin_Dark.png",
+      "page": "plakat-ui Агит-графика.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 360,
+      "h": 240,
+      "shift": 0
+    },
+    {
+      "file": "Preset_Kolonny_Light.png",
+      "page": "plakat-ui Агит-графика.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 360,
+      "h": 240,
+      "shift": 0
+    },
+    {
+      "file": "Preset_Kolonny_Dark.png",
+      "page": "plakat-ui Агит-графика.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 360,
+      "h": 240,
+      "shift": 0
+    },
+    {
+      "file": "Preset_Os_Light.png",
+      "page": "plakat-ui Агит-графика.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 360,
+      "h": 240,
+      "shift": 0
+    },
+    {
+      "file": "Preset_Os_Dark.png",
+      "page": "plakat-ui Агит-графика.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 360,
+      "h": 240,
+      "shift": 0
+    },
+    {
+      "file": "Preset_Shag_Light.png",
+      "page": "plakat-ui Агит-графика.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 360,
+      "h": 240,
+      "shift": 0
+    },
+    {
+      "file": "Preset_Shag_Dark.png",
+      "page": "plakat-ui Агит-графика.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 360,
+      "h": 240,
+      "shift": 0
+    },
+    {
+      "file": "Preset_Razryv_Light.png",
+      "page": "plakat-ui Агит-графика.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 360,
+      "h": 240,
+      "shift": 0
+    },
+    {
+      "file": "Preset_Razryv_Dark.png",
+      "page": "plakat-ui Агит-графика.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 360,
+      "h": 240,
+      "shift": 0
+    },
+    {
+      "file": "Rapport_S1923_Light.png",
+      "page": "plakat-ui Агит-графика.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 192,
+      "h": 144,
+      "shift": 0
+    },
+    {
+      "file": "Rapport_S1923_Dark.png",
+      "page": "plakat-ui Агит-графика.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 192,
+      "h": 144,
+      "shift": 0
+    },
+    {
+      "file": "Rapport_S1925_Light.png",
+      "page": "plakat-ui Агит-графика.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 96,
+      "h": 144,
+      "shift": 0
+    },
+    {
+      "file": "Rapport_S1925_Dark.png",
+      "page": "plakat-ui Агит-графика.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 96,
+      "h": 144,
+      "shift": 0
+    },
+    {
+      "file": "Rapport_S1927_Light.png",
+      "page": "plakat-ui Агит-графика.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 144,
+      "h": 96,
+      "shift": 0
+    },
+    {
+      "file": "Rapport_S1927_Dark.png",
+      "page": "plakat-ui Агит-графика.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 144,
+      "h": 96,
+      "shift": 0
+    },
+    {
+      "file": "Rapport_S1929_Light.png",
+      "page": "plakat-ui Агит-графика.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 144,
+      "h": 144,
+      "shift": 0
+    },
+    {
+      "file": "Rapport_S1929_Dark.png",
+      "page": "plakat-ui Агит-графика.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 144,
+      "h": 144,
+      "shift": 0
+    },
+    {
+      "file": "Composition_S1919.png",
+      "page": "plakat-ui Агит-графика.dc.html",
+      "caption": "seed 1919",
+      "card": 0,
+      "part": "first",
+      "x": 192,
+      "y": 2299,
+      "w": 180,
+      "h": 120,
+      "shift": 0.65625
+    },
+    {
+      "file": "Composition_S1920.png",
+      "page": "plakat-ui Агит-графика.dc.html",
+      "caption": "seed 1920",
+      "card": 0,
+      "part": "first",
+      "x": 388,
+      "y": 2299,
+      "w": 180,
+      "h": 120,
+      "shift": 0.65625
+    },
+    {
+      "file": "Composition_S1921.png",
+      "page": "plakat-ui Агит-графика.dc.html",
+      "caption": "seed 1921",
+      "card": 0,
+      "part": "first",
+      "x": 584,
+      "y": 2299,
+      "w": 180,
+      "h": 120,
+      "shift": 0.65625
+    },
+    {
+      "file": "Composition_S1922.png",
+      "page": "plakat-ui Агит-графика.dc.html",
+      "caption": "seed 1922",
+      "card": 0,
+      "part": "first",
+      "x": 780,
+      "y": 2299,
+      "w": 180,
+      "h": 120,
+      "shift": 0.65625
+    },
+    {
+      "file": "Skeleton_Pattern.png",
+      "page": "plakat-ui Агит-графика.dc.html",
+      "caption": "SKELETON",
+      "card": 0,
+      "part": "cell",
+      "crop": {
+        "x": 28,
+        "y": 51,
+        "w": 64,
+        "h": 64
+      },
+      "x": 220,
+      "y": 3286,
+      "w": 64,
+      "h": 64,
+      "shift": 0.84375
+    },
+    {
+      "file": "Photomontage_Circle.png",
+      "page": "plakat-ui Агит-графика.dc.html",
+      "x": 192,
+      "y": 3839,
+      "w": 340,
+      "h": 420,
+      "shift": 0.21875
+    },
+    {
+      "file": "Photomontage_Tilt.png",
+      "page": "plakat-ui Агит-графика.dc.html",
+      "x": 600,
+      "y": 3839,
+      "w": 340,
+      "h": 420,
+      "shift": 0.21875
+    },
+    {
+      "file": "Photomontage_Cut.png",
+      "page": "plakat-ui Агит-графика.dc.html",
+      "x": 1008,
+      "y": 3839,
+      "w": 340,
+      "h": 420,
+      "shift": 0.21875
     },
     {
       "file": "Counter_Isostat_Light.png",

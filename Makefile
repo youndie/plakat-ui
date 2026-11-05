@@ -100,6 +100,9 @@ gate: docs-gate
 	node scripts/icons.mjs --check
 	# B-31: the display face's ink table is what the bundled font says today.
 	node scripts/display-ink.mjs --check
+	# B-33: the presets are what the vendored SVGs say, and the halftone's goldens what plakat-gen.js draws.
+	node scripts/presets.mjs --check
+	node scripts/halftone-goldens.mjs --check
 	# B-05: the Chrome references were rendered from today's pages and fonts (no Chrome needed here).
 	node scripts/design-references.mjs --manifest
 

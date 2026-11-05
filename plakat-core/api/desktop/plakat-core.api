@@ -1,3 +1,38 @@
+public final class io/github/youndie/plakat/agit/PlakatAgitKt {
+	public static final fun PlakatGeneratedImage-vz2T9sI (ILandroidx/compose/ui/Modifier;FFLjava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PlakatPresetImage (Lio/github/youndie/plakat/agit/PlakatPreset;Landroidx/compose/ui/Modifier;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PlakatRapportFill (ILandroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PlakatSkeleton (ILandroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class io/github/youndie/plakat/agit/PlakatHalftoneKt {
+	public static final fun plakatHalftone-oi0r2YI (Landroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/ImageBitmap;JJLio/github/youndie/plakat/agit/PlakatHalftoneMode;FFF)Landroidx/compose/ui/Modifier;
+	public static synthetic fun plakatHalftone-oi0r2YI$default (Landroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/ImageBitmap;JJLio/github/youndie/plakat/agit/PlakatHalftoneMode;FFFILjava/lang/Object;)Landroidx/compose/ui/Modifier;
+}
+
+public final class io/github/youndie/plakat/agit/PlakatHalftoneMode : java/lang/Enum {
+	public static final field Dots Lio/github/youndie/plakat/agit/PlakatHalftoneMode;
+	public static final field Mask Lio/github/youndie/plakat/agit/PlakatHalftoneMode;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lio/github/youndie/plakat/agit/PlakatHalftoneMode;
+	public static fun values ()[Lio/github/youndie/plakat/agit/PlakatHalftoneMode;
+}
+
+public final class io/github/youndie/plakat/agit/PlakatPreset : java/lang/Enum {
+	public static final field Klin Lio/github/youndie/plakat/agit/PlakatPreset;
+	public static final field Kolonny Lio/github/youndie/plakat/agit/PlakatPreset;
+	public static final field Os Lio/github/youndie/plakat/agit/PlakatPreset;
+	public static final field Razryv Lio/github/youndie/plakat/agit/PlakatPreset;
+	public static final field Shag Lio/github/youndie/plakat/agit/PlakatPreset;
+	public static final field Voshod Lio/github/youndie/plakat/agit/PlakatPreset;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getHeight-D9Ej5fM ()F
+	public final fun getTitleZone ()Landroidx/compose/ui/unit/DpRect;
+	public final fun getWidth-D9Ej5fM ()F
+	public static fun valueOf (Ljava/lang/String;)Lio/github/youndie/plakat/agit/PlakatPreset;
+	public static fun values ()[Lio/github/youndie/plakat/agit/PlakatPreset;
+}
+
 public final class io/github/youndie/plakat/components/ComposableSingletons$PlakatTopAppBarKt {
 	public static final field INSTANCE Lio/github/youndie/plakat/components/ComposableSingletons$PlakatTopAppBarKt;
 	public fun <init> ()V
