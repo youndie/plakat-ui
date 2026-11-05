@@ -249,11 +249,14 @@ class PlakatDialogTest {
             input.backCompleted()
             waitForIdle()
             assertEquals(1, dismissed.size, "open")
+            // Still on the screen, fading, and already not listening.
+            mainClock.autoAdvance = false
             visible = false
-            waitForIdle()
+            mainClock.advanceTimeByFrame()
+            mainClock.advanceTimeByFrame()
             input.backCompleted()
-            waitForIdle()
-            assertEquals(1, dismissed.size, "closed")
+            mainClock.advanceTimeByFrame()
+            assertEquals(1, dismissed.size, "closing")
         }
 
     @Test

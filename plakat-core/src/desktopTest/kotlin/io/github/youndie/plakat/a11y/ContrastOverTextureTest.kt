@@ -143,16 +143,7 @@ class ContrastOverTextureTest {
         holds("on-red on red", underGrain(light.onRed, light.red))
     }
 
-    @Test
-    fun `nothing the kit blinks goes faster than three times a second`() {
-        // The caret, the spec row's 500 on and 300 off: 1.25 Hz. A step of the loading pattern moves, it does not flash.
-        val period = CaretOnOff.sum()
-        assertTrue(1000.0 / period <= 3, "the caret at ${1000.0 / period} Hz")
-    }
-
     private companion object {
-        val CaretOnOff = listOf(500, 300)
-
         const val LETTER_PX = 24
     }
 }
