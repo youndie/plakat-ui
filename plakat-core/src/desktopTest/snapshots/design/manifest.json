@@ -986,6 +986,78 @@
       "shift": 0.78125
     },
     {
+      "file": "Poster_Circle_Light.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "Плакат / Круг · 390 × 392",
+      "card": 0,
+      "part": "first",
+      "x": 32,
+      "y": 2528,
+      "w": 390,
+      "h": 392,
+      "shift": 0.78125
+    },
+    {
+      "file": "Poster_Circle_Dark.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "Плакат / Круг · 390 × 392",
+      "card": 1,
+      "part": "first",
+      "x": 32,
+      "y": 3562,
+      "w": 390,
+      "h": 392,
+      "shift": 0.78125
+    },
+    {
+      "file": "Poster_Background_Light.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "Плакат / Фон · 390 × 500",
+      "card": 0,
+      "part": "first",
+      "x": 446,
+      "y": 2528,
+      "w": 390,
+      "h": 500,
+      "shift": 0.78125
+    },
+    {
+      "file": "Poster_Background_Dark.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "Плакат / Фон · 390 × 500",
+      "card": 1,
+      "part": "first",
+      "x": 446,
+      "y": 3562,
+      "w": 390,
+      "h": 500,
+      "shift": 0.78125
+    },
+    {
+      "file": "Poster_Banner_Light.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "Плакат / Баннер · 390 × 160",
+      "card": 0,
+      "part": "first",
+      "x": 860,
+      "y": 2528,
+      "w": 390,
+      "h": 160,
+      "shift": 0.78125
+    },
+    {
+      "file": "Poster_Banner_Dark.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "Плакат / Баннер · 390 × 160",
+      "card": 1,
+      "part": "first",
+      "x": 860,
+      "y": 3562,
+      "w": 390,
+      "h": 160,
+      "shift": 0.78125
+    },
+    {
       "file": "Icon_Menu_48.png",
       "page": "plakat-ui Иконки.dc.html",
       "caption": "plakat/icon/menu",

@@ -48,7 +48,9 @@ import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.isSpecified
 import androidx.compose.ui.unit.sp
 import io.github.youndie.plakat.print.PlakatCutShape
 import io.github.youndie.plakat.print.plakatHatch
@@ -229,6 +231,7 @@ internal fun PlakatButtonFrame(
     interactionSource: MutableInteractionSource?,
     look: ButtonLook? = null,
     spinnerAtMs: Long? = null,
+    labelSize: TextUnit = TextUnit.Unspecified,
 ) {
     val source = interactionSource ?: remember { MutableInteractionSource() }
     val colors = PlakatTheme.colors
@@ -291,7 +294,10 @@ internal fun PlakatButtonFrame(
         if (kind == PlakatButtonKind.Danger) {
             label.style.copy(fontSize = DANGER_FONT_SP.sp, color = paint.ink)
         } else {
-            label.style.copy(color = paint.ink)
+            // A poster's slogan button may set its own size (Круг: 16); the line stays one size high.
+            val size = if (labelSize.isSpecified) labelSize else label.style.fontSize
+            val line = if (labelSize.isSpecified) labelSize else label.style.lineHeight
+            label.style.copy(fontSize = size, lineHeight = line, color = paint.ink)
         }
     val shift = pressed
     val ringShown = look == ButtonLook.Focused || (focused && keyboard)
