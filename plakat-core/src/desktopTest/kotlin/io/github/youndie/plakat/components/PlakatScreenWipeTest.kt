@@ -266,6 +266,21 @@ class PlakatScreenWipeTest {
         }
 
     @Test
+    fun `a screen with no ground of its own stands on paper and hides the one under it`() =
+        runComposeUiTest {
+            var screen by mutableStateOf("a")
+            stage({ screen }, { 1 }, content = { if (it == "a") Box(Modifier.fillMaxSize().background(Color.Green)) })
+            screen = "b"
+            val frames =
+                (0 until 20).map {
+                    mainClock.advanceTimeByFrame()
+                    frame()
+                }
+            val middle = frames.first { (it.stripAt() ?: 0) in 60..100 }
+            assertEquals(paper.paper, middle[middle.stripAt()!! + 44, 0])
+        }
+
+    @Test
     fun `the geometry is the page's at its lab and its strip`() {
         val lab =
             androidx.compose.ui.geometry
