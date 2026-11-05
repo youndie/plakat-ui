@@ -144,6 +144,7 @@ class PlakatStretchInPlaceTest {
                             {},
                             Modifier.testTag("p"),
                             layout = PlakatPosterLayout.Stretch,
+                            body = "Двенадцать выпусков.",
                         )
                     }
                 }
@@ -175,10 +176,28 @@ class PlakatStretchInPlaceTest {
                     }
                 }
             assertTrue(fits, "bar, circle, slogan per frame: ${read.map { r -> r.map { it.toInt() } }}")
-            // The title's column of the Й's far stem comes after the bar has passed it and before the slogan's edge.
-            val ink = frames.map { px -> (16 until 152).count { y -> px[372, y] == stark.ink } }
-            assertEquals(0, ink[0], "the title waits: $ink")
-            assertTrue(ink.last() > 40, "and is there: $ink")
+
+            // The title and the body go by their last ink, which stands up to a letter short of the edge and never past it.
+            fun PixelMap.reach(
+                rows: IntRange,
+                upTo: Int,
+            ) = rows.maxOf { y -> (0 until upTo).lastOrNull { x -> this[x, y].red < .5f } ?: -1 }
+            val reached = frames.map { it.reach(16 until 152, 390) to it.reach(440 until 500, 300) }
+            val (wholeTitle, wholeBody) = reached.last()
+            assertTrue(wholeTitle > 360 && wholeBody > 100, "whole at the end: $reached")
+            val words =
+                (0..2).any { start ->
+                    reached.withIndex().all { (i, r) ->
+                        val edge = 390 * (((i - start) * 16.0 - 150) / 120).coerceIn(0.0, 1.0)
+
+                        fun held(
+                            got: Int,
+                            whole: Int,
+                        ) = got <= edge + 1.5 && got >= minOf(edge, whole.toDouble()) - 40
+                        held(r.first, wholeTitle) && held(r.second, wholeBody)
+                    }
+                }
+            assertTrue(words, "title and body per frame: $reached")
             assertEquals(listOf(PlakatEvent.Print), heard)
         }
 
