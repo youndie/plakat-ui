@@ -236,6 +236,12 @@ class PlakatAgitTest {
         val px = coverPixels(source(Color.Black, Color.White), 20, 20)
         assertEquals(Color.Black.toArgb(), px[10 * 20 + 2])
         assertEquals(Color.White.toArgb(), px[10 * 20 + 17])
+        // What is past the middle does not come in: red outer quarters, blue between.
+        val banded = ImageBitmap(80, 40)
+        val canvas = Canvas(banded)
+        canvas.drawRect(0f, 0f, 80f, 40f, Paint().apply { color = Color.Red })
+        canvas.drawRect(20f, 0f, 60f, 40f, Paint().apply { color = Color.Blue })
+        assertEquals(setOf(Color.Blue.toArgb()), coverPixels(banded, 20, 20).toSet())
         // 40 × 80 into 20 × 20 is the middle too, along the other axis.
         val tall = coverPixels(source(Color.Black, Color.White, w = 40, h = 80), 20, 20)
         assertEquals(Color.Black.toArgb(), tall[10 * 20 + 2])
