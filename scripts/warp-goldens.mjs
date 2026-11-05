@@ -8,7 +8,10 @@
 // context it draws on records each triangle's transform, which ties the texture to the positions. The
 // vendored functions run untouched.
 //
-// --check writes nothing and fails when the committed file differs from what the design emits.
+// --check writes nothing and fails when the committed file differs from what the design emits. The
+// numbers are compared to HOST_ULPS and not by their digits: the shapes go through Math.sin and
+// Math.cos at full precision, and those differ in the last bits between arm64 and x64, so a file
+// written on one fails on the other with nothing changed in the design.
 
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
@@ -110,15 +113,35 @@ lines.push('        )', '', '    /** The Брус cell\'s own grid, `{ nu: 48, n
 lines.push('    val whole: WarpGolden =', '        WarpGolden(', ...encode(WHOLE, false, 12), '        )');
 lines.push('}', '');
 
+// A long enough way over the last bits of numbers of this size, and far under the 1e-9 the port is held to.
+const HOST_ULPS = 1e-11;
+const NUMBER = /-?\d+(?:\.\d+)?(?:e[-+]?\d+)?/g;
+
+// The two files as text and numbers. Strings are rejoined first, as a number of another length moves their cuts.
+const compare = (a, b) => {
+  const flat = (s) => s.replace(/" \+\n\s*"/g, '');
+  const [x, y] = [flat(a), flat(b)];
+  const [nx, ny] = [x.match(NUMBER) ?? [], y.match(NUMBER) ?? []];
+  if (x.replace(NUMBER, '#') !== y.replace(NUMBER, '#') || nx.length !== ny.length) return { differs: 'the text' };
+  let largest = 0;
+  for (let i = 0; i < nx.length; i++) {
+    const d = Math.abs(Number(nx[i]) - Number(ny[i]));
+    if (d > HOST_ULPS) return { differs: `number ${i}: ${nx[i]}, ${ny[i]}` };
+    if (d > largest) largest = d;
+  }
+  return { largest };
+};
+
 const text = lines.join('\n');
 if (process.argv.includes('--check')) {
   let current = '';
   try { current = readFileSync(OUT, 'utf8'); } catch {}
-  if (current !== text) {
-    console.error(`${OUT} is stale against plakat-warp.js: run node scripts/warp-goldens.mjs`);
+  const found = compare(current, text);
+  if (found.differs) {
+    console.error(`${OUT} is stale against plakat-warp.js, at ${found.differs}: run node scripts/warp-goldens.mjs`);
     process.exit(1);
   }
-  console.log('warp goldens are up to date');
+  console.log(`warp goldens are up to date (the largest difference from this host's numbers is ${found.largest})`);
 } else {
   writeFileSync(OUT, text);
   console.log(`wrote ${OUT}`);
