@@ -311,6 +311,85 @@ class PlakatTooltipTest {
             onNodeWithText("Сохранить").assertDoesNotExist()
         }
 
+    /** The caption alone at half its wipe, and how much of its plate's ground shows on each half of its box. */
+    private fun ComposeUiTest.half(
+        axis: PlakatTooltipAxis,
+        at: IntRect,
+    ): PixelMap {
+        val holder = TooltipHolder(at)
+        setContent {
+            CompositionLocalProvider(LocalDensity provides Density(1f)) {
+                PlakatTheme(colors = paper, reduceMotion = true) {
+                    Box(Modifier.background(Color.White).testTag("c")) {
+                        PlakatTooltipCaption("Сохранить", axis, holder, window) { .5f }
+                    }
+                }
+            }
+        }
+        waitForIdle()
+        return onNodeWithTag("c").captureToImage().toPixelMap()
+    }
+
+    private fun PixelMap.groundIn(
+        xs: IntRange,
+        ys: IntRange,
+    ) = xs.sumOf { x -> ys.count { y -> this[x, y] == paper.concrete } }
+
+    @Test
+    fun `at half its wipe a caption going right shows its left half`() =
+        runComposeUiTest {
+            val px = half(PlakatTooltipAxis.Level, anchor)
+            assertTrue(px.groundIn(0 until px.width / 2, 0 until px.height) > 0)
+            assertEquals(0, px.groundIn(px.width / 2 + 1 until px.width, 0 until px.height))
+        }
+
+    @Test
+    fun `at half its wipe a caption going left shows its right half`() =
+        runComposeUiTest {
+            val px = half(PlakatTooltipAxis.Level, IntRect(960, 200, 1008, 248))
+            assertTrue(px.groundIn(px.width / 2 until px.width, 0 until px.height) > 0)
+            assertEquals(0, px.groundIn(0 until px.width / 2 - 1, 0 until px.height))
+        }
+
+    @Test
+    fun `at half its wipe a caption going up shows its lower half`() =
+        runComposeUiTest {
+            val px = half(PlakatTooltipAxis.Upright, anchor)
+            // The leader's 24 are the lower part of the box, and the plate's foot shows over them.
+            assertTrue(px.groundIn(0 until px.width, px.height / 2 until px.height) > 0)
+            assertEquals(0, px.groundIn(0 until px.width, 0 until px.height / 2 - 1))
+        }
+
+    @Test
+    fun `at half its wipe a caption going down shows its upper half`() =
+        runComposeUiTest {
+            val px = half(PlakatTooltipAxis.Upright, IntRect(100, 10, 148, 58))
+            assertTrue(px.groundIn(0 until px.width, 0 until px.height / 2 + 1) > 0)
+            assertEquals(0, px.groundIn(0 until px.width, px.height / 2 + 2 until px.height))
+        }
+
+    @Test
+    fun `its plate is 240 wide at most, and its words wrap`() =
+        runComposeUiTest {
+            val holder = TooltipHolder(anchor)
+            setContent {
+                CompositionLocalProvider(LocalDensity provides Density(1f)) {
+                    PlakatTheme(colors = paper, reduceMotion = true) {
+                        PlakatTooltipCaption(
+                            "Сохранить в лист и отправить копию всем подписчикам издания сегодня",
+                            PlakatTooltipAxis.Upright,
+                            holder,
+                            window,
+                        ) { 1f }
+                    }
+                }
+            }
+            waitForIdle()
+            val box = holder.placement!!.box
+            assertEquals(240, box.width)
+            assertTrue(box.height > 24 + 40, "two lines at least: ${box.height}")
+        }
+
     @Test
     fun `a density of 2 keeps the leader at 24 dp`() {
         val p =
