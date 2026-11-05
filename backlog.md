@@ -59,11 +59,11 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-06](docs/backlog/B-06-frame-cost-measurement.md) `[ ]` | Frame cost on a Pixel 6a: raskat roll, ten cards cascading with texture and registration | P3 | M | B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50, B-51 |
+| [B-54](docs/backlog/B-54-window-insets.md) `[ ]` | Window insets: the kit's edges under a status bar and a gesture bar | P2 | M | - |
 | [B-37](docs/backlog/B-37-public-repository-and-publishing.md) `[ ]` | Public repository and publishing to Reposilite on every main — last | P3 | S | B-06, B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50 |
 | [B-43](docs/backlog/B-43-re-import-the-design.md) `[ ]` | Re-import the design project on a branch of its own | P3 | S | B-05, B-08 |
 
-## Closed (50)
+## Closed (51)
 
 **Goldens and references regenerate deterministically; the generator and raskat ports match them on every target; the floor and the frame cost have measured numbers**
 
@@ -126,6 +126,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 **The owner's questions answered; the design re-imported when it changes**
 
+- [B-06](docs/backlog/B-06-frame-cost-measurement.md) `[x]` - Frame cost on a Pixel 6a: raskat roll, ten cards cascading with texture and registration
 - [B-40](docs/backlog/B-40-licence.md) `[x]` - Licence: MIT
 - [B-41](docs/backlog/B-41-registration-unit.md) `[x]` - Registration offset: 1 dp
 - [B-42](docs/backlog/B-42-v1-components-designed-here.md) `[x]` - v1 components: designed here, one item each

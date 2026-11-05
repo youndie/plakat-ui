@@ -35,6 +35,7 @@ Packages are `io.github.youndie.plakat.*` (research D1).
 | `plakat-core/build.gradle.kts` | targets, dependencies, ABI validation, the iOS metadata warnings cut |
 | `plakat-core/api/` | the committed public API dump (`updateKotlinAbi` records it) |
 | `sample/build.gradle.kts` | the sample kit on desktop and wasm, `./gradlew :sample:run` |
+| `bench-android/build.gradle.kts` | the frame benchmark's host on a phone, a release build (B-06), with `scripts/device-bench.sh`; a harness, published nowhere |
 | `settings.gradle.kts` | plugin repositories and the sborka settings plugin, which brings the `wip` catalog |
 | `gradle/libs.versions.toml` | the sborka version and the Android SDK levels; the compiler and Compose come from `wip` |
 | `gradle.properties` | the coordinates and licence sborka reads (`sborka.*`) |

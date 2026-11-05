@@ -367,12 +367,13 @@ registration hold 60 fps (the brief's target). Refuted or kept on the desktop JV
 
 Measured on the desktop JVM ([B-51](../backlog/B-51-frame-cost-on-desktop.md), M1): the cascade holds (0.60 ms of main-thread work, no missed frames), and the comparison alone holds its 2 ms (1.32 ms at 352 px), but the whole raskat frame does not (8.26 ms at 2.75, with about 6 ms unexplained). The device settles it.
 
+Measured on a Pixel 6a ([B-06](../backlog/B-06-frame-cost-measurement.md), [report](measurements-2026-11-05-device/README.md)): the cascade holds (`work` p95 1.19 ms, none missed, 0.2 % past deadline). The whole raskat frame costs 1.10, 3.32 and 3.73 ms over its base on the main thread at densities 1, 2 and 2.75, so its 2 ms is refuted on the phone at 2 and 2.75, and the roll misses no frame at any. The comparison alone is not separated there. The recorder B-51 and B-06 share cannot see a layer inside a layer that is not redrawn on Android, so this reading is `FrameMetrics`'; which verdict stands is the owner's.
+
 **Hypothesis H4.** `Canvas.drawVertices` with an `ImageShader` behaves the same on Android, iOS and
 wasm as on desktop, where it was verified to exist. Settled in [B-32](../backlog/B-32-projection.md).
 
 Settled on 2026-11-05, on a bitmap's canvas: the same picture on desktop, the iOS simulator and wasm in Chrome
-(`PlakatVerticesTest`), compiled and not run on Android, whose device reading falls to
-[B-06](../backlog/B-06-frame-cost-measurement.md). Two differences stood behind "the same": on Skiko `ImageShader` samples by
+(`PlakatVerticesTest`), and on a Pixel 6a by screenshot ([B-06](../backlog/B-06-frame-cost-measurement.md)), where its first frame costs 91 to 104 ms on the main thread. Two differences stood behind "the same": on Skiko `ImageShader` samples by
 the nearest pixel, where Android's follows its paint, and on Android's hardware canvas `drawVertices` needs API 29
 ([the platform's table](https://developer.android.com/topic/performance/hardware-accel#drawing-support), which says to do what is done here). So the
 projection never draws on the frame's canvas: it bakes at twice the pixels and halves.

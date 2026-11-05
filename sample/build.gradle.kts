@@ -5,6 +5,7 @@ plugins {
     alias(wip.plugins.kotlinMultiplatform)
     alias(wip.plugins.composeMultiplatform)
     alias(wip.plugins.composeCompiler)
+    alias(wip.plugins.androidKotlinMultiplatformLibrary)
     alias(wip.plugins.ksp)
     alias(libs.plugins.viddik)
     id("io.github.youndie.sborka.kmp")
@@ -16,6 +17,21 @@ kotlin {
     explicitApi = org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode.Disabled
 
     jvm("desktop")
+
+    // For `:bench-android` (B-06), which hosts what is here on a phone. A library target: a KMP module has no application.
+    android {
+        androidResources { enable = true }
+
+        namespace = "io.github.youndie.plakat.sample"
+        compileSdk =
+            libs.versions.android.compileSdk
+                .get()
+                .toInt()
+        minSdk =
+            libs.versions.android.minSdk
+                .get()
+                .toInt()
+    }
 
     @OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
     wasmJs {

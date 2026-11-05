@@ -30,3 +30,4 @@ rootProject.name = "plakat-ui"
 
 include(":plakat-core")
 include(":sample")
+include(":bench-android")
