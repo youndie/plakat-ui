@@ -48,8 +48,8 @@ public final class io/github/youndie/plakat/agit/PlakatTitleZone$Companion {
 public final class io/github/youndie/plakat/components/ComposableSingletons$PlakatTopAppBarKt {
 	public static final field INSTANCE Lio/github/youndie/plakat/components/ComposableSingletons$PlakatTopAppBarKt;
 	public fun <init> ()V
-	public final fun getLambda$-298048299$io_github_youndie_plakat_core ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda$782067659$io_github_youndie_plakat_core ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1592219209$io_github_youndie_plakat_core ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$9279871$io_github_youndie_plakat_core ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class io/github/youndie/plakat/components/PlakatBadgeKt {
@@ -58,7 +58,7 @@ public final class io/github/youndie/plakat/components/PlakatBadgeKt {
 }
 
 public final class io/github/youndie/plakat/components/PlakatBottomSheetKt {
-	public static final fun PlakatBottomSheet (ZLkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Lio/github/youndie/plakat/components/PlakatSheetGround;Ljava/lang/String;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PlakatBottomSheet (ZLkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Lio/github/youndie/plakat/components/PlakatSheetGround;Ljava/lang/String;Landroidx/compose/foundation/layout/WindowInsets;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class io/github/youndie/plakat/components/PlakatBoxFold : java/lang/Enum {
@@ -139,11 +139,11 @@ public final class io/github/youndie/plakat/components/PlakatMenuKt {
 }
 
 public final class io/github/youndie/plakat/components/PlakatNavigationBarKt {
-	public static final fun PlakatNavigationBar (Ljava/util/List;ILkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PlakatNavigationBar (Ljava/util/List;ILkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/layout/WindowInsets;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class io/github/youndie/plakat/components/PlakatNavigationDrawerKt {
-	public static final fun PlakatNavigationDrawer (ZLjava/util/List;ILkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Ljava/lang/String;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PlakatNavigationDrawer (ZLjava/util/List;ILkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Ljava/lang/String;Landroidx/compose/foundation/layout/WindowInsets;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class io/github/youndie/plakat/components/PlakatNavigationItem {
@@ -431,8 +431,8 @@ public final class io/github/youndie/plakat/components/PlakatTooltipKt {
 }
 
 public final class io/github/youndie/plakat/components/PlakatTopAppBarKt {
-	public static final fun PlakatMasthead (Ljava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lio/github/youndie/plakat/components/PlakatTopAppBarState;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
-	public static final fun PlakatTopAppBar (Ljava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/String;Ljava/lang/String;ILio/github/youndie/plakat/components/PlakatTopAppBarState;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PlakatMasthead (Ljava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lio/github/youndie/plakat/components/PlakatTopAppBarState;Lkotlin/jvm/functions/Function2;Landroidx/compose/foundation/layout/WindowInsets;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PlakatTopAppBar (Ljava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/String;Ljava/lang/String;ILio/github/youndie/plakat/components/PlakatTopAppBarState;Lkotlin/jvm/functions/Function2;Landroidx/compose/foundation/layout/WindowInsets;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 	public static final fun rememberPlakatTopAppBarState (Landroidx/compose/runtime/Composer;I)Lio/github/youndie/plakat/components/PlakatTopAppBarState;
 }
 

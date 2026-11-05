@@ -1,7 +1,7 @@
 ---
 id: B-54
 title: "Window insets: the kit's edges under a status bar and a gesture bar"
-status: open
+status: wip
 priority: P2
 size: M
 stage: stage-2-components
