@@ -155,6 +155,9 @@ export const REFERENCES = [
     { group: 'Dialog', name, page: MVP, caption, card: 0, part: 'first' })),
   // The window (B-29): the two panels before their caption, in the page's two columns.
   ...cells('Window', MVP, 'prev', [['Onboarding', 'Окно / Онбординг · 2 из 4 панелей']]).map((r) => ({ ...r, floor: true })),
+  // In place (B-53): the Stretch page's fourth poster and its masthead, each the block over its caption.
+  { group: 'Poster', name: 'Stretch_Light', page: STRETCH, caption: 'Плакат / Растяжка', prefix: true, card: 0, part: 'prev' },
+  { group: 'TopAppBar', name: 'Masthead_Light', page: STRETCH, caption: 'TopAppBar / Шапка', prefix: true, card: 0, part: 'prev', floor: true },
   // The empty state (B-52): the block above its caption, floored for the fractional lines of its words.
   ...cells('EmptyState', MVP, 'prev', [['Window', 'Окно / Пустое состояние — призыв, не извинение · клин-раскат киноварь → бетон, единственный на экране']]).map((r) => ({ ...r, floor: true })),
   // The Demo page's three screens (B-35), each `data-screen-label` in its two themes.

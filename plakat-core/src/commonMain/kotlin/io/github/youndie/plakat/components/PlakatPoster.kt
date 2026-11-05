@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
@@ -99,6 +100,12 @@ public enum class PlakatPosterLayout(
      * left half, upright, the composition on the right.
      */
     Wide(600.dp, 392.dp),
+
+    /**
+     * Растяжка, 390 × 600, from the Stretch page: the title's three lines each stretched across the width, 136, 120 and 80
+     * high, a red bar under the first, and a circle going off the right edge. No diagonal: here the vertical leads.
+     */
+    Stretch(390.dp, 600.dp),
 }
 
 /** A seed from the poster's words, so the same content prints the same poster on every target. */
@@ -149,6 +156,19 @@ private val WideFrameWidth = 360.dp
 private val WideTitleTop = 32.dp
 private val WideBodyGap = 16.dp
 private val WideButtonWidth = 240.dp
+
+/** Растяжка: the lines' `top` and `height`, with the bar's `top: 168px; height: 16px` under the first. */
+private val StretchLines = listOf(16.dp to 136.dp, 200.dp to 120.dp, 336.dp to 80.dp)
+private val StretchBarTop = 168.dp
+private val StretchBarHigh = 16.dp
+
+/** Растяжка: the body and the circle at `top: 440px`, the circle of 136 at `right: -56px`, the column `width: 240px`. */
+private val StretchLowerTop = 440.dp
+private val StretchCircle = 136.dp
+private val StretchCircleLeft = 310.dp
+private val StretchColumn = 240.dp
+private const val STRETCH_BUTTON_SP = 14
+private const val STRETCH_ELEMENTS = 2
 
 /** The body's line, `line-height: 1.4`, both layouts. */
 private const val BODY_LINE = 1.4f
@@ -207,15 +227,26 @@ public fun PlakatPoster(
     val recipe =
         when (layout) {
             PlakatPosterLayout.Circle -> PosterRecipes.Circle
+
             PlakatPosterLayout.Background -> PosterRecipes.Background
+
             PlakatPosterLayout.Banner -> PosterRecipes.Banner
+
             PlakatPosterLayout.Wide -> PosterRecipes.Wide
+
+            // It draws no composition of the generator's.
+            PlakatPosterLayout.Stretch -> PosterRecipes.Thumbnail
         }
     val composition = remember(seed, layout) { posterComposition(seed, recipe) }
     val rolls = raskat && layout == PlakatPosterLayout.Circle && composition.circle != null && PlakatTheme.print.raskat
     // Ms into the print, on one clock: every wipe and the roll are closed forms of it.
     val elements =
-        composition.shapes.size + if (layout == PlakatPosterLayout.Background || composition.circle != null) 1 else 0
+        if (layout == PlakatPosterLayout.Stretch) {
+            STRETCH_ELEMENTS
+        } else {
+            composition.shapes.size +
+                if (layout == PlakatPosterLayout.Background || composition.circle != null) 1 else 0
+        }
     val end = remember(elements, rolls) { posterPrintMs(elements, rolls) }
     val age = remember { Animatable(if (print) 0f else Float.MAX_VALUE) }
     LaunchedEffect(Unit) {
@@ -481,6 +512,75 @@ public fun PlakatPoster(
                         enabled = true,
                         loading = false,
                         interactionSource = null,
+                    )
+                }
+            }
+
+            PlakatPosterLayout.Stretch -> {
+                Box(
+                    Modifier
+                        .matchParentSize()
+                        .plakatWipe(PlakatWipe.Left, wipe(0))
+                        .drawBehind {
+                            drawRect(
+                                colors.red,
+                                Offset(PlakatGrid.Margin.toPx(), StretchBarTop.toPx()),
+                                Size(size.width - 2 * PlakatGrid.Margin.toPx(), StretchBarHigh.toPx()),
+                            )
+                        },
+                )
+                Box(
+                    Modifier
+                        .matchParentSize()
+                        .plakatWipe(PlakatWipe.Left, wipe(PlakatDurations.CASCADE))
+                        .drawBehind {
+                            val r = StretchCircle.toPx() / 2
+                            drawCircle(colors.ink, r, Offset(StretchCircleLeft.toPx() + r, StretchLowerTop.toPx() + r))
+                        },
+                )
+                Box(Modifier.matchParentSize().plakatWipe(PlakatWipe.Left, wipe(TITLE_AT_MS)).title(title)) {
+                    title.take(StretchLines.size).forEachIndexed { i, line ->
+                        val (top, high) = StretchLines[i]
+                        PlakatStretch(
+                            line,
+                            Modifier
+                                .offset(PlakatGrid.Margin, top)
+                                .size(layout.width - PlakatGrid.Margin * 2, high)
+                                .clearAndSetSemantics {},
+                        )
+                    }
+                }
+                if (body != null) {
+                    Box(
+                        Modifier.matchParentSize().plakatWipe(PlakatWipe.Left, wipe(TITLE_AT_MS)).semantics {
+                            contentDescription = body
+                        },
+                    ) {
+                        Canvas(Modifier.matchParentSize()) {
+                            drawParagraph(
+                                measurer,
+                                body,
+                                text.copy(fontSize = CIRCLE_BODY_SP.sp),
+                                StretchColumn.toPx(),
+                                Offset(PlakatGrid.Margin.toPx(), StretchLowerTop.toPx()),
+                                colors.ink,
+                                BODY_LINE,
+                            )
+                        }
+                    }
+                }
+                Box(Modifier.matchParentSize().plakatWipe(PlakatWipe.Left, wipe(BUTTON_AT_MS))) {
+                    PlakatButtonFrame(
+                        PlakatButtonKind.Filled,
+                        action,
+                        onAction,
+                        Modifier
+                            .offset(PlakatGrid.Margin, layout.height - CircleButtonBottom - PlakatSizes.Button)
+                            .size(StretchColumn, PlakatSizes.Button),
+                        enabled = true,
+                        loading = false,
+                        interactionSource = null,
+                        metrics = ButtonMetrics(labelSize = STRETCH_BUTTON_SP.sp),
                     )
                 }
             }

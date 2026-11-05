@@ -61,6 +61,7 @@ import io.github.youndie.plakat.components.PlakatFab
 import io.github.youndie.plakat.components.PlakatIconButton
 import io.github.youndie.plakat.components.PlakatLinearProgress
 import io.github.youndie.plakat.components.PlakatListItem
+import io.github.youndie.plakat.components.PlakatMasthead
 import io.github.youndie.plakat.components.PlakatNavigationBar
 import io.github.youndie.plakat.components.PlakatNavigationItem
 import io.github.youndie.plakat.components.PlakatOutlinedButton
@@ -177,6 +178,13 @@ fun KitCore() {
                     listOf("ЧИТАЙ", "ВЕСЬ", "НОЯБРЬ"),
                     "ПОДПИСАТЬСЯ",
                     {},
+                    layout = PlakatPosterLayout.Stretch,
+                    body = "12 новых выпусков. Мы собрали их в одну ленту — читай по порядку.",
+                )
+                PlakatPoster(
+                    listOf("ЧИТАЙ", "ВЕСЬ", "НОЯБРЬ"),
+                    "ПОДПИСАТЬСЯ",
+                    {},
                     Modifier.width(720.dp),
                     layout = PlakatPosterLayout.Wide,
                     body = "12 новых выпусков. Мы собрали их в одну ленту — читай по порядку.",
@@ -217,6 +225,7 @@ fun KitComponents(beat: Int) {
         }
         KitGroup("Шапка") {
             PlakatTopAppBar("ЛИСТ", Modifier.width(Width), subtitle = "№ 47")
+            PlakatMasthead("ЛИСТ", Modifier.width(Width), startLabel = "№ 47", endLabel = "НОЯБРЬ 2026")
         }
         KitGroup("Навигация") {
             var nav by remember { mutableIntStateOf(0) }
