@@ -187,7 +187,10 @@ class BenchActivity : ComponentActivity() {
         window.addOnFrameMetricsAvailableListener(listener, Handler(thread.looper))
         setContent {
             var at by remember { mutableIntStateOf(0) }
-            val plan = remember { (0 until BLIND_ROUNDS).flatMap { r -> listOf(r to "plain", r to "spin-5") } }
+            val plan =
+                remember {
+                    (0 until BLIND_ROUNDS).flatMap { r -> listOf(r to "plain", r to "spin-5", r to "nested-5") }
+                }
             if (at >= plan.size) {
                 LaunchedEffect(Unit) {
                     window.removeOnFrameMetricsAvailableListener(listener)
@@ -202,7 +205,7 @@ class BenchActivity : ComponentActivity() {
             } else {
                 val (r, name) = plan[at]
                 key(at) {
-                    LayerArm(name == "spin-5", { frame, interval, work ->
+                    LayerArm(name, { frame, interval, work ->
                         arm = name
                         round = r
                         frames.appendLine("$name,$r,$frame,$interval,$work,0")
@@ -243,10 +246,13 @@ class BenchActivity : ComponentActivity() {
     }
 }
 
-/** A layer that costs [spins] 5 ms when it is drawn, under a recorder that ends as `FrameBenchmark`'s does. */
+/**
+ * A layer that costs 5 ms when it is drawn, under a recorder that ends as `FrameBenchmark`'s does: `spin-5` with the ticks read
+ * in it, directly under what the recorder draws in, and `nested-5` inside a second layer that nothing invalidates.
+ */
 @Composable
 private fun LayerArm(
-    spins: Boolean,
+    name: String,
     log: (Int, Long, Long) -> Unit,
     onEnd: () -> Unit,
 ) {
@@ -268,20 +274,29 @@ private fun LayerArm(
     }
     PlakatTheme {
         Box(Modifier.fillMaxSize().plakatPaper()) {
-            Box(
-                Modifier
-                    .fillMaxSize()
-                    .graphicsLayer { }
-                    .drawBehind {
+            val spin = {
+                val until = System.nanoTime() + SPIN_NS
+                while (System.nanoTime() < until) {
+                    // The control: the layer's cost, by the clock.
+                }
+            }
+            if (name == "nested-5") {
+                Box(Modifier.fillMaxSize().graphicsLayer { }) {
+                    Box(
+                        Modifier.fillMaxSize().graphicsLayer { }.drawBehind {
+                            tick
+                            spin()
+                        },
+                    )
+                }
+            } else {
+                Box(
+                    Modifier.fillMaxSize().graphicsLayer { }.drawBehind {
                         tick
-                        if (spins) {
-                            val until = System.nanoTime() + SPIN_NS
-                            while (System.nanoTime() < until) {
-                                // The control: the layer's cost, by the clock.
-                            }
-                        }
+                        if (name == "spin-5") spin()
                     },
-            )
+                )
+            }
             Spacer(
                 Modifier.fillMaxSize().drawBehind {
                     log(tick.toInt(), stamp[1], System.nanoTime() - stamp[0])

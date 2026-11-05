@@ -51,3 +51,7 @@ Late, and no threshold moves. **What forced it:** run 1 reads the raskat frame a
 - **If it is not:** `work` stands and the numbers are believed.
 - Run 2 repeats the whole protocol. No round is added to it.
 
+## Amendment 2, after `blind` (2026-11-05)
+
+The control refuted the suspicion as written: `spin-5` shows in `work`, 0.87 to 5.59 ms at p50, as in `draw`, 0.39 to 5.26 (`raw/blind1/`). A layer directly under what the recorder draws in is seen. It says nothing yet of a layer inside a layer that is not itself redrawn, which is where the raskat's circle stands in the poster, its parent's wipe having finished. So `blind` gains `nested-5`, the same 5 ms in a second layer that nothing invalidates. The rule of amendment 1 holds, with this arm as its test. Run 2 is unchanged.
+
