@@ -8,6 +8,9 @@ import kotlin.test.assertEquals
  * every way the page calls it, on every target this suite runs on. The goldens are the page's own
  * output (`scripts/poster-goldens.mjs`).
  */
+private const val LOWER_RIGHT = "polygon(0 100%,100% 0,100% 100%)"
+private const val UPPER_LEFT = "polygon(0 0,100% 0,0 100%)"
+
 class PlakatPosterCompositionTest {
     // The same frames, in the same order, as FRAMES in scripts/poster-goldens.mjs.
     private val frames =
@@ -62,7 +65,7 @@ class PlakatPosterCompositionTest {
                     }
 
                     is PosterShape.Wedge -> {
-                        val clip = if (s.lowerRight) "polygon(0 100%,100% 0,100% 100%)" else "polygon(0 0,100% 0,0 100%)"
+                        val clip = if (s.lowerRight) LOWER_RIGHT else UPPER_LEFT
                         listOf(px(s.x), px(s.y), px(s.w), px(s.h), letter(s.role), "0", clip, "none", "50% 50%")
                     }
                 }.joinToString(",")
