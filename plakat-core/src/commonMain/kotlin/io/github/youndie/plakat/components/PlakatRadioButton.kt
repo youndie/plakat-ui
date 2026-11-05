@@ -12,7 +12,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
@@ -77,14 +76,12 @@ internal fun PlakatRadioButtonFrame(
         }
     }
 
-    // What the disc last settled on: true only a frame after the button was selected, false the moment it is not.
+    // Set by the effect, so a frame after the composition that selected this button; the disc of the button going out
+    // is off in that very composition, and the frame between is theirs.
     var settled by remember { mutableStateOf(selected) }
     LaunchedEffect(selected, reduce) {
         if (selected != settled) {
-            if (selected) {
-                events.onEvent(PlakatEvent.Lock)
-                if (!reduce) withFrameNanos {}
-            }
+            if (selected) events.onEvent(PlakatEvent.Lock)
             settled = selected
         }
     }
