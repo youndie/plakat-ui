@@ -57,11 +57,11 @@ import io.github.youndie.plakat.agit.drawPosterShape
 import io.github.youndie.plakat.agit.posterComposition
 import io.github.youndie.plakat.print.PlakatWipe
 import io.github.youndie.plakat.print.RaskatOptions
+import io.github.youndie.plakat.print.RaskatRollImage
 import io.github.youndie.plakat.print.drawRaskat
 import io.github.youndie.plakat.print.plakatGrain
 import io.github.youndie.plakat.print.plakatWipe
 import io.github.youndie.plakat.print.raskatField
-import io.github.youndie.plakat.print.raskatImage
 import io.github.youndie.plakat.print.raskatInkB
 import io.github.youndie.plakat.print.raskatRollT0
 import io.github.youndie.plakat.theme.FaceMetrics
@@ -613,10 +613,11 @@ private fun PhotoCircle(
                     px,
                     density,
                 ) { raskatField(px, px, RaskatOptions(streak = RASKAT_STREAK, dpr = density.toDouble())) }
+            val roll = remember(px, colors) { RaskatRollImage(px, px, colors.red, colors.paper) }
             Canvas(Modifier.matchParentSize()) {
-                val image = raskatImage(px, px, raskatInkB(field, t0(), RASKAT_HARD), colors.red, colors.paper)
+                roll.advance(raskatInkB(field, t0(), RASKAT_HARD))
                 drawRaskat(
-                    image,
+                    roll.image,
                     Path().apply {
                         addOval(
                             androidx.compose.ui.geometry
