@@ -47,6 +47,7 @@ import io.github.youndie.plakat.agit.PlakatSkeleton
 import io.github.youndie.plakat.agit.plakatHalftone
 import io.github.youndie.plakat.components.PlakatBadge
 import io.github.youndie.plakat.components.PlakatBadgedBox
+import io.github.youndie.plakat.components.PlakatBottomSheet
 import io.github.youndie.plakat.components.PlakatButton
 import io.github.youndie.plakat.components.PlakatCard
 import io.github.youndie.plakat.components.PlakatCheckbox
@@ -316,6 +317,16 @@ fun KitComponents(beat: Int) {
                 PlakatDialog(open, "УДАЛИТЬ", { open = false }, text = "Вернуть можно.") {
                     PlakatDialogAction("ОТМЕНА", { open = false })
                     PlakatDialogAction("СТЕРЕТЬ", { open = false }, danger = true)
+                }
+            }
+        }
+        KitGroup("Нижний лист") {
+            var open by remember { mutableStateOf(false) }
+            PlakatOutlinedButton("ОТКРЫТЬ", { open = true }, Modifier.testTag("open-sheet"))
+            Box(Modifier.width(Width).height(if (open) 420.dp else 1.dp)) {
+                PlakatBottomSheet(open, { open = false }, paneTitle = "Действия") {
+                    PlakatListItem("Сохранить", onClick = { open = false })
+                    PlakatListItem("Поделиться", onClick = { open = false }, divider = false)
                 }
             }
         }

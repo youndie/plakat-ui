@@ -55,7 +55,7 @@ public enum class PlakatEvent(
     /** RadioButton and NavigationBar select. */
     Lock("lock"),
 
-    /** FAB appear, Tabs switch, Window next panel. */
+    /** FAB appear, Tabs switch, Window next panel. A bottom sheet riding up and down, designed here (B-46). */
     Rail("rail"),
 
     /** Counter and Badge value: one step of the digits. */
