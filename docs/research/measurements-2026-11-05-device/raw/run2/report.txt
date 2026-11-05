@@ -1,0 +1,52 @@
+counted rounds: 5; frames counted: 15115
+
+| arm | frames | work p50 | work p95 | interval p50 | interval p95 | intervals >= 25 ms |
+|---|---|---|---|---|---|---|
+| base-1 | 1210 | 0.49 | 0.71 | 16.62 | 17.51 | 0.0 % |
+| base-2 | 1213 | 0.50 | 0.74 | 16.61 | 17.41 | 0.1 % |
+| base-2.75 | 1211 | 0.51 | 0.73 | 16.62 | 17.38 | 0.0 % |
+| busy-10 | 1207 | 10.21 | 10.35 | 16.61 | 17.13 | 0.0 % |
+| busy-25 | 605 | 25.21 | 25.37 | 33.23 | 33.83 | 100.0 % |
+| cascade-a | 1207 | 0.66 | 1.19 | 16.61 | 17.55 | 0.0 % |
+| cascade-b | 1210 | 0.67 | 1.27 | 16.61 | 17.55 | 0.0 % |
+| cascade-flat | 1208 | 0.67 | 1.26 | 16.61 | 17.51 | 0.1 % |
+| idle-a | 1206 | 0.70 | 1.52 | 16.61 | 17.47 | 0.0 % |
+| idle-b | 1210 | 0.76 | 1.60 | 16.61 | 17.35 | 0.0 % |
+| roll-1 | 1209 | 0.58 | 1.09 | 16.62 | 17.31 | 0.0 % |
+| roll-2 | 1209 | 0.56 | 1.13 | 16.62 | 17.37 | 0.0 % |
+| roll-2.75 | 1210 | 0.50 | 0.85 | 16.62 | 17.29 | 0.0 % |
+
+control: busy-10 above idle-a at p50 of work: 9.51 ms (10 +- 2): seen
+control: busy-25 interval p50: 33.23 ms (>= 25): seen
+ruler: cascade-a - cascade-b, p95 per round: [-0.05, -0.04, -0.41, 0.01, 0.04], widest 0.41 ms
+ruler: idle-a - idle-b, p95 per round: [-0.09, -0.12, -0.07, -0.04, -0.06]
+known order: cascade-flat p95 1.26 against cascade-a 1.19: holds
+
+**Cascade**: work p95 1.19 ms against 16.7, 0.0 % of intervals >= 25 ms, twice the ruler 0.83: GREEN
+**Raskat at 1**: roll p95 0.85 less base p95 0.71 = 0.14 ms against 2: GREEN; restart frames apart, p50 7.14 ms
+**Raskat at 2**: roll p95 0.80 less base p95 0.74 = 0.06 ms against 2: GREEN; restart frames apart, p50 11.29 ms
+**Raskat at 2.75**: roll p95 0.67 less base p95 0.73 = -0.05 ms against 2: GREEN; restart frames apart, p50 12.24 ms
+
+| arm | frames | main p50 | main p95 | draw p50 | draw p95 | total p50 | total p95 | GPU p50 | GPU p95 | past % |
+|---|---|---|---|---|---|---|---|---|---|---|
+| base-1 | 1220 | 0.56 | 0.82 | 0.16 | 0.26 | 12.19 | 12.93 | 7.20 | 8.76 | 0.0 |
+| base-2 | 1218 | 0.57 | 0.85 | 0.17 | 0.29 | 12.43 | 29.31 | 7.00 | 8.74 | 0.4 |
+| base-2.75 | 1211 | 0.58 | 0.84 | 0.17 | 0.27 | 12.65 | 13.41 | 7.35 | 9.04 | 0.4 |
+| busy-10 | 1215 | 10.24 | 10.41 | 0.08 | 0.15 | 12.46 | 13.87 | 0.46 | 0.75 | 0.0 |
+| busy-25 | 605 | 25.25 | 25.45 | 0.09 | 0.17 | 27.44 | 28.62 | 0.52 | 0.77 | 99.2 |
+| cascade-a | 1210 | 0.72 | 1.34 | 0.15 | 0.31 | 5.82 | 12.55 | 0.93 | 8.03 | 0.2 |
+| cascade-b | 1214 | 0.74 | 1.45 | 0.15 | 0.33 | 11.83 | 12.74 | 6.46 | 8.33 | 0.1 |
+| cascade-flat | 1212 | 0.74 | 1.44 | 0.12 | 0.29 | 11.69 | 12.64 | 6.37 | 8.32 | 0.1 |
+| idle-a | 1213 | 0.81 | 1.76 | 0.27 | 0.61 | 11.90 | 12.74 | 5.45 | 8.03 | 0.0 |
+| idle-b | 1220 | 0.89 | 1.83 | 0.30 | 0.69 | 12.03 | 12.94 | 4.50 | 7.22 | 0.0 |
+| roll-1 | 1215 | 1.31 | 3.28 | 0.78 | 1.50 | 12.19 | 13.08 | 7.07 | 8.54 | 0.0 |
+| roll-2 | 1213 | 2.88 | 6.09 | 2.34 | 3.65 | 12.34 | 13.71 | 6.24 | 8.16 | 0.0 |
+| roll-2.75 | 1215 | 3.80 | 8.31 | 3.29 | 4.10 | 12.59 | 14.26 | 6.15 | 7.87 | 0.0 |
+
+control: busy-25 past its deadline 99.2 % (>= 90): seen
+control: idle-a past its deadline 0.0 % (<= 5): seen
+
+**Cascade, device**: work p95 1.19, main thread p95 1.34, 0.0 % of intervals >= 25 ms, 0.2 % past deadline: GREEN
+**Raskat at 1, main thread**: roll p95 1.92 less base p95 0.82 = 1.10 ms against 2: GREEN (with restarts 2.46); on time, 0.0 % past: GREEN
+**Raskat at 2, main thread**: roll p95 4.17 less base p95 0.85 = 3.32 ms against 2: RED (with restarts 5.24); on time, 0.0 % past: GREEN
+**Raskat at 2.75, main thread**: roll p95 4.57 less base p95 0.84 = 3.73 ms against 2: RED (with restarts 7.47); on time, 0.0 % past: GREEN

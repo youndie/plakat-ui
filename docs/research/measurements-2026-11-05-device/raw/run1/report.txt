@@ -1,0 +1,28 @@
+counted rounds: 5; frames counted: 15109
+
+| arm | frames | work p50 | work p95 | interval p50 | interval p95 | intervals >= 25 ms |
+|---|---|---|---|---|---|---|
+| base-1 | 1210 | 0.47 | 0.72 | 16.62 | 17.60 | 0.0 % |
+| base-2 | 1212 | 0.50 | 0.70 | 16.62 | 17.59 | 0.1 % |
+| base-2.75 | 1211 | 0.52 | 0.72 | 16.62 | 17.56 | 0.2 % |
+| busy-10 | 1206 | 10.21 | 10.33 | 16.61 | 17.20 | 0.0 % |
+| busy-25 | 605 | 25.22 | 25.39 | 33.23 | 33.84 | 100.0 % |
+| cascade-a | 1204 | 0.68 | 1.37 | 16.61 | 17.63 | 0.1 % |
+| cascade-b | 1208 | 0.68 | 1.22 | 16.62 | 17.62 | 0.0 % |
+| cascade-flat | 1207 | 0.67 | 1.36 | 16.62 | 17.58 | 0.2 % |
+| idle-a | 1206 | 0.68 | 1.55 | 16.62 | 17.45 | 0.0 % |
+| idle-b | 1210 | 0.74 | 1.57 | 16.63 | 17.48 | 0.0 % |
+| roll-1 | 1210 | 0.60 | 1.19 | 16.61 | 17.62 | 0.0 % |
+| roll-2 | 1210 | 0.56 | 1.01 | 16.62 | 17.39 | 0.0 % |
+| roll-2.75 | 1210 | 0.51 | 0.83 | 16.62 | 17.40 | 0.0 % |
+
+control: busy-10 above idle-a at p50 of work: 9.53 ms (10 +- 2): seen
+control: busy-25 interval p50: 33.23 ms (>= 25): seen
+ruler: cascade-a - cascade-b, p95 per round: [-0.04, 0.09, -0.07, 0.33, 0.04], widest 0.33 ms
+ruler: idle-a - idle-b, p95 per round: [-0.22, -0.02, 0.01, 0.1, 0.01]
+known order: cascade-flat p95 1.36 against cascade-a 1.37: holds
+
+**Cascade**: work p95 1.37 ms against 16.7, 0.1 % of intervals >= 25 ms, twice the ruler 0.67: GREEN
+**Raskat at 1**: roll p95 0.87 less base p95 0.72 = 0.15 ms against 2: GREEN; restart frames apart, p50 8.11 ms
+**Raskat at 2**: roll p95 0.81 less base p95 0.70 = 0.11 ms against 2: GREEN; restart frames apart, p50 11.02 ms
+**Raskat at 2.75**: roll p95 0.67 less base p95 0.72 = -0.06 ms against 2: GREEN; restart frames apart, p50 12.51 ms

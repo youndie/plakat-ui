@@ -1,7 +1,7 @@
 ---
 id: B-06
 title: "Frame cost on a Pixel 6a: raskat roll, ten cards cascading with texture and registration"
-status: wip
+status: done
 priority: P3
 size: M
 stage: stage-4-product
@@ -54,4 +54,16 @@ Late, and no threshold moves. **What forced it:** run 1 reads the raskat frame a
 ## Amendment 2, after `blind` (2026-11-05)
 
 The control refuted the suspicion as written: `spin-5` shows in `work`, 0.87 to 5.59 ms at p50, as in `draw`, 0.39 to 5.26 (`raw/blind1/`). A layer directly under what the recorder draws in is seen. It says nothing yet of a layer inside a layer that is not itself redrawn, which is where the raskat's circle stands in the poster, its parent's wipe having finished. So `blind` gains `nested-5`, the same 5 ms in a second layer that nothing invalidates. The rule of amendment 1 holds, with this arm as its test. Run 2 is unchanged.
+
+## Findings (2026-11-05)
+
+Report and raw logs: [measurements-2026-11-05-device](../research/measurements-2026-11-05-device/README.md). No threshold moved. **Cascade GREEN** (`work` p95 1.19 ms, none missed), so the texture stays on. **Raskat, main thread: GREEN at density 1** (1.10 ms), **RED at 2** (3.32 ms) **and at 2.75** (3.73 ms); **on time at all three**, none missed. **H4's Android half GREEN**; the projection's first frame is 91 to 104 ms.
+
+- **The owner's to decide:** which raskat verdict stands, as the protocol named `work`, on which all three read GREEN, and which this item shows blind to a nested layer. And whether anything should follow from a frame over budget and on time: B-51's choices are the roll off on weak devices, a GPU path or a slower cadence, and none is forced.
+- **Also the owner's:** the projection's 91 to 104 ms is five or six missed frames once, on the main thread. Baking off it would need a pattern the kit does not have, so it is not done here.
+- **The recorder's blindness reaches other readings of `work`.** On a phone, anything inside a clean layer falls past it. The cascade's verdict also holds on the main thread's count, 1.34 ms, so it does not rest on it.
+- **Found on the way, a new item:** [B-54](B-54-window-insets.md). The kit reads no window insets, and on Android 15 and later an app is edge to edge, so `raw/kit-first-screen.png` has the sample under the status bar.
+- **A first run of the kit on a phone:** it starts, its first screen draws with texture, its fonts and registration, `raw/kit-first-screen.png`. It was not gone through by hand.
+- **`:sample` gains an Android target and `bench-android` is a new module**, so `./gradlew check` builds both. The module is a harness and publishes nothing.
+- **Mutants:** no kit code changed here. The reader's rules each fail on known input in `make check`, among them the blind recorder and the restarts.
 
