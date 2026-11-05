@@ -59,7 +59,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-17](docs/backlog/B-17-card.md) `[ ]` | Card: sheet of concrete paper, print appear, tear dismiss | P1 | M | B-09, B-10, B-12 |
+| [B-17](docs/backlog/B-17-card.md) `[~]` | Card: sheet of concrete paper, print appear, tear dismiss | P1 | M | B-09, B-10, B-12 |
 | [B-18](docs/backlog/B-18-snackbar.md) `[ ]` | Snackbar: the telegram | P1 | M | B-09, B-10, B-12 |
 | [B-19](docs/backlog/B-19-poster.md) `[ ]` | Плакат: Круг, Баннер, Фон — generator, raskat roll, diagonal title | P1 | L | B-03, B-04, B-09, B-10, B-12, B-13 |
 | [B-20](docs/backlog/B-20-icon-button-and-badge.md) `[ ]` | IconButton and Badge | P1 | M | B-09, B-10, B-11, B-12 |
