@@ -59,7 +59,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-47](docs/backlog/B-47-navigation-drawer.md) `[ ]` | NavigationDrawer: black panel with cream capital items | P2 | M | B-09, B-10, B-12, B-26 |
+| [B-47](docs/backlog/B-47-navigation-drawer.md) `[~]` | NavigationDrawer: black panel with cream capital items | P2 | M | B-09, B-10, B-12, B-26 |
 | [B-48](docs/backlog/B-48-tooltip.md) `[ ]` | Tooltip: a caption with a straight leader line, as on a drawing | P2 | M | B-09, B-10, B-12 |
 | [B-49](docs/backlog/B-49-segmented.md) `[ ]` | Segmented button: one frame, the black fill rides linearly | P2 | M | B-09, B-10, B-12, B-22 |
 | [B-50](docs/backlog/B-50-pull-to-refresh.md) `[ ]` | Pull-to-refresh: a red wedge grows with the finger, then a stepped sector | P2 | M | B-09, B-10, B-12, B-24 |
