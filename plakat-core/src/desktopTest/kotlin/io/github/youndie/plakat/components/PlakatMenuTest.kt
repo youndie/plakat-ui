@@ -21,6 +21,7 @@ import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertHeightIsEqualTo
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.assertWidthIsEqualTo
 import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.getBoundsInRoot
@@ -29,6 +30,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performKeyInput
 import androidx.compose.ui.test.performMouseInput
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.pressKey
 import androidx.compose.ui.test.v2.runComposeUiTest
 import androidx.compose.ui.unit.Density
@@ -287,11 +289,9 @@ class PlakatMenuTest {
             val bounds = onNodeWithTag("menu").getBoundsInRoot()
             assertTrue(bounds.bottom <= 768.dp, "inside the window: ${bounds.bottom}")
             onNodeWithText("П 0").assertIsDisplayed()
-            assertTrue(onNodeWithText("П 39").fetchIsOutside(), "the last below the fold")
+            onNodeWithText("П 39").performScrollTo().assertIsDisplayed()
+            onNodeWithText("П 0").assertIsNotDisplayed()
         }
-
-    private fun androidx.compose.ui.test.SemanticsNodeInteraction.fetchIsOutside() =
-        runCatching { assertIsDisplayed() }.isFailure
 
     @Test
     fun `pressed an item inverts, as a list row does`() =

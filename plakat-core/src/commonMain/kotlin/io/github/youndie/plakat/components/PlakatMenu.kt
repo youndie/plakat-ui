@@ -58,7 +58,7 @@ import io.github.youndie.plakat.tokens.PlakatLines
 private val MenuWidthLeast = 160.dp
 private val MenuWidthMost = 320.dp
 
-/** Stands under its anchor, at its left edge, and over it when it does not fit under; always inside the window. */
+/** Stands under its anchor, at its left edge, and over it when it does not fit under. */
 @Immutable
 private data class MenuPosition(
     val x: Int,
@@ -78,8 +78,8 @@ private data class MenuPosition(
                 over >= 0 -> over
                 else -> (windowSize.height - popupContentSize.height).coerceAtLeast(0)
             }
-        val left = (anchorBounds.left + x).coerceAtMost(windowSize.width - popupContentSize.width).coerceAtLeast(0)
-        return IntOffset(left, top)
+        // The popup itself keeps inside the window across.
+        return IntOffset(anchorBounds.left + x, top)
     }
 }
 
