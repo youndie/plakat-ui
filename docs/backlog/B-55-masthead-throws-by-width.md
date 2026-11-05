@@ -29,7 +29,7 @@ Found in [B-54](B-54-window-insets.md), on a Pixel 6a: `PlakatMasthead("ЛИСТ
 
 **`plakatStretchFactor`** stays and still says the true ratio, so a caller can see beforehand that a line will not fill its box.
 
-**Not verified:** the phone was disconnected by the time of this item, so the fix has run at its width, 379 and 411, only in the test window. `bench-android`'s `edges` mode has «ЛИСТ» back for the next time it is attached.
+**Not verified:** the phone came and went during this item, so the fix has run at its width only in the test window, not on the device that crashed. `bench-android`'s `edges` mode has «ЛИСТ» back for the next time it is attached.
 
-**Tests.** `PlakatStretchTest`: the fit at each limit by its ink, the page's bad cell, the table of heights held within limits, and a sweep of the masthead at 7 widths from 320 to 840 with words of 3 to 12 letters, captured as drawing is where it threw. Mutants below.
+**Tests.** `PlakatStretchTest`: the fit at each limit by its ink, the page's bad cell, the table of heights held within limits, and a sweep of the masthead at 7 widths from 320 to 840 with words of 3 to 12 letters, captured as drawing is where it threw. Mutants, the aimed test named among the failures: each limit's branch, each limit's number, the foot's translate, and each scale taken from the box and not the fit.
 
