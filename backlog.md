@@ -59,7 +59,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-24](docs/backlog/B-24-progress.md) `[ ]` | Progress: the wedge filling a bar, the stepped sector | P1 | M | B-09, B-10, B-12 |
+| [B-24](docs/backlog/B-24-progress.md) `[~]` | Progress: the wedge filling a bar, the stepped sector | P1 | M | B-09, B-10, B-12 |
 | [B-25](docs/backlog/B-25-top-app-bar.md) `[ ]` | TopAppBar: newspaper header, rapport strip, folding on scroll | P1 | M | B-03, B-09, B-10, B-11, B-12 |
 | [B-26](docs/backlog/B-26-navigation-bar.md) `[ ]` | NavigationBar: black strip, red square behind the active icon | P1 | M | B-09, B-10, B-11, B-12 |
 | [B-27](docs/backlog/B-27-tabs.md) `[ ]` | Tabs: rubrics with a red bar riding linearly | P1 | M | B-09, B-10, B-12 |
