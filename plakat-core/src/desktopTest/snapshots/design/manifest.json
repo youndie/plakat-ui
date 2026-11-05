@@ -1906,6 +1906,26 @@
       "shift": 0.625
     },
     {
+      "file": "Segmented_Demo_Light.png",
+      "page": "plakat-ui Демо.dc.html",
+      "card": 0,
+      "x": 276,
+      "y": 2866,
+      "w": 155,
+      "h": 40,
+      "shift": 0.3125
+    },
+    {
+      "file": "Segmented_Demo_Dark.png",
+      "page": "plakat-ui Демо.dc.html",
+      "card": 1,
+      "x": 706,
+      "y": 2866,
+      "w": 155,
+      "h": 40,
+      "shift": 0.3125
+    },
+    {
       "file": "Projection_Horn_Light.png",
       "page": "plakat-ui Растяжка.dc.html",
       "x": 192,

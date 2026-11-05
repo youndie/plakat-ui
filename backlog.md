@@ -59,7 +59,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-49](docs/backlog/B-49-segmented.md) `[ ]` | Segmented button: one frame, the black fill rides linearly | P2 | M | B-09, B-10, B-12, B-22 |
+| [B-49](docs/backlog/B-49-segmented.md) `[~]` | Segmented button: one frame, the black fill rides linearly | P2 | M | B-09, B-10, B-12, B-22 |
 | [B-50](docs/backlog/B-50-pull-to-refresh.md) `[ ]` | Pull-to-refresh: a red wedge grows with the finger, then a stepped sector | P2 | M | B-09, B-10, B-12, B-24 |
 | [B-06](docs/backlog/B-06-frame-cost-measurement.md) `[ ]` | Frame cost on a Pixel 6a: raskat roll, ten cards cascading with texture and registration | P3 | M | B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50, B-51 |
 | [B-37](docs/backlog/B-37-public-repository-and-publishing.md) `[ ]` | Public repository and publishing to Reposilite on every main — last | P3 | S | B-06, B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50 |

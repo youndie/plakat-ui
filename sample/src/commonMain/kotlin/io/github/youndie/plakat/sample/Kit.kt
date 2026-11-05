@@ -80,6 +80,7 @@ import io.github.youndie.plakat.components.PlakatProjectionAxis
 import io.github.youndie.plakat.components.PlakatProjectionForm
 import io.github.youndie.plakat.components.PlakatRadioButton
 import io.github.youndie.plakat.components.PlakatScreenWipe
+import io.github.youndie.plakat.components.PlakatSegmentedButton
 import io.github.youndie.plakat.components.PlakatSlider
 import io.github.youndie.plakat.components.PlakatSnackbar
 import io.github.youndie.plakat.components.PlakatStretch
@@ -269,6 +270,11 @@ fun KitComponents(beat: Int) {
                     axis = PlakatTooltipAxis.Tilted,
                 ) { PlakatOutlinedButton("ПО ОСИ", {}) }
             }
+        }
+        KitGroup("Сегменты") {
+            var segment by remember { mutableIntStateOf(0) }
+            PlakatSegmentedButton(listOf("ДЕНЬ", "НЕДЕЛЯ", "МЕСЯЦ"), segment, { segment = it })
+            PlakatSegmentedButton(listOf("ДЕНЬ", "НЕДЕЛЯ", "МЕСЯЦ"), 1, {}, enabled = false)
         }
         KitGroup("Проекция") {
             FlowRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {

@@ -1,7 +1,7 @@
 ---
 id: B-49
 title: "Segmented button: one frame, the black fill rides linearly"
-status: open
+status: wip
 priority: P2
 size: M
 stage: stage-2-components

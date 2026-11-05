@@ -162,6 +162,8 @@ export const REFERENCES = [
   // The slider (B-44): no component page draws it, the Principles page has a live one and step 5's two specimens.
   { group: 'Slider', name: 'Live_Light', page: PRINCIPLES, caption: 'РАЗМЕР ШРИФТА', prefix: true, card: 0, part: 'next' },
   { group: 'Slider', name: 'Specimens_Light', page: PRINCIPLES, caption: 'СОСТОЯНИЯ БЕЗ ЦВЕТА', card: 0, part: 'panel', crop: { x: 24, y: 10, w: 352, h: 48 } },
+  // The segmented button (B-49): the Demo page's settings have the one drawing, the span «Тема» before it, per theme.
+  ...THEMES.map((theme, card) => ({ group: 'Segmented', name: `Demo_${theme}`, page: DEMO, after: 'Тема', card })),
   // The Stretch page's projection (B-32): canvases of 2×, so each is shot as the browser halves it. 0 is its playground.
   ...['Horn', 'Column', 'Box', 'Cone', 'Sphere', 'Stairs', 'HornLines', 'Floor', 'Ceiling', 'Axis', 'Upright'].map((name, i) =>
     ({ group: 'Projection', name: `${name}_Light`, page: STRETCH, canvas: i + 1 })),
@@ -267,6 +269,18 @@ const LOCATE = `(ref) => {
     window.plakatCell = box;
     const r = box.getBoundingClientRect();
     return { x: r.left + scrollX, y: r.top + scrollY, w: r.width, h: r.height };
+  }
+  if (ref.after) {
+    const label = [...document.querySelectorAll('span')].filter(s => s.textContent.trim() === ref.after)[ref.card];
+    if (!label) return { error: 'no span ' + ref.after };
+    // Pushed to the row's right end, it starts on a fraction across, which a margin would not move.
+    const cell = label.nextElementSibling;
+    window.plakatCell = cell;
+    cell.style.position = 'relative';
+    cell.style.left = '0px';
+    cell.style.left = (Math.ceil(cell.getBoundingClientRect().left) - cell.getBoundingClientRect().left) + 'px';
+    const r = cell.getBoundingClientRect();
+    return { x: Math.round(r.left + scrollX), y: r.top + scrollY, w: Math.ceil(r.width), h: Math.ceil(r.height) };
   }
   if (ref.stretch) {
     const [text, w, h] = ref.stretch;
@@ -381,6 +395,7 @@ async function shoot(cdp, tab, ref) {
   if (![r.x, r.y, r.w, r.h].every((v) => Number.isInteger(v))) throw new Error(`${ref.group}_${ref.name}: ${JSON.stringify(r)} is not whole pixels`);
   const shot = await cdp.send('Page.captureScreenshot', { format: 'png', clip: { x: r.x, y: r.y, width: r.w, height: r.h, scale: 1 } }, tab.sessionId);
   if (nudge > 0) await tab.evaluate(`(() => { window.plakatCell.style.marginLeft = ''; return true; })()`);
+  if (ref.after) await tab.evaluate(`(() => { window.plakatCell.style.left = ''; window.plakatCell.style.position = ''; return true; })()`);
   if (ref.type) await tab.evaluate(typeInto('ЛИСТ'));
   if (ref.svg) await tab.evaluate(`(() => { document.getElementById('plakatSvg').remove(); return true; })()`);
   return { png: Buffer.from(shot.data, 'base64'), rect: r };

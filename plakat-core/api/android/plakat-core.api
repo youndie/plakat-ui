@@ -367,6 +367,10 @@ public final class io/github/youndie/plakat/components/PlakatScreenWipeKt {
 	public static final fun PlakatScreenWipe (Ljava/lang/Object;ILandroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class io/github/youndie/plakat/components/PlakatSegmentedButtonKt {
+	public static final fun PlakatSegmentedButton (Ljava/util/List;ILkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZLandroidx/compose/runtime/Composer;II)V
+}
+
 public final class io/github/youndie/plakat/components/PlakatSheetGround : java/lang/Enum {
 	public static final field Concrete Lio/github/youndie/plakat/components/PlakatSheetGround;
 	public static final field Paper Lio/github/youndie/plakat/components/PlakatSheetGround;
