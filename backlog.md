@@ -55,11 +55,10 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 <!-- BEGIN INDEX -->
 
-## Open (33)
+## Open (32)
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-17](docs/backlog/B-17-card.md) `[ ]` | Card: sheet of concrete paper, print appear, tear dismiss | P1 | M | B-09, B-10, B-12 |
 | [B-18](docs/backlog/B-18-snackbar.md) `[ ]` | Snackbar: the telegram | P1 | M | B-09, B-10, B-12 |
 | [B-19](docs/backlog/B-19-poster.md) `[ ]` | Плакат: Круг, Баннер, Фон — generator, raskat roll, diagonal title | P1 | L | B-03, B-04, B-09, B-10, B-12, B-13 |
 | [B-20](docs/backlog/B-20-icon-button-and-badge.md) `[ ]` | IconButton and Badge | P1 | M | B-09, B-10, B-11, B-12 |
@@ -93,7 +92,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 | [B-06](docs/backlog/B-06-frame-cost-measurement.md) `[ ]` | Frame cost on a Pixel 6a: raskat roll, ten cards cascading with texture and registration | P3 | M | B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50, B-51 |
 | [B-37](docs/backlog/B-37-public-repository-and-publishing.md) `[ ]` | Public repository and publishing to Reposilite on every main — last | P3 | S | B-06, B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50 |
 
-## Closed (18)
+## Closed (19)
 
 **Goldens and references regenerate deterministically; the generator and raskat ports match them on every target; the floor and the frame cost have measured numbers**
 
@@ -118,6 +117,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 - [B-14](docs/backlog/B-14-text-field.md) `[x]` - TextField: underline to bar, hatch error, square caret
 - [B-15](docs/backlog/B-15-checkbox.md) `[x]` - Checkbox: the red wedge in and out
 - [B-16](docs/backlog/B-16-switch.md) `[x]` - Switch: rail, carriage and the red segment
+- [B-17](docs/backlog/B-17-card.md) `[x]` - Card: sheet of concrete paper, print appear, tear dismiss
 
 **The owner's questions answered; the design re-imported when it changes**
 

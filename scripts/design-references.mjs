@@ -96,6 +96,12 @@ export const REFERENCES = [
   ...cells('Switch', CORE, 'first', [
     ['Off', 'Switch / Off'], ['On', 'Switch / On'], ['Focused', 'Switch / Focused'], ['Disabled', 'Switch / Disabled'],
   ]).map((r) => (r.name.startsWith('Focused_') ? { ...r, crop: { x: -7, y: -7, w: 70, h: 62 } } : r)),
+  // The Card's cells (B-17): the sheet with its demo content, whose three lines of 1.25 leave it a
+  // fraction of a pixel tall: the crop floors the height, cutting a part of the bottom padding. The
+  // focus ring is 3 px wide 3 px off the sheet, so that cell grows 6 px each side.
+  ...cells('Card', CORE, 'first', [
+    ['Default', 'Card / Default'], ['Pressed', 'Card / Pressed'], ['Selected', 'Card / Selected'], ['Focused', 'Card / Focused'],
+  ]).map((r) => ({ ...r, floor: true, ...(r.name.startsWith('Focused_') ? { grow: 6 } : {}) })),
   // The icons (B-11): each of the sixteen at 48, 24 and 16 px, ink on concrete, from the Icons page's
   // grid; a cell is found by its token caption, and the icon is the n-th svg of the row above it.
   ...ICON_IDS.flatMap((id) => [48, 24, 16].map((size, index) =>
@@ -163,7 +169,8 @@ const LOCATE = `(ref) => {
   const r = ref.part === 'caption' ? t : ref.part === 'first' ? cell.firstElementChild.getBoundingClientRect()
     : ref.part === 'icon' ? cell.parentElement.firstElementChild.children[ref.index].getBoundingClientRect()
     : { left: c.left, top: c.top, width: c.width, height: t.top - c.top };
-  const c0 = ref.crop ?? { x: 0, y: 0, w: r.width, h: r.height };
+  const g = ref.grow ?? 0;
+  const c0 = ref.crop ?? { x: -g, y: -g, w: r.width + 2 * g, h: (ref.floor ? Math.floor(r.height) : r.height) + 2 * g };
   return { x: r.left + scrollX + c0.x, y: r.top + scrollY + c0.y, w: c0.w, h: c0.h };
 }`;
 
