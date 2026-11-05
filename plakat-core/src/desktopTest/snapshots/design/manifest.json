@@ -1874,6 +1874,105 @@
       "shift": 0.578125
     },
     {
+      "file": "Projection_Horn_Light.png",
+      "page": "plakat-ui Растяжка.dc.html",
+      "x": 192,
+      "y": 2445,
+      "w": 390,
+      "h": 392,
+      "shift": 0.4375
+    },
+    {
+      "file": "Projection_Column_Light.png",
+      "page": "plakat-ui Растяжка.dc.html",
+      "x": 606,
+      "y": 2445,
+      "w": 390,
+      "h": 392,
+      "shift": 0.4375
+    },
+    {
+      "file": "Projection_Box_Light.png",
+      "page": "plakat-ui Растяжка.dc.html",
+      "x": 192,
+      "y": 2958,
+      "w": 390,
+      "h": 392,
+      "shift": 0.25
+    },
+    {
+      "file": "Projection_Cone_Light.png",
+      "page": "plakat-ui Растяжка.dc.html",
+      "x": 606,
+      "y": 2958,
+      "w": 390,
+      "h": 392,
+      "shift": 0.25
+    },
+    {
+      "file": "Projection_Sphere_Light.png",
+      "page": "plakat-ui Растяжка.dc.html",
+      "x": 192,
+      "y": 3451,
+      "w": 390,
+      "h": 392,
+      "shift": 0.359375
+    },
+    {
+      "file": "Projection_Stairs_Light.png",
+      "page": "plakat-ui Растяжка.dc.html",
+      "x": 606,
+      "y": 3451,
+      "w": 390,
+      "h": 392,
+      "shift": 0.359375
+    },
+    {
+      "file": "Projection_HornLines_Light.png",
+      "page": "plakat-ui Растяжка.dc.html",
+      "x": 192,
+      "y": 3944,
+      "w": 390,
+      "h": 392,
+      "shift": 0.46875
+    },
+    {
+      "file": "Projection_Floor_Light.png",
+      "page": "plakat-ui Растяжка.dc.html",
+      "x": 192,
+      "y": 4484,
+      "w": 260,
+      "h": 200,
+      "shift": 0.578125
+    },
+    {
+      "file": "Projection_Ceiling_Light.png",
+      "page": "plakat-ui Растяжка.dc.html",
+      "x": 468,
+      "y": 4484,
+      "w": 260,
+      "h": 200,
+      "shift": 0.578125
+    },
+    {
+      "file": "Projection_Axis_Light.png",
+      "page": "plakat-ui Растяжка.dc.html",
+      "x": 744,
+      "y": 4484,
+      "w": 260,
+      "h": 200,
+      "shift": 0.578125
+    },
+    {
+      "file": "Projection_Upright_Light.png",
+      "page": "plakat-ui Растяжка.dc.html",
+      "x": 1020,
+      "y": 4484,
+      "w": 260,
+      "h": 200,
+      "shift": 0.578125
+    },
+    {
       "file": "EmptyState_Window_Light.png",
       "page": "plakat-ui Компоненты.dc.html",
       "caption": "Окно / Пустое состояние — призыв, не извинение · клин-раскат киноварь → бетон, единственный на экране",

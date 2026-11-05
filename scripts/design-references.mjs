@@ -158,6 +158,9 @@ export const REFERENCES = [
   // In place (B-53): the Stretch page's fourth poster and its masthead, each the block over its caption.
   { group: 'Poster', name: 'Stretch_Light', page: STRETCH, caption: 'Плакат / Растяжка', prefix: true, card: 0, part: 'prev' },
   { group: 'TopAppBar', name: 'Masthead_Light', page: STRETCH, caption: 'TopAppBar / Шапка', prefix: true, card: 0, part: 'prev', floor: true },
+  // The Stretch page's projection (B-32): canvases of 2×, so each is shot as the browser halves it. 0 is its playground.
+  ...['Horn', 'Column', 'Box', 'Cone', 'Sphere', 'Stairs', 'HornLines', 'Floor', 'Ceiling', 'Axis', 'Upright'].map((name, i) =>
+    ({ group: 'Projection', name: `${name}_Light`, page: STRETCH, canvas: i + 1 })),
   // The empty state (B-52): the block above its caption, floored for the fractional lines of its words.
   ...cells('EmptyState', MVP, 'prev', [['Window', 'Окно / Пустое состояние — призыв, не извинение · клин-раскат киноварь → бетон, единственный на экране']]).map((r) => ({ ...r, floor: true })),
   // The Demo page's three screens (B-35), each `data-screen-label` in its two themes.

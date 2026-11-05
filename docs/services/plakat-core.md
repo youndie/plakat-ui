@@ -67,6 +67,7 @@ Packages are `io.github.youndie.plakat.*` (research D1).
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/agit/PlakatHalftone.kt` | `Modifier.plakatHalftone`: dots or the 1-bit mask, on the CPU, once per source and size; held to `scripts/halftone-goldens.mjs` |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatScreenWipe.kt` | Screen wipe: the container a navigation host wraps round what it shows, push and pop by a depth |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatEmptyState.kt` | Empty state: the band with the screen's one raskat wedge, a title, a body and one slogan |
+| `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatProjection.kt` | Projection: a text meshed onto six flat-faced forms, the picture made once on a bitmap; `agit/PlakatWarp.kt` is the shape maps and grid, ported from `plakat-warp.js` |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatRadioButton.kt` | RadioButton, designed here (D13): a ring of 24 and a disc of 12, grouped by `selectableGroup` |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatCounter.kt` | Counter: the Isotype tile and, from the Stretch page, the column; `PlakatTick.kt`'s `rememberPlakatTicker` is shared with the badge |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatStretch.kt` | Stretch: one Display line filling its box from cap top to baseline, by its ink; `plakatStretchFactor` |
@@ -123,6 +124,7 @@ rendered with reduced motion, so parity sees none of these.
 | Snackbar | `telegram` | hide, 200 · hard-stop; fade 100 | `PlakatSnackbarTest`: the words gone on the first frame the plate moves, the plate down on the curve, nothing drawn after, `onHidden` once; under reduced motion a 100 ms fade out |
 | Плакат | `print` | appear, ≤ 300 · linear; instant | `PlakatPosterTest`: on rows of the plate, the dot, the circle and the slogan, the printed width follows a 390 dp edge moving in 120 ms from 0, 30, 60 and 180 ms; under reduced motion and with `print = false` whole on the first frame; a new seed whole at once `PlakatStretchInPlaceTest`: Растяжка's bar, circle and slogan the same way, from 0, 30 and 180 ms, its title after them. |
 | Плакат | `roll` | appear, 320 · hard-stop; final at once | `PlakatPosterTest`: the paper pixels inside the raskat circle, frame by frame, are the field's at `raskatRollT0` of the frame's age (the roll itself held to the JS in `PlakatRaskatTest`); the seam's pixels on the first frame under reduced motion |
+| Проекция | appears by a wipe, 120 · linear; at once | `PlakatProjectionTest`: the reach along a row of the form follows the wipe's edge frame by frame, the frame in the middle is the last one cut, never scaled; at once under reduced motion. The page names no spec row, only «появление — шторкой» |
 | IconButton | `stamp`, `release` | press 0, release 60 · hard-stop | `PlakatIconButtonTest`: inverted and the icon 1 dp over on the frame it lands, the ground's share per frame on the curve; back at once under reduced motion |
 | Badge | `tick` | value, 40 / step | `PlakatTickTest`: the page's `ticks` worked by hand (lowest digit first, ≤ 400 ms); `PlakatIconButtonTest`: the number shown per frame, at once under reduced motion, a change during a tick going on from what shows |
 | FAB | `rail` | appear, 200 · hard-stop | `PlakatFabTest`: the circle's left and top edges per frame on the curve, 156 dp and 156 · tan 17° off at the start; in place at once under reduced motion |
@@ -293,6 +295,8 @@ not run it, because the output is committed and pinned by the metrics test.
   the press; a filled plate gets the ink frame; a rule becomes the bar, growing down with the layout left as it was.
 - `PlakatPosterLayout.Wide` is as wide as its box and asks for 600 at least; a box that forces it narrower gets what it
   forces. Its composition's frame of 360 stands against the right edge, cut by the half.
+- `PlakatProjection` draws on a bitmap, once per text, form and size, at twice the pixels, then halved, and shows that image (B-32). Not on the frame's canvas: `drawVertices` needs API 29 on Android's hardware canvas, and an `ImageShader` samples nearest on Skiko where Android's follows its paint. At 2× an edge moves by at most a quarter of a pixel. Memory: the bitmap of its box in device pixels, kept while shown.
+- The page's rule P6 says a mesh of 40 × 8; its `warp` raises `nv` to 16 whatever is asked, and the port does as the JS does.
 - `PlakatMasthead`, designed here where the page stops (B-53): the page says it rides up and an ordinary bar stays; the bar
   coming down in the last 56 and the rule growing are this library's. Until it comes down the row is not composed, since
   above the clip it would still be read and its actions still take the keyboard's focus. So open, a masthead has no

@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.drawscope.CanvasDrawScope
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.DpRect
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import io.github.youndie.plakat.agit.PlakatGeneratedImage
@@ -68,6 +69,9 @@ import io.github.youndie.plakat.components.PlakatOutlinedButton
 import io.github.youndie.plakat.components.PlakatPictogram
 import io.github.youndie.plakat.components.PlakatPoster
 import io.github.youndie.plakat.components.PlakatPosterLayout
+import io.github.youndie.plakat.components.PlakatProjection
+import io.github.youndie.plakat.components.PlakatProjectionAxis
+import io.github.youndie.plakat.components.PlakatProjectionForm
 import io.github.youndie.plakat.components.PlakatRadioButton
 import io.github.youndie.plakat.components.PlakatScreenWipe
 import io.github.youndie.plakat.components.PlakatSnackbar
@@ -226,6 +230,27 @@ fun KitComponents(beat: Int) {
         KitGroup("Шапка") {
             PlakatTopAppBar("ЛИСТ", Modifier.width(Width), subtitle = "№ 47")
             PlakatMasthead("ЛИСТ", Modifier.width(Width), startLabel = "№ 47", endLabel = "НОЯБРЬ 2026")
+        }
+        KitGroup("Проекция") {
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                PlakatProjection(
+                    listOf("НОЯБРЬ"),
+                    PlakatProjectionForm.Horn(16.dp, 312.dp, 358.dp, 56.dp),
+                    Modifier.size(390.dp, 320.dp),
+                )
+                PlakatProjection(
+                    listOf("НОВОЕ"),
+                    PlakatProjectionForm.Box(16.dp, 152.dp, 260.dp, 160.dp, 96.dp, 184.dp, 288.dp),
+                    Modifier.size(390.dp, 320.dp),
+                )
+                PlakatProjection(
+                    listOf("СЛУШАЙ"),
+                    PlakatProjectionForm
+                        .Cone(0.dp, 0.dp, 320.dp, 20.dp, 92.dp, 16f, 62f, PlakatProjectionAxis.Tilted)
+                        .fittedIn(DpRect(24.dp, 16.dp, 374.dp, 304.dp)),
+                    Modifier.size(390.dp, 320.dp),
+                )
+            }
         }
         KitGroup("Навигация") {
             var nav by remember { mutableIntStateOf(0) }

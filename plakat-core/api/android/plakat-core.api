@@ -57,6 +57,14 @@ public final class io/github/youndie/plakat/components/PlakatBadgeKt {
 	public static final fun PlakatBadgedBox (Ljava/lang/Integer;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class io/github/youndie/plakat/components/PlakatBoxFold : java/lang/Enum {
+	public static final field Side Lio/github/youndie/plakat/components/PlakatBoxFold;
+	public static final field Top Lio/github/youndie/plakat/components/PlakatBoxFold;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lio/github/youndie/plakat/components/PlakatBoxFold;
+	public static fun values ()[Lio/github/youndie/plakat/components/PlakatBoxFold;
+}
+
 public final class io/github/youndie/plakat/components/PlakatButtonKt {
 	public static final fun PlakatButton (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZZLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
 	public static final fun PlakatDangerButton (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
@@ -101,6 +109,15 @@ public final class io/github/youndie/plakat/components/PlakatEmptyStateKt {
 
 public final class io/github/youndie/plakat/components/PlakatFabKt {
 	public static final fun PlakatFab (Lio/github/youndie/plakat/icons/PlakatStencil;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZZLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class io/github/youndie/plakat/components/PlakatHornAnchor : java/lang/Enum {
+	public static final field Axis Lio/github/youndie/plakat/components/PlakatHornAnchor;
+	public static final field Ceiling Lio/github/youndie/plakat/components/PlakatHornAnchor;
+	public static final field Floor Lio/github/youndie/plakat/components/PlakatHornAnchor;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lio/github/youndie/plakat/components/PlakatHornAnchor;
+	public static fun values ()[Lio/github/youndie/plakat/components/PlakatHornAnchor;
 }
 
 public final class io/github/youndie/plakat/components/PlakatIconButtonKt {
@@ -150,6 +167,183 @@ public final class io/github/youndie/plakat/components/PlakatPosterLayout : java
 public final class io/github/youndie/plakat/components/PlakatProgressKt {
 	public static final fun PlakatCircularProgress (Ljava/lang/Float;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 	public static final fun PlakatLinearProgress (FLandroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class io/github/youndie/plakat/components/PlakatProjectionAxis : java/lang/Enum {
+	public static final field Level Lio/github/youndie/plakat/components/PlakatProjectionAxis;
+	public static final field Tilted Lio/github/youndie/plakat/components/PlakatProjectionAxis;
+	public static final field Upright Lio/github/youndie/plakat/components/PlakatProjectionAxis;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lio/github/youndie/plakat/components/PlakatProjectionAxis;
+	public static fun values ()[Lio/github/youndie/plakat/components/PlakatProjectionAxis;
+}
+
+public abstract class io/github/youndie/plakat/components/PlakatProjectionForm {
+	public static final field $stable I
+}
+
+public final class io/github/youndie/plakat/components/PlakatProjectionForm$Box : io/github/youndie/plakat/components/PlakatProjectionForm {
+	public static final field $stable I
+	public synthetic fun <init> (FFFFFFFLio/github/youndie/plakat/components/PlakatBoxFold;Ljava/lang/Float;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (FFFFFFFLio/github/youndie/plakat/components/PlakatBoxFold;Ljava/lang/Float;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-D9Ej5fM ()F
+	public final fun component2-D9Ej5fM ()F
+	public final fun component3-D9Ej5fM ()F
+	public final fun component4-D9Ej5fM ()F
+	public final fun component5-D9Ej5fM ()F
+	public final fun component6-D9Ej5fM ()F
+	public final fun component7-D9Ej5fM ()F
+	public final fun component8 ()Lio/github/youndie/plakat/components/PlakatBoxFold;
+	public final fun component9 ()Ljava/lang/Float;
+	public final fun copy-VP2Q_uA (FFFFFFFLio/github/youndie/plakat/components/PlakatBoxFold;Ljava/lang/Float;)Lio/github/youndie/plakat/components/PlakatProjectionForm$Box;
+	public static synthetic fun copy-VP2Q_uA$default (Lio/github/youndie/plakat/components/PlakatProjectionForm$Box;FFFFFFFLio/github/youndie/plakat/components/PlakatBoxFold;Ljava/lang/Float;ILjava/lang/Object;)Lio/github/youndie/plakat/components/PlakatProjectionForm$Box;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAt ()Ljava/lang/Float;
+	public final fun getBandBottom-D9Ej5fM ()F
+	public final fun getBandTop-D9Ej5fM ()F
+	public final fun getDepth-D9Ej5fM ()F
+	public final fun getFold ()Lio/github/youndie/plakat/components/PlakatBoxFold;
+	public final fun getHeight-D9Ej5fM ()F
+	public final fun getWidth-D9Ej5fM ()F
+	public final fun getX-D9Ej5fM ()F
+	public final fun getY-D9Ej5fM ()F
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/youndie/plakat/components/PlakatProjectionForm$Column : io/github/youndie/plakat/components/PlakatProjectionForm {
+	public static final field $stable I
+	public synthetic fun <init> (FFFFFFFFFILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (FFFFFFFFFLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-D9Ej5fM ()F
+	public final fun component2-D9Ej5fM ()F
+	public final fun component3-D9Ej5fM ()F
+	public final fun component4-D9Ej5fM ()F
+	public final fun component5-D9Ej5fM ()F
+	public final fun component6-D9Ej5fM ()F
+	public final fun component7 ()F
+	public final fun component8 ()F
+	public final fun component9 ()F
+	public final fun copy-aqJV_2Y (FFFFFFFFF)Lio/github/youndie/plakat/components/PlakatProjectionForm$Column;
+	public static synthetic fun copy-aqJV_2Y$default (Lio/github/youndie/plakat/components/PlakatProjectionForm$Column;FFFFFFFFFILjava/lang/Object;)Lio/github/youndie/plakat/components/PlakatProjectionForm$Column;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getArc ()F
+	public final fun getBandBottom-D9Ej5fM ()F
+	public final fun getBandTop-D9Ej5fM ()F
+	public final fun getBottom-D9Ej5fM ()F
+	public final fun getCenterX-D9Ej5fM ()F
+	public final fun getRadius-D9Ej5fM ()F
+	public final fun getSpin ()F
+	public final fun getTilt ()F
+	public final fun getTop-D9Ej5fM ()F
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/youndie/plakat/components/PlakatProjectionForm$Cone : io/github/youndie/plakat/components/PlakatProjectionForm {
+	public static final field $stable I
+	public synthetic fun <init> (FFFFFFFLio/github/youndie/plakat/components/PlakatProjectionAxis;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (FFFFFFFLio/github/youndie/plakat/components/PlakatProjectionAxis;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-D9Ej5fM ()F
+	public final fun component2-D9Ej5fM ()F
+	public final fun component3-D9Ej5fM ()F
+	public final fun component4-D9Ej5fM ()F
+	public final fun component5-D9Ej5fM ()F
+	public final fun component6 ()F
+	public final fun component7 ()F
+	public final fun component8 ()Lio/github/youndie/plakat/components/PlakatProjectionAxis;
+	public final fun copy-R_JCAzs (FFFFFFFLio/github/youndie/plakat/components/PlakatProjectionAxis;)Lio/github/youndie/plakat/components/PlakatProjectionForm$Cone;
+	public static synthetic fun copy-R_JCAzs$default (Lio/github/youndie/plakat/components/PlakatProjectionForm$Cone;FFFFFFFLio/github/youndie/plakat/components/PlakatProjectionAxis;ILjava/lang/Object;)Lio/github/youndie/plakat/components/PlakatProjectionForm$Cone;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun fittedIn (Landroidx/compose/ui/unit/DpRect;)Lio/github/youndie/plakat/components/PlakatProjectionForm$Cone;
+	public final fun getArc ()F
+	public final fun getAxis ()Lio/github/youndie/plakat/components/PlakatProjectionAxis;
+	public final fun getEndRadius-D9Ej5fM ()F
+	public final fun getLength-D9Ej5fM ()F
+	public final fun getStartRadius-D9Ej5fM ()F
+	public final fun getX-D9Ej5fM ()F
+	public final fun getY-D9Ej5fM ()F
+	public final fun getYaw ()F
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/youndie/plakat/components/PlakatProjectionForm$Horn : io/github/youndie/plakat/components/PlakatProjectionForm {
+	public static final field $stable I
+	public synthetic fun <init> (FFFFFLio/github/youndie/plakat/components/PlakatProjectionAxis;Lio/github/youndie/plakat/components/PlakatHornAnchor;FILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (FFFFFLio/github/youndie/plakat/components/PlakatProjectionAxis;Lio/github/youndie/plakat/components/PlakatHornAnchor;FLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-D9Ej5fM ()F
+	public final fun component2-D9Ej5fM ()F
+	public final fun component3-D9Ej5fM ()F
+	public final fun component4-D9Ej5fM ()F
+	public final fun component5 ()F
+	public final fun component6 ()Lio/github/youndie/plakat/components/PlakatProjectionAxis;
+	public final fun component7 ()Lio/github/youndie/plakat/components/PlakatHornAnchor;
+	public final fun component8 ()F
+	public final fun copy-Y9O4PVA (FFFFFLio/github/youndie/plakat/components/PlakatProjectionAxis;Lio/github/youndie/plakat/components/PlakatHornAnchor;F)Lio/github/youndie/plakat/components/PlakatProjectionForm$Horn;
+	public static synthetic fun copy-Y9O4PVA$default (Lio/github/youndie/plakat/components/PlakatProjectionForm$Horn;FFFFFLio/github/youndie/plakat/components/PlakatProjectionAxis;Lio/github/youndie/plakat/components/PlakatHornAnchor;FILjava/lang/Object;)Lio/github/youndie/plakat/components/PlakatProjectionForm$Horn;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun fittedIn (Landroidx/compose/ui/unit/DpRect;Landroidx/compose/ui/Alignment$Vertical;)Lio/github/youndie/plakat/components/PlakatProjectionForm$Horn;
+	public static synthetic fun fittedIn$default (Lio/github/youndie/plakat/components/PlakatProjectionForm$Horn;Landroidx/compose/ui/unit/DpRect;Landroidx/compose/ui/Alignment$Vertical;ILjava/lang/Object;)Lio/github/youndie/plakat/components/PlakatProjectionForm$Horn;
+	public final fun getAnchor ()Lio/github/youndie/plakat/components/PlakatHornAnchor;
+	public final fun getAxis ()Lio/github/youndie/plakat/components/PlakatProjectionAxis;
+	public final fun getLength-D9Ej5fM ()F
+	public final fun getNarrow-D9Ej5fM ()F
+	public final fun getPerspective ()F
+	public final fun getSpread ()F
+	public final fun getX-D9Ej5fM ()F
+	public final fun getY-D9Ej5fM ()F
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/youndie/plakat/components/PlakatProjectionForm$Sphere : io/github/youndie/plakat/components/PlakatProjectionForm {
+	public static final field $stable I
+	public synthetic fun <init> (FFFFFFILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (FFFFFFLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-D9Ej5fM ()F
+	public final fun component2-D9Ej5fM ()F
+	public final fun component3-D9Ej5fM ()F
+	public final fun component4 ()F
+	public final fun component5 ()F
+	public final fun component6 ()F
+	public final fun copy-yajeYGU (FFFFFF)Lio/github/youndie/plakat/components/PlakatProjectionForm$Sphere;
+	public static synthetic fun copy-yajeYGU$default (Lio/github/youndie/plakat/components/PlakatProjectionForm$Sphere;FFFFFFILjava/lang/Object;)Lio/github/youndie/plakat/components/PlakatProjectionForm$Sphere;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCenterX-D9Ej5fM ()F
+	public final fun getCenterY-D9Ej5fM ()F
+	public final fun getLatitude ()F
+	public final fun getLongitude ()F
+	public final fun getRadius-D9Ej5fM ()F
+	public final fun getTilt ()F
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/youndie/plakat/components/PlakatProjectionForm$Stairs : io/github/youndie/plakat/components/PlakatProjectionForm {
+	public static final field $stable I
+	public synthetic fun <init> (FFIFFFLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-D9Ej5fM ()F
+	public final fun component2-D9Ej5fM ()F
+	public final fun component3 ()I
+	public final fun component4-D9Ej5fM ()F
+	public final fun component5-D9Ej5fM ()F
+	public final fun component6-D9Ej5fM ()F
+	public final fun copy-Kh_mcI4 (FFIFFF)Lio/github/youndie/plakat/components/PlakatProjectionForm$Stairs;
+	public static synthetic fun copy-Kh_mcI4$default (Lio/github/youndie/plakat/components/PlakatProjectionForm$Stairs;FFIFFFILjava/lang/Object;)Lio/github/youndie/plakat/components/PlakatProjectionForm$Stairs;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDepth-D9Ej5fM ()F
+	public final fun getRiser-D9Ej5fM ()F
+	public final fun getSteps ()I
+	public final fun getWidth-D9Ej5fM ()F
+	public final fun getX-D9Ej5fM ()F
+	public final fun getY-D9Ej5fM ()F
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/youndie/plakat/components/PlakatProjectionKt {
+	public static final fun PlakatProjection (Ljava/util/List;Lio/github/youndie/plakat/components/PlakatProjectionForm;Landroidx/compose/ui/Modifier;ZLandroidx/compose/runtime/Composer;II)V
 }
 
 public final class io/github/youndie/plakat/components/PlakatRadioButtonKt {
