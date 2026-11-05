@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
@@ -17,6 +18,7 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -74,6 +76,7 @@ import io.github.youndie.plakat.components.PlakatProjectionAxis
 import io.github.youndie.plakat.components.PlakatProjectionForm
 import io.github.youndie.plakat.components.PlakatRadioButton
 import io.github.youndie.plakat.components.PlakatScreenWipe
+import io.github.youndie.plakat.components.PlakatSlider
 import io.github.youndie.plakat.components.PlakatSnackbar
 import io.github.youndie.plakat.components.PlakatStretch
 import io.github.youndie.plakat.components.PlakatSwitch
@@ -230,6 +233,15 @@ fun KitComponents(beat: Int) {
         KitGroup("Шапка") {
             PlakatTopAppBar("ЛИСТ", Modifier.width(Width), subtitle = "№ 47")
             PlakatMasthead("ЛИСТ", Modifier.width(Width), startLabel = "№ 47", endLabel = "НОЯБРЬ 2026")
+        }
+        KitGroup("Ползунок") {
+            Column(Modifier.width(Width).padding(horizontal = 16.dp)) {
+                var stepped by remember { mutableFloatStateOf(.5f) }
+                PlakatSlider(stepped, { stepped = it }, steps = 5)
+                var free by remember { mutableFloatStateOf(.37f) }
+                PlakatSlider(free, { free = it })
+                PlakatSlider(.5f, {}, enabled = false, steps = 5)
+            }
         }
         KitGroup("Проекция") {
             FlowRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {

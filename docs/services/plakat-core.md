@@ -50,6 +50,7 @@ Packages are `io.github.youndie.plakat.*` (research D1).
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatTextField.kt` | TextField: label, rule to bar, square caret, hatch error |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatCheckbox.kt` | Checkbox: the red wedge in and out, the hatched error |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatSwitch.kt` | Switch: rail, carriage, red segment |
+| `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatSlider.kt` | Slider, from the Principles page, its states designed here (D13): rail, ticks, red fill, carriage |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatCard.kt` | Card: concrete sheet, ink when pressed, red bar when selected; print and tear |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatSnackbar.kt` | Snackbar, the telegram: ink plate, underlined action, hatched error with its word; show and hide |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatIconButton.kt` | IconButton: stamp and return, selected, inner focus ring; `PlakatPress.kt` is the press every pressable control shares |
@@ -134,6 +135,7 @@ rendered with reduced motion, so parity sees none of these.
 | Progress circular | — | indeterminate, cycle 1200 · steps 12; stands | `PlakatProgressTest`: the sector found at step ⌊t / 100⌋ on every frame of 1440 ms; at step 0 for good under reduced motion |
 | TopAppBar | `fold` | scroll, by the scroll · linear; the same | `PlakatTopAppBarTest`: the bar's height and fraction at each scrolled step, the rows under the row being the open bar's moved up by the fold, the rule growing, the collapsed title's wipe; identical under reduced motion; a real swipe on a list folds it first and back `PlakatStretchInPlaceTest`: the masthead by the same scroll, its rows moved up unscaled, at density 2 too, the row's foot at the fold less 80. |
 | RadioButton | `lock` | select, 0; the same but for the frame between | `PlakatRadioButtonTest`: one frame with neither disc, never two together, none under reduced motion; `lock` once for the button coming in |
+| Slider | `notch` | move, 120 · hard-stop, on arriving at a stop; at once | `PlakatSliderTest`: the carriage's edge read off each frame follows the curve with no overshoot, the fill up to it, the event once per new stop and never for a continuous one; a continuous one dragged stands at the finger with no run |
 | NavigationBar | `lock` | select, 120 · hard-stop | `PlakatNavigationBarTest`: the square's left edge per frame on the curve across 195 dp; at once under reduced motion |
 | Tabs | `rail` | switch, 200 · linear / hard-stop | `PlakatTabsTest`: the bar's left per frame linear across 260 dp; the old page's width per frame on the hard-stop; both at once under reduced motion |
 | Dialog | `announce` | open / close, 320 · linear; fade 100 | `PlakatDialogTest`: the screen's reach on a row and the sheet's top per frame on one linear clock, both ways; gone from the tree after; under reduced motion a 100 ms fade at its place |
@@ -297,6 +299,7 @@ not run it, because the output is committed and pinned by the metrics test.
   forces. Its composition's frame of 360 stands against the right edge, cut by the half.
 - `PlakatProjection` draws on a bitmap, once per text, form and size, at twice the pixels, then halved, and shows that image (B-32). Not on the frame's canvas: `drawVertices` needs API 29 on Android's hardware canvas, and an `ImageShader` samples nearest on Skiko where Android's follows its paint. At 2× an edge moves by at most a quarter of a pixel. Memory: the bitmap of its box in device pixels, kept while shown.
 - The page's rule P6 says a mesh of 40 × 8; its `warp` raises `nv` to 16 whatever is asked, and the port does as the JS does.
+- `PlakatSlider`'s carriage stands 10 dp past its box at the ends, as the Principles page's does (its `margin-left: -10px` in a box with no clip): leave that room. A finger sets it on lifting or past the slop, so that a scroll over it changes nothing, where the page's `touch-action: none` has no scrolling to think of; a mouse sets it as it lands, as the page's does.
 - `PlakatMasthead`, designed here where the page stops (B-53): the page says it rides up and an ordinary bar stays; the bar
   coming down in the last 56 and the rule growing are this library's. Until it comes down the row is not composed, since
   above the clip it would still be read and its actions still take the keyboard's focus. So open, a masthead has no

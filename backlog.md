@@ -55,11 +55,10 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 <!-- BEGIN INDEX -->
 
-## Open (10)
+## Open (9)
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-44](docs/backlog/B-44-slider.md) `[ ]` | Slider: rail, ticks and a carriage that stops on them | P2 | M | B-09, B-10, B-12, B-16 |
 | [B-45](docs/backlog/B-45-menu.md) `[ ]` | Menu / Dropdown: a list on paper in a bar frame, opened by a wipe | P2 | M | B-09, B-10, B-12, B-23 |
 | [B-46](docs/backlog/B-46-bottom-sheet.md) `[ ]` | BottomSheet: a sheet riding up on rails, the handle is a bar | P2 | M | B-09, B-10, B-12, B-28 |
 | [B-47](docs/backlog/B-47-navigation-drawer.md) `[ ]` | NavigationDrawer: black panel with cream capital items | P2 | M | B-09, B-10, B-12, B-26 |
@@ -70,7 +69,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 | [B-37](docs/backlog/B-37-public-repository-and-publishing.md) `[ ]` | Public repository and publishing to Reposilite on every main — last | P3 | S | B-06, B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50 |
 | [B-43](docs/backlog/B-43-re-import-the-design.md) `[ ]` | Re-import the design project on a branch of its own | P3 | S | B-05, B-08 |
 
-## Closed (43)
+## Closed (44)
 
 **Goldens and references regenerate deterministically; the generator and raskat ports match them on every target; the floor and the frame cost have measured numbers**
 
@@ -116,6 +115,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 - [B-34](docs/backlog/B-34-screen-wipe.md) `[x]` - Screen transition: the red diagonal wipe, push and pop
 - [B-38](docs/backlog/B-38-radio-button.md) `[x]` - RadioButton: a ring with a red disc that locks in one frame
 - [B-39](docs/backlog/B-39-desktop-and-hover.md) `[x]` - Hover on pointer devices and a wide poster layout
+- [B-44](docs/backlog/B-44-slider.md) `[x]` - Slider: rail, ticks and a carriage that stops on them
 - [B-52](docs/backlog/B-52-empty-state.md) `[x]` - Empty state: a call rather than an apology, with the screen's one raskat wedge
 - [B-53](docs/backlog/B-53-stretch-in-place.md) `[x]` - Stretch in place: the poster's fourth layout and the app bar's masthead
 
