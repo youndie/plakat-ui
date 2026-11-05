@@ -58,6 +58,11 @@ public final class io/github/youndie/plakat/components/PlakatPosterLayout : java
 	public static fun values ()[Lio/github/youndie/plakat/components/PlakatPosterLayout;
 }
 
+public final class io/github/youndie/plakat/components/PlakatProgressKt {
+	public static final fun PlakatCircularProgress (Ljava/lang/Float;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PlakatLinearProgress (FLandroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
 public final class io/github/youndie/plakat/components/PlakatSnackbarKt {
 	public static final fun PlakatSnackbar (Ljava/lang/String;Landroidx/compose/ui/Modifier;ZLjava/lang/String;Lkotlin/jvm/functions/Function0;ZLkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
