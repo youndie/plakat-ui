@@ -1,7 +1,7 @@
 ---
 id: B-30
 title: "Счётчик: the Isotype stat tile with a mechanical counter"
-status: open
+status: wip
 priority: P1
 size: M
 stage: stage-2-components
