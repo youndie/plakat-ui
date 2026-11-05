@@ -60,6 +60,8 @@ Packages are `io.github.youndie.plakat.*` (research D1).
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatTopAppBar.kt` | TopAppBar: the header, its rapport strip, the fold with the scroll; `plakatStrip` in `agit/PlakatPosterComposition.kt` is the MVP page's `raport` |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatNavigationBar.kt` | NavigationBar: the strip, stencils with their words, the red square that moves |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatTabs.kt` | Tabs: rubrics on a hairline, the bar that rides; `PlakatTabContent` shifts what they choose |
+| `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatDialog.kt` | Dialog: the screen of dots, the sheet on its rail, the actions (the kit's buttons at the dialog's metrics) |
+| `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatCssText.kt` | text placed as Blink places it, line by line, for fractional lines and lines shorter than their face |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatBadge.kt` | Badge: the number or the dot, and `PlakatBadgedBox`; `PlakatTick.kt` is how a number changes (`ticks` of the MVP page) |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatPoster.kt` | Плакат: Круг, Фон, Баннер; the print cascade on one clock, the raskat roll, CSS line boxes drawn line by line |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/agit/PlakatPosterComposition.kt` | the Core page's own composition generator (`comp`), its recipes per layout and for thumbnails; `PlakatPosterDrawing.kt` draws its shapes |
@@ -121,6 +123,7 @@ rendered with reduced motion, so parity sees none of these.
 | TopAppBar | `fold` | scroll, by the scroll · linear; the same | `PlakatTopAppBarTest`: the bar's height and fraction at each scrolled step, the rows under the row being the open bar's moved up by the fold, the rule growing, the collapsed title's wipe; identical under reduced motion; a real swipe on a list folds it first and back |
 | NavigationBar | `lock` | select, 120 · hard-stop | `PlakatNavigationBarTest`: the square's left edge per frame on the curve across 195 dp; at once under reduced motion |
 | Tabs | `rail` | switch, 200 · linear / hard-stop | `PlakatTabsTest`: the bar's left per frame linear across 260 dp; the old page's width per frame on the hard-stop; both at once under reduced motion |
+| Dialog | `announce` | open / close, 320 · linear; fade 100 | `PlakatDialogTest`: the screen's reach on a row and the sheet's top per frame on one linear clock, both ways; gone from the tree after; under reduced motion a 100 ms fade at its place |
 | Button | `engage` | 120 + cycle 1200 · steps 12 | `PlakatButtonTest`: the slogan wiped from the left within 120 ms, the sector at 0°, 30°, 180°, 330° at 0, 100, 650, 1199 ms; the loading golden at 100 ms |
 
 ## 4. Dependencies
@@ -239,5 +242,10 @@ not run it, because the output is committed and pinned by the metrics test.
   Named in B-26's findings as a gap, not closed; the tabs' 12 px words are the same, 61–77 % (B-27).
 - A row of equal slots is laid out by hand where it must match the page: `weight` hands out whole pixels, the page's
   grid keeps 97.5 and each child is placed from the true slot.
+- The dialog is an overlay in the tree, placed last in a screen-filling box, not a window: a platform dialog would
+  bring its own scrim and take the transition with it. It traps neither focus nor the system back gesture yet.
+- A row laid out from its end accumulates what its boxes round off: the dialog's plain action stands 151 where
+  Chrome's stands at 150.35, a pixel off beside a danger action of 109.35 (`ButtonMetrics.wordWide` keeps each box
+  right, not the sum).
 - The klib ABI dump lists the compose compiler's `$stableprop` of internal classes too; adding an
   internal class changes it and needs `updateKotlinAbi`.

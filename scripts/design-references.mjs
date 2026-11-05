@@ -144,6 +144,9 @@ export const REFERENCES = [
   ...cells('NavigationBar', MVP, 'prev', [['Default', 'NavigationBar · 64']]),
   // The tabs (B-27): the element before their caption, 48 and the hairline.
   ...cells('Tabs', MVP, 'prev', [['Default', 'Tabs / Ленты выбрана, «Черновики» disabled']]),
+  // The dialog (B-28): the page's 390 × 420 stage, with its four rows under the screen.
+  ...[['Danger_Light', 'Dialog / Danger · БУМАГА'], ['Danger_Dark', 'Dialog / Danger · ЧЁРНАЯ БУМАГА']].map(([name, caption]) => (
+    { group: 'Dialog', name, page: MVP, caption, card: 0, part: 'first' })),
   ...cells('Badge', MVP, 'first', [['Number', 'Badge / Число'], ['Dot', '/ Точка']]),
   // The icons (B-11): each of the sixteen at 48, 24 and 16 px, ink on concrete, from the Icons page's
   // grid; a cell is found by its token caption, and the icon is the n-th svg of the row above it.

@@ -278,6 +278,7 @@ public fun PlakatPoster(
                                 CircleBodyWidth.toPx(),
                                 origin,
                                 colors.ink,
+                                BODY_LINE,
                             )
                         }
                     }
@@ -293,7 +294,7 @@ public fun PlakatPoster(
                         enabled = true,
                         loading = false,
                         interactionSource = null,
-                        labelSize = CIRCLE_BUTTON_SP.sp,
+                        metrics = ButtonMetrics(labelSize = CIRCLE_BUTTON_SP.sp),
                     )
                 }
             }
@@ -369,6 +370,7 @@ public fun PlakatPoster(
                                 BackgroundColumn.toPx(),
                                 origin,
                                 colors.ink,
+                                BODY_LINE,
                             )
                         }
                     }
@@ -530,51 +532,6 @@ private fun PhotoCircle(
     }
 }
 
-/** Blink's baseline in a line box [line] px tall: the half-leading floored, plus the rounded ascent. */
-private fun cssBaseline(
-    face: FaceMetrics,
-    px: Float,
-    line: Float,
-): Float {
-    val ascent = kotlin.math.round(face.ascent * px)
-    val content = ascent + kotlin.math.round(face.descent * px)
-    return floor((line - content) / 2) + ascent
-}
-
-/**
- * A line laid out as a CSS line box of `normal` height ([cssLine]), so its baseline is drawn at the
- * face's rounded ascent below its top — where Chrome draws a lone line, and where a layout's own
- * `firstBaseline` would not put it (Compose draws a baseline a fraction off the one it reports).
- */
-private fun TextMeasurer.line(
-    text: String,
-    style: TextStyle,
-    face: FaceMetrics,
-) = measure(text, style.cssLine(face))
-
-/**
- * Draws [layout] (from [line]) so its baseline sits [baseline] below [top], at [x]. Upright, Blink
- * puts a baseline on a whole pixel ([snap]); turned, it keeps the fraction.
- */
-private fun DrawScope.drawOnBaseline(
-    layout: TextLayoutResult,
-    face: FaceMetrics,
-    x: Float,
-    top: Float,
-    baseline: Float,
-    color: Color,
-    snap: Boolean,
-) {
-    val at = top + baseline
-    val ascent =
-        kotlin.math.round(
-            face.ascent *
-                layout.layoutInput.style.fontSize
-                    .toPx(),
-        )
-    drawText(layout, color, Offset(x, (if (snap) floor(at + .5f) else at) - ascent))
-}
-
 /**
  * [lines] one under another as CSS line boxes of [lineHeight] × the size, each line on its own so its
  * box keeps the fraction Blink keeps (Skia would lay them on whole pixels); with [registered] (the
@@ -642,33 +599,6 @@ private fun DrawScope.drawStripes(
             baseline,
             colors.paper,
             snap = false,
-        )
-    }
-}
-
-/** [text] broken to [width] as one paragraph, then each line drawn in its own CSS line box of 1.4 × the size. */
-private fun DrawScope.drawParagraph(
-    measurer: TextMeasurer,
-    text: String,
-    style: TextStyle,
-    width: Float,
-    origin: Offset,
-    color: Color,
-) {
-    val px = style.fontSize.toPx()
-    val line = px * BODY_LINE
-    val baseline = cssBaseline(PlakatFaceMetrics.Body, px, line)
-    val whole = measurer.measure(text, style, constraints = Constraints(maxWidth = max(1, width.toInt())))
-    for (i in 0 until whole.lineCount) {
-        val part = text.substring(whole.getLineStart(i), whole.getLineEnd(i, visibleEnd = true))
-        drawOnBaseline(
-            measurer.line(part, style, PlakatFaceMetrics.Body),
-            PlakatFaceMetrics.Body,
-            origin.x,
-            origin.y + i * line,
-            baseline,
-            color,
-            snap = true,
         )
     }
 }
