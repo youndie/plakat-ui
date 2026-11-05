@@ -59,7 +59,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-33](docs/backlog/B-33-agit-presets-and-photomontage.md) `[ ]` | Agit graphics: the six presets, generated compositions, rapports, halftone photomontage | P1 | M | B-03, B-05 |
+| [B-33](docs/backlog/B-33-agit-presets-and-photomontage.md) `[~]` | Agit graphics: the six presets, generated compositions, rapports, halftone photomontage | P1 | M | B-03, B-05 |
 | [B-34](docs/backlog/B-34-screen-wipe.md) `[ ]` | Screen transition: the red diagonal wipe, push and pop | P1 | S | B-09, B-10, B-12 |
 | [B-35](docs/backlog/B-35-demo-screens-and-sample.md) `[ ]` | Demo screens and the sample kit: onboarding, feed, settings in both themes | P1 | M | B-13, B-14, B-16, B-17, B-19, B-25, B-26, B-27, B-29, B-30 |
 | [B-36](docs/backlog/B-36-accessibility.md) `[ ]` | Accessibility: contrast with textures on, grayscale check, touch targets, semantics | P1 | S | B-07, B-35 |

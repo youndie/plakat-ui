@@ -1,7 +1,7 @@
 ---
 id: B-33
 title: "Agit graphics: the six presets, generated compositions, rapports, halftone photomontage"
-status: open
+status: wip
 priority: P1
 size: M
 stage: stage-2-components
