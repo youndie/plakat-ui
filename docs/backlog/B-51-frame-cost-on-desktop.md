@@ -28,3 +28,20 @@ the CPU per frame, so it gets a number now, on the machine the kit is built on.
 - AC: a verdict per threshold (green, grey, red) with the raw frame logs committed, the machine and
   JVM named; the benchmark is the one B-06 runs unchanged on the device.
 - Anchors: `reference/design-system/plakat-raskat.js`, `sample/build.gradle.kts`.
+
+## Protocol, fixed before the first number (2026-11-05)
+
+The item's text above is the pre-registration; this section makes it runnable and changes no threshold. Nothing has been measured when it is committed.
+
+- **Unit.** Per frame on the main thread: `work`, from the first `withFrameNanos` callback of a frame to the last draw of that frame, and `interval`, between callbacks. The cascade's threshold is read on `work`: `interval` is paced by the display, so a 10 ms busy-wait under the budget never shows in it, and the item's control could not be seen. `interval` stands beside it. GPU submission is outside `work` and shows only as a missed frame in `interval`.
+- **Verdicts.** Over counted rounds, pooled frames.
+  - **Cascade** (`cascade-a`): GREEN if `work` p95 ≤ 16.7 ms and at most 5 % of intervals are ≥ 25 ms (one vsync missed at 60 Hz). RED if `work` p95 > 16.7 ms. GREY otherwise.
+  - **Raskat** at each density: the frame is `roll-d`'s `work` p95 less `base-d`'s (the same poster at rest) with the frame of each restart left out and reported apart, as it is composition and not comparison. GREEN if ≤ 2 ms, RED if > 2 ms. The verdict for H3 is density 2.75's.
+  - As the item says, on this machine GREEN can only fail to refute H3, and RED refutes it.
+- **Control.** `busy-10`: a 10 ms busy-wait per frame, must read 10 ± 2 ms above `idle-a` at p50 of `work`; `busy-25` must miss frames, its `interval` p50 ≥ 25 ms. If either fails the run is void.
+- **Ruler.** `idle-a` against `idle-b` and `cascade-a` against `cascade-b`: paired per round. A verdict within twice the cascade's ruler of its line is GREY, whichever side it falls.
+- **Known order.** `cascade-flat`, texture and registration off, does less than `cascade-a`. If its `work` p95 is above `cascade-a`'s by more than the ruler, the run is void.
+- **The lever.** Texture and registration are on in `cascade-a`, read from a capture of that arm in a test; the roll's progress changes per frame.
+- **Arms and rounds.** Thirteen arms: `idle-a`, `idle-b`, `busy-10`, `busy-25`, `cascade-a`, `cascade-b`, `cascade-flat`, `roll-1`, `roll-2`, `roll-2.75`, `base-1`, `base-2`, `base-2.75`. 4 s an arm, six rounds, the order rotating by one each round, one JVM; round 1 discarded for warm-up. No more rounds are added after a number is seen.
+- **Stand.** A real window on this Mac, as the subject sees it, in `alwaysOnTop`; machine, JVM, display and load in the log's header. Other load on the machine is not controlled: it is read by the ruler.
+- **Where.** `docs/research/measurements-2026-11-05/`, raw frames in `raw/`, report beside them; `scripts/frame-report.py` turns one into the other, with a control on known input.
