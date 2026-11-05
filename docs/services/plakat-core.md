@@ -53,6 +53,7 @@ Packages are `io.github.youndie.plakat.*` (research D1).
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatCard.kt` | Card: concrete sheet, ink when pressed, red bar when selected; print and tear |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatSnackbar.kt` | Snackbar, the telegram: ink plate, underlined action, hatched error with its word; show and hide |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatIconButton.kt` | IconButton: stamp and return, selected, inner focus ring; `PlakatPress.kt` is the press every pressable control shares |
+| `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatFab.kt` | FAB: the round shape, `stamp` and `rail` |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatBadge.kt` | Badge: the number or the dot, and `PlakatBadgedBox`; `PlakatTick.kt` is how a number changes (`ticks` of the MVP page) |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatPoster.kt` | Плакат: Круг, Фон, Баннер; the print cascade on one clock, the raskat roll, CSS line boxes drawn line by line |
 | `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/agit/PlakatPosterComposition.kt` | the Core page's own composition generator (`comp`), its recipes per layout and for thumbnails; `PlakatPosterDrawing.kt` draws its shapes |
@@ -106,6 +107,7 @@ rendered with reduced motion, so parity sees none of these.
 | Плакат | `roll` | appear, 320 · hard-stop; final at once | `PlakatPosterTest`: the paper pixels inside the raskat circle, frame by frame, are the field's at `raskatRollT0` of the frame's age (the roll itself held to the JS in `PlakatRaskatTest`); the seam's pixels on the first frame under reduced motion |
 | IconButton | `stamp`, `release` | press 0, release 60 · hard-stop | `PlakatIconButtonTest`: inverted and the icon 1 dp over on the frame it lands, the ground's share per frame on the curve; back at once under reduced motion |
 | Badge | `tick` | value, 40 / step | `PlakatTickTest`: the page's `ticks` worked by hand (lowest digit first, ≤ 400 ms); `PlakatIconButtonTest`: the number shown per frame, at once under reduced motion, a change during a tick going on from what shows |
+| FAB | `rail` | appear, 200 · hard-stop | `PlakatFabTest`: the circle's left and top edges per frame on the curve, 156 dp and 156 · tan 17° off at the start; in place at once under reduced motion |
 | Button | `engage` | 120 + cycle 1200 · steps 12 | `PlakatButtonTest`: the slogan wiped from the left within 120 ms, the sector at 0°, 30°, 180°, 330° at 0, 100, 650, 1199 ms; the loading golden at 100 ms |
 
 ## 4. Dependencies
@@ -202,5 +204,9 @@ not run it, because the output is committed and pinned by the metrics test.
 - A badge's width comes from the number's real width (`getLineRight`), rounded as Blink snaps a box: a
   layout's own width is ceiled, a pixel too wide (3.95 → 2.52 %). It is the target's, so the plate
   stands still through a tick.
+- A FAB's ride starts where its left side is just past the window's right edge, measured from where it
+  is placed, so any margin works. The spec row's «по оси −17° из-за правого нижнего края» cannot be
+  met whole: that axis rises to the right, so past the right edge it is above the FAB, not below. The
+  axis is kept (the kit's one diagonal, `plakat/shape`), and the owner reviews it.
 - The klib ABI dump lists the compose compiler's `$stableprop` of internal classes too; adding an
   internal class changes it and needs `updateKotlinAbi`.
