@@ -59,7 +59,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-34](docs/backlog/B-34-screen-wipe.md) `[ ]` | Screen transition: the red diagonal wipe, push and pop | P1 | S | B-09, B-10, B-12 |
+| [B-34](docs/backlog/B-34-screen-wipe.md) `[~]` | Screen transition: the red diagonal wipe, push and pop | P1 | S | B-09, B-10, B-12 |
 | [B-35](docs/backlog/B-35-demo-screens-and-sample.md) `[ ]` | Demo screens and the sample kit: onboarding, feed, settings in both themes | P1 | M | B-13, B-14, B-16, B-17, B-19, B-25, B-26, B-27, B-29, B-30 |
 | [B-36](docs/backlog/B-36-accessibility.md) `[ ]` | Accessibility: contrast with textures on, grayscale check, touch targets, semantics | P1 | S | B-07, B-35 |
 | [B-38](docs/backlog/B-38-radio-button.md) `[ ]` | RadioButton: a ring with a red disc that locks in one frame | P1 | S | B-09, B-10, B-12, B-15 |

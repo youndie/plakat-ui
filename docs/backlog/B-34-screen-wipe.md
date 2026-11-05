@@ -1,7 +1,7 @@
 ---
 id: B-34
 title: "Screen transition: the red diagonal wipe, push and pop"
-status: open
+status: wip
 priority: P1
 size: S
 stage: stage-2-components
