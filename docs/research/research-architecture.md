@@ -341,6 +341,9 @@ and the Compose port takes density as an input to the field, never a constant.
 item measures the contrast of muted text over the multiplied texture and either lightens the texture
 under text or swaps the token, with the owner's choice recorded ([B-36](../backlog/B-36-accessibility.md)).
 
+Settled by B-36: `concrete-light` lifted two levels, a tile made here, so no token and nothing vendored moved (worst letter-sized
+square 4.43 → 4.5 and above). Per pixel, fibres still fall to about 3.8; the owner may prefer a darker `ink-muted` instead.
+
 **Risk 4. Three textures are made here, not delivered** (D16), so their tone may not be the
 designer's. Mitigation: the script takes their grain from the delivered dark paper and their base
 from the tokens (paper-light's mean is its token within 1.1 levels), the texture layer is switchable by token,

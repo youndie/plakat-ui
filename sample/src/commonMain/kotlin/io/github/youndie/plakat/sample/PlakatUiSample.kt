@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -133,6 +134,7 @@ private fun Header(
             label.text(if (texture) "Текстура: вкл" else "Текстура: выкл"),
             Modifier
                 .clickable(onClick = onTexture)
+                .heightIn(min = 48.dp)
                 .padding(16.dp)
                 .testTag("sample-texture"),
             style = label.style.copy(color = PlakatTheme.colors.ink),

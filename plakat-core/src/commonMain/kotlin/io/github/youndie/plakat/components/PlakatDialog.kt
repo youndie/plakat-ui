@@ -4,6 +4,7 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -28,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -56,6 +58,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigationevent.NavigationEventInfo
+import androidx.navigationevent.compose.NavigationBackHandler
+import androidx.navigationevent.compose.rememberNavigationEventState
 import io.github.youndie.plakat.print.PlakatCutShape
 import io.github.youndie.plakat.print.PlakatWipe
 import io.github.youndie.plakat.print.plakatWipe
@@ -123,7 +128,8 @@ private val DarkScreen = Color(0xFF0E0D0B)
  * With [visible] true, whether from the start or set later, it opens (`announce`): the screen closes the
  * background by a diagonal wipe from the left and the sheet rides down from above, on one clock of 320 ms,
  * linear; set false it goes back the same way, and is gone from the composition after. Under reduced motion
- * both fade, 100 ms. A click on the screen or Escape calls [onDismissRequest]; the sheet takes its own clicks.
+ * both fade, 100 ms. A click on the screen, Escape or the system back gesture calls [onDismissRequest]; the sheet takes
+ * its own clicks, and focus stays in the dialog while it is open.
  */
 @Composable
 public fun PlakatDialog(
@@ -165,10 +171,14 @@ internal fun PlakatDialogFrame(
     if (!visible && gone) return
     val focus = remember { FocusRequester() }
     LaunchedEffect(visible) { if (visible) focus.requestFocus() }
+    NavigationBackHandler(rememberNavigationEventState(NavigationEventInfo.None), isBackEnabled = visible) { dismiss() }
     val type = PlakatTheme.typography
     Box(
         modifier
             .fillMaxSize()
+            // Focus stays in here while it is open, and what is under the screen cannot be reached by the keys.
+            .focusProperties { onExit = { if (visible) cancelFocusChange() } }
+            .focusGroup()
             .focusRequester(focus)
             .onPreviewKeyEvent {
                 if (it.type == KeyEventType.KeyDown && it.key == Key.Escape) {

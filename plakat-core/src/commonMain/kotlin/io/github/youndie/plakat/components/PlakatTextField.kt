@@ -8,6 +8,8 @@ import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.BasicText
@@ -227,8 +229,9 @@ internal fun PlakatTextFieldFrame(
             BasicTextField(
                 value,
                 onValueChange,
+                // The whole field takes the finger, not only the line of text in its middle (B-36).
                 Modifier
-                    .fillMaxWidth()
+                    .fillMaxSize()
                     .drawWithContent {
                         drawContent()
                         val cursor = layout?.getCursorRect(value.selection.end)
@@ -251,7 +254,7 @@ internal fun PlakatTextFieldFrame(
                 interactionSource = source,
                 cursorBrush = SolidColor(Color.Transparent),
                 decorationBox = { inner ->
-                    Box(contentAlignment = Alignment.CenterStart) {
+                    Box(Modifier.fillMaxHeight(), contentAlignment = Alignment.CenterStart) {
                         if (value.text.isEmpty() && placeholder != null) {
                             BasicText(placeholder, style = fieldStyle.copy(color = colors.inkMuted), maxLines = 1)
                         }

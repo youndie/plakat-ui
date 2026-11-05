@@ -1,10 +1,13 @@
 package io.github.youndie.plakat.sample
 
 import androidx.compose.ui.graphics.toPixelMap
+import androidx.compose.ui.semantics.SemanticsActions
+import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.captureToImage
+import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -63,6 +66,55 @@ class SampleAppTest {
             }
         }
     }
+
+    /** What a finger or a pointer can press, over a section of the sample, with its bounds and role. */
+    private fun ComposeUiTest.controls(section: SampleSection) {
+        setContent { PlakatUiSample(section = section, reduceMotion = true, autoplay = false, texture = false) }
+        waitForIdle()
+        val density = density.density
+        val nodes = onAllNodes(hasClickAction()).fetchSemanticsNodes()
+        assertTrue(nodes.isNotEmpty(), "$section has controls")
+        val small = mutableListOf<String>()
+        val mute = mutableListOf<String>()
+        for (node in nodes) {
+            val name =
+                listOf(
+                    SemanticsProperties.Text,
+                    SemanticsProperties.EditableText,
+                    SemanticsProperties.ContentDescription,
+                ).firstNotNullOfOrNull { node.config.getOrElseNullable(it) { null } }
+                    ?.toString() ?: "?"
+            val w = node.size.width / density
+            val h = node.size.height / density
+            if (w < 48f || h < 48f) small += "$name ${w}x$h"
+            if (SemanticsActions.OnClick in node.config && SemanticsProperties.Role !in node.config &&
+                name == "?"
+            ) {
+                mute += "$name at ${node.boundsInRoot}"
+            }
+        }
+        assertEquals(emptyList(), small, "$section: under 48 dp")
+        assertEquals(emptyList(), mute, "$section: no name and no role")
+    }
+
+    @Test
+    fun `every control of the core page has its target and its name`() =
+        runComposeUiTest { controls(SampleSection.Core) }
+
+    @Test
+    fun `every control of the components page has its target and its name`() =
+        runComposeUiTest { controls(SampleSection.Components) }
+
+    @Test
+    fun `every control of the onboarding has its target and its name`() =
+        runComposeUiTest { controls(SampleSection.Onboarding) }
+
+    @Test
+    fun `every control of the feed has its target and its name`() = runComposeUiTest { controls(SampleSection.Feed) }
+
+    @Test
+    fun `every control of the settings has its target and its name`() =
+        runComposeUiTest { controls(SampleSection.Settings) }
 
     private fun ComposeUiTest.session(heard: MutableList<PlakatEvent>) {
         setContent {

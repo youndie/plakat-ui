@@ -54,6 +54,8 @@ kotlin {
             implementation(wip.compose.runtime)
             implementation(wip.compose.foundation)
             implementation(wip.compose.ui)
+            // The system back gesture for an open dialog (B-36). Not in `wip`.
+            implementation(libs.navigationevent.compose)
             // The bundled fonts (B-02). Not in `wip`, and the plugin's accessor is the one place its
             // version follows the Compose plugin's own (toon-ui does the same).
             implementation(compose.components.resources)

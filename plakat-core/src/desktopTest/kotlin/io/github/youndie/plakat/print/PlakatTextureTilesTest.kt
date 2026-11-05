@@ -121,7 +121,8 @@ class PlakatTextureTilesTest {
         val darkToken = token("paper", "dark")
         for ((name, base) in listOf(
             "paper_light" to token("paper", "light"),
-            "concrete_light" to token("concrete", "light"),
+            // Two levels up for ink-muted's contrast (B-36).
+            "concrete_light" to token("concrete", "light").map { it + 2 }.toIntArray(),
         )) {
             val made = tile(name)
             for (y in 0 until made.height) {

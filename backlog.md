@@ -55,11 +55,10 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 <!-- BEGIN INDEX -->
 
-## Open (17)
+## Open (16)
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-36](docs/backlog/B-36-accessibility.md) `[ ]` | Accessibility: contrast with textures on, grayscale check, touch targets, semantics | P1 | S | B-07, B-35 |
 | [B-38](docs/backlog/B-38-radio-button.md) `[ ]` | RadioButton: a ring with a red disc that locks in one frame | P1 | S | B-09, B-10, B-12, B-15 |
 | [B-39](docs/backlog/B-39-desktop-and-hover.md) `[ ]` | Hover on pointer devices and a wide poster layout | P1 | M | B-13, B-19, B-20, B-22, B-23 |
 | [B-51](docs/backlog/B-51-frame-cost-on-desktop.md) `[ ]` | Frame cost on the desktop JVM: raskat roll and the ten-card cascade, as a proxy until the device | P1 | S | B-04, B-10 |
@@ -77,7 +76,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 | [B-06](docs/backlog/B-06-frame-cost-measurement.md) `[ ]` | Frame cost on a Pixel 6a: raskat roll, ten cards cascading with texture and registration | P3 | M | B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50, B-51 |
 | [B-37](docs/backlog/B-37-public-repository-and-publishing.md) `[ ]` | Public repository and publishing to Reposilite on every main — last | P3 | S | B-06, B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50 |
 
-## Closed (36)
+## Closed (37)
 
 **Goldens and references regenerate deterministically; the generator and raskat ports match them on every target; the floor and the frame cost have measured numbers**
 
@@ -123,6 +122,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 **The three demo screens within the floor in both themes; contrast holds with the textures on**
 
 - [B-35](docs/backlog/B-35-demo-screens-and-sample.md) `[x]` - Demo screens and the sample kit: onboarding, feed, settings in both themes
+- [B-36](docs/backlog/B-36-accessibility.md) `[x]` - Accessibility: contrast with textures on, grayscale check, touch targets, semantics
 
 **The owner's questions answered; the design re-imported when it changes**
 
