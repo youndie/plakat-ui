@@ -4,6 +4,7 @@
 #   scripts/device-bench.sh install                      build the release, install it, compile speed-profile
 #   scripts/device-bench.sh run <out dir> [rounds] [s]   the benchmark, its logs pulled into <out dir>
 #   scripts/device-bench.sh projection <out dir>         the projection's first frames, likewise
+#   scripts/device-bench.sh blind <out dir>              the instrument's control: a known cost in a layer, likewise
 #   scripts/device-bench.sh show <mode> [extra am args]  an arm, a form or the kit on screen, for a look
 #   scripts/device-bench.sh stop                         takes the activity down
 set -euo pipefail
@@ -29,7 +30,7 @@ case "${1:-}" in
     "$ADB" install -r bench-android/build/outputs/apk/release/bench-android-release.apk
     "$ADB" shell cmd package compile -m speed-profile -f "$PKG"
     ;;
-  run | projection)
+  run | projection | blind)
     out="$2"
     mkdir -p "$out"
     commit="$(git rev-parse --short HEAD)"
@@ -44,6 +45,11 @@ case "${1:-}" in
       wait_done $((rounds * 13 * seconds + 120))
       "$ADB" pull "$FILES/frames.csv" "$out/frames.csv"
       "$ADB" pull "$FILES/metrics.csv" "$out/metrics.csv"
+    elif [ "$1" = blind ]; then
+      "$ADB" shell am start -n "$ACT" --es mode blind --es commit "$commit"
+      wait_done 120
+      "$ADB" pull "$FILES/blind-frames.csv" "$out/blind-frames.csv"
+      "$ADB" pull "$FILES/blind-metrics.csv" "$out/blind-metrics.csv"
     else
       "$ADB" shell am start -n "$ACT" --es mode projection --es commit "$commit"
       wait_done 180
@@ -61,7 +67,7 @@ case "${1:-}" in
     "$ADB" shell am force-stop "$PKG"
     ;;
   *)
-    sed -n 2,9p "$0"
+    sed -n 2,10p "$0"
     exit 2
     ;;
 esac

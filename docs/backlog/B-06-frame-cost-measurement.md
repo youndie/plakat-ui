@@ -42,3 +42,12 @@ The item's text above is the pre-registration, with [B-51](B-51-frame-cost-on-de
 - **Where.** `docs/research/measurements-2026-11-05-device/`, raw frames in `raw/`, report beside them, read by `scripts/frame-report.py`, whose control is in `make check`.
 - **Rejected.** A debug build, whose Compose runs many times slower and would measure nothing a user sees; Macrobenchmark, a second harness beside the one B-51 ran, whose numbers would not set beside the Mac's.
 
+## Amendment 1, after run 1 (2026-11-05)
+
+Late, and no threshold moves. **What forced it:** run 1 reads the raskat frame at 0.15, 0.11 and −0.06 ms at densities 1, 2 and 2.75, where the M1 reads 1.49, 5.06 and 8.26, and a roll's frame cannot cost nothing. The suspicion is that `work` is blind here: on Android a graphics layer's display list is recorded after the root's draw, and `work` ends at the last draw of the root. Run 1 is kept as it stands, in `raw/run1/`.
+
+- **A control for the instrument, as its own control could not see this:** `blind`, two arms in turn, `plain` and `spin-5`, the second with a known 5 ms inside a layer's draw. If `spin-5` shows in `FrameMetrics`' `draw` and not in `work`, the suspicion is the mechanism.
+- **If it is:** the raskat lines are read also on the main thread as the platform counts it, `animation` + `layout` + `draw`, roll less base at p95, against the same 2 ms. `FrameMetrics` is recorded with all its parts from run 2 on. The literal reading on `work` stays in the report beside it, and the owner decides which verdict stands, as the protocol named `work`.
+- **If it is not:** `work` stands and the numbers are believed.
+- Run 2 repeats the whole protocol. No round is added to it.
+

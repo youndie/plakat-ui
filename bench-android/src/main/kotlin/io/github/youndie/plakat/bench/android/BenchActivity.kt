@@ -27,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import io.github.youndie.plakat.components.PlakatProjection
 import io.github.youndie.plakat.components.PlakatProjectionForm
@@ -51,6 +52,14 @@ private val forms =
 private const val RESTART_EVERY = 30
 private const val WARM = 20
 private const val COUNTED = 40
+
+private const val METRICS_HEADER =
+    "arm,round,input_ns,animation_ns,layout_ns,draw_ns,sync_ns,command_ns,swap_ns,total_ns,gpu_ns,deadline_ns,first"
+
+/** The instrument's control: rounds of 4 s an arm, and the known cost. */
+private const val BLIND_ROUNDS = 4
+private const val BLIND_SECONDS = 4
+private const val SPIN_NS = 5_000_000L
 
 /** Before API 31 a frame has no deadline of its own, and the protocol's is a vsync at 60 Hz. */
 private const val NO_DEADLINE_NS = 16_666_667L
@@ -79,6 +88,7 @@ class BenchActivity : ComponentActivity() {
             "bench" -> bench(dir, commit)
             "arm" -> setContent { LeverArm(intent.getStringExtra("arm") ?: "cascade-a") }
             "projection" -> projection(dir, commit)
+            "blind" -> blind(dir, commit)
             "still" -> setContent { Still(intent.getStringExtra("form") ?: "proj-horn") }
             "kit" -> setContent { PlakatUiSample() }
         }
@@ -114,13 +124,11 @@ class BenchActivity : ComponentActivity() {
         frames.appendLine("arm,round,frame,interval_ns,work_ns,restart")
         val out = File(dir, "metrics.csv").bufferedWriter()
         metrics = out
-        out.appendLine("arm,round,total_ns,gpu_ns,deadline_ns,first")
+        out.appendLine(METRICS_HEADER)
         val thread = HandlerThread("frame-metrics").apply { start() }
         val listener =
             Window.OnFrameMetricsAvailableListener { _, m, _ ->
-                val line =
-                    "$arm,$round,${m.getMetric(FrameMetrics.TOTAL_DURATION)},${gpu(m)},${deadline(m)}," +
-                        "${m.getMetric(FrameMetrics.FIRST_DRAW_FRAME)}"
+                val line = metricsLine(m)
                 synchronized(out) { metrics?.appendLine(line) }
             }
         window.addOnFrameMetricsAvailableListener(listener, Handler(thread.looper))
@@ -143,6 +151,63 @@ class BenchActivity : ComponentActivity() {
                 }
                 Log.i(TAG, "DONE")
                 finish()
+            }
+        }
+    }
+
+    private fun metricsLine(m: FrameMetrics): String =
+        "$arm,$round,${m.getMetric(
+            FrameMetrics.INPUT_HANDLING_DURATION,
+        )},${m.getMetric(FrameMetrics.ANIMATION_DURATION)}," +
+            "${m.getMetric(FrameMetrics.LAYOUT_MEASURE_DURATION)},${m.getMetric(FrameMetrics.DRAW_DURATION)}," +
+            "${m.getMetric(FrameMetrics.SYNC_DURATION)},${m.getMetric(FrameMetrics.COMMAND_ISSUE_DURATION)}," +
+            "${m.getMetric(FrameMetrics.SWAP_BUFFERS_DURATION)},${m.getMetric(FrameMetrics.TOTAL_DURATION)}," +
+            "${gpu(m)},${deadline(m)},${m.getMetric(FrameMetrics.FIRST_DRAW_FRAME)}"
+
+    /**
+     * The instrument's own control (B-06): a known cost inside a graphics layer's draw, which on Android is recorded after
+     * the root's. `spin-5` must show in `draw` and, if the recorder cannot see a layer, not in `work`.
+     */
+    private fun blind(
+        dir: File,
+        commit: String,
+    ) {
+        frames = File(dir, "blind-frames.csv").bufferedWriter()
+        header(frames, commit)
+        frames.appendLine("arm,round,frame,interval_ns,work_ns,restart")
+        val out = File(dir, "blind-metrics.csv").bufferedWriter()
+        metrics = out
+        out.appendLine(METRICS_HEADER)
+        val thread = HandlerThread("frame-metrics").apply { start() }
+        val listener =
+            Window.OnFrameMetricsAvailableListener { _, m, _ ->
+                val line = metricsLine(m)
+                synchronized(out) { metrics?.appendLine(line) }
+            }
+        window.addOnFrameMetricsAvailableListener(listener, Handler(thread.looper))
+        setContent {
+            var at by remember { mutableIntStateOf(0) }
+            val plan = remember { (0 until BLIND_ROUNDS).flatMap { r -> listOf(r to "plain", r to "spin-5") } }
+            if (at >= plan.size) {
+                LaunchedEffect(Unit) {
+                    window.removeOnFrameMetricsAvailableListener(listener)
+                    frames.close()
+                    synchronized(out) {
+                        out.close()
+                        metrics = null
+                    }
+                    Log.i(TAG, "DONE")
+                    finish()
+                }
+            } else {
+                val (r, name) = plan[at]
+                key(at) {
+                    LayerArm(name == "spin-5", { frame, interval, work ->
+                        arm = name
+                        round = r
+                        frames.appendLine("$name,$r,$frame,$interval,$work,0")
+                    }) { at++ }
+                }
             }
         }
     }
@@ -174,6 +239,54 @@ class BenchActivity : ComponentActivity() {
                     FirstFrames(name, form.first, form.second, { line -> frames.appendLine(line) }) { at++ }
                 }
             }
+        }
+    }
+}
+
+/** A layer that costs [spins] 5 ms when it is drawn, under a recorder that ends as `FrameBenchmark`'s does. */
+@Composable
+private fun LayerArm(
+    spins: Boolean,
+    log: (Int, Long, Long) -> Unit,
+    onEnd: () -> Unit,
+) {
+    var tick by remember { mutableLongStateOf(0L) }
+    val stamp = remember { LongArray(2) }
+    LaunchedEffect(Unit) {
+        val begun = System.nanoTime()
+        var frames = 0
+        while (System.nanoTime() - begun < BLIND_SECONDS * 1_000_000_000L) {
+            withFrameNanos {
+                frames++
+                val now = System.nanoTime()
+                stamp[1] = if (stamp[0] == 0L) 0L else now - stamp[0]
+                stamp[0] = now
+                tick = frames.toLong()
+            }
+        }
+        onEnd()
+    }
+    PlakatTheme {
+        Box(Modifier.fillMaxSize().plakatPaper()) {
+            Box(
+                Modifier
+                    .fillMaxSize()
+                    .graphicsLayer { }
+                    .drawBehind {
+                        tick
+                        if (spins) {
+                            val until = System.nanoTime() + SPIN_NS
+                            while (System.nanoTime() < until) {
+                                // The control: the layer's cost, by the clock.
+                            }
+                        }
+                    },
+            )
+            Spacer(
+                Modifier.fillMaxSize().drawBehind {
+                    log(tick.toInt(), stamp[1], System.nanoTime() - stamp[0])
+                },
+            )
         }
     }
 }
