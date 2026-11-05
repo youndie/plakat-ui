@@ -55,15 +55,14 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 <!-- BEGIN INDEX -->
 
-## Open (3)
+## Open (2)
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-55](docs/backlog/B-55-masthead-throws-by-width.md) `[~]` | A masthead throws on a phone's width: the stretch's refusal at drawing | P1 | S | B-53 |
 | [B-37](docs/backlog/B-37-public-repository-and-publishing.md) `[ ]` | Public repository and publishing to Reposilite on every main — last | P3 | S | B-06, B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50 |
 | [B-43](docs/backlog/B-43-re-import-the-design.md) `[ ]` | Re-import the design project on a branch of its own | P3 | S | B-05, B-08 |
 
-## Closed (52)
+## Closed (53)
 
 **Goldens and references regenerate deterministically; the generator and raskat ports match them on every target; the floor and the frame cost have measured numbers**
 
@@ -119,6 +118,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 - [B-52](docs/backlog/B-52-empty-state.md) `[x]` - Empty state: a call rather than an apology, with the screen's one raskat wedge
 - [B-53](docs/backlog/B-53-stretch-in-place.md) `[x]` - Stretch in place: the poster's fourth layout and the app bar's masthead
 - [B-54](docs/backlog/B-54-window-insets.md) `[x]` - Window insets: the kit's edges under a status bar and a gesture bar
+- [B-55](docs/backlog/B-55-masthead-throws-by-width.md) `[x]` - A masthead throws on a phone's width: the stretch's refusal at drawing
 
 **The three demo screens within the floor in both themes; contrast holds with the textures on**
 
