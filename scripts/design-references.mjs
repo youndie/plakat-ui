@@ -50,6 +50,7 @@ const TOKENS = 'plakat-ui Токены.dc.html';
 const MVP = 'plakat-ui Компоненты.dc.html';
 const ICONS = 'plakat-ui Иконки.dc.html';
 const STRETCH = 'plakat-ui Растяжка.dc.html';
+const AGIT = 'plakat-ui Агит-графика.dc.html';
 // What says a page's template has rendered: the runtime has replaced its <x-dc> and the cells'
 // captions are there ("Filled / Default"); the Icons page imports its paths after mount.
 const READY = { [ICONS]: 'plakat/icon/time' };
@@ -150,6 +151,15 @@ export const REFERENCES = [
     { group: 'Dialog', name, page: MVP, caption, card: 0, part: 'first' })),
   // The window (B-29): the two panels before their caption, in the page's two columns.
   ...cells('Window', MVP, 'prev', [['Onboarding', 'Окно / Онбординг · 2 из 4 панелей']]).map((r) => ({ ...r, floor: true })),
+  // Agit graphics (B-33): each preset and rapport from its own SVG, laid over the page; the page's first
+  // compositions, the skeleton's pattern at step 0 and its three photomontage frames.
+  ...['voshod', 'klin', 'kolonny', 'os', 'shag', 'razryv'].flatMap((id) => THEMES.map((theme, card) =>
+    ({ group: 'Preset', name: `${camel(id)}_${theme}`, page: AGIT, svg: [`agit/preset-${id}${card ? '-dark' : ''}.svg`, 360, 240] }))),
+  ...[[1923, 192, 144], [1925, 96, 144], [1927, 144, 96], [1929, 144, 144]].flatMap(([seed, w, h]) => THEMES.map((theme, card) =>
+    ({ group: 'Rapport', name: `S${seed}_${theme}`, page: AGIT, svg: [`agit/rapport-${seed}${card ? '-dark' : ''}.svg`, w, h] }))),
+  ...[1919, 1920, 1921, 1922].map((seed) => ({ group: 'Composition', name: `S${seed}`, page: AGIT, caption: `seed ${seed}`, prefix: true, card: 0, part: 'first' })),
+  { group: 'Skeleton', name: 'Pattern', page: AGIT, caption: 'SKELETON', card: 0, part: 'cell', crop: { x: 28, y: 51, w: 64, h: 64 } },
+  ...['Circle', 'Tilt', 'Cut'].map((name, canvas) => ({ group: 'Photomontage', name, page: AGIT, canvas })),
   // The counter's tiles (B-30): the MVP page's two, and the Stretch page's column, its grid over its caption.
   ...cells('Counter', MVP, 'prev', [['Isostat', 'Счётчик / Изостат']]).map((r) => ({ ...r, floor: true })),
   { group: 'Counter', name: 'Column', page: STRETCH, caption: 'Счётчик / Колонна', prefix: true, card: 0, part: 'prev', floor: true },
@@ -218,6 +228,17 @@ async function launch(chrome) {
 
 // Evaluated in the page: the rectangle of a reference, in page pixels, or a reason it has none.
 const LOCATE = `(ref) => {
+  if (ref.svg) {
+    const r = document.getElementById('plakatSvg').getBoundingClientRect();
+    return { x: r.left + scrollX, y: r.top + scrollY, w: r.width, h: r.height };
+  }
+  if (ref.canvas !== undefined) {
+    const box = document.querySelectorAll('canvas')[ref.canvas];
+    if (!box) return { error: 'no canvas ' + ref.canvas };
+    window.plakatCell = box;
+    const r = box.getBoundingClientRect();
+    return { x: r.left + scrollX, y: r.top + scrollY, w: r.width, h: r.height };
+  }
   if (ref.stretch) {
     const [text, w, h] = ref.stretch;
     const box = [...document.querySelectorAll('span')].filter(s => s.textContent === text && s.style.transform.startsWith('scale('))
@@ -235,7 +256,7 @@ const LOCATE = `(ref) => {
   if (!caption) return { error: 'caption ' + JSON.stringify(ref.caption) + ' #' + ref.card + ' not found (' + captions.length + ' on the page)' };
   const cell = caption.parentElement, c = cell.getBoundingClientRect(), t = caption.getBoundingClientRect();
   window.plakatCell = cell;
-  const r = ref.part === 'caption' ? t : ref.part === 'next' ? caption.nextElementSibling.getBoundingClientRect() : ref.part === 'prev' ? caption.previousElementSibling.getBoundingClientRect() : ref.part === 'first' ? cell.firstElementChild.getBoundingClientRect()
+  const r = ref.part === 'cell' ? c : ref.part === 'caption' ? t : ref.part === 'next' ? caption.nextElementSibling.getBoundingClientRect() : ref.part === 'prev' ? caption.previousElementSibling.getBoundingClientRect() : ref.part === 'first' ? cell.firstElementChild.getBoundingClientRect()
     : ref.part === 'icon' ? cell.parentElement.firstElementChild.children[ref.index].getBoundingClientRect()
     : { left: c.left, top: c.top, width: c.width, height: t.top - c.top };
   const g = ref.grow ?? 0;
@@ -300,6 +321,12 @@ const typeInto = (text) => `new Promise(ok => { const i = document.querySelector
   requestAnimationFrame(() => requestAnimationFrame(() => ok(true))); })`;
 
 async function shoot(cdp, tab, ref) {
+  // A vendored SVG, as it is, on top of its page.
+  if (ref.svg) await tab.evaluate(`new Promise(ok => { const [src, w, h] = ${JSON.stringify(ref.svg)};
+    const d = document.createElement('div'); d.id = 'plakatSvg';
+    d.style.cssText = 'position:absolute;left:0;top:0;z-index:100000;width:' + w + 'px;height:' + h + 'px;background:url("' + src + '") 0 0 / ' + w + 'px ' + h + 'px no-repeat';
+    document.body.appendChild(d);
+    const i = new Image(); i.onload = () => requestAnimationFrame(() => requestAnimationFrame(() => ok(true))); i.src = src; })`);
   if (ref.type) await tab.evaluate(typeInto(ref.type));
   // A cell sits as far down the page as the lines above it make, and a 14.4 px line leaves it on a
   // fraction of a pixel; Chrome then draws its text on that fraction, which no fixture can. So the
@@ -326,6 +353,7 @@ async function shoot(cdp, tab, ref) {
   const shot = await cdp.send('Page.captureScreenshot', { format: 'png', clip: { x: r.x, y: r.y, width: r.w, height: r.h, scale: 1 } }, tab.sessionId);
   if (nudge > 0) await tab.evaluate(`(() => { window.plakatCell.style.marginLeft = ''; return true; })()`);
   if (ref.type) await tab.evaluate(typeInto('ЛИСТ'));
+  if (ref.svg) await tab.evaluate(`(() => { document.getElementById('plakatSvg').remove(); return true; })()`);
   return { png: Buffer.from(shot.data, 'base64'), rect: r };
 }
 

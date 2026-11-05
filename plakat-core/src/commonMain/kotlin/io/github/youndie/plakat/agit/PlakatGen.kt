@@ -13,7 +13,7 @@ import kotlin.math.tan
 // sequence of random numbers is the composition. Held to goldens the JS emits (`scripts/gen-goldens.mjs`).
 
 /** The paint a shape is printed in; the theme turns it into a colour. */
-internal enum class PlakatRole { Red, Ink, Concrete }
+internal enum class PlakatRole { Red, Ink, Concrete, Paper }
 
 /** One printed primitive, in dp inside its frame. */
 internal sealed class PlakatShape {

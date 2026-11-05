@@ -6,6 +6,38 @@
 // - Show declarations: true
 
 // Library unique name: <io.github.youndie:plakat-core>
+final enum class io.github.youndie.plakat.agit/PlakatHalftoneMode : kotlin/Enum<io.github.youndie.plakat.agit/PlakatHalftoneMode> { // io.github.youndie.plakat.agit/PlakatHalftoneMode|null[0]
+    enum entry Dots // io.github.youndie.plakat.agit/PlakatHalftoneMode.Dots|null[0]
+    enum entry Mask // io.github.youndie.plakat.agit/PlakatHalftoneMode.Mask|null[0]
+
+    final val entries // io.github.youndie.plakat.agit/PlakatHalftoneMode.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<io.github.youndie.plakat.agit/PlakatHalftoneMode> // io.github.youndie.plakat.agit/PlakatHalftoneMode.entries.<get-entries>|<get-entries>#static(){}[0]
+
+    final fun valueOf(kotlin/String): io.github.youndie.plakat.agit/PlakatHalftoneMode // io.github.youndie.plakat.agit/PlakatHalftoneMode.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<io.github.youndie.plakat.agit/PlakatHalftoneMode> // io.github.youndie.plakat.agit/PlakatHalftoneMode.values|values#static(){}[0]
+}
+
+final enum class io.github.youndie.plakat.agit/PlakatPreset : kotlin/Enum<io.github.youndie.plakat.agit/PlakatPreset> { // io.github.youndie.plakat.agit/PlakatPreset|null[0]
+    enum entry Klin // io.github.youndie.plakat.agit/PlakatPreset.Klin|null[0]
+    enum entry Kolonny // io.github.youndie.plakat.agit/PlakatPreset.Kolonny|null[0]
+    enum entry Os // io.github.youndie.plakat.agit/PlakatPreset.Os|null[0]
+    enum entry Razryv // io.github.youndie.plakat.agit/PlakatPreset.Razryv|null[0]
+    enum entry Shag // io.github.youndie.plakat.agit/PlakatPreset.Shag|null[0]
+    enum entry Voshod // io.github.youndie.plakat.agit/PlakatPreset.Voshod|null[0]
+
+    final val entries // io.github.youndie.plakat.agit/PlakatPreset.entries|#static{}entries[0]
+        final fun <get-entries>(): kotlin.enums/EnumEntries<io.github.youndie.plakat.agit/PlakatPreset> // io.github.youndie.plakat.agit/PlakatPreset.entries.<get-entries>|<get-entries>#static(){}[0]
+    final val height // io.github.youndie.plakat.agit/PlakatPreset.height|{}height[0]
+        final fun <get-height>(): androidx.compose.ui.unit/Dp // io.github.youndie.plakat.agit/PlakatPreset.height.<get-height>|<get-height>(){}[0]
+    final val titleZone // io.github.youndie.plakat.agit/PlakatPreset.titleZone|{}titleZone[0]
+        final fun <get-titleZone>(): androidx.compose.ui.unit/DpRect // io.github.youndie.plakat.agit/PlakatPreset.titleZone.<get-titleZone>|<get-titleZone>(){}[0]
+    final val width // io.github.youndie.plakat.agit/PlakatPreset.width|{}width[0]
+        final fun <get-width>(): androidx.compose.ui.unit/Dp // io.github.youndie.plakat.agit/PlakatPreset.width.<get-width>|<get-width>(){}[0]
+
+    final fun valueOf(kotlin/String): io.github.youndie.plakat.agit/PlakatPreset // io.github.youndie.plakat.agit/PlakatPreset.valueOf|valueOf#static(kotlin.String){}[0]
+    final fun values(): kotlin/Array<io.github.youndie.plakat.agit/PlakatPreset> // io.github.youndie.plakat.agit/PlakatPreset.values|values#static(){}[0]
+}
+
 final enum class io.github.youndie.plakat.components/PlakatDividerWeight : kotlin/Enum<io.github.youndie.plakat.components/PlakatDividerWeight> { // io.github.youndie.plakat.components/PlakatDividerWeight|null[0]
     enum entry Bar // io.github.youndie.plakat.components/PlakatDividerWeight.Bar|null[0]
     enum entry Hair // io.github.youndie.plakat.components/PlakatDividerWeight.Hair|null[0]
@@ -536,6 +568,7 @@ final val io.github.youndie.plakat.tokens/io_github_youndie_plakat_tokens_Plakat
 final val io.github.youndie.plakat.tokens/io_github_youndie_plakat_tokens_PlakatTypeRole$stableprop // io.github.youndie.plakat.tokens/io_github_youndie_plakat_tokens_PlakatTypeRole$stableprop|#static{}io_github_youndie_plakat_tokens_PlakatTypeRole$stableprop[0]
 final val io.github.youndie.plakat.tokens/io_github_youndie_plakat_tokens_PlakatTypeScale$stableprop // io.github.youndie.plakat.tokens/io_github_youndie_plakat_tokens_PlakatTypeScale$stableprop|#static{}io_github_youndie_plakat_tokens_PlakatTypeScale$stableprop[0]
 
+final fun (androidx.compose.ui/Modifier).io.github.youndie.plakat.agit/plakatHalftone(androidx.compose.ui.graphics/ImageBitmap, androidx.compose.ui.graphics/Color, androidx.compose.ui.graphics/Color, io.github.youndie.plakat.agit/PlakatHalftoneMode = ..., androidx.compose.ui.unit/Dp = ..., kotlin/Float = ..., kotlin/Float = ...): androidx.compose.ui/Modifier // io.github.youndie.plakat.agit/plakatHalftone|plakatHalftone@androidx.compose.ui.Modifier(androidx.compose.ui.graphics.ImageBitmap;androidx.compose.ui.graphics.Color;androidx.compose.ui.graphics.Color;io.github.youndie.plakat.agit.PlakatHalftoneMode;androidx.compose.ui.unit.Dp;kotlin.Float;kotlin.Float){}[0]
 final fun (androidx.compose.ui/Modifier).io.github.youndie.plakat.print/plakatConcrete(androidx.compose.runtime/Composer?, kotlin/Int): androidx.compose.ui/Modifier // io.github.youndie.plakat.print/plakatConcrete|plakatConcrete@androidx.compose.ui.Modifier(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
 final fun (androidx.compose.ui/Modifier).io.github.youndie.plakat.print/plakatGrain(androidx.compose.runtime/Composer?, kotlin/Int): androidx.compose.ui/Modifier // io.github.youndie.plakat.print/plakatGrain|plakatGrain@androidx.compose.ui.Modifier(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
 final fun (androidx.compose.ui/Modifier).io.github.youndie.plakat.print/plakatHatch(androidx.compose.ui.graphics/Color, androidx.compose.ui.graphics/Color, androidx.compose.ui.unit/Dp = ...): androidx.compose.ui/Modifier // io.github.youndie.plakat.print/plakatHatch|plakatHatch@androidx.compose.ui.Modifier(androidx.compose.ui.graphics.Color;androidx.compose.ui.graphics.Color;androidx.compose.ui.unit.Dp){}[0]
@@ -543,6 +576,10 @@ final fun (androidx.compose.ui/Modifier).io.github.youndie.plakat.print/plakatNo
 final fun (androidx.compose.ui/Modifier).io.github.youndie.plakat.print/plakatPaper(androidx.compose.runtime/Composer?, kotlin/Int): androidx.compose.ui/Modifier // io.github.youndie.plakat.print/plakatPaper|plakatPaper@androidx.compose.ui.Modifier(androidx.compose.runtime.Composer?;kotlin.Int){}[0]
 final fun (androidx.compose.ui/Modifier).io.github.youndie.plakat.print/plakatPrintLayer(androidx.compose.ui.graphics/ImageBitmap, androidx.compose.ui.unit/Dp, kotlin/Float, androidx.compose.ui.graphics/BlendMode): androidx.compose.ui/Modifier // io.github.youndie.plakat.print/plakatPrintLayer|plakatPrintLayer@androidx.compose.ui.Modifier(androidx.compose.ui.graphics.ImageBitmap;androidx.compose.ui.unit.Dp;kotlin.Float;androidx.compose.ui.graphics.BlendMode){}[0]
 final fun (androidx.compose.ui/Modifier).io.github.youndie.plakat.print/plakatWipe(io.github.youndie.plakat.print/PlakatWipe, kotlin/Function0<kotlin/Float>): androidx.compose.ui/Modifier // io.github.youndie.plakat.print/plakatWipe|plakatWipe@androidx.compose.ui.Modifier(io.github.youndie.plakat.print.PlakatWipe;kotlin.Function0<kotlin.Float>){}[0]
+final fun io.github.youndie.plakat.agit/PlakatGeneratedImage(kotlin/Int, androidx.compose.ui/Modifier?, androidx.compose.ui.unit/Dp, androidx.compose.ui.unit/Dp, kotlin/String?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // io.github.youndie.plakat.agit/PlakatGeneratedImage|PlakatGeneratedImage(kotlin.Int;androidx.compose.ui.Modifier?;androidx.compose.ui.unit.Dp;androidx.compose.ui.unit.Dp;kotlin.String?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun io.github.youndie.plakat.agit/PlakatPresetImage(io.github.youndie.plakat.agit/PlakatPreset, androidx.compose.ui/Modifier?, kotlin/String?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // io.github.youndie.plakat.agit/PlakatPresetImage|PlakatPresetImage(io.github.youndie.plakat.agit.PlakatPreset;androidx.compose.ui.Modifier?;kotlin.String?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun io.github.youndie.plakat.agit/PlakatRapportFill(kotlin/Int, androidx.compose.ui/Modifier?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // io.github.youndie.plakat.agit/PlakatRapportFill|PlakatRapportFill(kotlin.Int;androidx.compose.ui.Modifier?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
+final fun io.github.youndie.plakat.agit/PlakatSkeleton(kotlin/Int, androidx.compose.ui/Modifier?, androidx.compose.runtime/Composer?, kotlin/Int, kotlin/Int) // io.github.youndie.plakat.agit/PlakatSkeleton|PlakatSkeleton(kotlin.Int;androidx.compose.ui.Modifier?;androidx.compose.runtime.Composer?;kotlin.Int;kotlin.Int){}[0]
 final fun io.github.youndie.plakat.agit/io_github_youndie_plakat_agit_PlakatShape_Circle$stableprop_getter(): kotlin/Int // io.github.youndie.plakat.agit/io_github_youndie_plakat_agit_PlakatShape_Circle$stableprop_getter|io_github_youndie_plakat_agit_PlakatShape_Circle$stableprop_getter(){}[0]
 final fun io.github.youndie.plakat.agit/io_github_youndie_plakat_agit_PlakatShape_Poly$stableprop_getter(): kotlin/Int // io.github.youndie.plakat.agit/io_github_youndie_plakat_agit_PlakatShape_Poly$stableprop_getter|io_github_youndie_plakat_agit_PlakatShape_Poly$stableprop_getter(){}[0]
 final fun io.github.youndie.plakat.agit/io_github_youndie_plakat_agit_PlakatShape_Rect$stableprop_getter(): kotlin/Int // io.github.youndie.plakat.agit/io_github_youndie_plakat_agit_PlakatShape_Rect$stableprop_getter|io_github_youndie_plakat_agit_PlakatShape_Rect$stableprop_getter(){}[0]
