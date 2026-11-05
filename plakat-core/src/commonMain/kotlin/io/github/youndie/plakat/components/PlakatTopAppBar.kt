@@ -4,8 +4,10 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -16,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
@@ -33,6 +36,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.IntOffset
@@ -135,6 +139,16 @@ public class PlakatTopAppBarState {
             }
         }
 }
+
+/** The masthead, the Stretch page's: `padding: 16px 16px 0`, its labels, the title `margin-top: 8px`, 120 high, then the bar `margin-top: 12px` and 16 under it. */
+private val MastheadTop = PlakatGrid.Margin
+private val MastheadTitleGap = PlakatGrid.Step
+private val MastheadTitleHeight = 120.dp
+private val MastheadBarGap = 12.dp
+private val MastheadFoot = PlakatGrid.Margin
+
+/** 16 + the labels' line of 15 + 8 + 120 + 12 + 8 + 16. */
+private val MastheadHeight = 195.dp
 
 /** A state for a [PlakatTopAppBar], unfolded. */
 @Composable
@@ -350,4 +364,130 @@ private fun triangle(
     lineTo(x2, y2)
     lineTo(x3, y3)
     close()
+}
+
+/**
+ * The masthead: the title on the whole width in the stretch ([PlakatStretch], 120 high, one to a screen) under a line
+ * of [startLabel] and [endLabel], over a bar of 8; 195 dp in all. As [state] folds, linearly with the scroll, it rides up
+ * whole and is never scaled, and the ordinary collapsed bar comes down in its last 56 dp, with [collapsedTitle] and a
+ * 3 dp rule at the end: 59 dp collapsed, as a [PlakatTopAppBar]'s. The arrival is designed here; the page says only that
+ * the masthead rides up and an ordinary bar stays.
+ */
+@Composable
+public fun PlakatMasthead(
+    title: String,
+    modifier: Modifier = Modifier,
+    startLabel: String? = null,
+    endLabel: String? = null,
+    collapsedTitle: String = title,
+    state: PlakatTopAppBarState = rememberPlakatTopAppBarState(),
+    navigationIcon: (@Composable () -> Unit)? = null,
+    actions: @Composable RowScope.() -> Unit = {},
+) {
+    val colors = PlakatTheme.colors
+    val type = PlakatTheme.typography
+    val events by rememberUpdatedState(PlakatTheme.events)
+    LaunchedEffect(state) {
+        snapshotFlow { state.fraction }
+            .filter { it == 0f || it == 1f }
+            .distinctUntilChanged()
+            .drop(1)
+            .collect { events.onEvent(PlakatEvent.Fold) }
+    }
+    val arrivalPx = with(LocalDensity.current) { (MastheadHeight - CollapsedHeight - RowHeight).toPx() }
+    val arriving by remember(state, arrivalPx) { derivedStateOf { state.foldPx > arrivalPx } }
+    val label =
+        type.label.style
+            .copy(color = colors.ink)
+            .cssLine(PlakatFaceMetrics.Body)
+    CompositionLocalProvider(LocalPlakatContentColor provides colors.ink) {
+        Box(
+            modifier
+                .fillMaxWidth()
+                .layout { measurable, constraints ->
+                    val range = (MastheadHeight - CollapsedHeight).toPx()
+                    state.rangePx = range
+                    val height = (MastheadHeight.toPx() - range * state.fraction).toInt()
+                    val placeable = measurable.measure(constraints.copy(minHeight = height, maxHeight = height))
+                    layout(placeable.width, height) { placeable.place(0, 0) }
+                }.clipToBounds()
+                .background(colors.paper),
+        ) {
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .offset { IntOffset(0, -state.foldPx.toInt()) }
+                    .wrapContentHeight(Alignment.Top, unbounded = true)
+                    .height(MastheadHeight)
+                    .padding(start = PlakatGrid.Margin, top = MastheadTop, end = PlakatGrid.Margin),
+            ) {
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    BasicText(type.label.text(startLabel.orEmpty()), style = label, softWrap = false)
+                    BasicText(type.label.text(endLabel.orEmpty()), style = label, softWrap = false)
+                }
+                Spacer(Modifier.height(MastheadTitleGap))
+                PlakatStretch(
+                    title,
+                    Modifier
+                        .fillMaxWidth()
+                        .height(MastheadTitleHeight)
+                        .semantics { heading() },
+                )
+                Spacer(Modifier.height(MastheadBarGap))
+                Spacer(
+                    Modifier
+                        .fillMaxWidth()
+                        .height(PlakatLines.Bar)
+                        .background(colors.ink),
+                )
+                Spacer(Modifier.height(MastheadFoot))
+            }
+            // The ordinary bar comes down from above in the fold's last 56, on its own paper. Until then it is not there at
+            // all: above the clip it would still be read, and its actions would still take the keyboard's focus.
+            if (arriving) {
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .height(RowHeight)
+                        .offset {
+                            IntOffset(
+                                0,
+                                (state.foldPx - state.rangePx).toInt().coerceAtLeast(-RowHeight.roundToPx()),
+                            )
+                        }.background(colors.paper),
+                ) {
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .height(RowHeight)
+                            .padding(horizontal = RowInset),
+                        horizontalArrangement = Arrangement.spacedBy(RowInset),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        navigationIcon?.invoke()
+                        BasicText(
+                            collapsedTitle,
+                            Modifier.weight(1f),
+                            style =
+                                type.displayL.style
+                                    .copy(fontSize = COLLAPSED_TITLE_SP.sp, color = colors.ink)
+                                    .cssLine(PlakatFaceMetrics.Display),
+                            softWrap = false,
+                        )
+                        actions()
+                    }
+                }
+            }
+            Box(
+                Modifier
+                    .align(Alignment.BottomStart)
+                    .fillMaxWidth()
+                    .layout { measurable, constraints ->
+                        val h = (PlakatLines.Rule.toPx() * state.fraction).toInt()
+                        val placeable = measurable.measure(constraints.copy(minHeight = h, maxHeight = h))
+                        layout(placeable.width, h) { placeable.place(0, 0) }
+                    }.background(colors.ink),
+            )
+        }
+    }
 }

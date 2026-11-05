@@ -48,6 +48,7 @@ public final class io/github/youndie/plakat/agit/PlakatTitleZone$Companion {
 public final class io/github/youndie/plakat/components/ComposableSingletons$PlakatTopAppBarKt {
 	public static final field INSTANCE Lio/github/youndie/plakat/components/ComposableSingletons$PlakatTopAppBarKt;
 	public fun <init> ()V
+	public final fun getLambda$-298048299$io_github_youndie_plakat_core ()Lkotlin/jvm/functions/Function3;
 	public final fun getLambda$782067659$io_github_youndie_plakat_core ()Lkotlin/jvm/functions/Function3;
 }
 
@@ -139,6 +140,7 @@ public final class io/github/youndie/plakat/components/PlakatPosterLayout : java
 	public static final field Background Lio/github/youndie/plakat/components/PlakatPosterLayout;
 	public static final field Banner Lio/github/youndie/plakat/components/PlakatPosterLayout;
 	public static final field Circle Lio/github/youndie/plakat/components/PlakatPosterLayout;
+	public static final field Stretch Lio/github/youndie/plakat/components/PlakatPosterLayout;
 	public static final field Wide Lio/github/youndie/plakat/components/PlakatPosterLayout;
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lio/github/youndie/plakat/components/PlakatPosterLayout;
@@ -189,6 +191,7 @@ public final class io/github/youndie/plakat/components/PlakatTextFieldKt {
 }
 
 public final class io/github/youndie/plakat/components/PlakatTopAppBarKt {
+	public static final fun PlakatMasthead (Ljava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lio/github/youndie/plakat/components/PlakatTopAppBarState;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 	public static final fun PlakatTopAppBar (Ljava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/String;Ljava/lang/String;ILio/github/youndie/plakat/components/PlakatTopAppBarState;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 	public static final fun rememberPlakatTopAppBarState (Landroidx/compose/runtime/Composer;I)Lio/github/youndie/plakat/components/PlakatTopAppBarState;
 }
