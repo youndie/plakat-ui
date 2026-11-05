@@ -17,6 +17,7 @@ import androidx.compose.ui.test.assertHeightIsEqualTo
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertWidthIsEqualTo
 import androidx.compose.ui.test.captureToImage
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -113,6 +114,10 @@ class PlakatStretchInPlaceTest {
             var acted = 0
             poster { acted++ }
             onNode(SemanticsMatcher.keyIsDefined(SemanticsProperties.Heading)).assertIsDisplayed()
+            // The title once, as one phrase: its lines are not read over again one by one.
+            onNodeWithContentDescription("ЧИТАЙ ВЕСЬ НОЯБРЬ").assertIsDisplayed()
+            onNodeWithText("ЧИТАЙ").assertDoesNotExist()
+            onNodeWithContentDescription("Двенадцать выпусков.").assertIsDisplayed()
             onNodeWithText("ПОДПИСАТЬСЯ").assertHeightIsEqualTo(48.dp).performClick()
             waitForIdle()
             assertEquals(1, acted)
