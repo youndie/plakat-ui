@@ -138,6 +138,7 @@ rendered with reduced motion, so parity sees none of these.
 | Screen | `wipe` | push / pop, 320 · linear; fade 100 | `PlakatScreenWipeTest`: the strip's left per frame, linear from 290 to −60 on the lab's 180 × 320, and back for a pop; no frame of the wrong screen at either end; a 100 ms fade with no strip under reduced motion |
 | Counter | `tick` | value, 40 / step, ≤ 400 · stepped; at once | `PlakatCounterTest`: 39 → 47 per frame, the number 39, 38, 37, 47, the squares 7, 8, 9, what is left over +4, +3, +2; 0 → 999 over by 400 ms; at once under reduced motion; the column's box unscaled through a tick |
 | Window | `rail` | page, 200 · hard-stop, then the caption 120 · linear; at once | `PlakatWindowTest`: the first panel's columns per frame on the curve across a panel and a gap; no words while it moves, then only ever more of them; both at once under reduced motion |
+| Hover | none | pointer over, 0 | `PlakatHoverTest`: each control's frame turned over within a frame of the pointer's entry, back on its exit; never by a finger, not on a disabled control, and a press reads over it |
 | Button | `engage` | 120 + cycle 1200 · steps 12 | `PlakatButtonTest`: the slogan wiped from the left within 120 ms, the sector at 0°, 30°, 180°, 330° at 0, 100, 650, 1199 ms; the loading golden at 100 ms |
 
 ## 4. Dependencies
@@ -287,5 +288,9 @@ not run it, because the output is committed and pinned by the metrics test.
 - `concrete-light` is its token two levels up, minus the grain (B-36): ink-muted on concrete has no room (4.5005:1), and a
   tile that only darkens read 4.43 at its worst letter-sized square. `ContrastOverTextureTest` holds every pair over the
   tiles and under the grain, by a mean over a 12 dp square, for a letter is not read against one fibre.
+- Hover, designed here (B-39), turns the frame over and is not the press: an outlined frame fills with concrete, since ink is
+  the press; a filled plate gets the ink frame; a rule becomes the bar, growing down with the layout left as it was.
+- `PlakatPosterLayout.Wide` is as wide as its box and asks for 600 at least; a box that forces it narrower gets what it
+  forces. Its composition's frame of 360 stands against the right edge, cut by the half.
 - The klib ABI dump lists the compose compiler's `$stableprop` of internal classes too; adding an
   internal class changes it and needs `updateKotlinAbi`.

@@ -100,6 +100,7 @@ internal fun PlakatListItemFrame(
     divider: Boolean,
     interactionSource: MutableInteractionSource?,
     forcePressed: Boolean = false,
+    forceHovered: Boolean = false,
 ) {
     val source = interactionSource ?: remember { MutableInteractionSource() }
     val colors = PlakatTheme.colors
@@ -126,9 +127,11 @@ internal fun PlakatListItemFrame(
                 .drawBehind {
                     // Only the ground is a transition; the words change the moment the finger lifts.
                     drawRect(srgbLerp(colors.ink.copy(alpha = 0f), colors.ink, press))
-                    if (divider) {
-                        val hair = PlakatLines.Hair.toPx()
-                        drawRect(colors.ink, Offset(0f, size.height - hair), Size(size.width, hair))
+                    // Designed here (B-39): on a pointer the hair becomes the rule; a row with none gets one.
+                    val hovered = enabled && onClick != null && (forceHovered || state.hovered) && !held
+                    if (divider || hovered) {
+                        val line = (if (hovered) PlakatLines.Rule else PlakatLines.Hair).toPx()
+                        drawRect(colors.ink, Offset(0f, size.height - line), Size(size.width, line))
                     }
                 }.then(click),
         ) {

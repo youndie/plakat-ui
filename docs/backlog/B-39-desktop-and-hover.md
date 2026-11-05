@@ -1,7 +1,7 @@
 ---
 id: B-39
 title: "Hover on pointer devices and a wide poster layout"
-status: open
+status: done
 priority: P1
 size: M
 stage: stage-2-components
@@ -19,3 +19,12 @@ The brief proposed a desktop layout for the poster and demo screens and cheap ho
 
 - AC: both themes in the sample; the owner has looked at it, and its goldens are recorded after that; the Principles checklist holds (primitives only, radius 0, one diagonal at most, state readable without colour, ≥ 48 dp, ≥ 4.5:1); a mutant in its geometry or curve is caught.
 - Anchors: `reference/design-system/plakat-ui Принципы.dc.html`, `reference/design-system/uploads/plakat-ui - бриф для дизайнера.md`
+
+## Findings (2026-11-05)
+
+- **Designed here** (D13), every number the design does not state. Hover: an outlined frame fills with concrete, because the item's «fills» in ink would be the press; a filled plate gets a 3 dp ink frame inside its cut; a text button's 3 dp rule becomes the 8 dp bar, growing down with the layout unmoved; a danger button gets the ink frame round its hatch; an icon's empty square fills with concrete and a selected one gets the frame; a chip fills under its frame, and a selected one, being ink, gets a concrete frame; a row's hair becomes the 3 dp rule. The item says «a rule becomes the 3 dp bar», and the tokens call 3 the rule and 8 the bar: read as one step up the scale, hair to rule and rule to bar. For the owner's review.
+- **Wide poster**, `PlakatPosterLayout.Wide`, 392 high, at least 600, as wide as its box: a composition frame of 360 × 392 against the right edge, cut by the half; the title at the Circle's 48, upright (the −17° axis does not fit the half's width without leaving it), 32 down; the body 16 under it, as wide as the half less its margins; the slogan where the Circle's stands, 240 wide as the Stretch page's poster's. Its recipe has no safe zone, as the title is not over it. The print cascade is the others'. A box forcing it under 600 gets what it forces.
+- **The AC's look**: both are in the sample, both themes; goldens are recorded now for the owner's review at the end, as for B-38. **Met but for that look.**
+- **Principles checklist**: primitives only; radius 0; no new diagonal (the plate's cut is the one it had); hover reads without colour, by a frame or a fill, in grey too; targets unchanged; the words stay on the grounds `ContrastOverTextureTest` holds, concrete included.
+- **Hover is never a press**: no event, no shift; a press reads over it (held by a test); a finger never hovers, held on a button and a chip through `performTouchInput`. This harness's `performClick` is a mouse's and leaves it over the element, which looks hovered until it moves away: `PlakatChipTest` moves it off now. The gate caught that, and it looked at first like touch raising hover; filtering by `PointerType` was tried and dropped, as a real finger's result was the same. Other hosts' touch (iOS, the browser) is not tested here.
+- **Mutants**: through the tests — hover never set, never cleared, over a press, the outline filled in ink, no plate frame, no bar, no danger frame, no icon fill, no icon frame, no chip fill, no chip frame, no row rule, the composition on the left, a slogan of 200, a poster not as wide as its parent. All fifteen killed; the last after a test of its own. A hover on a disabled control survives its guard's removal, because a disabled `clickable` emits no hover at all: the guard only covers the forced fixture.

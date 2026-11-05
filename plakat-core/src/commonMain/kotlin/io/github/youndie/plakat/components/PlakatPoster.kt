@@ -5,8 +5,12 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.GenericShape
 import androidx.compose.runtime.Composable
@@ -14,6 +18,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
@@ -87,6 +92,12 @@ public enum class PlakatPosterLayout(
 
     /** Баннер, 390 × 160, for a feed: the title upright, the composition in a window on the right. */
     Banner(390.dp, 160.dp),
+
+    /**
+     * Широкий, designed here (B-39), 392 high and at least 600 wide, as wide as its box: the title and the slogan on the
+     * left half, upright, the composition on the right.
+     */
+    Wide(600.dp, 392.dp),
 }
 
 /** A seed from the poster's words, so the same content prints the same poster on every target. */
@@ -129,6 +140,15 @@ private val BackgroundBodyTop = 372.dp
 private val BackgroundColumn = 200.dp
 private const val BACKGROUND_BODY_SP = 15
 
+/**
+ * Широкий, designed here (B-39), as no page draws it: the composition's frame of 360 × 392, on the 8 grid; the title 32
+ * down at Круг's size, a gap of 16 under it, and the slogan where Круг's stands, 240 wide as the Stretch page's poster's.
+ */
+private val WideFrameWidth = 360.dp
+private val WideTitleTop = 32.dp
+private val WideBodyGap = 16.dp
+private val WideButtonWidth = 240.dp
+
 /** The body's line, `line-height: 1.4`, both layouts. */
 private const val BODY_LINE = 1.4f
 
@@ -150,7 +170,7 @@ private const val TITLE_AT_MS = 150
 private const val BUTTON_AT_MS = 180
 
 /**
- * A poster in one of its three [layout]s: a composition from the page's generator seeded by [seed]
+ * A poster in one of its [layout]s: a composition from the page's generator seeded by [seed]
  * (by default from the [title]), the [title]'s lines in the display face — turned to the −17° axis
  * as a block in Круг and Фон, upright in Баннер, out of register while the theme's registration is
  * on — a [body] under it (Круг and Фон; Баннер has none), and one slogan button, [action], which
@@ -188,6 +208,7 @@ public fun PlakatPoster(
             PlakatPosterLayout.Circle -> PosterRecipes.Circle
             PlakatPosterLayout.Background -> PosterRecipes.Background
             PlakatPosterLayout.Banner -> PosterRecipes.Banner
+            PlakatPosterLayout.Wide -> PosterRecipes.Wide
         }
     val composition = remember(seed, layout) { posterComposition(seed, recipe) }
     val rolls = raskat && layout == PlakatPosterLayout.Circle && composition.circle != null && PlakatTheme.print.raskat
@@ -219,8 +240,13 @@ public fun PlakatPoster(
 
     Box(
         modifier
-            .size(layout.width, layout.height)
-            .clipToBounds()
+            .then(
+                if (layout == PlakatPosterLayout.Wide) {
+                    Modifier.widthIn(min = layout.width).fillMaxWidth().height(layout.height)
+                } else {
+                    Modifier.size(layout.width, layout.height)
+                },
+            ).clipToBounds()
             .drawBehind { drawRect(if (layout == PlakatPosterLayout.Banner) colors.concrete else colors.paper) }
             .plakatGrain(),
     ) {
@@ -385,6 +411,72 @@ public fun PlakatPoster(
                                 layout.width - PlakatGrid.Margin - BackgroundColumn,
                                 layout.height - PlakatGrid.Margin - PlakatSizes.Button,
                             ).size(BackgroundColumn, PlakatSizes.Button),
+                        enabled = true,
+                        loading = false,
+                        interactionSource = null,
+                    )
+                }
+            }
+
+            PlakatPosterLayout.Wide -> {
+                // The composition's frame against the right edge, however wide the poster is.
+                Box(
+                    Modifier
+                        .align(Alignment.TopEnd)
+                        .fillMaxWidth(.5f)
+                        .height(layout.height)
+                        .clipToBounds(),
+                ) {
+                    Box(Modifier.align(Alignment.TopEnd).requiredSize(WideFrameWidth, layout.height)) {
+                        Shapes(composition.shapes, colors, colors.concrete, wipe, first = 0)
+                    }
+                }
+                Box(Modifier.matchParentSize().plakatWipe(PlakatWipe.Left, wipe(TITLE_AT_MS)).title(title)) {
+                    Canvas(Modifier.matchParentSize()) {
+                        val origin = Offset(PlakatGrid.Margin.toPx(), WideTitleTop.toPx())
+                        drawLines(
+                            measurer,
+                            title,
+                            display.copy(fontSize = CIRCLE_TITLE_SP.sp),
+                            PlakatFaceMetrics.Display,
+                            CIRCLE_TITLE_LINE,
+                            origin,
+                            colors,
+                            registration,
+                            snap = true,
+                        )
+                    }
+                }
+                if (body != null) {
+                    Box(
+                        Modifier.matchParentSize().plakatWipe(PlakatWipe.Left, wipe(TITLE_AT_MS)).semantics {
+                            contentDescription = body
+                        },
+                    ) {
+                        Canvas(Modifier.matchParentSize()) {
+                            val top =
+                                WideTitleTop.toPx() + title.size * CIRCLE_TITLE_SP.sp.toPx() * CIRCLE_TITLE_LINE +
+                                    WideBodyGap.toPx()
+                            drawParagraph(
+                                measurer,
+                                body,
+                                text.copy(fontSize = CIRCLE_BODY_SP.sp),
+                                size.width / 2 - 2 * PlakatGrid.Margin.toPx(),
+                                Offset(PlakatGrid.Margin.toPx(), top),
+                                colors.ink,
+                                BODY_LINE,
+                            )
+                        }
+                    }
+                }
+                Box(Modifier.matchParentSize().plakatWipe(PlakatWipe.Left, wipe(BUTTON_AT_MS))) {
+                    PlakatButtonFrame(
+                        PlakatButtonKind.Filled,
+                        action,
+                        onAction,
+                        Modifier
+                            .offset(PlakatGrid.Margin, layout.height - CircleButtonBottom - PlakatSizes.Button)
+                            .size(WideButtonWidth, PlakatSizes.Button),
                         enabled = true,
                         loading = false,
                         interactionSource = null,

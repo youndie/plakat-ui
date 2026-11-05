@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PixelMap
 import androidx.compose.ui.graphics.toPixelMap
@@ -29,6 +30,7 @@ import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performMouseInput
 import androidx.compose.ui.test.v2.runComposeUiTest
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
@@ -85,9 +87,13 @@ class PlakatChipTest {
             assertEquals(paper.red, on.wedge())
             assertEquals(listOf(PlakatEvent.Stamp), heard)
             onNodeWithTag("c").assertIsSelected()
-            // Let go of, it is back in one frame too, and says nothing.
+            // Let go of, it is back in one frame too, and says nothing. This harness's `performClick` is a mouse's, and
+            // leaves it over the chip, which shows its hover (B-39) until it moves away.
             onNodeWithTag("c").performClick()
             mainClock.advanceTimeByFrame()
+            mainClock.advanceTimeByFrame()
+            assertEquals(paper.concrete, frame().fill())
+            onNodeWithTag("c").performMouseInput { moveTo(Offset(-100f, -100f)) }
             mainClock.advanceTimeByFrame()
             assertEquals(Color.White, frame().fill())
             assertEquals(listOf(PlakatEvent.Stamp), heard)
