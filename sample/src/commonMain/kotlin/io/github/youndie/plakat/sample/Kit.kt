@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -65,6 +66,7 @@ import io.github.youndie.plakat.components.PlakatOutlinedButton
 import io.github.youndie.plakat.components.PlakatPictogram
 import io.github.youndie.plakat.components.PlakatPoster
 import io.github.youndie.plakat.components.PlakatPosterLayout
+import io.github.youndie.plakat.components.PlakatRadioButton
 import io.github.youndie.plakat.components.PlakatScreenWipe
 import io.github.youndie.plakat.components.PlakatSnackbar
 import io.github.youndie.plakat.components.PlakatStretch
@@ -129,7 +131,7 @@ fun KitCore() {
             PlakatTextField(value, { value = it }, Modifier.width(Width), label = "Имя", placeholder = "Как вас зовут")
             PlakatTextField("лист", {}, Modifier.width(Width), label = "Адрес", error = "Такого адреса нет")
         }
-        KitGroup("Флажок и переключатель") {
+        KitGroup("Флажок, выбор, переключатель") {
             Wrap {
                 var checked by remember { mutableStateOf(true) }
                 var on by remember { mutableStateOf(true) }
@@ -137,6 +139,11 @@ fun KitCore() {
                 PlakatCheckbox(false, null, enabled = false)
                 PlakatSwitch(on, { on = it })
                 PlakatSwitch(false, null, enabled = false)
+                var radio by remember { mutableIntStateOf(0) }
+                Row(Modifier.selectableGroup()) {
+                    repeat(3) { i -> PlakatRadioButton(radio == i, { radio = i }) }
+                }
+                PlakatRadioButton(true, null, enabled = false)
             }
         }
         KitGroup("Карточка") {

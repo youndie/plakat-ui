@@ -145,6 +145,10 @@ public final class io/github/youndie/plakat/components/PlakatProgressKt {
 	public static final fun PlakatLinearProgress (FLandroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class io/github/youndie/plakat/components/PlakatRadioButtonKt {
+	public static final fun PlakatRadioButton (ZLkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
+}
+
 public final class io/github/youndie/plakat/components/PlakatScreenWipeKt {
 	public static final fun PlakatScreenWipe (Ljava/lang/Object;ILandroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
