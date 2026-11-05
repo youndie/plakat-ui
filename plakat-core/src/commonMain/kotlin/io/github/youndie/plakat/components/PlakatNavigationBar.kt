@@ -37,6 +37,7 @@ import io.github.youndie.plakat.theme.PlakatEvent
 import io.github.youndie.plakat.theme.PlakatFaceMetrics
 import io.github.youndie.plakat.theme.PlakatTheme
 import io.github.youndie.plakat.theme.cssLine
+import io.github.youndie.plakat.tokens.PlakatColors
 import io.github.youndie.plakat.tokens.PlakatDurations
 import io.github.youndie.plakat.tokens.PlakatEasings
 import kotlin.math.floor
@@ -92,7 +93,7 @@ public fun PlakatNavigationBar(
             square.animateTo(target, tween(PlakatDurations.QUICK, easing = PlakatEasings.HardStop))
         }
     }
-    val strip = if (colors.ink.luminance() < colors.concrete.luminance()) colors.ink else colors.concrete
+    val strip = navigationGround(colors)
     val word: Color = colors.onRed
     val type = PlakatTheme.typography
     val style =
@@ -169,6 +170,10 @@ public fun PlakatNavigationBar(
         }
     }
 }
+
+/** The ground of the kit's navigation, under on-red words: ink in the light theme, concrete in the dark, whichever is the darker. */
+internal fun navigationGround(colors: PlakatColors): Color =
+    if (colors.ink.luminance() < colors.concrete.luminance()) colors.ink else colors.concrete
 
 /** The icon's box, the gap and the label: what the page centres in the strip. */
 private fun contentHeight() = SquareHeight + LabelGap + LabelHeight

@@ -69,6 +69,7 @@ import io.github.youndie.plakat.components.PlakatMasthead
 import io.github.youndie.plakat.components.PlakatMenu
 import io.github.youndie.plakat.components.PlakatMenuItem
 import io.github.youndie.plakat.components.PlakatNavigationBar
+import io.github.youndie.plakat.components.PlakatNavigationDrawer
 import io.github.youndie.plakat.components.PlakatNavigationItem
 import io.github.youndie.plakat.components.PlakatOutlinedButton
 import io.github.youndie.plakat.components.PlakatPictogram
@@ -328,6 +329,23 @@ fun KitComponents(beat: Int) {
                     PlakatListItem("Сохранить", onClick = { open = false })
                     PlakatListItem("Поделиться", onClick = { open = false }, divider = false)
                 }
+            }
+        }
+        KitGroup("Боковая панель") {
+            var open by remember { mutableStateOf(false) }
+            var place by remember { mutableIntStateOf(0) }
+            PlakatOutlinedButton("ОТКРЫТЬ", { open = true }, Modifier.testTag("open-drawer"))
+            Box(Modifier.width(Width).height(if (open) 420.dp else 1.dp)) {
+                PlakatNavigationDrawer(
+                    open,
+                    icons.zip(listOf("ЛЕНТА", "ПОИСК", "ОБМЕН", "ОПЦИИ")).map { (icon, word) ->
+                        PlakatNavigationItem(icon, word)
+                    },
+                    place,
+                    { place = it },
+                    { open = false },
+                    paneTitle = "Разделы",
+                )
             }
         }
         KitGroup("Окно") {
