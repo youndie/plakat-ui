@@ -60,7 +60,6 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
 | [B-30](docs/backlog/B-30-counter.md) `[ ]` | Счётчик: the Isotype stat tile with a mechanical counter | P1 | M | B-09, B-10, B-12, B-31 |
-| [B-31](docs/backlog/B-31-stretch-text.md) `[ ]` | Растяжка: one Display line filling its box from cap top to baseline | P1 | S | B-02, B-05 |
 | [B-33](docs/backlog/B-33-agit-presets-and-photomontage.md) `[ ]` | Agit graphics: the six presets, generated compositions, rapports, halftone photomontage | P1 | M | B-03, B-05 |
 | [B-34](docs/backlog/B-34-screen-wipe.md) `[ ]` | Screen transition: the red diagonal wipe, push and pop | P1 | S | B-09, B-10, B-12 |
 | [B-35](docs/backlog/B-35-demo-screens-and-sample.md) `[ ]` | Demo screens and the sample kit: onboarding, feed, settings in both themes | P1 | M | B-13, B-14, B-16, B-17, B-19, B-25, B-26, B-27, B-29, B-30 |
@@ -69,6 +68,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 | [B-39](docs/backlog/B-39-desktop-and-hover.md) `[ ]` | Hover on pointer devices and a wide poster layout | P1 | M | B-13, B-19, B-20, B-22, B-23 |
 | [B-51](docs/backlog/B-51-frame-cost-on-desktop.md) `[ ]` | Frame cost on the desktop JVM: raskat roll and the ten-card cascade, as a proxy until the device | P1 | S | B-04, B-10 |
 | [B-52](docs/backlog/B-52-empty-state.md) `[ ]` | Empty state: a call rather than an apology, with the screen's one raskat wedge | P1 | S | B-04, B-13 |
+| [B-53](docs/backlog/B-53-stretch-in-place.md) `[ ]` | Stretch in place: the poster's fourth layout and the app bar's masthead | P1 | S | B-19, B-25, B-31 |
 | [B-32](docs/backlog/B-32-projection.md) `[ ]` | Проекция: text meshed onto a horn, cone, column, sphere, box or stairs | P2 | M | B-02, B-31 |
 | [B-43](docs/backlog/B-43-re-import-the-design.md) `[ ]` | Re-import the design project on a branch of its own | P2 | S | B-05, B-08 |
 | [B-44](docs/backlog/B-44-slider.md) `[ ]` | Slider: rail, ticks and a carriage that stops on them | P2 | M | B-09, B-10, B-12, B-16 |
@@ -81,7 +81,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 | [B-06](docs/backlog/B-06-frame-cost-measurement.md) `[ ]` | Frame cost on a Pixel 6a: raskat roll, ten cards cascading with texture and registration | P3 | M | B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50, B-51 |
 | [B-37](docs/backlog/B-37-public-repository-and-publishing.md) `[ ]` | Public repository and publishing to Reposilite on every main — last | P3 | S | B-06, B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50 |
 
-## Closed (31)
+## Closed (32)
 
 **Goldens and references regenerate deterministically; the generator and raskat ports match them on every target; the floor and the frame cost have measured numbers**
 
@@ -119,6 +119,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 - [B-27](docs/backlog/B-27-tabs.md) `[x]` - Tabs: rubrics with a red bar riding linearly
 - [B-28](docs/backlog/B-28-dialog.md) `[x]` - Dialog: the announcement
 - [B-29](docs/backlog/B-29-window.md) `[x]` - Окно: onboarding and empty-state panels in the manner of ROSTA windows
+- [B-31](docs/backlog/B-31-stretch-text.md) `[x]` - Растяжка: one Display line filling its box from cap top to baseline
 
 **The owner's questions answered; the design re-imported when it changes**
 

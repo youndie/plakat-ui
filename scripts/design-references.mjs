@@ -49,6 +49,7 @@ const CORE = 'plakat-ui Ядро.dc.html';
 const TOKENS = 'plakat-ui Токены.dc.html';
 const MVP = 'plakat-ui Компоненты.dc.html';
 const ICONS = 'plakat-ui Иконки.dc.html';
+const STRETCH = 'plakat-ui Растяжка.dc.html';
 // What says a page's template has rendered: the runtime has replaced its <x-dc> and the cells'
 // captions are there ("Filled / Default"); the Icons page imports its paths after mount.
 const READY = { [ICONS]: 'plakat/icon/time' };
@@ -149,6 +150,13 @@ export const REFERENCES = [
     { group: 'Dialog', name, page: MVP, caption, card: 0, part: 'first' })),
   // The window (B-29): the two panels before their caption, in the page's two columns.
   ...cells('Window', MVP, 'prev', [['Onboarding', 'Окно / Онбординг · 2 из 4 панелей']]).map((r) => ({ ...r, floor: true })),
+  // The Stretch page's lines (B-31): each span's box, found by its text and size, for the page has no
+  // caption per cell. The sandbox is typed into for a Latin line, then put back.
+  ...[
+    ['Hero', 'РАСТЯЖКА', 720, 120], ['PosterFirst', 'ЧИТАЙ', 358, 136], ['PosterSecond', 'ВЕСЬ', 358, 120], ['PosterThird', 'НОЯБРЬ', 358, 80],
+    ['Masthead', 'ЛИСТ', 358, 120], ['Number', '47', 112, 104], ['NumberRed', '6', 56, 104], ['Section', 'АРХИТЕКТУРА', 358, 48],
+    ['Sandbox', 'ЛИСТ', 358, 160], ['SandboxLatin', 'POSTER', 358, 160, 'POSTER'],
+  ].map(([name, text, w, h, type]) => ({ group: 'Stretch', name, page: STRETCH, stretch: [text, w, h], type })),
   ...cells('Badge', MVP, 'first', [['Number', 'Badge / Число'], ['Dot', '/ Точка']]),
   // The icons (B-11): each of the sixteen at 48, 24 and 16 px, ink on concrete, from the Icons page's
   // grid; a cell is found by its token caption, and the icon is the n-th svg of the row above it.
@@ -207,6 +215,15 @@ async function launch(chrome) {
 
 // Evaluated in the page: the rectangle of a reference, in page pixels, or a reason it has none.
 const LOCATE = `(ref) => {
+  if (ref.stretch) {
+    const [text, w, h] = ref.stretch;
+    const box = [...document.querySelectorAll('span')].filter(s => s.textContent === text && s.style.transform.startsWith('scale('))
+      .map(s => s.parentElement).find(p => { const r = p.getBoundingClientRect(); return r.width === w && r.height === h; });
+    if (!box) return { error: 'no stretch ' + text + ' in ' + w + ' x ' + h };
+    window.plakatCell = box;
+    const r = box.getBoundingClientRect();
+    return { x: r.left + scrollX, y: r.top + scrollY, w, h };
+  }
   // A caption is the innermost div whose text is the caption (or starts with it, for captions with
   // markup in them, like the Tokens page's <b>plakat/print/…</b> lines).
   const matches = (d) => ref.prefix ? d.textContent.trim().startsWith(ref.caption) : d.textContent.trim() === ref.caption;
@@ -241,6 +258,13 @@ async function open(cdp, page) {
   await cdp.send('Fetch.enable', { patterns: [{ urlPattern: '*fonts.googleapis.com*' }] }, sessionId);
   await cdp.send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] }, sessionId);
   await cdp.send('Emulation.setDeviceMetricsOverride', { width: viewport(page), height: 900, deviceScaleFactor: 1, mobile: false }, sessionId);
+  // The Stretch page measures its lines once and keeps them. It asks for its font on mount, before the
+  // runtime has put the page's stylesheet in, so the ask finds no face and answers at once, and every line
+  // is measured in the fallback face for good. Here the faces are there from the first script.
+  if (page === STRETCH) {
+    await cdp.send('Page.addScriptToEvaluateOnNewDocument', { source: FACES.map(([family, file, weight]) =>
+      `document.fonts.add(new FontFace(${JSON.stringify(family)}, 'url(data:font/ttf;base64,${readFileSync(join(FONTS, file)).toString('base64')})', { weight: '${weight}' }));`).join('\n') }, sessionId);
+  }
   const loaded = cdp.once('Page.loadEventFired', sessionId);
   await cdp.send('Page.navigate', { url: pathToFileURL(join(DESIGN, page)).href }, sessionId);
   await loaded;
@@ -266,7 +290,14 @@ async function open(cdp, page) {
   return { sessionId, targetId, evaluate, close: async () => { cdp.listeners.splice(cdp.listeners.indexOf(listener), 1); await cdp.send('Target.closeTarget', { targetId }); } };
 }
 
+// The Stretch page's sandbox is the first input on it, and React listens for the value's own setter.
+const typeInto = (text) => `new Promise(ok => { const i = document.querySelector('input');
+  Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(i, ${JSON.stringify(text)});
+  i.dispatchEvent(new Event('input', { bubbles: true }));
+  requestAnimationFrame(() => requestAnimationFrame(() => ok(true))); })`;
+
 async function shoot(cdp, tab, ref) {
+  if (ref.type) await tab.evaluate(typeInto(ref.type));
   // A cell sits as far down the page as the lines above it make, and a 14.4 px line leaves it on a
   // fraction of a pixel; Chrome then draws its text on that fraction, which no fixture can. So the
   // page is pushed down by the fraction (a body padding below a pixel moves every box by the same
@@ -291,6 +322,7 @@ async function shoot(cdp, tab, ref) {
   if (![r.x, r.y, r.w, r.h].every((v) => Number.isInteger(v))) throw new Error(`${ref.group}_${ref.name}: ${JSON.stringify(r)} is not whole pixels`);
   const shot = await cdp.send('Page.captureScreenshot', { format: 'png', clip: { x: r.x, y: r.y, width: r.w, height: r.h, scale: 1 } }, tab.sessionId);
   if (nudge > 0) await tab.evaluate(`(() => { window.plakatCell.style.marginLeft = ''; return true; })()`);
+  if (ref.type) await tab.evaluate(typeInto('ЛИСТ'));
   return { png: Buffer.from(shot.data, 'base64'), rect: r };
 }
 

@@ -89,6 +89,11 @@ public final class io/github/youndie/plakat/components/PlakatSnackbarKt {
 	public static final fun PlakatSnackbar (Ljava/lang/String;Landroidx/compose/ui/Modifier;ZLjava/lang/String;Lkotlin/jvm/functions/Function0;ZLkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class io/github/youndie/plakat/components/PlakatStretchKt {
+	public static final fun PlakatStretch-FNF3uiM (Ljava/lang/String;Landroidx/compose/ui/Modifier;JLandroidx/compose/runtime/Composer;II)V
+	public static final fun plakatStretchFactor-VpY3zN4 (Ljava/lang/String;FF)F
+}
+
 public final class io/github/youndie/plakat/components/PlakatSwitchKt {
 	public static final fun PlakatSwitch (ZLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
 }
