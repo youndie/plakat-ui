@@ -1,7 +1,7 @@
 ---
 id: B-21
 title: "FAB: the one round shape, riding in on the axis"
-status: wip
+status: done
 priority: P1
 size: M
 stage: stage-2-components
@@ -19,3 +19,27 @@ MVP component (brief «Инвентарь компонентов»), drawn on `p
 
 - AC: every state the page draws, in both themes, within the parity floor ([B-05](B-05-pixel-references-and-floor.md)); the motion row's values read at its timestamps by a test; reduce motion as specified; touch target ≥ 48 dp; a mutant in the ported curve or geometry is caught.
 - Anchors: `reference/design-system/plakat-ui Компоненты.dc.html`
+
+## Findings (2026-11-05)
+
+- **API**: `PlakatFab(icon, contentDescription, onClick, modifier, enabled, rideIn, interactionSource)`.
+  `rideIn = false` shows it in place, for a FAB returning with its screen. The target is the 56 dp box
+  of the circle.
+- **Parity**: Default, Pressed and Disabled at **0.00 %** in both themes (`Fab_*`, the MVP page). The pressed
+  cell draws `translate(1px, 1px)`, so the fixture's forced look and the live press agree here, unlike
+  the IconButton's.
+- **The ride, which the design states only in words.** The spec row says «Выезжает по оси −17° из-за
+  правого нижнего края»; no number and no lab. Taken whole it cannot be met: the −17° axis rises to the
+  right, so past the right edge it stands above the FAB, not below. The axis is the kit's one diagonal,
+  so it is kept: the FAB starts with its left side just past the window's right edge and higher by that
+  distance × tan 17°, and rides down-left to its place. The distance is measured from where it is
+  placed (`positionInRoot`, the root's width), so no number is invented and any margin works.
+  **For the owner's review**: if "нижний" should win, the ride would climb from below on a +17° line.
+- **Designed here** (D13): the focused look, a 3 dp ink ring 3 dp off the circle as the Button's (the page
+  draws no focused FAB; the golden `Fab_Focused_*` is this library's own); the ride itself as above;
+  `rideIn`. The press takes `PlakatPress`, with its 60 ms hard-stop return, which the spec row does not
+  name for the FAB but does for the IconButton beside it.
+- **Events**: `rail` on appear; `stamp` and `release` once per gesture.
+- **Mutants**: through the behaviour tests — the ride linear, the ride 120, the axis flat, the axis
+  downward, half the distance, reduced motion riding, no icon shift, no `rail`; through the goldens — the
+  icon ink while pressed, disabled red, a size of 54, the ring 5 off. All twelve killed.
