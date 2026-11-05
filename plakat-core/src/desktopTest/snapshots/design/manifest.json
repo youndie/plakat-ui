@@ -914,6 +914,78 @@
       "shift": 0.78125
     },
     {
+      "file": "Snackbar_Default_Light.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "Snackbar / Default",
+      "card": 0,
+      "part": "first",
+      "x": 56,
+      "y": 2175,
+      "w": 344,
+      "h": 56,
+      "shift": 0.78125
+    },
+    {
+      "file": "Snackbar_Default_Dark.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "Snackbar / Default",
+      "card": 1,
+      "part": "first",
+      "x": 824,
+      "y": 2175,
+      "w": 344,
+      "h": 56,
+      "shift": 0.78125
+    },
+    {
+      "file": "Snackbar_Action_Light.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "Snackbar / Action",
+      "card": 0,
+      "part": "first",
+      "x": 416,
+      "y": 2175,
+      "w": 344,
+      "h": 56,
+      "shift": 0.78125
+    },
+    {
+      "file": "Snackbar_Action_Dark.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "Snackbar / Action",
+      "card": 1,
+      "part": "first",
+      "x": 1184,
+      "y": 2175,
+      "w": 344,
+      "h": 56,
+      "shift": 0.78125
+    },
+    {
+      "file": "Snackbar_Error_Light.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "Snackbar / Error",
+      "card": 0,
+      "part": "first",
+      "x": 56,
+      "y": 2274,
+      "w": 344,
+      "h": 56,
+      "shift": 0.78125
+    },
+    {
+      "file": "Snackbar_Error_Dark.png",
+      "page": "plakat-ui Ядро.dc.html",
+      "caption": "Snackbar / Error",
+      "card": 1,
+      "part": "first",
+      "x": 824,
+      "y": 2274,
+      "w": 344,
+      "h": 56,
+      "shift": 0.78125
+    },
+    {
       "file": "Icon_Menu_48.png",
       "page": "plakat-ui Иконки.dc.html",
       "caption": "plakat/icon/menu",
