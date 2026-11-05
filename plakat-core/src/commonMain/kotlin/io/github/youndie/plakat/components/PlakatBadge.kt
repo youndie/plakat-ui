@@ -1,7 +1,5 @@
 package io.github.youndie.plakat.components
 
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -9,12 +7,7 @@ import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
@@ -22,11 +15,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.github.youndie.plakat.theme.PlakatEvent
 import io.github.youndie.plakat.theme.PlakatFaceMetrics
 import io.github.youndie.plakat.theme.PlakatTheme
 import io.github.youndie.plakat.theme.cssLine
-import io.github.youndie.plakat.tokens.PlakatEasings
 import io.github.youndie.plakat.tokens.PlakatLines
 import io.github.youndie.plakat.tokens.PlakatSizes
 import kotlin.math.floor
@@ -62,25 +53,7 @@ public fun PlakatBadge(
         Box(modifier.size(DotSize).background(colors.red))
         return
     }
-    val reduce = PlakatTheme.reduceMotion
-    val events by rememberUpdatedState(PlakatTheme.events)
-    var tick by remember { mutableStateOf(PlakatTick(value, value)) }
-    var seen by remember { mutableStateOf(value) }
-    val age = remember { Animatable(0f) }
-    LaunchedEffect(value, reduce) {
-        if (value == seen) return@LaunchedEffect
-        // From what shows now, so a change in the middle of a tick does not jump.
-        val shown = tick.valueAt(age.value.toDouble())
-        seen = value
-        tick = PlakatTick(shown, value)
-        events.onEvent(PlakatEvent.Tick)
-        if (reduce) {
-            age.snapTo(Float.MAX_VALUE)
-        } else {
-            age.snapTo(0f)
-            age.animateTo(tick.totalMs.toFloat(), tween(tick.totalMs, easing = PlakatEasings.Linear))
-        }
-    }
+    val ticker = rememberPlakatTicker(value)
     val style =
         PlakatTheme.typography.bodyS.style
             .copy(fontSize = BADGE_SP.sp, fontWeight = FontWeight.SemiBold, color = colors.onRed)
@@ -98,7 +71,7 @@ public fun PlakatBadge(
         modifier.size(width, BadgeSize).background(colors.red),
         contentAlignment = Alignment.Center,
     ) {
-        BasicText(tick.textAt(age.value.toDouble()), style = style, softWrap = false)
+        BasicText(ticker.tick.textAt(ticker.ms), style = style, softWrap = false)
     }
 }
 
