@@ -11,11 +11,14 @@ import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -86,7 +89,8 @@ public enum class PlakatSheetGround {
  * the composition after. Under reduced motion both are at once. The handle follows a finger down the rail, and never above
  * its stop: let go over halfway, or flicked, it calls [onDismissRequest]; else it settles back in 120 ms hard-stop. A click
  * on the screen, Escape, the system back gesture and the screen reader's dismiss call [onDismissRequest] too, and focus stays
- * in the sheet while it is open. [paneTitle] is what a screen reader calls it, for there is no title drawn.
+ * in the sheet while it is open. [paneTitle] is what a screen reader calls it, for there is no title drawn. Its ground runs
+ * to the foot of the box, and [content] stops above [windowInsets], the system's bar by default.
  */
 @Composable
 public fun PlakatBottomSheet(
@@ -95,9 +99,10 @@ public fun PlakatBottomSheet(
     modifier: Modifier = Modifier,
     ground: PlakatSheetGround = PlakatSheetGround.Paper,
     paneTitle: String? = null,
+    windowInsets: WindowInsets = WindowInsets.navigationBars,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    PlakatBottomSheetFrame(visible, onDismissRequest, modifier, ground, paneTitle, content)
+    PlakatBottomSheetFrame(visible, onDismissRequest, modifier, ground, paneTitle, content, windowInsets = windowInsets)
 }
 
 @Composable
@@ -109,6 +114,7 @@ internal fun PlakatBottomSheetFrame(
     paneTitle: String?,
     content: @Composable ColumnScope.() -> Unit,
     playIn: Boolean = true,
+    windowInsets: WindowInsets = NoInsets,
 ) {
     val colors = PlakatTheme.colors
     val reduce = PlakatTheme.reduceMotion
@@ -224,7 +230,13 @@ internal fun PlakatBottomSheetFrame(
                 Box(Modifier.size(HandleWidth, PlakatLines.Bar).background(colors.ink))
             }
             CompositionLocalProvider(LocalPlakatContentColor provides colors.ink) {
-                Column(Modifier.weight(1f, fill = false).verticalScroll(rememberScrollState()), content = content)
+                Column(
+                    Modifier
+                        .weight(1f, fill = false)
+                        .verticalScroll(rememberScrollState())
+                        .windowInsetsPadding(windowInsets),
+                    content = content,
+                )
             }
         }
     }

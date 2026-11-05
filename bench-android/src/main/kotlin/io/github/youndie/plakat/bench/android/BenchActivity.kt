@@ -13,6 +13,7 @@ import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
@@ -29,8 +30,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
+import io.github.youndie.plakat.components.PlakatBottomSheet
+import io.github.youndie.plakat.components.PlakatListItem
+import io.github.youndie.plakat.components.PlakatMasthead
+import io.github.youndie.plakat.components.PlakatNavigationBar
+import io.github.youndie.plakat.components.PlakatNavigationDrawer
+import io.github.youndie.plakat.components.PlakatNavigationItem
 import io.github.youndie.plakat.components.PlakatProjection
 import io.github.youndie.plakat.components.PlakatProjectionForm
+import io.github.youndie.plakat.components.PlakatTopAppBar
+import io.github.youndie.plakat.icons.PlakatIcons
 import io.github.youndie.plakat.print.plakatPaper
 import io.github.youndie.plakat.sample.PlakatUiSample
 import io.github.youndie.plakat.sample.bench.BenchArm
@@ -88,6 +97,7 @@ class BenchActivity : ComponentActivity() {
             "blind" -> blind(dir, commit)
             "still" -> setContent { Still(intent.getStringExtra("form") ?: "proj-horn") }
             "kit" -> setContent { PlakatUiSample() }
+            "edges" -> setContent { Edges(intent.getStringExtra("which") ?: "bars") }
         }
     }
 
@@ -353,6 +363,43 @@ private fun Still(name: String) {
     PlakatTheme {
         Box(Modifier.fillMaxSize().plakatPaper()) {
             PlakatProjection(listOf(word), form, Modifier.size(390.dp, 320.dp), print = false)
+        }
+    }
+}
+
+/** The components that own an edge of the screen, on the whole screen, for a look at what stands under a system's bar (B-54). */
+@Composable
+private fun Edges(which: String) {
+    val items =
+        listOf(
+            PlakatNavigationItem(PlakatIcons.Home, "ЛЕНТА"),
+            PlakatNavigationItem(PlakatIcons.Search, "ПОИСК"),
+            PlakatNavigationItem(PlakatIcons.Settings, "ОПЦИИ"),
+        )
+    PlakatTheme {
+        Box(Modifier.fillMaxSize().plakatPaper()) {
+            Column(Modifier.fillMaxSize()) {
+                if (which == "masthead") {
+                    // Not the page's «ЛИСТ»: on this phone's width it stretches under 1.5, and throws (B-55).
+                    PlakatMasthead("ВЫПУСК", startLabel = "№ 47", endLabel = "НОЯБРЬ")
+                } else {
+                    PlakatTopAppBar("ЛИСТ", subtitle = "№ 47")
+                }
+                Spacer(Modifier.weight(1f))
+                PlakatNavigationBar(items, 0, {})
+            }
+            when (which) {
+                "sheet" -> {
+                    PlakatBottomSheet(true, {}) {
+                        PlakatListItem("Сохранить")
+                        PlakatListItem("Поделиться", divider = false)
+                    }
+                }
+
+                "drawer" -> {
+                    PlakatNavigationDrawer(true, items, 0, {}, {})
+                }
+            }
         }
     }
 }

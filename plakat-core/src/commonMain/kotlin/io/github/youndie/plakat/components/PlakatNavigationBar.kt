@@ -2,8 +2,12 @@ package io.github.youndie.plakat.components
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
@@ -69,7 +73,8 @@ public class PlakatNavigationItem(
  * of [items], each a stencil over its word, in on-red. The active one is told by a red square behind its
  * icon rather than by a red icon, which would fail contrast on the strip (the Icons page: on-red on red
  * is 4.64:1). A new [selectedIndex] sends the square across in 120 ms hard-stop (`lock`), at once under
- * reduced motion. Each item's target is its whole slot.
+ * reduced motion. Each item's target is its whole slot. Its ground runs under [windowInsets], the system's bar by default,
+ * with the strip inside them.
  */
 @Composable
 public fun PlakatNavigationBar(
@@ -77,6 +82,7 @@ public fun PlakatNavigationBar(
     selectedIndex: Int,
     onSelect: (Int) -> Unit,
     modifier: Modifier = Modifier,
+    windowInsets: WindowInsets = WindowInsets.navigationBars,
 ) {
     val colors = PlakatTheme.colors
     val reduce = PlakatTheme.reduceMotion
@@ -131,7 +137,7 @@ public fun PlakatNavigationBar(
             }
         },
         modifier =
-            modifier.drawBehind {
+            modifier.background(strip).windowInsetsPadding(windowInsets).drawBehind {
                 drawRect(strip)
                 val slot = size.width / items.size.coerceAtLeast(1)
                 val w = SquareWidth.toPx()

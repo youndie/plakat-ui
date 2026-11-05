@@ -9,13 +9,18 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.text.BasicText
@@ -88,7 +93,8 @@ private val SquareHeight = 32.dp
  * 200 ms while the dialog's screen closes the rest; set false it goes back the same way, and is gone from the composition
  * after. Under reduced motion all of it is at once. A click on the screen, Escape, the system back gesture and the screen
  * reader's dismiss call [onDismissRequest], and focus stays in the panel while it is open. [paneTitle] is what a screen
- * reader calls it, for there is no title drawn.
+ * reader calls it, for there is no title drawn. Its ground runs the box's whole height, and its rows stand inside
+ * [windowInsets], the system's bars by default.
  */
 @Composable
 public fun PlakatNavigationDrawer(
@@ -99,8 +105,18 @@ public fun PlakatNavigationDrawer(
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
     paneTitle: String? = null,
+    windowInsets: WindowInsets = WindowInsets.systemBars.only(WindowInsetsSides.Vertical),
 ) {
-    PlakatNavigationDrawerFrame(visible, items, selectedIndex, onSelect, onDismissRequest, modifier, paneTitle)
+    PlakatNavigationDrawerFrame(
+        visible,
+        items,
+        selectedIndex,
+        onSelect,
+        onDismissRequest,
+        modifier,
+        paneTitle,
+        windowInsets = windowInsets,
+    )
 }
 
 @Composable
@@ -115,6 +131,7 @@ internal fun PlakatNavigationDrawerFrame(
     playIn: Boolean = true,
     forcePressed: Int? = null,
     forceFocused: Int? = null,
+    windowInsets: WindowInsets = NoInsets,
 ) {
     val colors = PlakatTheme.colors
     val reduce = PlakatTheme.reduceMotion
@@ -187,6 +204,7 @@ internal fun PlakatNavigationDrawerFrame(
                         true
                     }
                 }.verticalScroll(rememberScrollState())
+                .windowInsetsPadding(windowInsets)
                 .padding(vertical = PlakatGrid.Margin)
                 .drawBehind {
                     val row = RowHeight.toPx()

@@ -8,10 +8,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
@@ -67,6 +70,9 @@ import kotlin.math.floor
 private val ExpandedHeight = 128.dp
 private val RowHeight = 56.dp
 private val CollapsedHeight = RowHeight + PlakatLines.Rule
+
+/** A frame's default, as a fixture has no system's bar to stand under. */
+internal val NoInsets = WindowInsets(0, 0, 0, 0)
 
 /** The row's inset: `padding: 0 4px`, with `gap: 4px`. */
 private val RowInset = 4.dp
@@ -171,10 +177,11 @@ public fun PlakatTopAppBar(
     seed: Int = plakatPosterSeed(listOf(title)),
     state: PlakatTopAppBarState? = null,
     navigationIcon: (@Composable () -> Unit)? = null,
+    windowInsets: WindowInsets = WindowInsets.statusBars,
     actions: @Composable RowScope.() -> Unit = {},
 ) {
     val own = state ?: rememberPlakatTopAppBarState()
-    PlakatTopAppBarFrame(title, modifier, subtitle, collapsedTitle, seed, own, navigationIcon, actions)
+    PlakatTopAppBarFrame(title, modifier, subtitle, collapsedTitle, seed, own, navigationIcon, actions, windowInsets)
 }
 
 @Composable
@@ -187,6 +194,7 @@ internal fun PlakatTopAppBarFrame(
     state: PlakatTopAppBarState,
     navigationIcon: (@Composable () -> Unit)?,
     actions: @Composable RowScope.() -> Unit,
+    windowInsets: WindowInsets = NoInsets,
 ) {
     val colors = PlakatTheme.colors
     val type = PlakatTheme.typography
@@ -204,6 +212,8 @@ internal fun PlakatTopAppBarFrame(
         Box(
             modifier
                 .fillMaxWidth()
+                .background(colors.paper)
+                .windowInsetsPadding(windowInsets)
                 .layout { measurable, constraints ->
                     val range = (ExpandedHeight - CollapsedHeight).toPx()
                     state.rangePx = range
@@ -371,7 +381,8 @@ private fun triangle(
  * of [startLabel] and [endLabel], over a bar of 8; 195 dp in all. As [state] folds, linearly with the scroll, it rides up
  * whole and is never scaled, and the ordinary collapsed bar comes down in its last 56 dp, with [collapsedTitle] and a
  * 3 dp rule at the end: 59 dp collapsed, as a [PlakatTopAppBar]'s. The arrival is designed here; the page says only that
- * the masthead rides up and an ordinary bar stays.
+ * the masthead rides up and an ordinary bar stays. Its paper runs under [windowInsets], the system's bar by default, with
+ * the masthead inside them.
  */
 @Composable
 public fun PlakatMasthead(
@@ -382,6 +393,7 @@ public fun PlakatMasthead(
     collapsedTitle: String = title,
     state: PlakatTopAppBarState = rememberPlakatTopAppBarState(),
     navigationIcon: (@Composable () -> Unit)? = null,
+    windowInsets: WindowInsets = WindowInsets.statusBars,
     actions: @Composable RowScope.() -> Unit = {},
 ) {
     val colors = PlakatTheme.colors
@@ -404,6 +416,8 @@ public fun PlakatMasthead(
         Box(
             modifier
                 .fillMaxWidth()
+                .background(colors.paper)
+                .windowInsetsPadding(windowInsets)
                 .layout { measurable, constraints ->
                     val range = (MastheadHeight - CollapsedHeight).toPx()
                     state.rangePx = range

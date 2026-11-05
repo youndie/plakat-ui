@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicText
@@ -79,7 +80,14 @@ fun PlakatUiSample(
         print = PlakatPrintSwitches(texture = textureOn),
         events = events,
     ) {
-        Column(Modifier.fillMaxSize().plakatPaper().testTag("sample-root")) {
+        // On a phone the sample stands inside the system's bars, and a demo's bars inside it have none to run under.
+        Column(
+            Modifier
+                .fillMaxSize()
+                .plakatPaper()
+                .safeDrawingPadding()
+                .testTag("sample-root"),
+        ) {
             Header(
                 shown,
                 { shown = it },
