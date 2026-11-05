@@ -59,7 +59,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-53](docs/backlog/B-53-stretch-in-place.md) `[ ]` | Stretch in place: the poster's fourth layout and the app bar's masthead | P1 | S | B-19, B-25, B-31 |
+| [B-53](docs/backlog/B-53-stretch-in-place.md) `[~]` | Stretch in place: the poster's fourth layout and the app bar's masthead | P1 | S | B-19, B-25, B-31 |
 | [B-32](docs/backlog/B-32-projection.md) `[ ]` | Проекция: text meshed onto a horn, cone, column, sphere, box or stairs | P2 | M | B-02, B-31 |
 | [B-43](docs/backlog/B-43-re-import-the-design.md) `[ ]` | Re-import the design project on a branch of its own | P2 | S | B-05, B-08 |
 | [B-44](docs/backlog/B-44-slider.md) `[ ]` | Slider: rail, ticks and a carriage that stops on them | P2 | M | B-09, B-10, B-12, B-16 |

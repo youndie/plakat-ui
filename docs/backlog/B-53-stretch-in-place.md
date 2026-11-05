@@ -1,7 +1,7 @@
 ---
 id: B-53
 title: "Stretch in place: the poster's fourth layout and the app bar's masthead"
-status: open
+status: wip
 priority: P1
 size: S
 stage: stage-2-components
