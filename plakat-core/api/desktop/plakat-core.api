@@ -122,6 +122,19 @@ public final class io/github/youndie/plakat/components/PlakatTopAppBarState {
 	public final fun getNestedScrollConnection ()Landroidx/compose/ui/input/nestedscroll/NestedScrollConnection;
 }
 
+public final class io/github/youndie/plakat/components/PlakatWindowKt {
+	public static final fun PlakatWindow (Ljava/util/List;ILandroidx/compose/ui/Modifier;ILandroidx/compose/runtime/Composer;II)V
+}
+
+public final class io/github/youndie/plakat/components/PlakatWindowPanel {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function3;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function3;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getBody ()Ljava/lang/String;
+	public final fun getCaption ()Ljava/lang/String;
+	public final fun getPicture ()Lkotlin/jvm/functions/Function3;
+}
+
 public final class io/github/youndie/plakat/icons/PlakatIconKt {
 	public static final fun PlakatIcon-ww6aTOc (Lio/github/youndie/plakat/icons/PlakatStencil;Ljava/lang/String;Landroidx/compose/ui/Modifier;JLandroidx/compose/runtime/Composer;II)V
 }

@@ -147,6 +147,8 @@ export const REFERENCES = [
   // The dialog (B-28): the page's 390 × 420 stage, with its four rows under the screen.
   ...[['Danger_Light', 'Dialog / Danger · БУМАГА'], ['Danger_Dark', 'Dialog / Danger · ЧЁРНАЯ БУМАГА']].map(([name, caption]) => (
     { group: 'Dialog', name, page: MVP, caption, card: 0, part: 'first' })),
+  // The window (B-29): the two panels before their caption, in the page's two columns.
+  ...cells('Window', MVP, 'prev', [['Onboarding', 'Окно / Онбординг · 2 из 4 панелей']]).map((r) => ({ ...r, floor: true })),
   ...cells('Badge', MVP, 'first', [['Number', 'Badge / Число'], ['Dot', '/ Точка']]),
   // The icons (B-11): each of the sixteen at 48, 24 and 16 px, ink on concrete, from the Icons page's
   // grid; a cell is found by its token caption, and the icon is the n-th svg of the row above it.

@@ -1820,6 +1820,30 @@
       "shift": 0.3125
     },
     {
+      "file": "Window_Onboarding_Light.png",
+      "page": "plakat-ui Компоненты.dc.html",
+      "caption": "Окно / Онбординг · 2 из 4 панелей",
+      "card": 0,
+      "part": "prev",
+      "x": 48,
+      "y": 2894,
+      "w": 358,
+      "h": 247,
+      "shift": 0.3125
+    },
+    {
+      "file": "Window_Onboarding_Dark.png",
+      "page": "plakat-ui Компоненты.dc.html",
+      "caption": "Окно / Онбординг · 2 из 4 панелей",
+      "card": 1,
+      "part": "prev",
+      "x": 462,
+      "y": 2894,
+      "w": 358,
+      "h": 247,
+      "shift": 0.3125
+    },
+    {
       "file": "Badge_Number_Light.png",
       "page": "plakat-ui Компоненты.dc.html",
       "caption": "Badge / Число",
