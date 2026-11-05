@@ -222,6 +222,13 @@ class PlakatSegmentedButtonTest {
             }
             waitForIdle()
             assertEquals(paper.ink, frame()[120, 8], "off, its ground ink")
+            val off = frame()
+            assertTrue(
+                (88 until 142).any { x ->
+                    (16 until 32).any { y -> off[x, y] == paper.paper }
+                },
+                "its word in paper",
+            )
             onNodeWithContentDescription("ЧЁРНАЯ").performMouseInput { release() }
             waitForIdle()
             assertEquals(paper.paper, frame()[120, 8], "and back")
@@ -231,6 +238,8 @@ class PlakatSegmentedButtonTest {
             }
             waitForIdle()
             assertEquals(paper.paper, frame()[40, 8], "on, its ground paper")
+            val on = frame()
+            assertTrue((12 until 64).any { x -> (16 until 32).any { y -> on[x, y] == paper.ink } }, "its word in ink")
             onNodeWithContentDescription("БУМАГА").performMouseInput { release() }
         }
 
@@ -247,6 +256,27 @@ class PlakatSegmentedButtonTest {
             onNodeWithContentDescription("ЧЁРНАЯ").performClick()
             waitForIdle()
             assertEquals(-1, chosen)
+        }
+
+    @Test
+    fun `focused a segment has a frame of 3 about its target`() =
+        runComposeUiTest {
+            setContent {
+                CompositionLocalProvider(LocalDensity provides Density(1f)) {
+                    PlakatTheme(colors = paper, reduceMotion = true) {
+                        Box(Modifier.size(400.dp, 48.dp).background(paper.paper).testTag("box")) {
+                            PlakatSegmentedButtonFrame(words, 0, {}, Modifier, true, forceFocused = 1)
+                        }
+                    }
+                }
+            }
+            waitForIdle()
+            val px = frame()
+            assertEquals(paper.ink, px[120, 0], "over the drawn 40, in the target")
+            assertEquals(paper.ink, px[120, 2])
+            assertEquals(paper.paper, px[120, 3])
+            assertEquals(paper.ink, px[120, 47])
+            assertEquals(paper.paper, px[40, 0], "the other has none")
         }
 
     @Test
