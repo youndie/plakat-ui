@@ -6,7 +6,7 @@
 | Build | release, R8 on, not debuggable, debug key, `cmd package compile -m speed-profile -f` |
 | Protocol | [B-06](../../backlog/B-06-frame-cost-measurement.md), committed at `dcabec9` before the first number, amended twice after run 1 (below) |
 | Harness | `FrameBenchmark` unchanged, in `bench-android/`; `scripts/device-bench.sh`; reader `scripts/frame-report.py`, its control in `make check` |
-| Commit in the logs | `9bd740a` run 1, `5aaef41` `blind1`, `1277b84` `blind2`; `1277b84-dirty` run 2 and projection, the APK being built at `1277b84` and only logs uncommitted in the tree |
+| Commit in the logs | `9bd740a` run 1, `5aaef41` `blind1`, `1277b84` `blind2`; `1277b84-dirty` run 2 and projection, the APK being built at `1277b84` and only logs uncommitted in the tree. After the runs the host's `minSdk` went to 31 and its branches below that came out, for lint; nothing it reads changed |
 | Same host, same day | yes for everything here. **The Mac's numbers in [B-51](../measurements-2026-11-05/README.md) are another host and another instrument** |
 
 ## Result

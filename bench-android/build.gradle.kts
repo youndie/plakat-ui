@@ -17,10 +17,8 @@ android {
 
     defaultConfig {
         applicationId = "io.github.youndie.plakat.bench"
-        minSdk =
-            libs.versions.android.minSdk
-                .get()
-                .toInt()
+        // A harness for one phone, and what it reads off the platform takes 31: a frame's deadline and its GPU time.
+        minSdk = 31
         targetSdk =
             libs.versions.android.compileSdk
                 .get()

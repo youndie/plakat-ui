@@ -61,9 +61,6 @@ private const val BLIND_ROUNDS = 4
 private const val BLIND_SECONDS = 4
 private const val SPIN_NS = 5_000_000L
 
-/** Before API 31 a frame has no deadline of its own, and the protocol's is a vsync at 60 Hz. */
-private const val NO_DEADLINE_NS = 16_666_667L
-
 /**
  * The host, by the intent's `mode`: `bench` runs [FrameBenchmark] over `rounds` of `seconds` a arm into `frames.csv` and
  * Android's own per-frame metrics into `metrics.csv`; `arm` shows one arm for the lever's screenshot; `projection` times a form's
@@ -162,7 +159,9 @@ class BenchActivity : ComponentActivity() {
             "${m.getMetric(FrameMetrics.LAYOUT_MEASURE_DURATION)},${m.getMetric(FrameMetrics.DRAW_DURATION)}," +
             "${m.getMetric(FrameMetrics.SYNC_DURATION)},${m.getMetric(FrameMetrics.COMMAND_ISSUE_DURATION)}," +
             "${m.getMetric(FrameMetrics.SWAP_BUFFERS_DURATION)},${m.getMetric(FrameMetrics.TOTAL_DURATION)}," +
-            "${gpu(m)},${deadline(m)},${m.getMetric(FrameMetrics.FIRST_DRAW_FRAME)}"
+            "${m.getMetric(
+                FrameMetrics.GPU_DURATION,
+            )},${m.getMetric(FrameMetrics.DEADLINE)},${m.getMetric(FrameMetrics.FIRST_DRAW_FRAME)}"
 
     /**
      * The instrument's own control (B-06): a known cost inside a graphics layer's draw, which on Android is recorded after
@@ -214,11 +213,6 @@ class BenchActivity : ComponentActivity() {
             }
         }
     }
-
-    private fun gpu(m: FrameMetrics) = if (Build.VERSION.SDK_INT >= 31) m.getMetric(FrameMetrics.GPU_DURATION) else -1L
-
-    private fun deadline(m: FrameMetrics): Long =
-        if (Build.VERSION.SDK_INT >= 31) m.getMetric(FrameMetrics.DEADLINE) else NO_DEADLINE_NS
 
     private fun projection(
         dir: File,
