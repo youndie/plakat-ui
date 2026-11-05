@@ -35,12 +35,18 @@ internal class PlakatPress {
     var focused: Boolean by mutableStateOf(false)
 }
 
-/** Follows [source], reporting `stamp` and `release` once per gesture. */
+/**
+ * Follows [source], reporting `stamp` and `release` once per gesture. [sameUnderReducedMotion] keeps
+ * the return's 60 ms under reduced motion, where a spec row's word is «то же» (the list item's).
+ */
 @Composable
-internal fun rememberPlakatPress(source: InteractionSource): PlakatPress {
+internal fun rememberPlakatPress(
+    source: InteractionSource,
+    sameUnderReducedMotion: Boolean = false,
+): PlakatPress {
     val state = remember { PlakatPress() }
     val events by rememberUpdatedState(PlakatTheme.events)
-    val reduce by rememberUpdatedState(PlakatTheme.reduceMotion)
+    val reduce by rememberUpdatedState(PlakatTheme.reduceMotion && !sameUnderReducedMotion)
     LaunchedEffect(source) {
         source.interactions.collect { interaction: Interaction ->
             when (interaction) {

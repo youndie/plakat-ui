@@ -128,6 +128,11 @@ export const REFERENCES = [
   // snaps the box; the focus ring is 3 px wide 3 px off, so that cell grows 6 px each side.
   ...[['Default', 'Chip / Default', 0, 1], ['Selected', '/ Selected', 1, 3], ['Focused', '/ Focused', 1, 3], ['Disabled', '/ Disabled', 2, 5]].flatMap(([name, caption, light, dark]) =>
     [[name + '_Light', light], [name + '_Dark', dark]].map(([stem, card]) => ({ group: 'Chip', name: stem, page: MVP, caption, card, part: 'first', round: true, ...(name === 'Focused' ? { grow: 6 } : {}) }))),
+  // The list item's rows (B-23), cropped out of the page's one block under its heading: 8 px of padding,
+  // then the rows of 72 and 56 with a 1 px border below all but the pressed one.
+  ...[['Default', 8, 73], ['Pressed', 81, 72], ['Switch', 153, 57], ['Disabled', 210, 57]].flatMap(([name, y, h]) =>
+    [['Light', 'LIST ITEM · БУМАГА'], ['Dark', 'LIST ITEM · ЧЁРНАЯ БУМАГА']].map(([theme, caption]) => (
+      { group: 'ListItem', name: `${name}_${theme}`, page: MVP, caption, card: 0, part: 'next', crop: { x: 0, y, w: 390, h } }))),
   ...cells('Badge', MVP, 'first', [['Number', 'Badge / Число'], ['Dot', '/ Точка']]),
   // The icons (B-11): each of the sixteen at 48, 24 and 16 px, ink on concrete, from the Icons page's
   // grid; a cell is found by its token caption, and the icon is the n-th svg of the row above it.
@@ -194,7 +199,7 @@ const LOCATE = `(ref) => {
   if (!caption) return { error: 'caption ' + JSON.stringify(ref.caption) + ' #' + ref.card + ' not found (' + captions.length + ' on the page)' };
   const cell = caption.parentElement, c = cell.getBoundingClientRect(), t = caption.getBoundingClientRect();
   window.plakatCell = cell;
-  const r = ref.part === 'caption' ? t : ref.part === 'first' ? cell.firstElementChild.getBoundingClientRect()
+  const r = ref.part === 'caption' ? t : ref.part === 'next' ? caption.nextElementSibling.getBoundingClientRect() : ref.part === 'first' ? cell.firstElementChild.getBoundingClientRect()
     : ref.part === 'icon' ? cell.parentElement.firstElementChild.children[ref.index].getBoundingClientRect()
     : { left: c.left, top: c.top, width: c.width, height: t.top - c.top };
   const g = ref.grow ?? 0;
