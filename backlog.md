@@ -59,7 +59,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-20](docs/backlog/B-20-icon-button-and-badge.md) `[ ]` | IconButton and Badge | P1 | M | B-09, B-10, B-11, B-12 |
+| [B-20](docs/backlog/B-20-icon-button-and-badge.md) `[~]` | IconButton and Badge | P1 | M | B-09, B-10, B-11, B-12 |
 | [B-21](docs/backlog/B-21-fab.md) `[ ]` | FAB: the one round shape, riding in on the axis | P1 | M | B-09, B-10, B-11, B-12 |
 | [B-22](docs/backlog/B-22-chip.md) `[ ]` | Chip: the stamp | P1 | M | B-09, B-10, B-12 |
 | [B-23](docs/backlog/B-23-list-item-and-divider.md) `[ ]` | List item and Divider | P1 | S | B-09, B-10, B-12 |
