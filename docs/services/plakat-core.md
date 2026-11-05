@@ -255,7 +255,7 @@ not run it, because the output is committed and pinned by the metrics test.
 - A row of equal slots is laid out by hand where it must match the page: `weight` hands out whole pixels, the page's
   grid keeps 97.5 and each child is placed from the true slot.
 - The dialog is an overlay in the tree, placed last in a screen-filling box, not a window: a platform dialog would
-  bring its own scrim and take the transition with it. It traps neither focus nor the system back gesture yet.
+  bring its own scrim and take the transition with it. Focus stays inside it while it is open, and the system back gesture dismisses it (`navigationevent-compose`, B-36).
 - A row laid out from its end accumulates what its boxes round off: the dialog's plain action stands 151 where
   Chrome's stands at 150.35, a pixel off beside a danger action of 109.35 (`ButtonMetrics.wordWide` keeps each box
   right, not the sum).
@@ -282,5 +282,8 @@ not run it, because the output is committed and pinned by the metrics test.
   `PlakatDialogAction` for its plain words at 13 px, `PlakatGeneratedImage(titleZone, ground)`, `PlakatRapportFill(cell)`.
 - `PlakatCounter`'s row reports real intrinsics: a tile can stretch beside a taller one under `IntrinsicSize.Max`, as a
   grid's `stretch` does. A hand `Layout` with no intrinsics laid each pictogram on its own line there.
+- `concrete-light` is its token two levels up, minus the grain (B-36): ink-muted on concrete has no room (4.5005:1), and a
+  tile that only darkens read 4.43 at its worst letter-sized square. `ContrastOverTextureTest` holds every pair over the
+  tiles and under the grain, by a mean over a 12 dp square, for a letter is not read against one fibre.
 - The klib ABI dump lists the compose compiler's `$stableprop` of internal classes too; adding an
   internal class changes it and needs `updateKotlinAbi`.

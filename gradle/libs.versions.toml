@@ -4,9 +4,15 @@
 sborka = "0.4.0.111"
 # Screenshots and design parity (B-05), the release on Maven Central; toon-ui's version.
 viddik = "0.7.0"
+# The system back gesture for an open dialog (B-36); Compose 1.12's own `BackHandler` is deprecated for it, and this
+# is the version Compose 1.12.1 itself resolves.
+navigationevent = "1.1.0"
 # 37 is forced by the AndroidX Compose 1.12 AAR metadata (kvadrant-ui measured 36 failing).
 android-compileSdk = "37"
 android-minSdk = "24"
+
+[libraries]
+navigationevent-compose = { module = "org.jetbrains.androidx.navigationevent:navigationevent-compose", version.ref = "navigationevent" }
 
 [plugins]
 viddik = { id = "io.github.youndie.viddik", version.ref = "viddik" }

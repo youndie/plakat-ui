@@ -13,7 +13,8 @@ Tokens page's `feTurbulence` recipe was the first plan (D16 as first written); i
 of tens of levels where the delivered paper has one, so the delivered tiles were not made from it:
 
 - paper-light, concrete-light: the token colour minus the dark tile's deviation from its own token
-  (the fibres print dark on light paper, as they print light on dark), opaque;
+  (the fibres print dark on light paper, as they print light on dark), opaque; concrete lifted two levels
+  for ink-muted's contrast (B-36);
 - paper-grain: the overlay for any flat ink, `multiply` at the token's opacity (0.45): the Tokens
   page's grain colour (.42, .34, .20 of white), its alpha set so that over the light paper at that
   opacity it darkens each pixel by the dark tile's deviation.
@@ -42,6 +43,9 @@ def token(name, theme):
 DARK = token("paper", "dark")
 GRAIN_INK = (round(0.42 * 255), round(0.34 * 255), round(0.20 * 255))
 OPACITY = TOKENS["plakat/print"]["paper-texture"]["opacity"]
+# B-36: ink-muted on concrete has no room (4.5005:1 flat), and this tile only darkens: its worst letter-sized
+# square read 4.43. Two levels up holds 4.5, and it is a tile made here, so nothing of the design moves.
+CONCRETE_LIFT = 2
 
 
 def clamp(v):
@@ -75,7 +79,7 @@ def build():
     size, dev = deviation()
     tiles = {
         "paper_light": opaque(token("paper", "light"), size, dev),
-        "concrete_light": opaque(token("concrete", "light"), size, dev),
+        "concrete_light": opaque(tuple(c + CONCRETE_LIFT for c in token("concrete", "light")), size, dev),
         "paper_grain": grain(size, dev),
     }
     for f in ["paper-dark-2x", "nonprint-mask-2x", "halftone-screen-25-2x", "halftone-screen-50-2x", "halftone-screen-75-2x"]:

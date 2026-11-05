@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -364,7 +363,7 @@ private fun SwitchRow(
     }
 }
 
-/** The page's segmented control, until the kit has one (B-49). */
+/** The page's segmented control, until the kit has one (B-49): drawn 40 high, in a target of 48. */
 @Composable
 private fun ThemeSwitch(
     dark: Boolean,
@@ -374,10 +373,12 @@ private fun ThemeSwitch(
     Row(
         Modifier.drawBehind {
             val line = 3.dp.toPx()
-            drawRect(colors.ink, Offset.Zero, Size(size.width, line))
-            drawRect(colors.ink, Offset(0f, size.height - line), Size(size.width, line))
-            drawRect(colors.ink, Offset.Zero, Size(line, size.height))
-            drawRect(colors.ink, Offset(size.width - line, 0f), Size(line, size.height))
+            val inset = 4.dp.toPx()
+            val high = size.height - 2 * inset
+            drawRect(colors.ink, Offset(0f, inset), Size(size.width, line))
+            drawRect(colors.ink, Offset(0f, inset + high - line), Size(size.width, line))
+            drawRect(colors.ink, Offset(0f, inset), Size(line, high))
+            drawRect(colors.ink, Offset(size.width - line, inset), Size(line, high))
         },
     ) {
         Segment("БУМАГА", !dark) { onChange(false) }
@@ -386,21 +387,25 @@ private fun ThemeSwitch(
 }
 
 @Composable
-private fun RowScope.Segment(
+private fun Segment(
     text: String,
     on: Boolean,
     onClick: () -> Unit,
 ) {
     val colors = PlakatTheme.colors
     Box(
-        Modifier
-            .height(40.dp)
-            .background(if (on) colors.ink else Color.Transparent)
-            .clickable(onClick = onClick)
-            .padding(horizontal = 12.dp),
+        Modifier.height(48.dp).clickable(onClick = onClick).padding(vertical = 4.dp),
         contentAlignment = Alignment.Center,
     ) {
-        BasicText(text, style = segmentStyle(if (on) colors.paper else colors.ink))
+        Box(
+            Modifier
+                .height(40.dp)
+                .background(if (on) colors.ink else Color.Transparent)
+                .padding(horizontal = 12.dp),
+            contentAlignment = Alignment.Center,
+        ) {
+            BasicText(text, style = segmentStyle(if (on) colors.paper else colors.ink))
+        }
     }
 }
 

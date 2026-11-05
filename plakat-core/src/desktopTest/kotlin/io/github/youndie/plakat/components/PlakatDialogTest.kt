@@ -10,12 +10,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PixelMap
 import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.ComposeUiTest
@@ -35,6 +38,8 @@ import androidx.compose.ui.test.pressKey
 import androidx.compose.ui.test.v2.runComposeUiTest
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
+import androidx.navigationevent.DirectNavigationEventInput
+import androidx.navigationevent.compose.LocalNavigationEventDispatcherOwner
 import io.github.youndie.plakat.theme.PlakatEvent
 import io.github.youndie.plakat.theme.PlakatTheme
 import io.github.youndie.plakat.tokens.PlakatPalettes
@@ -220,6 +225,64 @@ class PlakatDialogTest {
             onNodeWithTag("s").performKeyInput { pressKey(Key.Escape) }
             waitForIdle()
             assertEquals(2, dismissed.size, "Escape")
+        }
+
+    @Test
+    fun `the system back gesture dismisses, only while it is open`() =
+        runComposeUiTest {
+            val input = DirectNavigationEventInput()
+            val dismissed = mutableListOf<Int>()
+            var visible by mutableStateOf(true)
+            var added = false
+            mainClock.autoAdvance = true
+            setContent {
+                val owner = LocalNavigationEventDispatcherOwner.current!!
+                if (!added) {
+                    owner.navigationEventDispatcher.addInput(input)
+                    added = true
+                }
+                PlakatTheme(reduceMotion = true) {
+                    PlakatDialog(visible, "УДАЛИТЬ", { dismissed += 1 }) { PlakatDialogAction("ОТМЕНА", {}) }
+                }
+            }
+            waitForIdle()
+            input.backCompleted()
+            waitForIdle()
+            assertEquals(1, dismissed.size, "open")
+            visible = false
+            waitForIdle()
+            input.backCompleted()
+            waitForIdle()
+            assertEquals(1, dismissed.size, "closed")
+        }
+
+    @Test
+    fun `focus stays in the dialog and comes to nothing under it`() =
+        runComposeUiTest {
+            var manager: FocusManager? = null
+            setContent {
+                manager = LocalFocusManager.current
+                PlakatTheme(reduceMotion = true) {
+                    Box(Modifier.size(390.dp, 420.dp)) {
+                        PlakatButton("ПОД НИМ", {}, Modifier.testTag("under"))
+                        PlakatDialog(true, "УДАЛИТЬ", {}, text = "Вернуть можно.") {
+                            PlakatDialogAction("ОТМЕНА", {}, Modifier.testTag("first"))
+                            PlakatDialogAction("СТЕРЕТЬ", {}, Modifier.testTag("second"), danger = true)
+                        }
+                    }
+                }
+            }
+            waitForIdle()
+            val reached = mutableSetOf<String>()
+            repeat(6) {
+                manager!!.moveFocus(FocusDirection.Next)
+                waitForIdle()
+                for (tag in listOf("under", "first", "second")) {
+                    val node = onNodeWithTag(tag).fetchSemanticsNode()
+                    if (SemanticsMatcher.expectValue(SemanticsProperties.Focused, true).matches(node)) reached += tag
+                }
+            }
+            assertEquals(setOf("first", "second"), reached, "the actions and only them")
         }
 
     @Test
