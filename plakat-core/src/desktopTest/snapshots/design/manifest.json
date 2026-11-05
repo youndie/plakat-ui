@@ -1748,6 +1748,30 @@
       "shift": 0.3125
     },
     {
+      "file": "NavigationBar_Default_Light.png",
+      "page": "plakat-ui Компоненты.dc.html",
+      "caption": "NavigationBar · 64",
+      "card": 0,
+      "part": "prev",
+      "x": 32,
+      "y": 1673,
+      "w": 390,
+      "h": 64,
+      "shift": 0.3125
+    },
+    {
+      "file": "NavigationBar_Default_Dark.png",
+      "page": "plakat-ui Компоненты.dc.html",
+      "caption": "NavigationBar · 64",
+      "card": 1,
+      "part": "prev",
+      "x": 446,
+      "y": 1673,
+      "w": 390,
+      "h": 64,
+      "shift": 0.3125
+    },
+    {
       "file": "Badge_Number_Light.png",
       "page": "plakat-ui Компоненты.dc.html",
       "caption": "Badge / Число",

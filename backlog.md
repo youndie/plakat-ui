@@ -55,11 +55,10 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 <!-- BEGIN INDEX -->
 
-## Open (24)
+## Open (23)
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-26](docs/backlog/B-26-navigation-bar.md) `[ ]` | NavigationBar: black strip, red square behind the active icon | P1 | M | B-09, B-10, B-11, B-12 |
 | [B-27](docs/backlog/B-27-tabs.md) `[ ]` | Tabs: rubrics with a red bar riding linearly | P1 | M | B-09, B-10, B-12 |
 | [B-28](docs/backlog/B-28-dialog.md) `[ ]` | Dialog: the announcement | P1 | M | B-09, B-10, B-12 |
 | [B-29](docs/backlog/B-29-window.md) `[ ]` | Окно: onboarding and empty-state panels in the manner of ROSTA windows | P1 | M | B-03, B-09, B-10, B-12, B-13 |
@@ -84,7 +83,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 | [B-06](docs/backlog/B-06-frame-cost-measurement.md) `[ ]` | Frame cost on a Pixel 6a: raskat roll, ten cards cascading with texture and registration | P3 | M | B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50, B-51 |
 | [B-37](docs/backlog/B-37-public-repository-and-publishing.md) `[ ]` | Public repository and publishing to Reposilite on every main — last | P3 | S | B-06, B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50 |
 
-## Closed (27)
+## Closed (28)
 
 **Goldens and references regenerate deterministically; the generator and raskat ports match them on every target; the floor and the frame cost have measured numbers**
 
@@ -118,6 +117,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 - [B-23](docs/backlog/B-23-list-item-and-divider.md) `[x]` - List item and Divider
 - [B-24](docs/backlog/B-24-progress.md) `[x]` - Progress: the wedge filling a bar, the stepped sector
 - [B-25](docs/backlog/B-25-top-app-bar.md) `[x]` - TopAppBar: newspaper header, rapport strip, folding on scroll
+- [B-26](docs/backlog/B-26-navigation-bar.md) `[x]` - NavigationBar: black strip, red square behind the active icon
 
 **The owner's questions answered; the design re-imported when it changes**
 

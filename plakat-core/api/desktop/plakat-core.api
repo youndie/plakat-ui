@@ -50,6 +50,17 @@ public final class io/github/youndie/plakat/components/PlakatListItemKt {
 	public static final fun PlakatListItem (Ljava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function0;ZZLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class io/github/youndie/plakat/components/PlakatNavigationBarKt {
+	public static final fun PlakatNavigationBar (Ljava/util/List;ILkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class io/github/youndie/plakat/components/PlakatNavigationItem {
+	public static final field $stable I
+	public fun <init> (Lio/github/youndie/plakat/icons/PlakatStencil;Ljava/lang/String;)V
+	public final fun getIcon ()Lio/github/youndie/plakat/icons/PlakatStencil;
+	public final fun getLabel ()Ljava/lang/String;
+}
+
 public final class io/github/youndie/plakat/components/PlakatPosterKt {
 	public static final fun PlakatPoster (Ljava/util/List;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Lio/github/youndie/plakat/components/PlakatPosterLayout;Ljava/lang/String;IZZLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 	public static final fun plakatPosterSeed (Ljava/util/List;)I
