@@ -59,7 +59,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-22](docs/backlog/B-22-chip.md) `[ ]` | Chip: the stamp | P1 | M | B-09, B-10, B-12 |
+| [B-22](docs/backlog/B-22-chip.md) `[~]` | Chip: the stamp | P1 | M | B-09, B-10, B-12 |
 | [B-23](docs/backlog/B-23-list-item-and-divider.md) `[ ]` | List item and Divider | P1 | S | B-09, B-10, B-12 |
 | [B-24](docs/backlog/B-24-progress.md) `[ ]` | Progress: the wedge filling a bar, the stepped sector | P1 | M | B-09, B-10, B-12 |
 | [B-25](docs/backlog/B-25-top-app-bar.md) `[ ]` | TopAppBar: newspaper header, rapport strip, folding on scroll | P1 | M | B-03, B-09, B-10, B-11, B-12 |
