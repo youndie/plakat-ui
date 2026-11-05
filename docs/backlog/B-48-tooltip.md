@@ -1,7 +1,7 @@
 ---
 id: B-48
 title: "Tooltip: a caption with a straight leader line, as on a drawing"
-status: open
+status: wip
 priority: P2
 size: M
 stage: stage-2-components

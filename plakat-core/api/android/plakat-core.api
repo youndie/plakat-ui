@@ -409,6 +409,19 @@ public final class io/github/youndie/plakat/components/PlakatTextFieldKt {
 	public static final fun PlakatTextField (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLandroidx/compose/foundation/text/KeyboardOptions;Landroidx/compose/foundation/text/KeyboardActions;Landroidx/compose/ui/text/input/VisualTransformation;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;III)V
 }
 
+public final class io/github/youndie/plakat/components/PlakatTooltipAxis : java/lang/Enum {
+	public static final field Level Lio/github/youndie/plakat/components/PlakatTooltipAxis;
+	public static final field Tilted Lio/github/youndie/plakat/components/PlakatTooltipAxis;
+	public static final field Upright Lio/github/youndie/plakat/components/PlakatTooltipAxis;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lio/github/youndie/plakat/components/PlakatTooltipAxis;
+	public static fun values ()[Lio/github/youndie/plakat/components/PlakatTooltipAxis;
+}
+
+public final class io/github/youndie/plakat/components/PlakatTooltipKt {
+	public static final fun PlakatTooltip (Ljava/lang/String;Landroidx/compose/ui/Modifier;Lio/github/youndie/plakat/components/PlakatTooltipAxis;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+}
+
 public final class io/github/youndie/plakat/components/PlakatTopAppBarKt {
 	public static final fun PlakatMasthead (Ljava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lio/github/youndie/plakat/components/PlakatTopAppBarState;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 	public static final fun PlakatTopAppBar (Ljava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/String;Ljava/lang/String;ILio/github/youndie/plakat/components/PlakatTopAppBarState;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
