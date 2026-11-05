@@ -119,6 +119,11 @@ export const REFERENCES = [
     { group: 'IconButton', name: `${name}_Light`, page: MVP, caption, card: light, part: 'first' },
     { group: 'IconButton', name: `${name}_Dark`, page: MVP, caption, card: dark, part: 'first' },
   ]),
+  // The FAB's cells (B-21), the same way: its captions are the second in each card, its Disabled after the IconButton's.
+  ...[['Default', 'FAB / Default', 0, 1], ['Pressed', '/ Pressed', 1, 3], ['Disabled', '/ Disabled', 1, 4]].flatMap(([name, caption, light, dark]) => [
+    { group: 'Fab', name: `${name}_Light`, page: MVP, caption, card: light, part: 'first' },
+    { group: 'Fab', name: `${name}_Dark`, page: MVP, caption, card: dark, part: 'first' },
+  ]),
   ...cells('Badge', MVP, 'first', [['Number', 'Badge / Число'], ['Dot', '/ Точка']]),
   // The icons (B-11): each of the sixteen at 48, 24 and 16 px, ink on concrete, from the Icons page's
   // grid; a cell is found by its token caption, and the icon is the n-th svg of the row above it.

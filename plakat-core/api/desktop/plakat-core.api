@@ -18,6 +18,10 @@ public final class io/github/youndie/plakat/components/PlakatCheckboxKt {
 	public static final fun PlakatCheckbox (ZLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZZLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class io/github/youndie/plakat/components/PlakatFabKt {
+	public static final fun PlakatFab (Lio/github/youndie/plakat/icons/PlakatStencil;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZZLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
+}
+
 public final class io/github/youndie/plakat/components/PlakatIconButtonKt {
 	public static final fun PlakatIconButton (Lio/github/youndie/plakat/icons/PlakatStencil;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZZLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
 }
