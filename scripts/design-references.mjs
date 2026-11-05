@@ -133,6 +133,9 @@ export const REFERENCES = [
   ...[['Default', 8, 73], ['Pressed', 81, 72], ['Switch', 153, 57], ['Disabled', 210, 57]].flatMap(([name, y, h]) =>
     [['Light', 'LIST ITEM · БУМАГА'], ['Dark', 'LIST ITEM · ЧЁРНАЯ БУМАГА']].map(([theme, caption]) => (
       { group: 'ListItem', name: `${name}_${theme}`, page: MVP, caption, card: 0, part: 'next', crop: { x: 0, y, w: 390, h } }))),
+  // Progress (B-24). The linear cells sit in a column of 218.67 px, rounded as Blink snaps the box.
+  ...cells('Progress', MVP, 'first', [['Linear0', 'Linear / 0 %'], ['Linear40', 'Linear / 40 %'], ['Linear100', 'Linear / 100 %']]).map((r) => ({ ...r, round: true })),
+  ...cells('Progress', MVP, 'first', [['Circular25', 'Circular / 25 %'], ['Circular70', '/ 70 %'], ['Spinner', '/ Indeterminate'], ['SpinnerInline', '/ 24 inline']]),
   ...cells('Badge', MVP, 'first', [['Number', 'Badge / Число'], ['Dot', '/ Точка']]),
   // The icons (B-11): each of the sixteen at 48, 24 and 16 px, ink on concrete, from the Icons page's
   // grid; a cell is found by its token caption, and the icon is the n-th svg of the row above it.
@@ -242,6 +245,10 @@ async function open(cdp, page) {
   await evaluate(`(() => { for (const e of document.querySelectorAll('*')) { const s = getComputedStyle(e);
     if ((s.position === 'absolute' || s.position === 'fixed') && s.pointerEvents === 'none' && s.mixBlendMode !== 'normal') e.style.visibility = 'hidden'; } return true; })()`);
   await evaluate('new Promise(r => requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(() => r(true), 100))))');
+  // A running loop (the MVP page's spinner, on the page's own switch rather than the media query) is
+  // stopped at its first frame, or each render would photograph it wherever the clock had got to.
+  await evaluate(`(() => { for (const a of document.getAnimations()) { a.pause(); a.currentTime = 0; } return true; })()`);
+  await evaluate('new Promise(r => requestAnimationFrame(() => requestAnimationFrame(() => r(true))))');
   if (errors.length) throw new Error(`${page}: ${errors.join('; ')}`);
   return { sessionId, targetId, evaluate, close: async () => { cdp.listeners.splice(cdp.listeners.indexOf(listener), 1); await cdp.send('Target.closeTarget', { targetId }); } };
 }
