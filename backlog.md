@@ -41,7 +41,7 @@ hover with a wide poster, and the v1 components are designed in this repository
 ([B-38](docs/backlog/B-38-radio-button.md), [B-39](docs/backlog/B-39-desktop-and-hover.md),
 [B-42](docs/backlog/B-42-v1-components-designed-here.md)); the repository goes public and publishes
 last ([B-37](docs/backlog/B-37-public-repository-and-publishing.md)). The loop works the backlog
-locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
+through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 
 ## Stages
 
@@ -59,7 +59,7 @@ locally and merges its own branches (`CLAUDE.md`, «Local workflow»).
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-37](docs/backlog/B-37-public-repository-and-publishing.md) `[ ]` | Public repository and publishing to Reposilite on every main — last | P3 | S | B-06, B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50 |
+| [B-37](docs/backlog/B-37-public-repository-and-publishing.md) `[~]` | Public repository and publishing to Reposilite on every main — last | P3 | S | B-06, B-35, B-36, B-38, B-39, B-44, B-45, B-46, B-47, B-48, B-49, B-50 |
 | [B-43](docs/backlog/B-43-re-import-the-design.md) `[ ]` | Re-import the design project on a branch of its own | P3 | S | B-05, B-08 |
 
 ## Closed (54)

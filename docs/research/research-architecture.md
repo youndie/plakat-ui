@@ -52,8 +52,8 @@ port is right ([B-03](../backlog/B-03-generator-port-and-numeric-parity.md)).
 
 ### 1.2 What kind of design this is
 
-`cmp-ui-library` splits designs into CSS design systems (pixels only) and executable designs
-(numbers and pixels). This one is both, by part.
+A design is either a CSS design system (pixels only) or an executable one (numbers and pixels). This
+one is both, by part.
 
 | Fact | Where verified |
 |---|---|
@@ -272,7 +272,7 @@ because the references were rendered with them.
 ### D12. Built and verified on the Mac; the repository stays out of mutagen sync
 
 Screenshot references and goldens are a claim about the rasteriser that recorded them
-(`cmp-ui-library` §9). The repository is not in `mutagen sync list`.
+(toon-ui holds its goldens the same way). The repository is not in `mutagen sync list`.
 
 ### D13. What the design does not draw is designed here, from the brief and the Principles recipe *(deviation from the line's rule)*
 

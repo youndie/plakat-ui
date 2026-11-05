@@ -1,5 +1,5 @@
 // The library: everything a consumer of plakat-ui depends on (research D1). No Material artefact,
-// no sample and no design references here; publishing arrives with B-37.
+// no sample and no design references here.
 plugins {
     alias(wip.plugins.kotlinMultiplatform)
     alias(wip.plugins.composeMultiplatform)
@@ -9,6 +9,8 @@ plugins {
     alias(libs.plugins.viddik)
     id("io.github.youndie.sborka.kmp")
     id("io.github.youndie.sborka.lint")
+    // Every push to `main` publishes `<version>.<run>` to the Reposilite (B-37).
+    id("io.github.youndie.sborka.publish")
 }
 
 // Four targets (research D2). Android and iOS lead the brief; desktop is where the screenshot and

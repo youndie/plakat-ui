@@ -18,7 +18,7 @@ import kotlin.test.assertTrue
 
 /**
  * B-08: a second reading of `plakat-tokens.json`, independent of the generator, held against the
- * generated tokens — a slip in one reader is caught by the other (cmp-ui-library §5).
+ * generated tokens — a slip in one reader is caught by the other.
  */
 class PlakatTokensTest {
     private val json: JsonObject =

@@ -1,7 +1,7 @@
 ---
 id: B-37
 title: "Public repository and publishing to Reposilite on every main — last"
-status: open
+status: wip
 priority: P3
 size: S
 stage: stage-4-product

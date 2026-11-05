@@ -101,7 +101,7 @@ internal object PlakatFaceMetrics {
  * floors the half-leading; Compose centres the face's unrounded metrics in the line. Each puts the
  * baseline in a different pixel (a field's text, an error message: a pixel low). The line height is
  * Blink's, and the share of the leading above the text is chosen so the baseline falls where Blink's
- * does (cmp-ui-parity's catalogue, "Blink rounds ascent and descent").
+ * does: Blink rounds the ascent and the descent.
  */
 internal fun TextStyle.cssLine(
     face: FaceMetrics,

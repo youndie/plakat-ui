@@ -24,21 +24,23 @@ component library. The design is a Claude Design project, frozen in
 4. The layer document for the area you are touching, once it exists ([docs/README.md](docs/README.md)
    lists what does).
 
-## Local workflow
+## Workflow
 
-There is no remote repository ([B-37](docs/backlog/B-37-public-repository-and-publishing.md) is
-last), so no pull requests. The loop over the backlog works one item per branch and merges it itself
-(owner, 2026-11-03):
+The repository is public ([B-37](docs/backlog/B-37-public-repository-and-publishing.md)). The loop
+over the backlog works one item per pull request and merges its own on green:
 
-1. `feat/b-NN-<slug>` from `main`, in this checkout.
-2. Implement, with the item's status and documents in the same branch.
-3. On the branch's head commit, `make check` and `./gradlew check` (once B-01 has made the build)
-   are both green, in one chain with the merge.
-4. `git merge --no-ff` into `main`, with `Refs: B-NN` in the merge message. The branch is kept.
+1. `feat/b-NN-<slug>` (`fix/b-NN-<slug>` for a defect) from `main`, in this checkout, never a commit
+   on `main`.
+2. Implement, with the item's status and documents in the same branch. Both gates green locally.
+3. Push and open a pull request; `Refs: B-NN` in its commits.
+4. Merge only on a verdict over the head commit, from every check run on it: none red, none
+   pending, zero behind `main`. There is no branch protection, so GitHub's auto-merge would merge
+   before CI. Squash, with the subject in Conventional Commits and `gh pr merge --match-head-commit`.
 
 Red is never merged, and a check is never loosened to get green. An item whose status is
-`question` stops the loop with the question instead. The owner asked (2026-11-03) for the loop to
-run to the end: device measurement (B-06) and the review of components designed here come last.
+`question` stops the loop with the question instead.
+
+Every merge to `main` publishes a version and deploys the site.
 
 ## Gates
 

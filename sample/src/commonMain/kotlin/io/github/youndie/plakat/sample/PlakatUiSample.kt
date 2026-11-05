@@ -50,7 +50,7 @@ private const val BEAT_MS = 2000L
 
 /**
  * The sample's root, shared by the desktop window and the browser, through the kit's public API only. The theme and
- * reduce motion are parameters and switches in its header, so they reach every screen it shows (cmp-ui-library §7).
+ * reduce motion are parameters and switches in its header, so they reach every screen it shows.
  * [events] hears the kit's [PlakatEventListener]. With [autoplay], numbers and pages move by themselves, so an animation is
  * seen without a click.
  */
