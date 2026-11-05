@@ -1,7 +1,7 @@
 ---
 id: B-35
 title: "Demo screens and the sample kit: onboarding, feed, settings in both themes"
-status: open
+status: wip
 priority: P1
 size: M
 stage: stage-3-screens
