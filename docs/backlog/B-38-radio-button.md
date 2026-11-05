@@ -1,7 +1,7 @@
 ---
 id: B-38
 title: "RadioButton: a ring with a red disc that locks in one frame"
-status: open
+status: wip
 priority: P1
 size: S
 stage: stage-2-components
