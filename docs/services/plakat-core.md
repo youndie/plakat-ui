@@ -287,11 +287,10 @@ not run it, because the output is committed and pinned by the metrics test.
 - A stretched line is fitted by its ink, and Compose has no way to ask for ink: a layout knows advances, and its path
   for a range is the selection's boxes. So the font's boxes are a generated table, read once more through AWT's outlines
   in `PlakatStretchTest`. Rubik Mono One's advance is 850 for every glyph, so the pen needs no layout either.
-- `PlakatStretch` throws at drawing when a text stretches outside 1.5 to 4, as the page's sketch says. A text or box not
-  known in advance asks `plakatStretchFactor` first.
+- `PlakatStretch` holds a stretch within 1.5 to 4 and comes short of its box rather than break the rule: of the width from the left, or of the height with its baseline at the foot (B-55). The page's sketch has a `require`, which threw in a user's hands at a phone's width. `plakatStretchFactor` says beforehand.
 - The legend's ■ and ● are in neither font, so the marks are drawn, with the metrics of the face Chrome falls back to
   in the references. A column's box goes by the digits showing: a new value composes once before its tick starts, and
-  a box set by the target would hold the old digits at the wrong stretch, which `PlakatStretch` refuses.
+  a box set by the target would hold the old digits at the wrong stretch, which `PlakatStretch` would keep short of its box.
 - A preset is figures with tokens and is drawn by the theme, not an `ImageVector` per palette: the generator refuses a
   light and a dark file that are not the same figures, and refuses any `fill` that is no token.
 - The page's photomontage is a canvas of 680 × 840 the browser scales to 340 × 420. The fixtures draw at density 1, so
