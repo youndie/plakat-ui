@@ -284,16 +284,19 @@ class PlakatPullToRefreshTest {
     fun `a wheel makes no pull`() =
         runComposeUiTest {
             pull()
+            // Down a little first, so that the wheel coming back up has more than it needs at the list's top.
             onNodeWithTag("list").performMouseInput {
                 moveTo(center)
-                scroll(-400f)
+                scroll(3f)
             }
+            waitForIdle()
+            onNodeWithTag("list").performMouseInput { scroll(-40f) }
             waitForIdle()
             assertEquals(0, frame().wedge())
         }
 
     @Test
-    fun `not enabled, or already refreshing, there is no pull`() =
+    fun `already refreshing there is no pull`() =
         runComposeUiTest {
             var on by mutableStateOf(false)
             pull({ on }, enabled = true)
@@ -301,6 +304,15 @@ class PlakatPullToRefreshTest {
             waitForIdle()
             drag(60f)
             assertEquals(paper.paper, frame()[0, 0], "the plate and no wedge")
+            lift()
+        }
+
+    @Test
+    fun `not enabled there is no pull`() =
+        runComposeUiTest {
+            pull(enabled = false)
+            drag(60f)
+            assertEquals(0, frame().wedge())
             lift()
         }
 
