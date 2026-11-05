@@ -1,7 +1,7 @@
 ---
 id: B-19
 title: "Плакат: Круг, Баннер, Фон — generator, raskat roll, diagonal title"
-status: open
+status: wip
 priority: P1
 size: L
 stage: stage-2-components
