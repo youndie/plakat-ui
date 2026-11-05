@@ -1796,6 +1796,30 @@
       "shift": 0.3125
     },
     {
+      "file": "Dialog_Danger_Light.png",
+      "page": "plakat-ui Компоненты.dc.html",
+      "caption": "Dialog / Danger · БУМАГА",
+      "card": 0,
+      "part": "first",
+      "x": 32,
+      "y": 2280,
+      "w": 390,
+      "h": 420,
+      "shift": 0.3125
+    },
+    {
+      "file": "Dialog_Danger_Dark.png",
+      "page": "plakat-ui Компоненты.dc.html",
+      "caption": "Dialog / Danger · ЧЁРНАЯ БУМАГА",
+      "card": 0,
+      "part": "first",
+      "x": 446,
+      "y": 2280,
+      "w": 390,
+      "h": 420,
+      "shift": 0.3125
+    },
+    {
       "file": "Badge_Number_Light.png",
       "page": "plakat-ui Компоненты.dc.html",
       "caption": "Badge / Число",

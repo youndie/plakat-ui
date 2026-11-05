@@ -1,0 +1,319 @@
+package io.github.youndie.plakat.components
+
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Canvas
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.ImageShader
+import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.ShaderBrush
+import androidx.compose.ui.graphics.TileMode
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.dialog
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.paneTitle
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import io.github.youndie.plakat.print.PlakatCutShape
+import io.github.youndie.plakat.print.PlakatWipe
+import io.github.youndie.plakat.print.plakatWipe
+import io.github.youndie.plakat.theme.PlakatEvent
+import io.github.youndie.plakat.theme.PlakatFaceMetrics
+import io.github.youndie.plakat.theme.PlakatTheme
+import io.github.youndie.plakat.theme.cssLine
+import io.github.youndie.plakat.tokens.PlakatColors
+import io.github.youndie.plakat.tokens.PlakatDurations
+import io.github.youndie.plakat.tokens.PlakatEasings
+import io.github.youndie.plakat.tokens.PlakatGrid
+import kotlin.math.ceil
+import kotlin.math.hypot
+
+/** The sheet: the MVP page's `left: 24px; right: 24px; top: 96px`, on paper. */
+private val SheetInset = 24.dp
+private val SheetTop = 96.dp
+
+/** The padding of its three parts: `16px 20px`, `16px 20px` and `0 20px 20px`. */
+private val PartX = 20.dp
+private val PartY = 16.dp
+
+/**
+ * The title's plate: `font-size: 20px; line-height: 1.1`, 22 high. That is shorter than the face's 25, which
+ * [cssLine] cannot do, so it is a `normal` line lifted 2 into its padding: the baseline stands where Blink's does.
+ */
+private const val TITLE_SP = 20
+private val TitleLift = 2.dp
+private val TitleLine = 22.dp
+private val FaceLine = 25.dp
+
+/** The body: `font-size: 16px; line-height: 1.45`. */
+private const val BODY_LINE = 1.45f
+
+/** The actions' words: `font-size: 13px` with no tracking, a 3 dp rule 3 under, in a target of 48. */
+private const val ACTION_SP = 13
+private val ActionUnderlineGap = 3.dp
+
+/** The plain action's `padding: 0 12px`, and the danger word's plate `padding: 6px 8px`. */
+private val ActionInset = 12.dp
+private val DangerActionPlate = 8.dp
+
+/** The sheet rides from `translateY(-320px)`, whatever its height. */
+private val RideFrom = 320.dp
+
+/** The screen's edge leans back this far over its height: `polygon(0 0, x 0, x − 120px 100%, 0 100%)`. */
+private val ScreenSlant = 120.dp
+
+/** Open and close under reduced motion: the spec row's `fade 100`. */
+private const val FADE_MS = 100
+
+/** The screen's pitch and its dots: `radial-gradient(circle, ink 0 1.6px, transparent 1.8px)`, `background-size: 4px 4px`. */
+private val ScreenPitch = 4.dp
+private const val DOT_SOLID = 1.6f
+private const val DOT_EDGE = 1.8f
+
+/** The screen's ink in the dark theme, darker than its paper: the page's `scrim: #0E0D0B`, no token of the design's. */
+private val DarkScreen = Color(0xFF0E0D0B)
+
+/**
+ * A dialog, the announcement: place it last in a screen-filling box. A red title plate with the cut corner,
+ * [text] under it, and [actions] at the end, usually [PlakatDialogAction]s; the background is closed by a
+ * screen of ink dots, a danger's distinction being the hatch and word of its action.
+ *
+ * With [visible] true, whether from the start or set later, it opens (`announce`): the screen closes the
+ * background by a diagonal wipe from the left and the sheet rides down from above, on one clock of 320 ms,
+ * linear; set false it goes back the same way, and is gone from the composition after. Under reduced motion
+ * both fade, 100 ms. A click on the screen or Escape calls [onDismissRequest]; the sheet takes its own clicks.
+ */
+@Composable
+public fun PlakatDialog(
+    visible: Boolean,
+    title: String,
+    onDismissRequest: () -> Unit,
+    modifier: Modifier = Modifier,
+    text: String? = null,
+    actions: @Composable RowScope.() -> Unit,
+) {
+    PlakatDialogFrame(visible, title, onDismissRequest, modifier, text, actions)
+}
+
+@Composable
+internal fun PlakatDialogFrame(
+    visible: Boolean,
+    title: String,
+    onDismissRequest: () -> Unit,
+    modifier: Modifier,
+    text: String?,
+    actions: @Composable RowScope.() -> Unit,
+    playIn: Boolean = true,
+) {
+    val colors = PlakatTheme.colors
+    val reduce = PlakatTheme.reduceMotion
+    val events by rememberUpdatedState(PlakatTheme.events)
+    val dismiss by rememberUpdatedState(onDismissRequest)
+    val open = remember { Animatable(if (visible && !playIn) 1f else 0f) }
+    // A dialog that starts visible opens: its first `announce` is the change from what stood before it.
+    var seen by remember { mutableStateOf(visible && !playIn) }
+    LaunchedEffect(visible, reduce) {
+        if (visible != seen) events.onEvent(PlakatEvent.Announce)
+        seen = visible
+        val ms = if (reduce) FADE_MS else PlakatDurations.SCENE
+        open.animateTo(if (visible) 1f else 0f, tween(ms, easing = PlakatEasings.Linear))
+    }
+    // Closed, nothing of it is composed or takes input.
+    val gone by remember { derivedStateOf { open.value == 0f } }
+    if (!visible && gone) return
+    val focus = remember { FocusRequester() }
+    LaunchedEffect(visible) { if (visible) focus.requestFocus() }
+    val type = PlakatTheme.typography
+    Box(
+        modifier
+            .fillMaxSize()
+            .focusRequester(focus)
+            .onPreviewKeyEvent {
+                if (it.type == KeyEventType.KeyDown && it.key == Key.Escape) {
+                    dismiss()
+                    true
+                } else {
+                    false
+                }
+            }.focusable(),
+    ) {
+        Screen(colors, reduce, { open.value }) { if (visible) dismiss() }
+        Column(
+            Modifier
+                .padding(start = SheetInset, top = SheetTop, end = SheetInset)
+                .fillMaxWidth()
+                .graphicsLayer {
+                    if (reduce) {
+                        alpha = open.value
+                    } else {
+                        translationY = (open.value - 1f) * RideFrom.toPx()
+                    }
+                }.pointerInput(Unit) {}
+                .background(colors.paper)
+                .semantics {
+                    dialog()
+                    paneTitle = title
+                },
+        ) {
+            Box(Modifier.fillMaxWidth().background(colors.red, PlakatCutShape())) {
+                BasicText(
+                    title,
+                    Modifier
+                        .padding(
+                            start = PartX,
+                            top = PartY - TitleLift,
+                            end = PartX,
+                            bottom = PartY - (FaceLine - TitleLine - TitleLift),
+                        ).semantics { heading() },
+                    style =
+                        type.displayL.style
+                            .copy(fontSize = TITLE_SP.sp, color = colors.onRed)
+                            .cssLine(PlakatFaceMetrics.Display),
+                )
+            }
+            if (text != null) {
+                CssParagraph(
+                    text,
+                    type.bodyM.style.copy(fontWeight = FontWeight.Normal),
+                    BODY_LINE,
+                    colors.ink,
+                    Modifier.padding(horizontal = PartX, vertical = PartY),
+                )
+            }
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(start = PartX, end = PartX, bottom = PartX),
+                horizontalArrangement = Arrangement.spacedBy(PlakatGrid.Step, Alignment.End),
+                content = actions,
+            )
+        }
+    }
+}
+
+/** The screen over the background: a click on it asks to dismiss, and nothing under it is reached. */
+@Composable
+private fun BoxScope.Screen(
+    colors: PlakatColors,
+    reduce: Boolean,
+    open: () -> Float,
+    onClick: () -> Unit,
+) {
+    val density = LocalDensity.current
+    val ink = if (colors.ink.luminance() < colors.paper.luminance()) colors.ink else DarkScreen
+    val tile = remember(ink, density) { screenTile(ink, density) }
+    val brush = remember(tile) { ShaderBrush(ImageShader(tile, TileMode.Repeated, TileMode.Repeated)) }
+    Box(
+        Modifier
+            .matchParentSize()
+            .clearAndSetSemantics {}
+            .then(
+                if (reduce) {
+                    Modifier.graphicsLayer { alpha = open() }
+                } else {
+                    Modifier.plakatWipe(PlakatWipe.Diagonal(ScreenSlant), open)
+                },
+            ).clickable(remember { MutableInteractionSource() }, indication = null, onClick = onClick)
+            .drawBehind { drawRect(brush, Offset.Zero, Size(size.width, size.height)) },
+    )
+}
+
+/**
+ * One tile of the screen: a dot of solid ink to 1.6 dp fading out at 1.8, evaluated at each pixel's centre as
+ * Chrome evaluates a gradient, which at scale 1 is 12 solid pixels in the tile of 16 and bare corners.
+ */
+private fun screenTile(
+    ink: Color,
+    density: Density,
+): ImageBitmap {
+    val px = ceil(ScreenPitch.value * density.density).toInt()
+    val image = ImageBitmap(px, px)
+    val canvas = Canvas(image)
+    val paint = Paint().apply { isAntiAlias = false }
+    val centre = px / 2f
+    for (y in 0 until px) {
+        for (x in 0 until px) {
+            val at = hypot(x + .5f - centre, y + .5f - centre) / density.density
+            val cover = ((DOT_EDGE - at) / (DOT_EDGE - DOT_SOLID)).coerceIn(0f, 1f)
+            if (cover > 0f) {
+                paint.color = ink.copy(alpha = cover)
+                canvas.drawRect(x.toFloat(), y.toFloat(), x + 1f, y + 1f, paint)
+            }
+        }
+    }
+    return image
+}
+
+/**
+ * An action of a [PlakatDialog]: a word over a 3 dp rule in a target of 48, or with [danger] on its hatch, which
+ * tells it from a plain one by form and word, not colour. It presses as the kit's buttons do.
+ */
+@Composable
+public fun PlakatDialogAction(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    danger: Boolean = false,
+    enabled: Boolean = true,
+) {
+    PlakatButtonFrame(
+        if (danger) PlakatButtonKind.Danger else PlakatButtonKind.Text,
+        text,
+        onClick,
+        modifier,
+        enabled,
+        loading = false,
+        interactionSource = null,
+        metrics =
+            ButtonMetrics(
+                labelSize = ACTION_SP.sp,
+                tracked = false,
+                dangerPlate = DangerActionPlate,
+                underlineGap = ActionUnderlineGap,
+                inset = ActionInset,
+                wordWide = true,
+            ),
+    )
+}

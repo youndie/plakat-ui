@@ -17,3 +17,5 @@ Every ratio the design claims holds, but ink-muted on concrete is 4.5005:1 and a
 
 - AC: a contrast test over textured surfaces passes in both themes; grayscale goldens committed; a touch-target test over the sample.
 - Anchors: `reference/design-system/plakat-tokens.json`, `reference/design-system/plakat-ui Токены.dc.html`
+
+- From [B-28](B-28-dialog.md): the dialog traps neither focus nor the system back gesture yet; that is this item's to settle.

@@ -28,6 +28,11 @@ public final class io/github/youndie/plakat/components/PlakatChipKt {
 	public static final fun PlakatChip (Ljava/lang/String;ZLkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class io/github/youndie/plakat/components/PlakatDialogKt {
+	public static final fun PlakatDialog (ZLjava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Ljava/lang/String;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PlakatDialogAction (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZZLandroidx/compose/runtime/Composer;II)V
+}
+
 public final class io/github/youndie/plakat/components/PlakatDividerWeight : java/lang/Enum {
 	public static final field Bar Lio/github/youndie/plakat/components/PlakatDividerWeight;
 	public static final field Hair Lio/github/youndie/plakat/components/PlakatDividerWeight;

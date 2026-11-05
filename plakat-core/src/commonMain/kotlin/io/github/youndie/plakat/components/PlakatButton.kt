@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -46,7 +47,9 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -125,6 +128,23 @@ public fun PlakatDangerButton(
 }
 
 internal enum class PlakatButtonKind { Filled, Outlined, Text, Danger }
+
+/**
+ * What a place that draws the kit's button at its own size changes: the word's size ([labelSize] unset keeps
+ * the role's), its tracking, the danger word's plate, the underline's gap and the inset of the word; and
+ * [wordWide], as wide as the word's real width and all around it, rounded as Blink snaps a box, for a row
+ * laid out from its end, where a width ceiled by the layout moves everything before it.
+ */
+internal class ButtonMetrics(
+    val labelSize: TextUnit = TextUnit.Unspecified,
+    val tracked: Boolean = true,
+    val dangerPlate: Dp = DangerPlatePadding,
+    val underlineGap: Dp = UnderlineGap,
+    val inset: Dp = PlakatGrid.Margin,
+    val wordWide: Boolean = false,
+)
+
+private fun TextStyle.untracked(metrics: ButtonMetrics) = if (metrics.tracked) this else copy(letterSpacing = 0.sp)
 
 /** A state forced from outside, for the fixtures of the page's static cells: the look, not the behaviour. */
 internal enum class ButtonLook { Pressed, Focused }
@@ -231,7 +251,7 @@ internal fun PlakatButtonFrame(
     interactionSource: MutableInteractionSource?,
     look: ButtonLook? = null,
     spinnerAtMs: Long? = null,
-    labelSize: TextUnit = TextUnit.Unspecified,
+    metrics: ButtonMetrics = ButtonMetrics(),
 ) {
     val source = interactionSource ?: remember { MutableInteractionSource() }
     val colors = PlakatTheme.colors
@@ -256,18 +276,37 @@ internal fun PlakatButtonFrame(
     val label = PlakatTheme.typography.button
     val style =
         if (kind == PlakatButtonKind.Danger) {
-            label.style.copy(fontSize = DANGER_FONT_SP.sp, color = paint.ink)
+            label.style.copy(fontSize = DANGER_FONT_SP.sp, color = paint.ink).untracked(metrics)
         } else {
             // A poster's slogan button may set its own size (Круг: 16); the line stays one size high.
-            val size = if (labelSize.isSpecified) labelSize else label.style.fontSize
-            val line = if (labelSize.isSpecified) labelSize else label.style.lineHeight
-            label.style.copy(fontSize = size, lineHeight = line, color = paint.ink)
+            val size = if (metrics.labelSize.isSpecified) metrics.labelSize else label.style.fontSize
+            val line = if (metrics.labelSize.isSpecified) metrics.labelSize else label.style.lineHeight
+            label.style.copy(fontSize = size, lineHeight = line, color = paint.ink).untracked(metrics)
         }
     val shift = pressed
+    val measurer = rememberTextMeasurer()
+    val density = LocalDensity.current
+    val wordPx =
+        if (metrics.wordWide) {
+            remember(text, style, density) { measurer.measure(label.text(text), style).getLineRight(0) }
+        } else {
+            null
+        }
+    val fitted =
+        if (wordPx != null) {
+            val around = (
+                metrics.inset.takeIf { kind != PlakatButtonKind.Danger }
+                    ?: (DangerInset + metrics.dangerPlate)
+            )
+            with(density) { Modifier.width(floor(wordPx + 2 * around.toPx() + .5f).toDp()) }
+        } else {
+            Modifier
+        }
     val ringShown = look == ButtonLook.Focused || state.focusShown()
 
     Box(
         modifier
+            .then(fitted)
             .defaultMinSize(minWidth = PlakatSizes.Touch, minHeight = PlakatSizes.Button)
             .height(PlakatSizes.Button)
             .drawWithContent {
@@ -298,8 +337,15 @@ internal fun PlakatButtonFrame(
                 role = Role.Button,
                 onClick = onClick,
             ).semantics { if (loading) stateDescription = loadingWord }
-            .padding(horizontal = if (kind == PlakatButtonKind.Danger) DangerInset else PlakatGrid.Margin),
-        contentAlignment = if (kind == PlakatButtonKind.Danger) Alignment.CenterStart else Alignment.Center,
+            .padding(horizontal = if (kind == PlakatButtonKind.Danger) DangerInset else metrics.inset),
+        contentAlignment =
+            if (kind == PlakatButtonKind.Danger ||
+                metrics.wordWide
+            ) {
+                Alignment.CenterStart
+            } else {
+                Alignment.Center
+            },
     ) {
         val wiped =
             Modifier.drawWithContent {
@@ -313,17 +359,34 @@ internal fun PlakatButtonFrame(
             }
         when (kind) {
             PlakatButtonKind.Text -> {
-                UnderlinedLabel(label.text(text), style, paint.line, enabled, shifted)
+                UnderlinedLabel(
+                    label.text(text),
+                    style,
+                    paint.line,
+                    enabled,
+                    shifted,
+                    metrics.underlineGap,
+                    wordPx != null,
+                )
             }
 
             PlakatButtonKind.Danger -> {
+                val plate =
+                    if (wordPx != null) {
+                        with(density) { Modifier.width(floor(wordPx + 2 * metrics.dangerPlate.toPx() + .5f).toDp()) }
+                    } else {
+                        Modifier
+                    }
                 BasicText(
                     label.text(text),
                     Modifier
                         .then(shifted)
+                        .then(plate)
                         .drawBehind { drawRect(paint.ground) }
-                        .padding(horizontal = DangerPlatePadding, vertical = DangerPlateVertical),
+                        .padding(horizontal = metrics.dangerPlate, vertical = DangerPlateVertical),
                     style = style,
+                    softWrap = wordPx == null,
+                    overflow = if (wordPx == null) TextOverflow.Clip else TextOverflow.Visible,
                 )
             }
 
@@ -383,6 +446,8 @@ private fun UnderlinedLabel(
     line: Color,
     enabled: Boolean,
     shifted: Modifier,
+    gap: Dp,
+    wordWide: Boolean,
 ) {
     // The rule is as long as the text's own advance, a fraction included, as a CSS border under an
     // inline box is: the laid-out width is ceiled to a whole pixel and would draw one column long.
@@ -399,8 +464,15 @@ private fun UnderlinedLabel(
             }
         },
     ) {
-        BasicText(text, style = style, maxLines = 1, onTextLayout = { advance = it.getLineRight(0) })
-        Spacer(Modifier.height(UnderlineGap + thickness))
+        BasicText(
+            text,
+            style = style,
+            maxLines = 1,
+            softWrap = !wordWide,
+            overflow = if (wordWide) TextOverflow.Visible else TextOverflow.Clip,
+            onTextLayout = { advance = it.getLineRight(0) },
+        )
+        Spacer(Modifier.height(gap + thickness))
     }
 }
 
