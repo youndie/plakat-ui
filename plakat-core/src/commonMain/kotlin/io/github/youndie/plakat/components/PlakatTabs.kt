@@ -29,6 +29,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import io.github.youndie.plakat.theme.PlakatEvent
 import io.github.youndie.plakat.theme.PlakatFaceMetrics
@@ -36,10 +37,31 @@ import io.github.youndie.plakat.theme.PlakatTheme
 import io.github.youndie.plakat.theme.cssLine
 import io.github.youndie.plakat.tokens.PlakatDurations
 import io.github.youndie.plakat.tokens.PlakatEasings
+import io.github.youndie.plakat.tokens.PlakatGrid
 import io.github.youndie.plakat.tokens.PlakatLines
 import io.github.youndie.plakat.tokens.PlakatSizes
 import kotlin.math.ceil
 import kotlin.math.floor
+import kotlin.math.max
+
+/** A word's margin on each side, designed here (D13), when equal slots are given no width to divide (B-58). */
+private val SlotMargin = PlakatGrid.Margin
+
+/**
+ * What a row of [count] equal slots is across: all it is given, or, given no limit, enough for its widest word.
+ * Each slot is still a target of at least 48 dp.
+ */
+internal fun Density.equalSlotsWidth(
+    constraints: Constraints,
+    widest: Float,
+    count: Int,
+): Int =
+    if (constraints.hasBoundedWidth) {
+        constraints.maxWidth
+    } else {
+        val slot = max(PlakatSizes.Touch.roundToPx(), ceil(widest).toInt() + SlotMargin.roundToPx() * 2)
+        (slot * count).coerceAtLeast(constraints.minWidth)
+    }
 
 /** One tab of [PlakatTabs]: a rubric; disabled, it is muted and takes no click. */
 @Immutable
@@ -116,7 +138,7 @@ public fun PlakatTabs(
                 drawRect(colors.red, Offset(left, size.height - h), Size(right - left, h))
             },
     ) { measurables, constraints ->
-        val width = constraints.maxWidth
+        val width = equalSlotsWidth(constraints, widths.maxOrNull() ?: 0f, count)
         val row = PlakatSizes.Touch.roundToPx()
         val height = row + PlakatLines.Hair.roundToPx()
         // Equal slots keep their half pixels: each child is placed from the true slot.

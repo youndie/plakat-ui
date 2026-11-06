@@ -80,7 +80,10 @@ public fun PlakatEmptyState(
 ) {
     val colors = PlakatTheme.colors
     val type = PlakatTheme.typography
-    Column(modifier.padding(vertical = BlockPadding), verticalArrangement = Arrangement.spacedBy(BlockGap)) {
+    Column(
+        modifier.maxContentWidth().padding(vertical = BlockPadding),
+        verticalArrangement = Arrangement.spacedBy(BlockGap),
+    ) {
         Spacer(
             Modifier
                 .fillMaxWidth()

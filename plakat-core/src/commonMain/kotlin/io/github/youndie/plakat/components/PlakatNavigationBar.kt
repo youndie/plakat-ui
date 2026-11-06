@@ -147,9 +147,9 @@ public fun PlakatNavigationBar(
                 drawRect(colors.red, Offset(x, y), Size(w, SquareHeight.toPx()))
             },
     ) { measurables, constraints ->
-        val width = constraints.maxWidth
-        val height = BarHeight.roundToPx()
         val count = items.size.coerceAtLeast(1)
+        val width = equalSlotsWidth(constraints, widths.maxOrNull() ?: 0f, count)
+        val height = BarHeight.roundToPx()
         // Equal slots keep their half pixels, as the page's grid does: each child is placed from the true slot.
         val slot = width.toFloat() / count
         val top = (height - contentHeight().toPx()) / 2

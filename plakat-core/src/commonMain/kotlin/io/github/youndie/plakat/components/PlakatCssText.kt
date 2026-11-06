@@ -104,7 +104,8 @@ internal fun DrawScope.drawParagraph(
 
 /**
  * [text] as a paragraph of CSS line boxes of [lineHeight] × the size, each line on its own: its height is theirs,
- * rounded to the nearest, so what stands under it falls on the pixel Blink snaps it to.
+ * rounded to the nearest, so what stands under it falls on the pixel Blink snaps it to. A block as wide as what it is
+ * given; given no limit, as wide as its text.
  */
 @Composable
 internal fun CssParagraph(
@@ -123,8 +124,26 @@ internal fun CssParagraph(
             .layout { measurable, constraints ->
                 val whole = measurer.measure(text, plain, constraints = Constraints(maxWidth = constraints.maxWidth))
                 val height = floor(whole.lineCount * plain.fontSize.toPx() * lineHeight + .5f).toInt()
-                val placeable = measurable.measure(Constraints.fixed(constraints.maxWidth, height))
-                layout(constraints.maxWidth, height) { placeable.place(0, 0) }
+                val width = if (constraints.hasBoundedWidth) constraints.maxWidth else whole.size.width
+                val placeable = measurable.measure(Constraints.fixed(width, height))
+                layout(width, height) { placeable.place(0, 0) }
             }.drawBehind { drawParagraph(measurer, text, plain, size.width, Offset.Zero, color, lineHeight, face) },
     )
 }
+
+/**
+ * A column of blocks given no limit is as wide as its widest content, and its blocks fill that: `max-content`. Compose
+ * would leave a `fillMaxWidth` child 0 wide. Given a limit, this does nothing.
+ */
+internal fun Modifier.maxContentWidth(): Modifier =
+    layout { measurable, constraints ->
+        val inner =
+            if (constraints.hasBoundedWidth) {
+                constraints
+            } else {
+                val wide = measurable.maxIntrinsicWidth(constraints.maxHeight).coerceAtLeast(constraints.minWidth)
+                constraints.copy(minWidth = wide, maxWidth = wide)
+            }
+        val placeable = measurable.measure(inner)
+        layout(placeable.width, placeable.height) { placeable.place(0, 0) }
+    }

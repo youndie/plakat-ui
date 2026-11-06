@@ -23,8 +23,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.youndie.plakat.print.PlakatWipe
@@ -38,6 +40,8 @@ import io.github.youndie.plakat.tokens.PlakatEasings
 import io.github.youndie.plakat.tokens.PlakatGrid
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.roundToInt
 
 /**
@@ -138,6 +142,7 @@ public fun PlakatWindow(
     val number = type.displayL.style.copy(fontSize = NUMBER_SP.sp, color = colors.ink)
     val display = number.copy(fontSize = m.captionSp.sp)
     val text = type.bodyS.style.copy(fontSize = m.bodySp.sp)
+    val measurer = rememberTextMeasurer()
     Layout(
         content = {
             panels.forEachIndexed { i, panel ->
@@ -186,8 +191,32 @@ public fun PlakatWindow(
     ) { measurables, constraints ->
         val inView = panelsInView.coerceAtLeast(1)
         val gap = m.panelGap.roundToPx()
-        val width = constraints.maxWidth
-        val panelWidth = (width - gap * (inView - 1)) / inView
+        // Given no limit, a panel is as wide as its words, the picture filling that: `max-content`.
+        val panelWidth =
+            if (constraints.hasBoundedWidth) {
+                (constraints.maxWidth - gap * (inView - 1)) / inView
+            } else {
+                val bodyWide = if (m.bodyWide == Dp.Infinity) Int.MAX_VALUE else m.bodyWide.roundToPx()
+                val wordsWide =
+                    panels.maxOfOrNull { panel ->
+                        val caption = measurer.measure(panel.caption, display.copy(lineHeight = TextUnit.Unspecified))
+                        val body =
+                            panel.body?.let {
+                                measurer.measure(
+                                    it,
+                                    text.copy(lineHeight = TextUnit.Unspecified),
+                                )
+                            }
+                        max(caption.size.width, min(body?.size?.width ?: 0, bodyWide))
+                    } ?: 0
+                wordsWide + m.panelPad.roundToPx() * 2
+            }
+        val width =
+            if (constraints.hasBoundedWidth) {
+                constraints.maxWidth
+            } else {
+                (panelWidth * inView + gap * (inView - 1)).coerceAtLeast(constraints.minWidth)
+            }
         val placeables = measurables.map { it.measure(Constraints(minWidth = panelWidth, maxWidth = panelWidth)) }
         val height = placeables.maxOfOrNull { it.height } ?: 0
         val step = panelWidth + gap
