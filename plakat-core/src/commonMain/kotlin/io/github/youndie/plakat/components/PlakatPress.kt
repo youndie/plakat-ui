@@ -8,6 +8,7 @@ import androidx.compose.foundation.interaction.HoverInteraction
 import androidx.compose.foundation.interaction.Interaction
 import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
@@ -16,12 +17,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.InputMode
 import androidx.compose.ui.platform.LocalInputModeManager
 import io.github.youndie.plakat.theme.PlakatEvent
 import io.github.youndie.plakat.theme.PlakatTheme
 import io.github.youndie.plakat.tokens.PlakatDurations
 import io.github.youndie.plakat.tokens.PlakatEasings
+import io.github.youndie.plakat.tokens.PlakatLines
 import kotlinx.coroutines.launch
 
 /**
@@ -97,3 +106,23 @@ internal fun rememberPlakatPress(
 @Composable
 internal fun PlakatPress.focusShown(): Boolean =
     focused && LocalInputModeManager.current.inputMode == InputMode.Keyboard
+
+/** The keyboard's frame on a target: `outline: 3px; outline-offset: -3px`, inside it (the Principles page, step 05). */
+internal fun DrawScope.drawFocusFrame(color: Color) {
+    val line = PlakatLines.Rule.toPx()
+    drawRect(color, Offset(line / 2, line / 2), Size(size.width - line, size.height - line), style = Stroke(line))
+}
+
+/** [drawFocusFrame] over a target with no press state of its own, while focus from the keyboard is on [source]. */
+@Composable
+internal fun Modifier.plakatFocusFrame(
+    source: InteractionSource,
+    color: Color,
+): Modifier {
+    val focused by source.collectIsFocusedAsState()
+    val shown = focused && LocalInputModeManager.current.inputMode == InputMode.Keyboard
+    return drawWithContent {
+        drawContent()
+        if (shown) drawFocusFrame(color)
+    }
+}

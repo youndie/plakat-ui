@@ -250,7 +250,13 @@ private class PictogramRowPolicy(
         val lines = lines(placeables.map { it.width }, wide, gap)
         val heights = lines.map { line -> line.maxOf { placeables[it].height } }
         val height = heights.sum() + gap * (lines.size - 1).coerceAtLeast(0)
-        return layout(constraints.maxWidth, height) {
+        val across =
+            if (constraints.hasBoundedWidth) {
+                constraints.maxWidth
+            } else {
+                lines.maxOfOrNull { line -> line.sumOf { placeables[it].width } + gap * (line.size - 1) } ?: 0
+            }
+        return layout(across, height) {
             var y = 0
             lines.forEachIndexed { l, line ->
                 var at = 0

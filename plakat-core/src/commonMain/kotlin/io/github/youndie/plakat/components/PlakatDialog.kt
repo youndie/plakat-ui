@@ -6,6 +6,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.focusable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.rememberScrollableState
+import androidx.compose.foundation.gestures.scrollBy
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,13 +25,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
@@ -40,21 +48,27 @@ import androidx.compose.ui.graphics.ImageShader
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.TileMode
+import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.ScrollAxisRange
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.dialog
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.paneTitle
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.verticalScrollAxisRange
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -72,12 +86,17 @@ import io.github.youndie.plakat.tokens.PlakatColors
 import io.github.youndie.plakat.tokens.PlakatDurations
 import io.github.youndie.plakat.tokens.PlakatEasings
 import io.github.youndie.plakat.tokens.PlakatGrid
+import kotlinx.coroutines.launch
 import kotlin.math.ceil
 import kotlin.math.hypot
+import kotlin.math.roundToInt
 
 /** The sheet: the MVP page's `left: 24px; right: 24px; top: 96px`, on paper. */
 private val SheetInset = 24.dp
 private val SheetTop = 96.dp
+
+/** How close a tall sheet comes to the foot of the window, designed here (D13) as its sides stand: B-62. */
+private val SheetFoot = SheetInset
 
 /** The padding of its three parts: `16px 20px`, `16px 20px` and `0 20px 20px`. */
 private val PartX = 20.dp
@@ -192,7 +211,7 @@ internal fun PlakatDialogFrame(
         PlakatDotScreen(colors, reduce, { open.value }) { if (visible) dismiss() }
         Column(
             Modifier
-                .padding(start = SheetInset, top = SheetTop, end = SheetInset)
+                .padding(start = SheetInset, top = SheetTop, end = SheetInset, bottom = SheetFoot)
                 .fillMaxWidth()
                 .graphicsLayer {
                     if (reduce) {
@@ -223,15 +242,7 @@ internal fun PlakatDialogFrame(
                             .cssLine(PlakatFaceMetrics.Display),
                 )
             }
-            if (text != null) {
-                CssParagraph(
-                    text,
-                    type.bodyM.style.copy(fontWeight = FontWeight.Normal),
-                    BODY_LINE,
-                    colors.ink,
-                    Modifier.padding(horizontal = PartX, vertical = PartY),
-                )
-            }
+            if (text != null) DialogText(text, Modifier.weight(1f, fill = false))
             Row(
                 Modifier
                     .fillMaxWidth()
@@ -240,6 +251,61 @@ internal fun PlakatDialogFrame(
                 content = actions,
             )
         }
+    }
+}
+
+/**
+ * The text between the title and the actions, which keep their height: longer than what they leave, it scrolls by wheel,
+ * finger and keys, and only then is it a stop for the keyboard. No bar and no fade, which the design draws neither of,
+ * and no stretch, as it has no overshoot. It clips only when it overflows, and so is not a `verticalScroll`: a clip moves
+ * the edges of the letters off the reference's (B-62), and a text that fits needs none.
+ */
+@Composable
+private fun DialogText(
+    text: String,
+    modifier: Modifier,
+) {
+    val colors = PlakatTheme.colors
+    val style =
+        PlakatTheme.typography.bodyM.style
+            .copy(fontWeight = FontWeight.Normal)
+    var offset by remember { mutableFloatStateOf(0f) }
+    var most by remember { mutableIntStateOf(0) }
+    val scroll =
+        rememberScrollableState { delta ->
+            val to = (offset - delta).coerceIn(0f, most.toFloat())
+            val used = offset - to
+            offset = to
+            used
+        }
+    val scope = rememberCoroutineScope()
+    val source = remember { MutableInteractionSource() }
+    val line = with(LocalDensity.current) { style.fontSize.toPx() * BODY_LINE }
+    Box(
+        modifier
+            .plakatFocusFrame(source, colors.ink)
+            .onKeyEvent {
+                val by =
+                    when (it.key) {
+                        Key.DirectionDown -> -line
+                        Key.DirectionUp -> line
+                        else -> return@onKeyEvent false
+                    }
+                if (it.type == KeyEventType.KeyDown) scope.launch { scroll.scrollBy(by) }
+                true
+            }.scrollable(scroll, Orientation.Vertical, enabled = most > 0, overscrollEffect = null)
+            .semantics { verticalScrollAxisRange = ScrollAxisRange({ offset }, { most.toFloat() }) }
+            .drawWithContent {
+                if (most > 0) clipRect { this@drawWithContent.drawContent() } else drawContent()
+            }.layout { measurable, constraints ->
+                val placeable = measurable.measure(constraints.copy(maxHeight = Constraints.Infinity))
+                val high = placeable.height.coerceAtMost(constraints.maxHeight)
+                most = placeable.height - high
+                offset = offset.coerceIn(0f, most.toFloat())
+                layout(placeable.width, high) { placeable.place(0, -offset.roundToInt()) }
+            }.focusable(most > 0, source),
+    ) {
+        CssParagraph(text, style, BODY_LINE, colors.ink, Modifier.padding(horizontal = PartX, vertical = PartY))
     }
 }
 
