@@ -55,11 +55,10 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 
 <!-- BEGIN INDEX -->
 
-## Open (13)
+## Open (12)
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-58](docs/backlog/B-58-unbounded-width.md) `[ ]` | Nothing throws under an unbounded width | P0 | M | - |
 | [B-59](docs/backlog/B-59-textfield-caret.md) `[ ]` | TextField: the caret stays at the insertion point, inside the field | P1 | S | - |
 | [B-60](docs/backlog/B-60-visible-keyboard-focus.md) `[ ]` | Keyboard focus shows on every control it lands on | P1 | M | - |
 | [B-61](docs/backlog/B-61-hidden-snackbar-takes-no-input.md) `[ ]` | A hidden Snackbar takes no input | P1 | S | - |
@@ -73,7 +72,7 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 | [B-68](docs/backlog/B-68-release-ink-question.md) `[?]` | On release a word is ink on ink for its first frames: keep it? | P3 | XS | - |
 | [B-69](docs/backlog/B-69-real-window-pass.md) `[?]` | Check what only a real window shows | P3 | S | - |
 
-## Closed (56)
+## Closed (57)
 
 **Goldens and references regenerate deterministically; the generator and raskat ports match them on every target; the floor and the frame cost have measured numbers**
 
@@ -130,6 +129,7 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 - [B-53](docs/backlog/B-53-stretch-in-place.md) `[x]` - Stretch in place: the poster's fourth layout and the app bar's masthead
 - [B-54](docs/backlog/B-54-window-insets.md) `[x]` - Window insets: the kit's edges under a status bar and a gesture bar
 - [B-55](docs/backlog/B-55-masthead-throws-by-width.md) `[x]` - A masthead throws on a phone's width: the stretch's refusal at drawing
+- [B-58](docs/backlog/B-58-unbounded-width.md) `[x]` - Nothing throws under an unbounded width
 
 **The three demo screens within the floor in both themes; contrast holds with the textures on**
 
