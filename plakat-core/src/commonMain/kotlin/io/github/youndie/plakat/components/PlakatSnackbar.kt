@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -153,6 +154,10 @@ internal fun PlakatSnackbarFrame(
         }
         if (changed && !visible) hidden()
     }
+    // Hidden, at rest, nothing of it is composed or takes input: under reduced motion it fades in place, so its action
+    // would stay there, invisible, and in any mode the keyboard would reach it.
+    val settled by remember { derivedStateOf { rise.value == 0f || fade.value == 0f } }
+    if (!visible && settled) return
 
     val body = PlakatTheme.typography.bodyM.style
     val text =
@@ -168,8 +173,7 @@ internal fun PlakatSnackbarFrame(
         modifier
             .graphicsLayer {
                 translationY = (1f - rise.value) * (size.height + RideBelow.toPx())
-                // At rest below its stop, hidden, nothing of it is drawn.
-                alpha = if (!visible && rise.value == 0f) 0f else fade.value
+                alpha = fade.value
             }.semantics { liveRegion = LiveRegionMode.Polite }
             .background(colors.ink),
     ) {
@@ -210,7 +214,7 @@ internal fun PlakatSnackbarFrame(
                 Modifier.weight(1f).then(wipe),
                 style = text,
             )
-            if (actionLabel != null) SnackbarAction(actionLabel, onAction, wipe, forcePressed)
+            if (actionLabel != null) SnackbarAction(actionLabel, onAction, visible, wipe, forcePressed)
         }
     }
 }
@@ -220,6 +224,7 @@ internal fun PlakatSnackbarFrame(
 private fun SnackbarAction(
     label: String,
     onClick: () -> Unit,
+    enabled: Boolean,
     wipe: Modifier,
     forcePressed: Boolean,
 ) {
@@ -234,7 +239,7 @@ private fun SnackbarAction(
             .widthIn(min = ActionMinWidth)
             .then(wipe)
             .plakatFocusFrame(source, colors.paper)
-            .clickable(source, indication = null, role = Role.Button, onClick = onClick)
+            .clickable(source, indication = null, enabled = enabled, role = Role.Button, onClick = onClick)
             .drawBehind { if (pressed) drawRect(colors.paper) },
         contentAlignment = Alignment.Center,
     ) {
