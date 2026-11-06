@@ -14,13 +14,12 @@ publishes: []
 
 ## 1. Responsibility
 
-The library module: everything a consumer of plakat-ui depends on. Today it is the build and nothing
-else. It compiles for Android, iOS (`iosArm64`, `iosSimulatorArm64`), desktop JVM and wasmJs, and its
-desktop test suite composes off-screen (B-01). Tokens, the generator and raskat ports, print
-primitives, icons and the components land here item by item (backlog stages 0–2).
+The library module: everything a consumer of plakat-ui depends on, the tokens, the generator and
+raskat ports, print primitives, icons and the components. It compiles for Android, iOS (`iosArm64`,
+`iosSimulatorArm64`), desktop JVM and wasmJs, and its desktop test suite composes off-screen.
 
 It deliberately does **not** depend on any Material artefact (research D1). The sample kit is the
-`sample` module beside it, a consumer of the public API only. It is not published yet (B-37).
+`sample` module beside it, a consumer of the public API only.
 
 ## 2. API contracts
 
@@ -113,7 +112,7 @@ each met this once.
 
 ### Motion map
 
-Each animation of the design and the test that holds it (cmp-ui-parity §6). The references are
+Each animation of the design and the test that holds it. The references are
 rendered with reduced motion, so parity sees none of these.
 
 | Component | Event | Spec row | Held by |
@@ -171,7 +170,11 @@ rendered with reduced motion, so parity sees none of these.
 
 ## 5. Infrastructure and deploy
 
-Nothing is published or deployed. Publishing is B-37, the last item.
+Every push to `main` publishes `io.github.youndie:plakat-core:<head>.<run>` to the Reposilite
+(`.github/workflows/publish.yaml`, sborka's `publish-wip.yaml` on macOS: the whole check, the publish,
+and a consumer probe), and deploys the sample's wasm build to
+[GitHub Pages](https://youndie.github.io/plakat-ui/) (`.github/workflows/pages.yaml`). The head in
+`gradle.properties` names the next release. There is no release on Central yet.
 
 ## 6. Local setup
 

@@ -218,7 +218,7 @@ internal fun buttonPaint(
 
 /**
  * A CSS colour transition: straight interpolation of premultiplied sRGB, which Compose's own `lerp`
- * (Oklab) is not (cmp-ui-parity's catalogue, "Colour interpolation").
+ * (Oklab) is not.
  */
 internal fun srgbLerp(
     from: Color,

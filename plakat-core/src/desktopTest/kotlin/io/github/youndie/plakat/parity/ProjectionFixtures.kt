@@ -132,7 +132,9 @@ fun ProjectionColumnLight() =
         Box(Modifier.offset(16.dp, 232.dp).size(72.dp, 80.dp).background(PlakatTheme.colors.concrete))
     }
 
-@ViddikScreenshot(group = "Projection", name = "Box_Light", width = 390, height = CELL_H)
+// The big letters' curved edges differ from the runner's macOS by 99 of 152880 px (0.06 %, channel delta 27), past the
+// default 0.05 %, and no runner has the macOS the goldens were recorded on. Only this fixture, by the owner's decision.
+@ViddikScreenshot(group = "Projection", name = "Box_Light", width = 390, height = CELL_H, tolerancePercent = 0.07)
 @Composable
 fun ProjectionBoxLight() =
     Cell(listOf("ВЫПУСК"), button = "ЧИТАТЬ" to 358.dp) {

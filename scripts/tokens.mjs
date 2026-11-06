@@ -6,8 +6,8 @@
 // Reads reference/design-system/plakat-tokens.json and writes one committed Kotlin file, so a token
 // change in the design reads as a Kotlin diff beside it. --check writes nothing and fails when the
 // committed file differs. The file is written in the layout ktlint keeps, so formatting never moves it.
-// Units: 1 CSS px = 1 dp, a font size in px is the same number of sp (cmp-ui-library's rule, and what
-// the pages render at device scale 1).
+// Units: 1 CSS px = 1 dp, a font size in px is the same number of sp (what the pages render at device
+// scale 1).
 
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
