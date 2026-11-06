@@ -233,6 +233,7 @@ private fun SnackbarAction(
             .height(PlakatSizes.Field)
             .widthIn(min = ActionMinWidth)
             .then(wipe)
+            .plakatFocusFrame(source, colors.paper)
             .clickable(source, indication = null, role = Role.Button, onClick = onClick)
             .drawBehind { if (pressed) drawRect(colors.paper) },
         contentAlignment = Alignment.Center,

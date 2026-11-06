@@ -27,11 +27,13 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.isShiftPressed
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
@@ -90,7 +92,7 @@ private data class MenuPosition(
  *
  * With [expanded] true it opens by a wipe from the top, 120 ms linear (`wipe`); set false it goes back the same way, and is
  * gone from the composition after. Under reduced motion both are at once. A click outside it, Escape or the system back
- * gesture calls [onDismissRequest], and it takes the keyboard's focus while open, the arrows moving between its items.
+ * gesture calls [onDismissRequest], and it takes the keyboard's focus while open, the arrows and Tab going round its items.
  */
 @Composable
 public fun PlakatMenu(
@@ -127,6 +129,13 @@ public fun PlakatMenu(
         val panel = remember { FocusRequester() }
         // Focus on the panel and not an item, so that nothing looks chosen until the arrows choose it.
         LaunchedEffect(Unit) { panel.requestFocus() }
+        var onPanel by remember { mutableStateOf(false) }
+        // Round the items, past the panel, which is only where the keyboard starts and Enter does nothing there.
+        val move = { direction: FocusDirection ->
+            val moved = focus.moveFocus(direction)
+            if (onPanel) focus.moveFocus(direction)
+            moved
+        }
         PlakatMenuPanel(
             modifier
                 .focusRequester(panel)
@@ -134,11 +143,15 @@ public fun PlakatMenu(
                     if (it.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
                     when (it.key) {
                         Key.DirectionDown -> {
-                            focus.moveFocus(FocusDirection.Next)
+                            move(FocusDirection.Next)
                         }
 
                         Key.DirectionUp -> {
-                            focus.moveFocus(FocusDirection.Previous)
+                            move(FocusDirection.Previous)
+                        }
+
+                        Key.Tab -> {
+                            move(if (it.isShiftPressed) FocusDirection.Previous else FocusDirection.Next)
                         }
 
                         Key.Escape -> {
@@ -150,7 +163,8 @@ public fun PlakatMenu(
                             false
                         }
                     }
-                }.focusable(),
+                }.onFocusChanged { onPanel = it.isFocused }
+                .focusable(),
             { open.value },
             content,
         )

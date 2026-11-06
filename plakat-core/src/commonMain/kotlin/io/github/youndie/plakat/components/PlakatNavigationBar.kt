@@ -117,12 +117,14 @@ public fun PlakatNavigationBar(
     Layout(
         content = {
             items.forEachIndexed { i, item ->
+                val source = remember { MutableInteractionSource() }
                 Box(
                     Modifier
                         .semantics { contentDescription = item.label }
+                        .plakatFocusFrame(source, word)
                         .selectable(
                             i == selectedIndex,
-                            remember { MutableInteractionSource() },
+                            source,
                             null,
                             role = Role.Tab,
                         ) { onSelect(i) },

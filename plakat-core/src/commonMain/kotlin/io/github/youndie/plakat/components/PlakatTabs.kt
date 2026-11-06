@@ -107,12 +107,14 @@ public fun PlakatTabs(
     Layout(
         content = {
             tabs.forEachIndexed { i, tab ->
+                val source = remember { MutableInteractionSource() }
                 Box(
                     Modifier
                         .semantics { contentDescription = tab.label }
+                        .plakatFocusFrame(source, colors.ink)
                         .selectable(
                             i == selectedIndex,
-                            remember { MutableInteractionSource() },
+                            source,
                             null,
                             enabled = tab.enabled,
                             role = Role.Tab,

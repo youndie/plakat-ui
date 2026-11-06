@@ -114,6 +114,7 @@ internal fun PlakatListItemFrame(
             else -> colors.ink
         }
     val type = PlakatTheme.typography
+    val focusFrame = enabled && onClick != null && state.focusShown()
     val click =
         if (onClick != null) {
             Modifier.clickable(source, indication = null, enabled = enabled, role = Role.Button, onClick = onClick)
@@ -133,6 +134,7 @@ internal fun PlakatListItemFrame(
                         val line = (if (hovered) PlakatLines.Rule else PlakatLines.Hair).toPx()
                         drawRect(colors.ink, Offset(0f, size.height - line), Size(size.width, line))
                     }
+                    if (focusFrame) drawFocusFrame(colors.ink)
                 }.then(click),
         ) {
             Row(
