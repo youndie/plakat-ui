@@ -87,7 +87,8 @@ is taken on a branch of its own, never by overwriting ([B-43](docs/backlog/B-43-
 - **Red is never the only carrier of meaning**: danger is a hatch plus a word, not a colour.
 - **Touch target ≥ 48 dp**, and a cut corner does not reduce it.
 - **Never edit the vendored design, a golden or a reference to make parity pass**, and never raise a
-  tolerance to get green. A gap is a number in the commit body with its cause.
+  tolerance to get green. A gap is a number in the commit body with its cause. The one exception is the owner's:
+  `Projection/Box_Light`, whose letter edges differ on the runner's macOS by 0.06 %, holds 0.07 %, on that fixture alone.
 - **What the design does not draw is designed here, and says so** (D13). RadioButton, hover, the
   wide poster and the v1 set are built from the brief's row, the Principles page and the tokens; the
   item lists every number the design does not state. Their goldens are recorded when built and
