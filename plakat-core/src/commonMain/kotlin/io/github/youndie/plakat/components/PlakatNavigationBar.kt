@@ -73,7 +73,7 @@ public class PlakatNavigationItem(
  * of [items], each a stencil over its word, in on-red. The active one is told by a red square behind its
  * icon rather than by a red icon, which would fail contrast on the strip (the Icons page: on-red on red
  * is 4.64:1). A new [selectedIndex] sends the square across in 120 ms hard-stop (`lock`), at once under
- * reduced motion. Each item's target is its whole slot. Its ground runs under [windowInsets], the system's bar by default,
+ * reduced motion; an index outside them, -1 for none, shows no square. Each item's target is its whole slot. Its ground runs under [windowInsets], the system's bar by default,
  * with the strip inside them.
  */
 @Composable
@@ -85,20 +85,15 @@ public fun PlakatNavigationBar(
     windowInsets: WindowInsets = WindowInsets.navigationBars,
 ) {
     val colors = PlakatTheme.colors
-    val reduce = PlakatTheme.reduceMotion
-    val events by rememberUpdatedState(PlakatTheme.events)
-    val square = remember { Animatable(selectedIndex.toFloat()) }
-    var seen by remember { mutableStateOf(selectedIndex) }
-    LaunchedEffect(selectedIndex, reduce) {
-        if (selectedIndex != seen) events.onEvent(PlakatEvent.Lock)
-        seen = selectedIndex
-        val target = selectedIndex.toFloat()
-        if (reduce) {
-            square.snapTo(target)
-        } else {
-            square.animateTo(target, tween(PlakatDurations.QUICK, easing = PlakatEasings.HardStop))
-        }
-    }
+    val square =
+        rememberPlakatChoiceMark(
+            selectedIndex,
+            items.size,
+            PlakatEvent.Lock,
+            PlakatDurations.QUICK,
+            PlakatEasings.HardStop,
+        )
+    val chosen = selectedIndex in items.indices
     val strip = navigationGround(colors)
     val word: Color = colors.onRed
     val type = PlakatTheme.typography
@@ -141,12 +136,14 @@ public fun PlakatNavigationBar(
         modifier =
             modifier.background(strip).windowInsetsPadding(windowInsets).drawBehind {
                 drawRect(strip)
-                val slot = size.width / items.size.coerceAtLeast(1)
-                val w = SquareWidth.toPx()
-                // Blink snaps the box to the pixel as `left: n × 25%` moves it.
-                val x = floor(square.value * slot + (slot - w) / 2 + .5f)
-                val y = floor((size.height - contentHeight().toPx()) / 2 + .5f)
-                drawRect(colors.red, Offset(x, y), Size(w, SquareHeight.toPx()))
+                if (chosen && square.placed) {
+                    val slot = size.width / items.size.coerceAtLeast(1)
+                    val w = SquareWidth.toPx()
+                    // Blink snaps the box to the pixel as `left: n × 25%` moves it.
+                    val x = floor(square.at.value * slot + (slot - w) / 2 + .5f)
+                    val y = floor((size.height - contentHeight().toPx()) / 2 + .5f)
+                    drawRect(colors.red, Offset(x, y), Size(w, SquareHeight.toPx()))
+                }
             },
     ) { measurables, constraints ->
         val count = items.size.coerceAtLeast(1)

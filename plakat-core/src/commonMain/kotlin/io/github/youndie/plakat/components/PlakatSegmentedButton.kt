@@ -77,20 +77,15 @@ internal fun PlakatSegmentedButtonFrame(
     forceFocused: Int? = null,
 ) {
     val colors = PlakatTheme.colors
-    val reduce = PlakatTheme.reduceMotion
-    val events by rememberUpdatedState(PlakatTheme.events)
-    val fill = remember { Animatable(selectedIndex.toFloat()) }
-    var seen by remember { mutableStateOf(selectedIndex) }
-    LaunchedEffect(selectedIndex, reduce) {
-        if (selectedIndex != seen) events.onEvent(PlakatEvent.Rail)
-        seen = selectedIndex
-        val target = selectedIndex.toFloat()
-        if (reduce) {
-            fill.snapTo(target)
-        } else {
-            fill.animateTo(target, tween(PlakatDurations.NORMAL, easing = PlakatEasings.Linear))
-        }
-    }
+    val fill =
+        rememberPlakatChoiceMark(
+            selectedIndex,
+            segments.size,
+            PlakatEvent.Rail,
+            PlakatDurations.NORMAL,
+            PlakatEasings.Linear,
+        )
+    val chosen = selectedIndex in segments.indices
     val type = PlakatTheme.typography.label
     val style: TextStyle = type.style.copy(letterSpacing = WORD_TRACKING.em)
     val measurer = rememberTextMeasurer()
@@ -142,9 +137,10 @@ internal fun PlakatSegmentedButtonFrame(
                         Size(size.width - line, high - line),
                         style = Stroke(line),
                     )
-                    val at = forceAt ?: fill.value
+                    val at = forceAt ?: fill.at.value
                     val left = edge(at)
                     val right = edge(at + 1)
+                    val filled = forceAt != null || (chosen && fill.placed)
 
                     fun word(
                         i: Int,
@@ -156,8 +152,10 @@ internal fun PlakatSegmentedButtonFrame(
                     val ink = ground
                     val on = colors.paper
                     segments.indices.forEach { word(it, ink) }
-                    drawRect(ground, Offset(left, inset), Size(right - left, high))
-                    clipRect(left, inset, right, inset + high) { segments.indices.forEach { word(it, on) } }
+                    if (filled) {
+                        drawRect(ground, Offset(left, inset), Size(right - left, high))
+                        clipRect(left, inset, right, inset + high) { segments.indices.forEach { word(it, on) } }
+                    }
                     val pressed =
                         presses.indices.firstOrNull { forcePressed == it || presses[it].second.held }
                     if (pressed != null) {

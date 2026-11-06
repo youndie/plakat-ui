@@ -74,7 +74,8 @@ private const val KEY_STEP = .01f
  *
  * As tall as its touch target, 48 dp, and as wide as it is given. The carriage is centred on the value, as the page's is, so
  * at the ends it stands 10 dp past the slider's box: leave that room, and do not clip it. The arrows move it a stop, or a
- * hundredth of the range, and Home and End to the ends.
+ * hundredth of the range, and Home and End to the ends. A value it cannot place, NaN, stands at the start, and a range with
+ * nothing in it, such as `0f..total` with a negative total, is its start alone. Negative [steps] throw.
  */
 @Composable
 public fun PlakatSlider(
@@ -106,7 +107,7 @@ private fun fractionOf(
     steps: Int,
 ): Float {
     val span = range.endInclusive - range.start
-    val f = if (span > 0f) ((value - range.start) / span).coerceIn(0f, 1f) else 0f
+    val f = if (span > 0f && !value.isNaN()) ((value - range.start) / span).coerceIn(0f, 1f) else 0f
     return onStop(f, steps)
 }
 
@@ -120,13 +121,20 @@ private fun onStop(
     return floor(f * n + .5f) / n
 }
 
+/** [range], or if it holds nothing its start alone, 0 if that is no number either. */
+private fun heldRange(range: ClosedFloatingPointRange<Float>): ClosedFloatingPointRange<Float> {
+    if (!range.isEmpty()) return range
+    val start = if (range.start.isNaN()) 0f else range.start
+    return start..start
+}
+
 @Composable
 internal fun PlakatSliderFrame(
     value: Float,
     onValueChange: (Float) -> Unit,
     modifier: Modifier,
     enabled: Boolean,
-    valueRange: ClosedFloatingPointRange<Float>,
+    asked: ClosedFloatingPointRange<Float>,
     steps: Int,
     onValueChangeFinished: (() -> Unit)?,
     interactionSource: MutableInteractionSource?,
@@ -134,6 +142,7 @@ internal fun PlakatSliderFrame(
     forceFocused: Boolean = false,
 ) {
     require(steps >= 0) { "A slider has no negative steps: $steps" }
+    val valueRange = heldRange(asked)
     val source = interactionSource ?: remember { MutableInteractionSource() }
     val colors = PlakatTheme.colors
     val reduce = PlakatTheme.reduceMotion
@@ -240,12 +249,16 @@ internal fun PlakatSliderFrame(
             .height(PlakatSizes.Touch)
             .semantics {
                 progressBarRangeInfo =
-                    ProgressBarRangeInfo(value.coerceIn(valueRange), valueRange, steps)
+                    ProgressBarRangeInfo(
+                        if (value.isNaN()) valueRange.start else value.coerceIn(valueRange),
+                        valueRange,
+                        steps,
+                    )
                 if (enabled) {
-                    setProgress { asked ->
+                    setProgress { to ->
                         val span = valueRange.endInclusive - valueRange.start
                         if (span <= 0f) return@setProgress false
-                        setFraction((asked - valueRange.start) / span)
+                        setFraction((to - valueRange.start) / span)
                         finished?.invoke()
                         true
                     }

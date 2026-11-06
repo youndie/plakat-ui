@@ -62,9 +62,12 @@ internal fun halftoneDots(
     lum: DoubleArray,
     w: Int,
     h: Int,
-    pitch: Double,
+    asked: Double,
     angle: Double,
 ): DoubleArray {
+    // A screen of nothing would never finish its first row; a pixel is as fine as a screen goes.
+    val pitch = if (asked >= 1.0) asked else 1.0
+
     fun at(
         x: Double,
         y: Double,
@@ -128,7 +131,7 @@ internal fun coverPixels(
 
 /**
  * Prints [source] in one [ink] on [paper] across this box, by the photomontage's rule: decoloured, contrast ×[contrast],
- * then a screen ([PlakatHalftoneMode.Dots]) or a threshold. A photograph is never shown raw. It is worked out once per
+ * then a screen ([PlakatHalftoneMode.Dots], of [pitch], a pixel at the finest) or a threshold. A photograph is never shown raw. It is worked out once per
  * source and size, on the CPU, and kept; the frame (a circle, a cut, the axis) is the caller's, by a clip or a rotation.
  * The kit ships the processor and no photographs: a source is CC0, a close-up or a figure.
  */

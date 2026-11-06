@@ -42,6 +42,9 @@ private val WedgeSlant = 26.dp
 /** The circular's size: `width: 40px; height: 40px`; the page's inline one is 24, set by the modifier. */
 private val CircularSize = 40.dp
 
+/** [this] as a share of the whole, 0 to 1. A `done / total` with a total of 0 is NaN, and that is nothing done yet. */
+private fun Float.progressShare(): Float = if (isNaN()) 0f else coerceIn(0f, 1f)
+
 /**
  * The value on its way: a new value is reached linearly (the spec row's «по данным · linear» names no
  * time, so `plakat/motion/normal`), at once under reduced motion. The first value is simply there.
@@ -49,9 +52,9 @@ private val CircularSize = 40.dp
 @Composable
 private fun rememberProgress(value: Float): State<Float> {
     val reduce = PlakatTheme.reduceMotion
-    val shown = remember { Animatable(value.coerceIn(0f, 1f)) }
+    val shown = remember { Animatable(value.progressShare()) }
     LaunchedEffect(value, reduce) {
-        val target = value.coerceIn(0f, 1f)
+        val target = value.progressShare()
         if (reduce) {
             shown.snapTo(target)
         } else {
@@ -89,7 +92,7 @@ public fun PlakatLinearProgress(
         modifier
             .fillMaxWidth()
             .height(PlakatLines.Bar)
-            .semantics { progressBarRangeInfo = ProgressBarRangeInfo(value.coerceIn(0f, 1f), 0f..1f) },
+            .semantics { progressBarRangeInfo = ProgressBarRangeInfo(value.progressShare(), 0f..1f) },
     ) {
         drawRect(colors.concrete)
         val x = size.width * shown
@@ -137,7 +140,7 @@ public fun PlakatCircularProgress(
                 ) {
                     ProgressBarRangeInfo.Indeterminate
                 } else {
-                    ProgressBarRangeInfo(value.coerceIn(0f, 1f), 0f..1f)
+                    ProgressBarRangeInfo(value.progressShare(), 0f..1f)
                 }
         }
     // A Box and not a Canvas: a Canvas is a Spacer, which under a minimum alone draws in nothing at the minimum's centre.
