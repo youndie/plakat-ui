@@ -340,7 +340,7 @@ class PlakatPullToRefreshTest {
                     ProgressBarRangeInfo.Indeterminate,
                 ),
             ).assertExists()
-            onNodeWithContentDescription("Загрузка").assertExists()
+            onNodeWithContentDescription("Loading").assertExists()
         }
 
     @Test

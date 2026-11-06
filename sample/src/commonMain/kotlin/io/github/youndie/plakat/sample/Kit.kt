@@ -134,26 +134,32 @@ private fun Wrap(content: @Composable () -> Unit) {
     }
 }
 
-/** The Core page: Button, TextField, Checkbox, Switch, Card, Snackbar, Плакат. */
+/** The Core page: Button, TextField, Checkbox, Switch, Card, Snackbar, Poster. */
 @Composable
 fun KitCore() {
     Column(verticalArrangement = Arrangement.spacedBy(32.dp)) {
-        KitGroup("Кнопка") {
+        KitGroup("Button") {
             Wrap {
-                PlakatButton("ЧИТАТЬ", {})
-                PlakatButton("ЗАГРУЗКА", {}, loading = true)
-                PlakatButton("НЕЛЬЗЯ", {}, enabled = false)
-                PlakatOutlinedButton("В ЗАКЛАДКИ", {})
-                PlakatTextButton("ПОЗЖЕ", {})
-                PlakatDangerButton("СТЕРЕТЬ", {})
+                PlakatButton("READ", {})
+                PlakatButton("LOADING", {}, loading = true)
+                PlakatButton("DISABLED", {}, enabled = false)
+                PlakatOutlinedButton("BOOKMARK", {})
+                PlakatTextButton("LATER", {})
+                PlakatDangerButton("DELETE", {})
             }
         }
-        KitGroup("Поле") {
+        KitGroup("Text field") {
             var value by remember { mutableStateOf("") }
-            PlakatTextField(value, { value = it }, Modifier.width(Width), label = "Имя", placeholder = "Как вас зовут")
-            PlakatTextField("лист", {}, Modifier.width(Width), label = "Адрес", error = "Такого адреса нет")
+            PlakatTextField(
+                value,
+                { value = it },
+                Modifier.width(Width),
+                label = "Name",
+                placeholder = "What is your name",
+            )
+            PlakatTextField("sheet", {}, Modifier.width(Width), label = "Address", error = "No such address")
         }
-        KitGroup("Флажок, выбор, переключатель") {
+        KitGroup("Checkbox, radio, switch") {
             Wrap {
                 var checked by remember { mutableStateOf(true) }
                 var on by remember { mutableStateOf(true) }
@@ -168,46 +174,46 @@ fun KitCore() {
                 PlakatRadioButton(true, null, enabled = false)
             }
         }
-        KitGroup("Карточка") {
+        KitGroup("Card") {
             PlakatCard({}, Modifier.width(Width)) {
                 PlakatGeneratedImage(71, Modifier.size(64.dp), frameWidth = 64.dp, frameHeight = 64.dp)
                 BasicText(
-                    "Город из фанеры",
+                    "A city of plywood",
                     style =
                         PlakatTheme.typography.bodyS.style
                             .copy(color = LocalPlakatContentColor.current),
                 )
             }
         }
-        KitGroup("Телеграмма") {
-            PlakatSnackbar("Сохранено в лист", Modifier.width(Width), actionLabel = "ОТМЕНА")
+        KitGroup("Snackbar") {
+            PlakatSnackbar("Saved to the sheet", Modifier.width(Width), actionLabel = "UNDO")
         }
-        KitGroup("Плакат") {
+        KitGroup("Poster") {
             Wrap {
                 PlakatPoster(
-                    listOf("ЧИТАЙ", "ВЕСЬ", "НОЯБРЬ"),
-                    "ПОДПИСАТЬСЯ",
+                    listOf("READ", "THIS", "NOVEMBER"),
+                    "SUBSCRIBE",
                     {},
-                    body = "12 новых выпусков.",
+                    body = "12 new issues.",
                     seed = 1919,
                 )
-                PlakatPoster(listOf("ЧИТАЙ", "ВЕСЬ", "НОЯБРЬ"), "ПОДПИСАТЬСЯ", {
-                }, body = "12 новых выпусков.", seed = 1919, raskat = true)
-                PlakatPoster(listOf("ВЫПУСК", "№ 47"), "ЧИТАТЬ", {}, layout = PlakatPosterLayout.Banner, seed = 1925)
+                PlakatPoster(listOf("READ", "THIS", "NOVEMBER"), "SUBSCRIBE", {
+                }, body = "12 new issues.", seed = 1919, raskat = true)
+                PlakatPoster(listOf("ISSUE", "No. 47"), "READ", {}, layout = PlakatPosterLayout.Banner, seed = 1925)
                 PlakatPoster(
-                    listOf("ЧИТАЙ", "ВЕСЬ", "НОЯБРЬ"),
-                    "ПОДПИСАТЬСЯ",
+                    listOf("READ", "THIS", "NOVEMBER"),
+                    "SUBSCRIBE",
                     {},
                     layout = PlakatPosterLayout.Stretch,
-                    body = "12 новых выпусков. Мы собрали их в одну ленту — читай по порядку.",
+                    body = "12 new issues in one feed. Read them in order.",
                 )
                 PlakatPoster(
-                    listOf("ЧИТАЙ", "ВЕСЬ", "НОЯБРЬ"),
-                    "ПОДПИСАТЬСЯ",
+                    listOf("READ", "THIS", "NOVEMBER"),
+                    "SUBSCRIBE",
                     {},
                     Modifier.width(720.dp),
                     layout = PlakatPosterLayout.Wide,
-                    body = "12 новых выпусков. Мы собрали их в одну ленту — читай по порядку.",
+                    body = "12 new issues in one feed. Read them in order.",
                     seed = 1919,
                 )
             }
@@ -215,39 +221,39 @@ fun KitCore() {
     }
 }
 
-/** The MVP page: IconButton to Счётчик and the change of screen. */
+/** The MVP page: IconButton to Counter and the change of screen. */
 @Composable
 fun KitComponents(beat: Int) {
     val icons = listOf(PlakatIcons.Home, PlakatIcons.Search, PlakatIcons.Share, PlakatIcons.Settings)
     Column(verticalArrangement = Arrangement.spacedBy(32.dp)) {
-        KitGroup("Кнопки-значки") {
+        KitGroup("Icon buttons") {
             Wrap {
                 for (icon in PlakatIcons.All.take(6)) PlakatIconButton(icon, icon.name, {})
-                PlakatFab(PlakatIcons.Add, "Добавить", {})
+                PlakatFab(PlakatIcons.Add, "Add", {})
             }
         }
-        KitGroup("Метки") {
+        KitGroup("Chips and badges") {
             Wrap {
                 var selected by remember { mutableIntStateOf(0) }
-                for ((i, word) in listOf("ШРИФТ", "ГОРОД", "ДИЗАЙН").withIndex()) {
+                for ((i, word) in listOf("TYPE", "CITY", "DESIGN").withIndex()) {
                     PlakatChip(word, selected == i, { selected = i })
                 }
-                PlakatBadgedBox(beat) { PlakatIconButton(PlakatIcons.Share, "Обмен", {}) }
+                PlakatBadgedBox(beat) { PlakatIconButton(PlakatIcons.Share, "Share", {}) }
                 PlakatBadge(null)
             }
         }
-        KitGroup("Ход") {
+        KitGroup("Progress") {
             PlakatLinearProgress((beat % 5) / 4f, Modifier.width(Width))
             Wrap {
                 PlakatCircularProgress(null)
                 PlakatCircularProgress((beat % 5) / 4f)
             }
         }
-        KitGroup("Шапка") {
-            PlakatTopAppBar("ЛИСТ", Modifier.width(Width), subtitle = "№ 47")
-            PlakatMasthead("ЛИСТ", Modifier.width(Width), startLabel = "№ 47", endLabel = "НОЯБРЬ 2026")
+        KitGroup("Top bar") {
+            PlakatTopAppBar("SHEET", Modifier.width(Width), subtitle = "No. 47")
+            PlakatMasthead("SHEET", Modifier.width(Width), startLabel = "No. 47", endLabel = "NOVEMBER 2026")
         }
-        KitGroup("Ползунок") {
+        KitGroup("Slider") {
             Column(Modifier.width(Width).padding(horizontal = 16.dp)) {
                 var stepped by remember { mutableFloatStateOf(.5f) }
                 PlakatSlider(stepped, { stepped = it }, steps = 5)
@@ -256,33 +262,36 @@ fun KitComponents(beat: Int) {
                 PlakatSlider(.5f, {}, enabled = false, steps = 5)
             }
         }
-        KitGroup("Меню") {
+        KitGroup("Menu") {
             var open by remember { mutableStateOf(false) }
             Box {
-                PlakatOutlinedButton("ЕЩЁ", { open = !open })
+                PlakatOutlinedButton("MORE", { open = !open })
                 PlakatMenu(open, { open = false }) {
-                    PlakatMenuItem("Сохранить", { open = false })
-                    PlakatMenuItem("Поделиться", { open = false })
-                    PlakatMenuItem("В архив", { open = false }, enabled = false, divider = false)
+                    PlakatMenuItem("Save", { open = false })
+                    PlakatMenuItem("Share", { open = false })
+                    PlakatMenuItem("Archive", { open = false }, enabled = false, divider = false)
                 }
             }
         }
-        KitGroup("Подпись") {
+        KitGroup("Tooltip") {
             FlowRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                PlakatTooltip("Сохранить в лист") { PlakatOutlinedButton("ВВЕРХ", {}) }
-                PlakatTooltip("Сохранить в лист", axis = PlakatTooltipAxis.Level) { PlakatOutlinedButton("ВБОК", {}) }
+                PlakatTooltip("Save to the sheet") { PlakatOutlinedButton("UP", {}) }
                 PlakatTooltip(
-                    "Сохранить в лист",
+                    "Save to the sheet",
+                    axis = PlakatTooltipAxis.Level,
+                ) { PlakatOutlinedButton("SIDEWAYS", {}) }
+                PlakatTooltip(
+                    "Save to the sheet",
                     axis = PlakatTooltipAxis.Tilted,
-                ) { PlakatOutlinedButton("ПО ОСИ", {}) }
+                ) { PlakatOutlinedButton("ON THE AXIS", {}) }
             }
         }
-        KitGroup("Сегменты") {
+        KitGroup("Segments") {
             var segment by remember { mutableIntStateOf(0) }
-            PlakatSegmentedButton(listOf("ДЕНЬ", "НЕДЕЛЯ", "МЕСЯЦ"), segment, { segment = it })
-            PlakatSegmentedButton(listOf("ДЕНЬ", "НЕДЕЛЯ", "МЕСЯЦ"), 1, {}, enabled = false)
+            PlakatSegmentedButton(listOf("DAY", "WEEK", "MONTH"), segment, { segment = it })
+            PlakatSegmentedButton(listOf("DAY", "WEEK", "MONTH"), 1, {}, enabled = false)
         }
-        KitGroup("Обновление") {
+        KitGroup("Pull to refresh") {
             var refreshing by remember { mutableStateOf(false) }
             LaunchedEffect(refreshing) {
                 if (refreshing) {
@@ -292,24 +301,24 @@ fun KitComponents(beat: Int) {
             }
             PlakatPullToRefreshBox(refreshing, { refreshing = true }, Modifier.width(Width).height(240.dp)) {
                 Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
-                    repeat(8) { PlakatListItem("Выпуск ${it + 1}") }
+                    repeat(8) { PlakatListItem("Issue ${it + 1}") }
                 }
             }
         }
-        KitGroup("Проекция") {
+        KitGroup("Projection") {
             FlowRow(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 PlakatProjection(
-                    listOf("НОЯБРЬ"),
+                    listOf("NOVEMBER"),
                     PlakatProjectionForm.Horn(16.dp, 312.dp, 358.dp, 56.dp),
                     Modifier.size(390.dp, 320.dp),
                 )
                 PlakatProjection(
-                    listOf("НОВОЕ"),
+                    listOf("NEW"),
                     PlakatProjectionForm.Box(16.dp, 152.dp, 260.dp, 160.dp, 96.dp, 184.dp, 288.dp),
                     Modifier.size(390.dp, 320.dp),
                 )
                 PlakatProjection(
-                    listOf("СЛУШАЙ"),
+                    listOf("LISTEN"),
                     PlakatProjectionForm
                         .Cone(0.dp, 0.dp, 320.dp, 20.dp, 92.dp, 16f, 62f, PlakatProjectionAxis.Tilted)
                         .fittedIn(DpRect(24.dp, 16.dp, 374.dp, 304.dp)),
@@ -317,10 +326,10 @@ fun KitComponents(beat: Int) {
                 )
             }
         }
-        KitGroup("Навигация") {
+        KitGroup("Navigation") {
             var nav by remember { mutableIntStateOf(0) }
             PlakatNavigationBar(
-                icons.zip(listOf("ЛЕНТА", "ПОИСК", "ОБМЕН", "ОПЦИИ")).map { (icon, word) ->
+                icons.zip(listOf("FEED", "SEARCH", "SHARE", "OPTIONS")).map { (icon, word) ->
                     PlakatNavigationItem(icon, word)
                 },
                 nav,
@@ -331,10 +340,10 @@ fun KitComponents(beat: Int) {
                 Modifier.width(Width),
             )
         }
-        KitGroup("Вкладки") {
+        KitGroup("Tabs") {
             val tab = beat % 3
             PlakatTabs(
-                listOf(PlakatTab("ЛЕНТА"), PlakatTab("АРХИВ"), PlakatTab("ЗАКЛАДКИ")),
+                listOf(PlakatTab("FEED"), PlakatTab("ARCHIVE"), PlakatTab("SAVED")),
                 tab,
                 {},
                 Modifier.width(Width),
@@ -343,71 +352,71 @@ fun KitComponents(beat: Int) {
                 PlakatRapportFill(1923 + it * 2, Modifier.fillMaxSize())
             }
         }
-        KitGroup("Строки") {
+        KitGroup("List items") {
             Column(Modifier.width(Width)) {
-                PlakatListItem("Шрифт", supporting = "5 мин", number = "01", onClick = {})
-                PlakatListItem("Дайджест", trailing = { PlakatSwitch(true, {}) })
+                PlakatListItem("Type", supporting = "5 min", number = "01", onClick = {})
+                PlakatListItem("Digest", trailing = { PlakatSwitch(true, {}) })
             }
         }
-        KitGroup("Объявление") {
+        KitGroup("Dialog") {
             var open by remember { mutableStateOf(false) }
-            PlakatOutlinedButton("ОТКРЫТЬ", { open = true }, Modifier.testTag("open-dialog"))
+            PlakatOutlinedButton("OPEN", { open = true }, Modifier.testTag("open-dialog"))
             Box(Modifier.width(Width).height(if (open) 420.dp else 1.dp)) {
-                PlakatDialog(open, "УДАЛИТЬ", { open = false }, text = "Вернуть можно.") {
-                    PlakatDialogAction("ОТМЕНА", { open = false })
-                    PlakatDialogAction("СТЕРЕТЬ", { open = false }, danger = true)
+                PlakatDialog(open, "DELETE", { open = false }, text = "It can be restored.") {
+                    PlakatDialogAction("CANCEL", { open = false })
+                    PlakatDialogAction("DELETE", { open = false }, danger = true)
                 }
             }
         }
-        KitGroup("Нижний лист") {
+        KitGroup("Bottom sheet") {
             var open by remember { mutableStateOf(false) }
-            PlakatOutlinedButton("ОТКРЫТЬ", { open = true }, Modifier.testTag("open-sheet"))
+            PlakatOutlinedButton("OPEN", { open = true }, Modifier.testTag("open-sheet"))
             Box(Modifier.width(Width).height(if (open) 420.dp else 1.dp)) {
-                PlakatBottomSheet(open, { open = false }, paneTitle = "Действия") {
-                    PlakatListItem("Сохранить", onClick = { open = false })
-                    PlakatListItem("Поделиться", onClick = { open = false }, divider = false)
+                PlakatBottomSheet(open, { open = false }, paneTitle = "Actions") {
+                    PlakatListItem("Save", onClick = { open = false })
+                    PlakatListItem("Share", onClick = { open = false }, divider = false)
                 }
             }
         }
-        KitGroup("Боковая панель") {
+        KitGroup("Navigation drawer") {
             var open by remember { mutableStateOf(false) }
             var place by remember { mutableIntStateOf(0) }
-            PlakatOutlinedButton("ОТКРЫТЬ", { open = true }, Modifier.testTag("open-drawer"))
+            PlakatOutlinedButton("OPEN", { open = true }, Modifier.testTag("open-drawer"))
             Box(Modifier.width(Width).height(if (open) 420.dp else 1.dp)) {
                 PlakatNavigationDrawer(
                     open,
-                    icons.zip(listOf("ЛЕНТА", "ПОИСК", "ОБМЕН", "ОПЦИИ")).map { (icon, word) ->
+                    icons.zip(listOf("FEED", "SEARCH", "SHARE", "OPTIONS")).map { (icon, word) ->
                         PlakatNavigationItem(icon, word)
                     },
                     place,
                     { place = it },
                     { open = false },
-                    paneTitle = "Разделы",
+                    paneTitle = "Sections",
                 )
             }
         }
-        KitGroup("Окно") {
+        KitGroup("Window") {
             val panels =
                 remember {
                     listOf(300, 317, 334).mapIndexed { i, seed ->
-                        PlakatWindowPanel(listOf("ЧИТАЙ", "СОХРАНЯЙ", "ДЕЛИСЬ")[i], "Панель ${i + 1}.") {
+                        PlakatWindowPanel(listOf("READ", "SAVE", "SHARE")[i], "Panel ${i + 1}.") {
                             PlakatGeneratedImage(seed, Modifier.fillMaxSize(), 171.dp, 160.dp)
                         }
                     }
                 }
             PlakatWindow(panels, beat % 2, Modifier.width(Width), panelsInView = 2)
         }
-        KitGroup("Пустое состояние") {
-            PlakatEmptyState("СОХРАНИТЕ ПЕРВУЮ СТАТЬЮ", "Закладки появятся здесь и откроются без сети.", "К ЛЕНТЕ", {
+        KitGroup("Empty state") {
+            PlakatEmptyState("SAVE YOUR FIRST ARTICLE", "Bookmarks appear here and open offline.", "TO THE FEED", {
             }, Modifier.width(Width))
         }
-        KitGroup("Счётчик") {
+        KitGroup("Counter") {
             Row(Modifier.width(Width), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                PlakatCounter(39 + beat * 8, "СТАТЕЙ", Modifier.weight(1f), legend = "= 5 статей", perPictogram = 5)
-                PlakatCounterColumn(39 + beat, "ДНЕЙ", Modifier.weight(1f))
+                PlakatCounter(39 + beat * 8, "ARTICLES", Modifier.weight(1f), legend = "= 5 articles", perPictogram = 5)
+                PlakatCounterColumn(39 + beat, "DAYS", Modifier.weight(1f))
             }
         }
-        KitGroup("Смена экрана") {
+        KitGroup("Screen change") {
             val depth = beat % 2 + 1
             PlakatScreenWipe(depth, depth, Modifier.width(Width).height(240.dp)) {
                 PlakatPresetImage(if (it == 1) PlakatPreset.Klin else PlakatPreset.Os, Modifier.fillMaxSize())
@@ -421,18 +430,18 @@ fun KitComponents(beat: Int) {
 fun KitAgit() {
     val colors = PlakatTheme.colors
     Column(verticalArrangement = Arrangement.spacedBy(32.dp)) {
-        KitGroup("Заготовки") {
+        KitGroup("Presets") {
             Wrap { for (preset in PlakatPreset.entries) PlakatPresetImage(preset, Modifier.size(180.dp, 120.dp)) }
         }
-        KitGroup("Генератор") {
+        KitGroup("Generator") {
             Wrap { for (seed in 1919..1924) PlakatGeneratedImage(seed, Modifier.size(180.dp, 120.dp)) }
         }
-        KitGroup("Раппорты") {
+        KitGroup("Repeats") {
             Wrap { for (seed in listOf(1923, 1925, 1927, 1929)) PlakatRapportFill(seed, Modifier.size(180.dp, 96.dp)) }
             PlakatRapportFill(1923, Modifier.width(Width).height(24.dp), cell = 4.dp)
             PlakatSkeleton(1923, Modifier.size(64.dp))
         }
-        KitGroup("Фотомонтаж") {
+        KitGroup("Photomontage") {
             val source = remember { standIn() }
             Wrap {
                 Box(
@@ -447,8 +456,8 @@ fun KitAgit() {
                 PlakatRaskatDisc(Modifier.size(180.dp))
             }
         }
-        KitGroup("Растяжка") {
-            PlakatStretch("ЛИСТ", Modifier.width(Width).height(120.dp))
+        KitGroup("Stretch") {
+            PlakatStretch("SHEET", Modifier.width(Width).height(120.dp))
         }
     }
 }

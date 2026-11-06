@@ -61,7 +61,7 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 |---|---|---|---|---|
 | [B-43](docs/backlog/B-43-re-import-the-design.md) `[ ]` | Re-import the design project on a branch of its own | P3 | S | B-05, B-08 |
 
-## Closed (55)
+## Closed (56)
 
 **Goldens and references regenerate deterministically; the generator and raskat ports match them on every target; the floor and the frame cost have measured numbers**
 
@@ -135,5 +135,6 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 **stage-3-demo**
 
 - [B-56](docs/backlog/B-56-card-press-words.md) `[x]` - A pressed card's words stay dark in the kit and the demo
+- [B-57](docs/backlog/B-57-english-kit.md) `[x]` - The kit speaks English: the sample, the site and the default strings
 
 <!-- END INDEX -->

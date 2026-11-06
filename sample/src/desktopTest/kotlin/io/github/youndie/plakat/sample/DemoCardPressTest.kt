@@ -69,6 +69,6 @@ class DemoCardPressTest {
         }
 
     private companion object {
-        const val FIRST_TITLE = "Город из фанеры: как"
+        const val FIRST_TITLE = "A city of plywood: how"
     }
 }

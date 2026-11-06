@@ -63,16 +63,56 @@ import io.github.youndie.plakat.icons.PlakatIcons
 import io.github.youndie.plakat.theme.LocalPlakatContentColor
 import io.github.youndie.plakat.theme.PlakatTheme
 
-// The Demo page's three screens of the magazine «Лист», from the kit's public API. What the kit has no component for
-// yet (the page indicator) is drawn here, as an application would.
+// The Demo page's three screens of a magazine, from the kit's public API. What the kit has no component for yet (the
+// page indicator) is drawn here, as an application would.
 
-private val NavItems =
-    listOf(
-        PlakatNavigationItem(PlakatIcons.Home, "ЛЕНТА"),
-        PlakatNavigationItem(PlakatIcons.Search, "ПОИСК"),
-        PlakatNavigationItem(PlakatIcons.Share, "ОБМЕН"),
-        PlakatNavigationItem(PlakatIcons.Settings, "ОПЦИИ"),
-    )
+/**
+ * The words of the Demo screens. The sample shows these; the fixtures pass the design's Russian (B-57), which is what the
+ * references were rendered with, so the screens stay held to the design.
+ */
+class DemoCopy(
+    val brand: String = "SHEET",
+    val panels: List<Pair<String, String>> =
+        listOf(
+            "READ IN ORDER" to "Every week, an issue of 12 articles. Start with the first.",
+            "SAVE FOR LATER" to "Bookmarks open offline, on the metro and on a plane.",
+            "SHARE THE ISSUE" to "Send an article to a friend; they can read it without a subscription.",
+        ),
+    val skip: String = "SKIP",
+    val next: String = "NEXT",
+    val start: String = "START READING",
+    val nav: List<String> = listOf("FEED", "SEARCH", "SHARE", "OPTIONS"),
+    val issue: String = "No. 47 · NOVEMBER",
+    val tabs: List<String> = listOf("FEED", "ARCHIVE", "SAVED"),
+    val latest: String = "LATEST",
+    val cards: List<Pair<String, String>> =
+        listOf(
+            "ARCHITECTURE · 8 MIN" to "A city of plywood: how temporary pavilions are built",
+            "TYPE · 5 MIN" to "Letters you can read from across the square",
+            "DESIGN · 12 MIN" to "Seven ways to fold one sheet of paper",
+        ),
+    val posterTitle: String = "READ\nTHIS\nNOVEMBER",
+    val posterBody: String = "12 new issues in one feed. Read them in order.",
+    val subscribe: String = "SUBSCRIBE",
+    val back: String = "Back",
+    val settings: String = "SETTINGS",
+    val yourMonth: String = "YOUR NOVEMBER",
+    val articlesRead: String = "ARTICLES READ",
+    val articlesLegend: String = "= 5 articles",
+    val daysInARow: String = "DAYS IN A ROW",
+    val daysLegend: String = "= a day, red is today",
+    val reading: String = "READING",
+    val digest: String = "Send the digest",
+    val unread: String = "Unread only",
+    val offline: String = "Offline mode · soon",
+    val theme: String = "Theme",
+    val themes: List<String> = listOf("PAPER", "BLACK"),
+    val logOut: String = "LOG OUT",
+)
+
+private fun DemoCopy.navItems() =
+    listOf(PlakatIcons.Home, PlakatIcons.Search, PlakatIcons.Share, PlakatIcons.Settings)
+        .zip(nav) { icon, word -> PlakatNavigationItem(icon, word) }
 
 @Composable
 private fun label(size: TextUnit = 12.sp) =
@@ -107,18 +147,15 @@ private fun RuledLabel(text: String) {
 fun DemoOnboarding(
     modifier: Modifier = Modifier,
     initialPage: Int = 0,
+    copy: DemoCopy = DemoCopy(),
 ) {
     val colors = PlakatTheme.colors
     var page by remember { mutableIntStateOf(initialPage) }
     val zone = PlakatTitleZone.at(DpRect(0.dp, 0.dp, 72.dp, 40.dp))
     val panels =
-        remember(zone) {
-            listOf(
-                Triple("ЧИТАЙ ПО ПОРЯДКУ", "Каждую неделю — выпуск из 12 статей. Начни с первой.", 301),
-                Triple("СОХРАНЯЙ В ЛИСТ", "Закладки открываются без сети — в метро и в самолёте.", 318),
-                Triple("ДЕЛИСЬ ВЫПУСКОМ", "Отправь статью другу — он прочтёт её без подписки.", 335),
-            ).map { (caption, text, seed) ->
-                PlakatWindowPanel(caption, text) {
+        remember(zone, copy) {
+            copy.panels.zip(listOf(301, 318, 335)).map { (words, seed) ->
+                PlakatWindowPanel(words.first, words.second) {
                     PlakatGeneratedImage(
                         seed,
                         Modifier.fillMaxSize(),
@@ -137,7 +174,7 @@ fun DemoOnboarding(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                BasicText("ЛИСТ", style = display(20.sp))
+                BasicText(copy.brand, style = display(20.sp))
                 BasicText("${page + 1} / 3", style = label())
             }
             Spacer(Modifier.height(12.dp))
@@ -169,15 +206,18 @@ fun DemoOnboarding(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            PlakatDialogAction("ПРОПУСТИТЬ", { page = 2 })
-            PlakatButton(if (page == 2) "НАЧАТЬ ЧИТАТЬ" else "ДАЛЬШЕ", { page = (page + 1) % 3 }, Modifier.weight(1f))
+            PlakatDialogAction(copy.skip, { page = 2 })
+            PlakatButton(if (page == 2) copy.start else copy.next, { page = (page + 1) % 3 }, Modifier.weight(1f))
         }
     }
 }
 
 /** 02: a masthead with its strip, tabs, a poster, cards, the navigation bar. */
 @Composable
-fun DemoFeed(modifier: Modifier = Modifier) {
+fun DemoFeed(
+    modifier: Modifier = Modifier,
+    copy: DemoCopy = DemoCopy(),
+) {
     val colors = PlakatTheme.colors
     var tab by remember { mutableIntStateOf(0) }
     var nav by remember { mutableIntStateOf(0) }
@@ -188,36 +228,36 @@ fun DemoFeed(modifier: Modifier = Modifier) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                BasicText("ЛИСТ", Modifier.wrapContentHeight(unbounded = true), style = display(28.sp))
-                BasicText("№ 47 · НОЯБРЬ", Modifier.offset(y = 3.dp), style = label())
+                BasicText(copy.brand, Modifier.wrapContentHeight(unbounded = true), style = display(28.sp))
+                BasicText(copy.issue, Modifier.offset(y = 3.dp), style = label())
             }
             Spacer(Modifier.height(12.dp))
             PlakatRapportFill(1923, Modifier.fillMaxWidth().height(24.dp), cell = 4.dp)
             Spacer(Modifier.height(8.dp))
-            PlakatTabs(listOf(PlakatTab("ЛЕНТА"), PlakatTab("АРХИВ"), PlakatTab("ЗАКЛАДКИ")), tab, { tab = it })
-            FeedPoster()
+            PlakatTabs(copy.tabs.map { PlakatTab(it) }, tab, { tab = it })
+            FeedPoster(copy)
             Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 24.dp)) {
-                RuledLabel("СВЕЖЕЕ")
+                RuledLabel(copy.latest)
                 Spacer(Modifier.height(16.dp))
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    FeedCard("АРХИТЕКТУРА · 8 МИН", "Город из фанеры: как строят временные павильоны", 71)
-                    FeedCard("ШРИФТ · 5 МИН", "Буквы, которые читаются с другого конца площади", 72)
-                    FeedCard("ДИЗАЙН · 12 МИН", "Семь способов сложить один лист бумаги", 73)
+                    copy.cards.zip(listOf(71, 72, 73)).forEach { (words, seed) ->
+                        FeedCard(words.first, words.second, seed)
+                    }
                 }
             }
         }
-        PlakatNavigationBar(NavItems, nav, { nav = it }, Modifier.align(Alignment.BottomCenter))
+        PlakatNavigationBar(copy.navItems(), nav, { nav = it }, Modifier.align(Alignment.BottomCenter))
     }
 }
 
 /** The poster of this issue: a concrete plate, a disc of raskat and the title on the axis. */
 @Composable
-private fun FeedPoster() {
+private fun FeedPoster(copy: DemoCopy) {
     Box(Modifier.fillMaxWidth().height(392.dp)) {
         Box(Modifier.offset(0.dp, 168.dp).size(160.dp, 144.dp).background(PlakatTheme.colors.concrete))
         PlakatRaskatDisc(Modifier.offset(250.dp, 192.dp).size(120.dp))
         BasicText(
-            "ЧИТАЙ\nВЕСЬ\nНОЯБРЬ",
+            copy.posterTitle,
             Modifier
                 // Compose sets this line's baseline 8 lower than Blink does, along the turned block's own height.
                 .offset(13.7.dp, 92.4.dp)
@@ -229,12 +269,12 @@ private fun FeedPoster() {
             softWrap = false,
         )
         BasicText(
-            "12 новых выпусков. Мы собрали их в одну ленту — читай по порядку.",
+            copy.posterBody,
             Modifier.offset(16.dp, 255.dp).width(220.dp),
             style = body(16.sp, 21.6.sp),
         )
         PlakatButton(
-            "ПОДПИСАТЬСЯ",
+            copy.subscribe,
             {},
             Modifier.align(Alignment.BottomStart).padding(start = 16.dp, end = 16.dp, bottom = 24.dp).fillMaxWidth(),
         )
@@ -274,6 +314,7 @@ fun DemoSettings(
     dark: Boolean,
     onDarkChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
+    copy: DemoCopy = DemoCopy(),
 ) {
     val colors = PlakatTheme.colors
     var digest by remember { mutableStateOf(true) }
@@ -286,20 +327,20 @@ fun DemoSettings(
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                PlakatIconButton(PlakatIcons.Back, "Назад", {})
-                BasicText("НАСТРОЙКИ", style = display(16.sp))
+                PlakatIconButton(PlakatIcons.Back, copy.back, {})
+                BasicText(copy.settings, style = display(16.sp))
             }
             PlakatDivider(weight = PlakatDividerWeight.Rule)
             Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp)) {
-                BasicText("ВАШ НОЯБРЬ", style = label())
+                BasicText(copy.yourMonth, style = label())
                 Spacer(Modifier.height(12.dp))
                 Row(Modifier.height(IntrinsicSize.Max), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     Box(Modifier.weight(1f)) {
                         PlakatCounter(
                             47,
-                            "СТАТЕЙ ПРОЧИТАНО",
+                            copy.articlesRead,
                             Modifier.fillMaxSize(),
-                            legend = "= 5 статей",
+                            legend = copy.articlesLegend,
                             perPictogram = 5,
                             stretched = true,
                         )
@@ -307,9 +348,9 @@ fun DemoSettings(
                     Box(Modifier.weight(1f)) {
                         PlakatCounter(
                             6,
-                            "ДНЕЙ ПОДРЯД",
+                            copy.daysInARow,
                             Modifier.fillMaxSize(),
-                            legend = "= день, красный — сегодня",
+                            legend = copy.daysLegend,
                             pictogram = PlakatPictogram.Circle,
                             accentLast = true,
                             stretched = true,
@@ -319,24 +360,24 @@ fun DemoSettings(
                 }
             }
             Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp)) {
-                RuledLabel("ЧТЕНИЕ")
-                SwitchRow("Присылать дайджест", digest, { digest = it })
-                SwitchRow("Только непрочитанное", unread, { unread = it })
-                SwitchRow("Офлайн-режим · скоро", false, null)
+                RuledLabel(copy.reading)
+                SwitchRow(copy.digest, digest, { digest = it })
+                SwitchRow(copy.unread, unread, { unread = it })
+                SwitchRow(copy.offline, false, null)
                 Row(
                     Modifier.fillMaxWidth().heightIn(min = 64.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    BasicText("Тема", Modifier.offset(y = (-1).dp), style = body(16.sp))
-                    PlakatSegmentedButton(listOf("БУМАГА", "ЧЁРНАЯ"), if (dark) 1 else 0, { onDarkChange(it == 1) })
+                    BasicText(copy.theme, Modifier.offset(y = (-1).dp), style = body(16.sp))
+                    PlakatSegmentedButton(copy.themes, if (dark) 1 else 0, { onDarkChange(it == 1) })
                 }
                 PlakatDivider()
                 Spacer(Modifier.height(32.dp))
-                PlakatDialogAction("ВЫЙТИ ИЗ АККАУНТА", {}, Modifier.fillMaxWidth(), danger = true)
+                PlakatDialogAction(copy.logOut, {}, Modifier.fillMaxWidth(), danger = true)
             }
         }
-        PlakatNavigationBar(NavItems, nav, { nav = it }, Modifier.align(Alignment.BottomCenter))
+        PlakatNavigationBar(copy.navItems(), nav, { nav = it }, Modifier.align(Alignment.BottomCenter))
     }
 }
 

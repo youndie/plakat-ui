@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.youndie.plakat.components.PlakatSnackbarFrame
+import io.github.youndie.plakat.theme.PlakatStrings
 import io.github.youndie.plakat.theme.PlakatTheme
 import io.github.youndie.plakat.tokens.PlakatColors
 import io.github.youndie.plakat.tokens.PlakatPalettes
@@ -21,7 +22,7 @@ private fun Cell(
     message: String,
     action: String? = null,
     error: Boolean = false,
-) = PlakatTheme(colors = colors, reduceMotion = true) {
+) = PlakatTheme(colors = colors, reduceMotion = true, strings = PlakatStrings(error = "Ошибка")) {
     Box(Modifier.size(344.dp, 56.dp).background(PlakatTheme.colors.paper)) {
         PlakatSnackbarFrame(message, Modifier.fillMaxWidth(), true, action, {}, error, {}, playIn = false)
     }

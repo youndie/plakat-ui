@@ -41,7 +41,7 @@ There is no release yet.
 
 ```kotlin
 PlakatTheme {
-    PlakatButton("Подписаться", onClick = {})
+    PlakatButton("Subscribe", onClick = {})
 }
 ```
 

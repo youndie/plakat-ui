@@ -269,6 +269,10 @@ the brief fixes the names now for that reason.
 As in oldge-ui and toon-ui. Demo strings in fixtures are copied from the design verbatim, in Russian,
 because the references were rendered with them.
 
+What the kit shows is English (the owner, 2026-11-06, [B-57](../backlog/B-57-english-kit.md)): the sample
+and the site, the README's snippet and the defaults of `PlakatStrings`. The fixtures keep the design's
+Russian through `DemoCopy` and `PlakatStrings`, so no golden moved.
+
 ### D12. Built and verified on the Mac; the repository stays out of mutagen sync
 
 Screenshot references and goldens are a claim about the rasteriser that recorded them

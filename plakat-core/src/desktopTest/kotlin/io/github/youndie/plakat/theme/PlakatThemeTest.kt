@@ -56,7 +56,7 @@ class PlakatThemeTest {
         assertEquals(PlakatPalettes.Paper, s.colors)
         assertFalse(s.reduce!!, "the desktop JVM has no reduce-motion setting")
         assertTrue(s.print!!.texture && s.print!!.nonprint && s.print!!.registration && s.print!!.raskat)
-        assertEquals("Ошибка", s.strings!!.error)
+        assertEquals("Error", s.strings!!.error)
     }
 
     @Test
@@ -67,7 +67,7 @@ class PlakatThemeTest {
                     colors = PlakatPalettes.BlackPaper,
                     reduceMotion = true,
                     print = PlakatPrintSwitches(texture = false, raskat = false),
-                    strings = PlakatStrings(error = "Error"),
+                    strings = PlakatStrings(error = "Ошибка"),
                     content = it,
                 )
             }
@@ -76,7 +76,7 @@ class PlakatThemeTest {
         assertFalse(s.print!!.texture)
         assertFalse(s.print!!.raskat)
         assertTrue(s.print!!.registration)
-        assertEquals("Error", s.strings!!.error)
+        assertEquals("Ошибка", s.strings!!.error)
     }
 
     @Test

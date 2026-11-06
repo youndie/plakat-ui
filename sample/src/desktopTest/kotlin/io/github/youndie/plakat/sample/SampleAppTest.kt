@@ -5,6 +5,7 @@ import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.hasClickAction
@@ -34,7 +35,7 @@ class SampleAppTest {
                     (0 until px.width).map { px[it, px.height - 2] }.toSet()
                 }
             assertTrue(paperRow().size > 3, "textured paper")
-            onNodeWithText("ТЕКСТУРА: ВКЛ").performClick()
+            onNodeWithText("TEXTURE: ON").performClick()
             assertEquals(
                 setOf(PlakatPalettes.Paper.paper),
                 paperRow()
@@ -45,7 +46,7 @@ class SampleAppTest {
                     .toSet(),
                 "flat paper",
             )
-            onNodeWithText("ТЕКСТУРА: ВЫКЛ").performClick()
+            onNodeWithText("TEXTURE: OFF").performClick()
             assertTrue(paperRow().size > 3, "textured again")
         }
 
@@ -66,6 +67,26 @@ class SampleAppTest {
             }
         }
     }
+
+    /** B-57: every word the sample shows or names is English; the design's Russian stays in the fixtures. */
+    @Test
+    fun `no section shows a word in Russian`() =
+        runComposeUiTest {
+            setContent { PlakatUiSample(reduceMotion = true, autoplay = false, texture = false) }
+            for (section in SampleSection.entries) {
+                onNodeWithTag("section-${section.name}").performClick()
+                waitForIdle()
+                val words =
+                    onAllNodes(SemanticsMatcher("any node") { true }, useUnmergedTree = true)
+                        .fetchSemanticsNodes()
+                        .flatMap { node ->
+                            node.config.getOrElse(SemanticsProperties.Text) { emptyList() }.map { it.text } +
+                                node.config.getOrElse(SemanticsProperties.ContentDescription) { emptyList() }
+                        }
+                assertTrue(words.isNotEmpty(), "$section shows words")
+                assertEquals(emptyList(), words.filter { it.any { c -> c in '\u0400'..'\u04FF' } }, "$section")
+            }
+        }
 
     /** What a finger or a pointer can press, over a section of the sample, with its bounds and role. */
     private fun ComposeUiTest.controls(section: SampleSection) {
@@ -137,12 +158,12 @@ class SampleAppTest {
             session(heard)
             heard.clear()
             // Onboarding: next, which presses a button and turns the window.
-            onNodeWithText("ДАЛЬШЕ").performScrollTo().performClick()
+            onNodeWithText("NEXT").performScrollTo().performClick()
             waitForIdle()
             // A chip to the settings screen, then a row's switch.
             onNodeWithTag("section-Settings").performClick()
             waitForIdle()
-            onNodeWithText("Присылать дайджест").performScrollTo().performClick()
+            onNodeWithText("Send the digest").performScrollTo().performClick()
             waitForIdle()
             assertEquals(listOf("stamp", "release", "rail", "stamp", "lever"), heard.map { it.token })
         }

@@ -33,7 +33,7 @@ Two themes: «Бумага» and «Чёрная бумага», which changes fo
   silent default.
 - `PlakatStrings` holds the words of the kit's own controls: accessible names (back, close, menu,
   clear, refresh, loading, dismiss) and the words printed beside a colour so colour never carries
-  meaning alone (error, warning, info). Russian by default, as the design.
+  meaning alone (error, warning, info). Russian by default, as the design (English since [B-57](B-57-english-kit.md)).
 - The sample takes the palette and reduce motion as parameters and sets its title in Headline.
 - Mutants, each killed by `PlakatThemeTest`: an explicit reduce motion ignored, capitals dropped,
   line height left at the font size, the print switches ignored.
