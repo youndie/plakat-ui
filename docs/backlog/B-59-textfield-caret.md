@@ -1,7 +1,7 @@
 ---
 id: B-59
 title: "TextField: the caret stays at the insertion point, inside the field"
-status: open
+status: done
 priority: P1
 size: S
 stage: stage-2-components
@@ -18,3 +18,17 @@ Once the text is wider than the field the caret leaves it: it paints over whatev
 
 - AC: typing past the width keeps the caret visible and inside the field, and moving it left scrolls back; nothing is drawn outside the field; under a mask the caret stands at the mapped position; `TextField/*` goldens hold; each behaviour has a test that fails with the fix reverted.
 - Anchors: `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatTextField.kt`
+
+## Findings
+
+The toolkit's own cursor cannot carry the design's: its width and blink are fixed, and `cursorBrush` chooses only a paint. Its scroll offset cannot be read from outside either. So the field scrolls itself: `BasicTextField` sits in a `horizontalScroll`, never wider than its text, so the toolkit has nothing to scroll, and the caret is drawn in the text's own coordinates, which the same scroll moves and clips. A wheel and a finger still scroll the line, and `overscrollEffect = null` keeps Android's stretch out, since the design has no overshoot. An unbounded parent would make `horizontalScroll` throw, so the field takes `maxContentWidth()` from [B-58](B-58-unbounded-width.md).
+
+The caret follows a frame after the text's layout, through a `LaunchedEffect`. Nothing is drawn outside the field on that frame, as the scroll clips it.
+
+Designed here (D13): between two letters the bar is centred on the insertion point, as the Core page's `gap: 2px` is for the end of the text and would put it on the next letter. After the last letter it stays as the page draws it, which is why no `TextField/*` golden moved.
+
+Rendered and looked at on both papers: at the end of a long line, in the middle, at the start and empty, with a button to its right that nothing paints over. `./gradlew check`: 834 tests, 0 failed.
+
+Mutants, each killed by the aimed test: no following to the right fails `typing past the width keeps the caret inside the field`; no following to the left fails `moving the caret home scrolls the text back`; the original offset on the transformed text fails `under a mask that lengthens the text the caret stands at the mapped place`; the gap between letters fails `after the last letter the caret stands clear of it and between two it is centred on the insertion point`; the toolkit's scroll back fails `typing past the width keeps the caret inside the field`.
+
+Not exercised: a real IME, whose composing text moves the caret by the same path, and text selection dragged past the field's edge in a real window ([B-69](B-69-real-window-pass.md)).
