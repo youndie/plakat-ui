@@ -1,7 +1,7 @@
 ---
 id: B-61
 title: "A hidden Snackbar takes no input"
-status: open
+status: done
 priority: P1
 size: S
 stage: stage-2-components
@@ -18,3 +18,9 @@ The KDoc says "hidden ... nothing of it is drawn", and it is not drawn, but it s
 
 - AC: hidden, the action answers neither a click nor the keyboard, in both motion modes, and no text of it is in the semantics tree; a snackbar shown again plays its entrance from the start; `Snackbar/*` goldens hold.
 - Anchors: `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatSnackbar.kt`
+
+## Findings
+
+Hidden and at rest the snackbar returns from its composition, which also drops the `modifier`, so it takes no space where a consumer's layout gave it some: it has always been placed over the content (the page's `position: absolute`), and a snackbar in a plain Column now closes up rather than leaving its height empty. A `reduce` fade settles by `fade`, a ride by `rise`. On its way out, under either, its action no longer answers, so the 120 or 200 ms of its exit cannot fire it. The KDoc's "nothing of it is drawn" is now also "nothing of it is there".
+
+Mutants, each killed by the aimed test: staying composed fails `hidden under reduced motion a click goes through to what is under it`; settling only by the rise fails `hidden under reduced motion a click goes through to what is under it`; an action enabled while leaving fails `going away its action no longer answers`. The keyboard tests hold the two guards together: the disabled action alone already keeps Tab off it, so removing either one leaves them green, and it is the click and semantics tests that tell the two apart.

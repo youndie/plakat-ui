@@ -25,7 +25,7 @@ The toolkit's own cursor cannot carry the design's: its width and blink are fixe
 
 The caret follows a frame after the text's layout, through a `LaunchedEffect`. Nothing is drawn outside the field on that frame, as the scroll clips it.
 
-Designed here (D13): between two letters the bar is centred on the insertion point, as the Core page's `gap: 2px` is for the end of the text and would put it on the next letter. After the last letter it stays as the page draws it, which is why no `TextField/*` golden moved.
+Designed here (D13): between two letters the bar is centred on the insertion point, as the Core page's `gap: 2px` is for the end of the text and would put it on the next letter. After the last letter it stays as the page draws it. The `TextField/*` goldens hold within their tolerance, not to the pixel: the scroll clips, and a clip moves the edges of letters by a channel delta of up to 7, as [B-62](B-62-dialog-long-text.md) measured on the dialog, where the longer text crossed the tolerance. A field has too few letters to cross it, and it must clip when it scrolls.
 
 Rendered and looked at on both papers: at the end of a long line, in the middle, at the start and empty, with a button to its right that nothing paints over. `./gradlew check`: 834 tests, 0 failed.
 
