@@ -55,11 +55,10 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 
 <!-- BEGIN INDEX -->
 
-## Open (9)
+## Open (8)
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-62](docs/backlog/B-62-dialog-long-text.md) `[ ]` | Dialog: long text scrolls and the actions stay reachable | P1 | S | - |
 | [B-63](docs/backlog/B-63-overlay-focus-and-input.md) `[ ]` | Overlays and the screen change: where the keyboard and clicks go | P2 | M | - |
 | [B-64](docs/backlog/B-64-textfield-semantics-jolt-selection.md) `[ ]` | TextField: label and error on the editable node, the jolt, the selection colour | P2 | S | - |
 | [B-65](docs/backlog/B-65-long-content.md) `[ ]` | Long content: what a component does with text that does not fit | P2 | L | - |
@@ -69,7 +68,7 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 | [B-68](docs/backlog/B-68-release-ink-question.md) `[?]` | On release a word is ink on ink for its first frames: keep it? | P3 | XS | - |
 | [B-69](docs/backlog/B-69-real-window-pass.md) `[?]` | Check what only a real window shows | P3 | S | - |
 
-## Closed (60)
+## Closed (61)
 
 **Goldens and references regenerate deterministically; the generator and raskat ports match them on every target; the floor and the frame cost have measured numbers**
 
@@ -130,6 +129,7 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 - [B-59](docs/backlog/B-59-textfield-caret.md) `[x]` - TextField: the caret stays at the insertion point, inside the field
 - [B-60](docs/backlog/B-60-visible-keyboard-focus.md) `[x]` - Keyboard focus shows on every control it lands on
 - [B-61](docs/backlog/B-61-hidden-snackbar-takes-no-input.md) `[x]` - A hidden Snackbar takes no input
+- [B-62](docs/backlog/B-62-dialog-long-text.md) `[x]` - Dialog: long text scrolls and the actions stay reachable
 
 **The three demo screens within the floor in both themes; contrast holds with the textures on**
 

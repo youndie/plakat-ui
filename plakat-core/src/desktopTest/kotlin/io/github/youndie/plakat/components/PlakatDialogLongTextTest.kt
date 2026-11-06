@@ -9,14 +9,13 @@ import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.SemanticsProperties
-import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsFocused
 import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.getBoundsInRoot
-import androidx.compose.ui.test.isFocused
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
@@ -173,16 +172,12 @@ class PlakatDialogLongTextTest {
     fun `text that fits is no stop for the keyboard`() =
         runComposeUiTest {
             dialog(text = "Short.")
-            val seen = mutableListOf<Int>()
-            repeat(4) {
+            // The screen is still the first stop: B-63. The next is the first action, with no stop between.
+            repeat(2) {
                 onRoot().performKeyInput { pressKey(Key.Tab) }
                 mainClock.advanceTimeBy(50)
-                seen +=
-                    onAllNodes(isFocused()).fetchSemanticsNodes().count {
-                        it.config.getOrNull(SemanticsProperties.Text)?.any { t -> t.text == "Short." } == true
-                    }
             }
-            assertEquals(0, seen.sum(), "the short text took focus")
+            onNodeWithText("LATER").assertIsFocused()
         }
 
     @Test
