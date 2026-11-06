@@ -114,7 +114,7 @@ internal fun PlakatListItemFrame(
             else -> colors.ink
         }
     val type = PlakatTheme.typography
-    val focusFrame = enabled && onClick != null && state.focusShown()
+    val focusFrame = state.focusShown()
     val click =
         if (onClick != null) {
             Modifier.clickable(source, indication = null, enabled = enabled, role = Role.Button, onClick = onClick)
