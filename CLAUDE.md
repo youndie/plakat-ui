@@ -107,5 +107,6 @@ MIT (`LICENSE`, research D15), like toon-ui. The bundled fonts keep their OFL.
 ## Language
 
 Documentation, code, comments, KDoc, test names and commit messages are in **English** (D11).
-The vendored brief is in Russian. Demo strings in fixtures are copied from the design verbatim.
+The vendored brief is in Russian. Demo strings in fixtures are copied from the design verbatim, and
+what the sample shows and `PlakatStrings` defaults to is English (B-57).
 Commits follow Conventional Commits with no tool signature.

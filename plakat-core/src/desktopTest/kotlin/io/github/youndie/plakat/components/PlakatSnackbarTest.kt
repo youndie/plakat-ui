@@ -268,6 +268,6 @@ class PlakatSnackbarTest {
     fun `an error carries the theme's word before the message`() =
         runComposeUiTest {
             setContent { PlakatTheme { PlakatSnackbar("Нет сети — повторим сами.", error = true) } }
-            onNodeWithText("ОШИБКА. Нет сети — повторим сами.").assertIsDisplayed()
+            onNodeWithText("ERROR. Нет сети — повторим сами.").assertIsDisplayed()
         }
 }

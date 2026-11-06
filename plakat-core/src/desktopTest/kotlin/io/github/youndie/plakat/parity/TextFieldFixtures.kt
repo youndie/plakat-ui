@@ -10,6 +10,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import io.github.youndie.plakat.components.PlakatTextFieldFrame
+import io.github.youndie.plakat.theme.PlakatStrings
 import io.github.youndie.plakat.theme.PlakatTheme
 import io.github.youndie.plakat.tokens.PlakatColors
 import io.github.youndie.plakat.tokens.PlakatPalettes
@@ -32,7 +33,7 @@ private fun Cell(
     error: String? = null,
     enabled: Boolean = true,
     focused: Boolean = false,
-) = PlakatTheme(colors = colors, reduceMotion = true) {
+) = PlakatTheme(colors = colors, reduceMotion = true, strings = PlakatStrings(error = "Ошибка")) {
     Box(Modifier.size(W.dp, height.dp).background(PlakatTheme.colors.paper)) {
         PlakatTextFieldFrame(
             TextFieldValue(text, TextRange(text.length)),

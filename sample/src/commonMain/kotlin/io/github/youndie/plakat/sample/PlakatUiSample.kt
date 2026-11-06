@@ -37,12 +37,12 @@ import kotlinx.coroutines.delay
 enum class SampleSection(
     val title: String,
 ) {
-    Core("ЯДРО"),
-    Components("КОМПОНЕНТЫ"),
-    Agit("АГИТ"),
-    Onboarding("ОНБОРДИНГ"),
-    Feed("ЛЕНТА"),
-    Settings("НАСТРОЙКИ"),
+    Core("CORE"),
+    Components("COMPONENTS"),
+    Agit("AGIT"),
+    Onboarding("ONBOARDING"),
+    Feed("FEED"),
+    Settings("SETTINGS"),
 }
 
 /** How long a beat of the sample's own motion lasts: long enough to see each change finish. */
@@ -136,10 +136,10 @@ private fun Header(
                 Modifier.testTag("section-${s.name}"),
             )
         }
-        PlakatChip("ЧЁРНАЯ БУМАГА", dark, onDark, Modifier.testTag("sample-dark"))
-        PlakatChip("БЕЗ ДВИЖЕНИЯ", reduce, onReduce, Modifier.testTag("sample-reduce"))
+        PlakatChip("BLACK PAPER", dark, onDark, Modifier.testTag("sample-dark"))
+        PlakatChip("NO MOTION", reduce, onReduce, Modifier.testTag("sample-reduce"))
         BasicText(
-            label.text(if (texture) "Текстура: вкл" else "Текстура: выкл"),
+            label.text(if (texture) "Texture: on" else "Texture: off"),
             Modifier
                 .clickable(onClick = onTexture)
                 .heightIn(min = 48.dp)
