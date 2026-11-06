@@ -3,6 +3,7 @@ package io.github.youndie.plakat.components
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
@@ -12,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -34,12 +37,14 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.error
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.withStyle
@@ -56,11 +61,31 @@ import io.github.youndie.plakat.tokens.PlakatSizes
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.math.ceil
+import kotlin.math.floor
 
 /** The caret: a red bar 3 × 24 two pixels after the text (the Core page's `gap:2px`, `width:3px;height:24px`). */
 private val CaretWidth = PlakatLines.Rule
 private val CaretHeight = 24.dp
 private val CaretGap = 2.dp
+
+/**
+ * Where the caret's bar starts, in the text's own coordinates: on [layout], the transformed text, at the place [mapping]
+ * gives [end]. After the last letter it stands [gap] clear of it, as the Core page draws it. Between two letters, which
+ * the page does not draw, it is centred on the insertion point, as the gap would put it on the next letter (D13).
+ */
+internal fun caretLeft(
+    layout: TextLayoutResult,
+    mapping: OffsetMapping,
+    end: Int,
+    gap: Float,
+    width: Float,
+): Float {
+    val length = layout.layoutInput.text.length
+    val at = mapping.originalToTransformed(end).coerceIn(0, length)
+    val left = layout.getCursorRect(at).left
+    return if (at == length) left + gap else (left - width / 2).coerceAtLeast(0f)
+}
 
 /** The caret's blink, the spec row `caret`: on 500, off 300, period 800, no fade. */
 internal const val CARET_ON_MS = 500L
@@ -202,6 +227,25 @@ internal fun PlakatTextFieldFrame(
     }
 
     var layout by remember { mutableStateOf<TextLayoutResult?>(null) }
+    val mapping =
+        remember(value.annotatedString, visualTransformation) {
+            visualTransformation.filter(value.annotatedString).offsetMapping
+        }
+    val density = LocalDensity.current
+    val gap = with(density) { CaretGap.toPx() }
+    val caretWide = with(density) { CaretWidth.toPx() }
+    val caretAt = layout?.let { caretLeft(it, mapping, value.selection.end, gap, caretWide) }
+
+    // The field scrolls itself, not the toolkit, whose offset nothing outside it can read and the caret must follow.
+    val scroll = rememberScrollState()
+    LaunchedEffect(caretAt, focused, scroll.viewportSize) {
+        if (caretAt == null || !focused) return@LaunchedEffect
+        val right = caretAt + caretWide
+        when {
+            right > scroll.value + scroll.viewportSize -> scroll.scrollTo(ceil(right).toInt() - scroll.viewportSize)
+            caretAt < scroll.value -> scroll.scrollTo(floor(caretAt).toInt())
+        }
+    }
     // The page sets no line height: the field's text and the message's word are on `normal` lines.
     val fieldStyle =
         type.bodyL.style
@@ -209,7 +253,7 @@ internal fun PlakatTextFieldFrame(
             .cssLine(PlakatFaceMetrics.Body)
 
     Column(
-        modifier.semantics { if (error != null) error(error) },
+        modifier.maxContentWidth().semantics { if (error != null) error(error) },
         verticalArrangement = Arrangement.spacedBy(PlakatGrid.Step),
     ) {
         if (label != null) {
@@ -226,42 +270,44 @@ internal fun PlakatTextFieldFrame(
                 },
             contentAlignment = Alignment.CenterStart,
         ) {
-            BasicTextField(
-                value,
-                onValueChange,
-                // The whole field takes the finger, not only the line of text in its middle (B-36).
-                Modifier
-                    .fillMaxSize()
-                    .drawWithContent {
-                        drawContent()
-                        val cursor = layout?.getCursorRect(value.selection.end)
-                        if (focused && caretOn && enabled && cursor != null) {
-                            val h = CaretHeight.toPx()
-                            drawRect(
-                                colors.red,
-                                Offset(cursor.left + CaretGap.toPx(), (size.height - h) / 2),
-                                Size(CaretWidth.toPx(), h),
-                            )
+            Box(Modifier.fillMaxSize().horizontalScroll(scroll, overscrollEffect = null)) {
+                BasicTextField(
+                    value,
+                    onValueChange,
+                    // The whole field takes the finger, not only the line of text in its middle (B-36).
+                    Modifier
+                        .fillMaxHeight()
+                        .drawWithContent {
+                            drawContent()
+                            if (focused && caretOn && enabled && caretAt != null) {
+                                val h = CaretHeight.toPx()
+                                drawRect(
+                                    colors.red,
+                                    Offset(caretAt, (size.height - h) / 2),
+                                    Size(caretWide, h),
+                                )
+                            }
+                        },
+                    enabled = enabled,
+                    textStyle = fieldStyle,
+                    keyboardOptions = keyboardOptions,
+                    keyboardActions = keyboardActions,
+                    singleLine = true,
+                    visualTransformation = visualTransformation,
+                    onTextLayout = { layout = it },
+                    interactionSource = source,
+                    cursorBrush = SolidColor(Color.Transparent),
+                    decorationBox = { inner ->
+                        // Room at the end for the caret after the last letter, inside what takes the finger.
+                        Box(Modifier.fillMaxHeight().padding(end = CaretGap + CaretWidth), Alignment.CenterStart) {
+                            if (value.text.isEmpty() && placeholder != null) {
+                                BasicText(placeholder, style = fieldStyle.copy(color = colors.inkMuted), maxLines = 1)
+                            }
+                            inner()
                         }
                     },
-                enabled = enabled,
-                textStyle = fieldStyle,
-                keyboardOptions = keyboardOptions,
-                keyboardActions = keyboardActions,
-                singleLine = true,
-                visualTransformation = visualTransformation,
-                onTextLayout = { layout = it },
-                interactionSource = source,
-                cursorBrush = SolidColor(Color.Transparent),
-                decorationBox = { inner ->
-                    Box(Modifier.fillMaxHeight(), contentAlignment = Alignment.CenterStart) {
-                        if (value.text.isEmpty() && placeholder != null) {
-                            BasicText(placeholder, style = fieldStyle.copy(color = colors.inkMuted), maxLines = 1)
-                        }
-                        inner()
-                    }
-                },
-            )
+                )
+            }
         }
         if (error != null) {
             Box(
