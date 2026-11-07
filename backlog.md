@@ -55,13 +55,11 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 
 <!-- BEGIN INDEX -->
 
-## Open (1)
+## Open (0)
 
-| Task | | Priority | Size | Blocked by |
-|---|---|---|---|---|
-| [B-43](docs/backlog/B-43-re-import-the-design.md) `[ ]` | Re-import the design project on a branch of its own | P3 | S | B-05, B-08 |
+No open tasks.
 
-## Closed (71)
+## Closed (72)
 
 **Goldens and references regenerate deterministically; the generator and raskat ports match them on every target; the floor and the frame cost have measured numbers**
 
@@ -145,6 +143,7 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 - [B-40](docs/backlog/B-40-licence.md) `[x]` - Licence: MIT
 - [B-41](docs/backlog/B-41-registration-unit.md) `[x]` - Registration offset: 1 dp
 - [B-42](docs/backlog/B-42-v1-components-designed-here.md) `[x]` - v1 components: designed here, one item each
+- [B-43](docs/backlog/B-43-re-import-the-design.md) `[-]` - Re-import the design project on a branch of its own
 - [B-71](docs/backlog/B-71-wasm-test-time-limit.md) `[x]` - Wasm browser tests go red on a runner's speed: Mocha's limit of 2 s
 
 **stage-3-demo**
