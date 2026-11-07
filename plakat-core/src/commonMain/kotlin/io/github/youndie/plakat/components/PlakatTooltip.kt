@@ -160,6 +160,9 @@ internal fun tooltipPlacement(
     )
 }
 
+/** Whether a `Popup` is drawn on the window's own canvas, unclipped, rather than being a window of its own. */
+internal expect val PopupDrawsPastItsBounds: Boolean
+
 /** What the anchor knows and the caption's position provider reads. */
 @Stable
 internal class TooltipHolder(
@@ -191,7 +194,8 @@ private class TooltipPosition(
  *
  * It shows while a pointer rests on the anchor, after 400 ms, until the pointer leaves or presses; while a finger holds it; and
  * while it has the keyboard's focus. It appears by a wipe along its leader, from the anchor's end, 120 ms linear (`wipe`), and
- * goes back the same way; at once under reduced motion. It takes no input and no focus. A screen reader has [text] as the
+ * goes back the same way; at once under reduced motion. It takes no input and no focus, and a press on its plate reaches what lies under it, except on Android,
+ * where a popup is a window of its own and the plate takes that press. A screen reader has [text] as the
  * anchor's description, without its showing.
  */
 @Composable
@@ -338,12 +342,14 @@ internal fun PlakatTooltipCaption(
             Modifier.drawWithContent {
                 val placed = holder.placement ?: return@drawWithContent
                 val p = progress().coerceIn(0f, 1f)
+                val width = placed.box.width.toFloat()
+                val height = placed.box.height.toFloat()
                 val shown =
                     when (placed.from) {
-                        TooltipFrom.Left -> Rect(0f, 0f, size.width * p, size.height)
-                        TooltipFrom.Right -> Rect(size.width * (1 - p), 0f, size.width, size.height)
-                        TooltipFrom.Top -> Rect(0f, 0f, size.width, size.height * p)
-                        TooltipFrom.Bottom -> Rect(0f, size.height * (1 - p), size.width, size.height)
+                        TooltipFrom.Left -> Rect(0f, 0f, width * p, height)
+                        TooltipFrom.Right -> Rect(width * (1 - p), 0f, width, height)
+                        TooltipFrom.Top -> Rect(0f, 0f, width, height * p)
+                        TooltipFrom.Bottom -> Rect(0f, height * (1 - p), width, height)
                     }
                 clipRect(shown.left, shown.top, shown.right, shown.bottom) {
                     this@drawWithContent.drawContent()
@@ -368,6 +374,12 @@ internal fun PlakatTooltipCaption(
                 LeaderLength.toPx(),
             )
         holder.placement = placed
-        layout(placed.box.width, placed.box.height) { plate.place(placed.plate) }
+        // A popup's layer takes every press inside its bounds, though nothing in it wants one. Where it draws past its bounds it
+        // has none, so a press falls through to what the plate lies over (B-72); on Android it is a window of its own.
+        if (PopupDrawsPastItsBounds) {
+            layout(0, 0) { plate.place(placed.plate) }
+        } else {
+            layout(placed.box.width, placed.box.height) { plate.place(placed.plate) }
+        }
     }
 }

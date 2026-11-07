@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.PixelMap
 import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.input.InputMode
 import androidx.compose.ui.input.InputModeManager
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInputModeManager
 import androidx.compose.ui.platform.testTag
@@ -230,6 +231,54 @@ class PlakatTooltipTest {
             onNodeWithText("Сохранить").assertExists()
         }
 
+    @Test
+    fun `a press on the plate reaches what lies under it, and the plate stays with its focus`() =
+        runComposeUiTest {
+            var under = 0
+            setContent {
+                CompositionLocalProvider(LocalDensity provides Density(1f)) {
+                    PlakatTheme(colors = paper, reduceMotion = true) {
+                        val keyboard =
+                            object : InputModeManager {
+                                override val inputMode = InputMode.Keyboard
+
+                                override fun requestInputMode(inputMode: InputMode) = true
+                            }
+                        Box(Modifier.size(1024.dp, 768.dp).background(Color.White).testTag("window")) {
+                            // The plate of a level leader stands 24 past the anchor, centred on its middle: 72 across, by 124.
+                            Box(
+                                Modifier
+                                    .offset(60.dp, 90.dp)
+                                    .size(300.dp, 70.dp)
+                                    .clickable { under++ }
+                                    .testTag("under"),
+                            )
+                            CompositionLocalProvider(LocalInputModeManager provides keyboard) {
+                                PlakatTooltip(
+                                    "Сохранить",
+                                    Modifier.offset(0.dp, 100.dp),
+                                    axis = PlakatTooltipAxis.Level,
+                                ) {
+                                    Box(Modifier.size(48.dp).clickable { }.testTag("a"))
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            onNodeWithTag("a").requestFocus()
+            waitForIdle()
+            val row = frame().let { px -> (72 until 200).count { px[it, 124] == paper.concrete } }
+            assertTrue(row > 20, "the plate lies over it: $row of its ground on the row")
+            onNodeWithTag("under").performMouseInput {
+                moveTo(Offset(20f, 34f))
+                press()
+                release()
+            }
+            waitForIdle()
+            assertEquals(1, under, "the press went under the plate")
+        }
+
     /** The rows of the plate's ground, from the foot of the box's anchor end, at the plate's middle column. */
     private fun PixelMap.rowsShown(x: Int) = (0 until height).count { this[x, it] == paper.concrete }
 
@@ -320,7 +369,17 @@ class PlakatTooltipTest {
         setContent {
             CompositionLocalProvider(LocalDensity provides Density(1f)) {
                 PlakatTheme(colors = paper, reduceMotion = true) {
-                    Box(Modifier.background(Color.White).testTag("c")) {
+                    // At the box the caption says it fills: it has no bounds of its own where a popup draws past them.
+                    Box(
+                        Modifier
+                            .testTag("c")
+                            .background(Color.White)
+                            .layout { measurable, constraints ->
+                                val caption = measurable.measure(constraints)
+                                val box = holder.placement?.box
+                                layout(box?.width ?: 0, box?.height ?: 0) { caption.place(0, 0) }
+                            },
+                    ) {
                         PlakatTooltipCaption("Сохранить", axis, holder, window) { .5f }
                     }
                 }
