@@ -65,7 +65,7 @@ internal fun PlakatIconButtonFrame(
     val tint =
         when {
             !enabled -> colors.inkMuted
-            held -> colors.paper
+            forced || state.inked -> colors.paper
             selected -> colors.onRed
             else -> colors.ink
         }
@@ -76,7 +76,6 @@ internal fun PlakatIconButtonFrame(
             .size(PlakatSizes.Touch)
             .semantics { this.selected = selected }
             .drawBehind {
-                // Only the ground is a transition; the icon's colour changes the moment the finger lifts.
                 drawRect(srgbLerp(rest, colors.ink, if (forced) 1f else state.press.value))
                 // Designed here (B-39): an empty square fills with concrete, a selected one gets the ink frame.
                 if (hovered && !selected) drawRect(colors.concrete)

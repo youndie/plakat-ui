@@ -111,7 +111,7 @@ internal fun PlakatListItemFrame(
     val ink =
         when {
             !enabled -> colors.inkMuted
-            held -> colors.paper
+            forcePressed || state.inked -> colors.paper
             else -> colors.ink
         }
     val type = PlakatTheme.typography
@@ -127,7 +127,6 @@ internal fun PlakatListItemFrame(
             modifier
                 .fillMaxWidth()
                 .drawBehind {
-                    // Only the ground is a transition; the words change the moment the finger lifts.
                     drawRect(srgbLerp(colors.ink.copy(alpha = 0f), colors.ink, press))
                     // Designed here (B-39): on a pointer the hair becomes the rule; a row with none gets one.
                     val hovered = enabled && onClick != null && (forceHovered || state.hovered) && !held

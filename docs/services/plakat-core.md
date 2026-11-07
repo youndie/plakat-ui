@@ -136,7 +136,7 @@ rendered with reduced motion, so parity sees none of these.
 | Badge | `tick` | value, 40 / step | `PlakatTickTest`: the page's `ticks` worked by hand (lowest digit first, ≤ 400 ms); `PlakatIconButtonTest`: the number shown per frame, at once under reduced motion, a change during a tick going on from what shows |
 | FAB | `rail` | appear, 200 · hard-stop | `PlakatFabTest`: the circle's left and top edges per frame on the curve, 156 dp and 156 · tan 17° off at the start; in place at once under reduced motion |
 | Chip | `stamp` | select, 0; the same | `PlakatChipTest`: fill and wedge read within a frame of the click, under reduced motion alike; `stamp` once, nothing on letting go |
-| List item | `stamp`, `release` | press 0 / 60, the same | `PlakatListItemTest`: the row inverted within a frame of the press, the ground's share per frame back over 60 ms on the curve, identically under reduced motion; the words back the moment the finger lifts |
+| List item | `stamp`, `release` | press 0 / 60, the same | `PlakatListItemTest`: the row inverted within a frame of the press, the ground's share per frame back over 60 ms on the curve, identically under reduced motion; the words turning over with the ground halfway back |
 | Progress linear | — | value, by data · linear; instant | `PlakatProgressTest`: the wedge's reach on the top and bottom rows per frame, linear over 200 ms, the front on its slant; at once under reduced motion |
 | Progress circular | — | indeterminate, cycle 1200 · steps 12; stands | `PlakatProgressTest`: the sector found at step ⌊t / 100⌋ on every frame of 1440 ms; at step 0 for good under reduced motion |
 | TopAppBar | `fold` | scroll, by the scroll · linear; the same | `PlakatTopAppBarTest`: the bar's height and fraction at each scrolled step, the rows under the row being the open bar's moved up by the fold, the rule growing, the collapsed title's wipe; identical under reduced motion; a real swipe on a list folds it first and back `PlakatStretchInPlaceTest`: the masthead by the same scroll, its rows moved up unscaled, at density 2 too, the row's foot at the fold less 80. |
@@ -218,8 +218,9 @@ not run it, because the output is committed and pinned by the metrics test.
   and unrotated arcs only, and `scripts/icons.mjs` refuses an icon with anything else.
 - A button's pressed and focused cells are fixtures with the look forced (`ButtonLook`), since the
   page draws them as static pictures; the behaviour behind them is held by `PlakatButtonTest`.
-- Only the ground and the shift of a button are transitions on release; the slogan's colour changes
-  the moment the finger lifts, as CSS transitions `background-color` and `transform` only.
+- On release a word turns over in one frame with its ground halfway back (`inkPressed`, B-68) on a
+  button, a list item, an icon button, a FAB and a drawer row. This departs from the CSS, which
+  transitions `background-color` and `transform` only and left the word ink on ink for the first frames.
 - Text whose baseline Chrome places is laid out with `cssLine` (`PlakatTypography.kt`): Blink rounds
   ascent and descent each and floors the half-leading, Compose centres the unrounded metrics, and a
   field's text and an error message stood a pixel low (TextField Error 5.80 % → 3.16 %). The face

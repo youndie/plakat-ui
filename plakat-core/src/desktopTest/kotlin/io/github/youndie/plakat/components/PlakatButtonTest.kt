@@ -87,16 +87,21 @@ class PlakatButtonTest {
     }
 
     @Test
-    fun `on release the ground fades while the slogan's colour changes at once`() {
-        // CSS transitions `background-color` and `transform` only: the dark theme's pressed slogan is
-        // paper on an ink plate, and the moment the finger lifts it is the on-red ink again.
+    fun `on release the slogan turns over with the ground halfway back`() {
+        // B-68: the design's CSS changes the slogan the moment the finger lifts, which is ink on ink.
         val dark = PlakatPalettes.BlackPaper
-        val midway = buttonPaint(PlakatButtonKind.Filled, dark, true, pressed = .5f, held = false)
-        assertEquals(dark.onRed, midway.ink)
-        assertTrue(!close(midway.ground, dark.ink) && !close(midway.ground, dark.red), "the plate is under way")
-        val outlined = buttonPaint(PlakatButtonKind.Outlined, dark, true, pressed = .5f, held = false)
+        val before = buttonPaint(PlakatButtonKind.Filled, dark, true, pressed = .5f, held = false)
+        assertEquals(dark.paper, before.ink)
+        assertTrue(!close(before.ground, dark.ink) && !close(before.ground, dark.red), "the plate is under way")
+        assertEquals(dark.onRed, buttonPaint(PlakatButtonKind.Filled, dark, true, pressed = .49f, held = false).ink)
+        val outlined = buttonPaint(PlakatButtonKind.Outlined, dark, true, pressed = .49f, held = false)
         assertEquals(dark.ink, outlined.ink)
         assertEquals(dark.paper, buttonPaint(PlakatButtonKind.Outlined, dark, true, pressed = 1f, held = true).ink)
+        assertEquals(
+            dark.paper,
+            buttonPaint(PlakatButtonKind.Outlined, dark, true, pressed = 0f, held = true).ink,
+            "under the finger",
+        )
     }
 
     @Test

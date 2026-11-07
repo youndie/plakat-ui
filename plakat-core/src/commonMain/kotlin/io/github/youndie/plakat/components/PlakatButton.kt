@@ -174,7 +174,7 @@ private val DisabledUnderline = PlakatLines.Hair
 
 /**
  * The paints of a button: the ground blended by [pressed] between rest (0) and pressed (1) as its
- * transition runs, the ink and the line as [held] says.
+ * transition runs, the ink and the line as [inkPressed] says.
  */
 internal class ButtonPaint(
     val ground: Color,
@@ -187,7 +187,7 @@ internal fun buttonPaint(
     colors: PlakatColors,
     enabled: Boolean,
     pressed: Float,
-    held: Boolean = pressed >= 1f,
+    held: Boolean = false,
 ): ButtonPaint {
     if (!enabled) {
         return when (kind) {
@@ -210,9 +210,7 @@ internal fun buttonPaint(
             PlakatButtonKind.Text -> ButtonPaint(colors.ink, colors.paper, colors.paper)
             PlakatButtonKind.Danger -> ButtonPaint(colors.ink, colors.paper, colors.red)
         }
-    // Only the ground and the shift are CSS transitions (`background-color`, `transform`); the text's
-    // colour and the underline's are not, so they change the moment the finger lifts.
-    val now = if (held) down else rest
+    val now = if (inkPressed(pressed, held)) down else rest
     return ButtonPaint(srgbLerp(rest.ground, down.ground, pressed), now.ink, now.line)
 }
 

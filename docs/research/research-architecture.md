@@ -293,6 +293,9 @@ drawn inside the Settings demo). It has no Chrome reference, so its goldens are 
 owner's review round over the finished sample; its item lists every number it chose that the design
 does not state. Everything the design does draw stays held to the design.
 
+One thing it draws was changed on purpose: a word's ink on release ([B-68](../backlog/B-68-release-ink-question.md),
+the owner's delegated decision of 2026-11-07). It moves no cell, as the design draws rest and pressed, not the frames between.
+
 ### D14. The registration offset is 1 dp
 
 Brief: "1 px вправо-вниз". The tokens give `[1, 1]` without a unit, and the pages draw CSS `1px`,

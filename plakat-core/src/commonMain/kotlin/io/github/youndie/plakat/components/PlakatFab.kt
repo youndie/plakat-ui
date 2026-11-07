@@ -84,7 +84,6 @@ internal fun PlakatFabFrame(
     val events by rememberUpdatedState(PlakatTheme.events)
     val state = rememberPlakatPress(source)
     val pressed = if (look == ButtonLook.Pressed) 1f else state.press.value
-    val held = state.held || look == ButtonLook.Pressed
 
     // Its way along the rail, 0 beyond the edge to 1 in place.
     val ride = remember { Animatable(if (rideIn) 0f else 1f) }
@@ -102,7 +101,7 @@ internal fun PlakatFabFrame(
     val tint =
         when {
             !enabled -> colors.inkMuted
-            held -> colors.paper
+            look == ButtonLook.Pressed || state.inked -> colors.paper
             else -> colors.onRed
         }
     Box(
