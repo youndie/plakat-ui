@@ -1,7 +1,7 @@
 ---
 id: B-69
 title: "Check what only a real window shows"
-status: question
+status: wip
 priority: P3
 size: S
 stage: stage-2-components

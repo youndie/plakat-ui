@@ -61,7 +61,7 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 |---|---|---|---|---|
 | [B-43](docs/backlog/B-43-re-import-the-design.md) `[ ]` | Re-import the design project on a branch of its own | P3 | S | B-05, B-08 |
 | [B-67](docs/backlog/B-67-qa-polish.md) `[ ]` | Small remainders of the QA pass | P3 | S | - |
-| [B-69](docs/backlog/B-69-real-window-pass.md) `[?]` | Check what only a real window shows | P3 | S | - |
+| [B-69](docs/backlog/B-69-real-window-pass.md) `[~]` | Check what only a real window shows | P3 | S | - |
 | [B-70](docs/backlog/B-70-fixed-sheets-under-a-large-font.md) `[ ]` | Fixed sheets under a large font and a long title: TopAppBar and Poster | P3 | M | - |
 
 ## Closed (67)
