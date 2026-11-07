@@ -31,6 +31,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
@@ -45,6 +46,8 @@ import io.github.youndie.plakat.tokens.PlakatColors
 import io.github.youndie.plakat.tokens.PlakatDurations
 import io.github.youndie.plakat.tokens.PlakatEasings
 import kotlin.math.floor
+import kotlin.math.max
+import kotlin.math.min
 
 /** The strip: the MVP page's `height: 64px`. */
 private val BarHeight = 64.dp
@@ -130,6 +133,8 @@ public fun PlakatNavigationBar(
                     Modifier.clearAndSetSemantics {},
                     style = style,
                     softWrap = false,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
         },
@@ -148,7 +153,10 @@ public fun PlakatNavigationBar(
     ) { measurables, constraints ->
         val count = items.size.coerceAtLeast(1)
         val width = equalSlotsWidth(constraints, widths.maxOrNull() ?: 0f, count)
-        val height = BarHeight.roundToPx()
+        // The page's 64, and more only where a large font's label would not fit in it.
+        val tall =
+            measurables.chunked(3).maxOfOrNull { (_, _, label) -> label.maxIntrinsicHeight(Constraints.Infinity) } ?: 0
+        val height = max(BarHeight.roundToPx(), ((SquareHeight + LabelGap).toPx() + tall + 2 * LabelGap.toPx()).toInt())
         // Equal slots keep their half pixels, as the page's grid does: each child is placed from the true slot.
         val slot = width.toFloat() / count
         val top = (height - contentHeight().toPx()) / 2
@@ -160,7 +168,7 @@ public fun PlakatNavigationBar(
                 Triple(
                     target.measure(Constraints.fixed(right - left, height)) to left,
                     icon.measure(Constraints()),
-                    label.measure(Constraints()),
+                    label.measure(slotWord(right - left)),
                 )
             }
         layout(width, height) {
@@ -170,7 +178,8 @@ public fun PlakatNavigationBar(
                 val iconTop = top + (iconBoxHeight - icon.height) / 2
                 icon.placeRelative(floor(centre - icon.width / 2f + .5f).toInt(), floor(iconTop + .5f).toInt())
                 val labelTop = top + iconBoxHeight + LabelGap.toPx()
-                label.placeRelative(floor(centre - widths[i] / 2f + .5f).toInt(), floor(labelTop + .5f).toInt())
+                val across = min(widths[i], label.width.toFloat())
+                label.placeRelative(floor(centre - across / 2f + .5f).toInt(), floor(labelTop + .5f).toInt())
             }
         }
     }

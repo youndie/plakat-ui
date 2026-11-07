@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
@@ -252,11 +253,13 @@ internal fun PlakatDialogFrame(
                 )
             }
             if (text != null) DialogText(text, Modifier.weight(1f, fill = false))
-            Row(
+            // Actions too long for one line go onto a next, each with its own width, and neither leaves the sheet.
+            FlowRow(
                 Modifier
                     .fillMaxWidth()
                     .padding(start = PartX, end = PartX, bottom = PartX),
                 horizontalArrangement = Arrangement.spacedBy(PlakatGrid.Step, Alignment.End),
+                verticalArrangement = Arrangement.spacedBy(PlakatGrid.Step),
                 content = actions,
             )
         }

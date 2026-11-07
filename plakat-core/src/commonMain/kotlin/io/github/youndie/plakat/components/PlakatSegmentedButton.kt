@@ -28,6 +28,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
@@ -101,6 +102,7 @@ internal fun PlakatSegmentedButtonFrame(
     val shown = presses.map { (_, press) -> press.focusShown() }
     // Each segment's left, as the page's flex row has them, with a last one for the right end.
     var edges by remember { mutableStateOf(listOf(0f)) }
+    var squeezed by remember { mutableStateOf(false) }
     Layout(
         content = {
             segments.forEachIndexed { i, word ->
@@ -147,7 +149,28 @@ internal fun PlakatSegmentedButtonFrame(
                         color: Color,
                     ) {
                         val x = floor(edges[i] + WordInset.toPx() + .5f)
-                        drawText(words[i], color, Offset(x, floor((size.height - words[i].size.height) / 2f + .5f)))
+                        val shown =
+                            if (squeezed) {
+                                measurer.measure(
+                                    type.text(segments[i]),
+                                    style,
+                                    TextOverflow.Ellipsis,
+                                    softWrap = false,
+                                    maxLines = 1,
+                                    constraints =
+                                        Constraints(
+                                            maxWidth =
+                                                (edges[i + 1] - edges[i] - 2 * WordInset.toPx())
+                                                    .toInt()
+                                                    .coerceAtLeast(
+                                                        0,
+                                                    ),
+                                        ),
+                                )
+                            } else {
+                                words[i]
+                            }
+                        drawText(shown, color, Offset(x, floor((size.height - shown.size.height) / 2f + .5f)))
                     }
                     val ink = ground
                     val on = colors.paper
@@ -184,8 +207,11 @@ internal fun PlakatSegmentedButtonFrame(
         val whole = natural.sum()
         val width = ceil(whole).toInt().coerceIn(constraints.minWidth, constraints.maxWidth)
         val over = if (natural.isEmpty()) 0f else ((width - whole) / natural.size).coerceAtLeast(0f)
+        // Given less than they want, each gives way by its share, and every target stays inside the box.
+        val share = if (whole > width && whole > 0f) width / whole else 1f
+        squeezed = share < 1f
         val lefts = FloatArray(natural.size + 1)
-        natural.forEachIndexed { i, w -> lefts[i + 1] = lefts[i] + w + over }
+        natural.forEachIndexed { i, w -> lefts[i + 1] = lefts[i] + w * share + over }
         edges = lefts.toList()
         val height = PlakatSizes.Touch.roundToPx()
         val targets =

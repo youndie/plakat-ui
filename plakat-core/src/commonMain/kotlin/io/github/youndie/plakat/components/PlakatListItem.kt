@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -148,7 +149,8 @@ internal fun PlakatListItemFrame(
                 if (number != null) {
                     BasicText(
                         number,
-                        Modifier.width(LeadingWidth),
+                        // The page's 24 is for its two digits; a longer number takes what it needs rather than losing them.
+                        Modifier.widthIn(min = LeadingWidth),
                         style =
                             type.displayL.style
                                 .copy(fontSize = NUMBER_SP.sp, color = ink)
@@ -160,7 +162,8 @@ internal fun PlakatListItemFrame(
                         Box(Modifier.size(MarkerSize).background(ink))
                     }
                 }
-                Column(Modifier.weight(1f)) {
+                // Over the row's own height this is what keeps grown words off its rule; under it, it changes nothing.
+                Column(Modifier.weight(1f).padding(vertical = PlakatGrid.Step)) {
                     BasicText(
                         headline,
                         style =

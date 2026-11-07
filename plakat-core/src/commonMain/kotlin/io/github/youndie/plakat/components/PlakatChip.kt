@@ -26,10 +26,12 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.InputMode
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInputModeManager
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.github.youndie.plakat.theme.PlakatEvent
@@ -157,7 +159,29 @@ internal fun PlakatChipFrame(
                 )
             }
         }
-        BasicText(word, Modifier.padding(start = ChipPadding + hair + mark), style = style, softWrap = false)
+        BasicText(
+            word,
+            Modifier
+                .padding(start = ChipPadding + hair + mark)
+                // Room at its end when it must give way. Not a padding: the chip's width rounds its word's real width as Blink
+                // does, up to a pixel under the word's ceiled one, so a word that fits has that pixel more here.
+                .layout { measurable, constraints ->
+                    val end = (ChipPadding + hair).roundToPx() - 1
+                    val placeable =
+                        measurable.measure(
+                            if (constraints.hasBoundedWidth) {
+                                constraints.copy(maxWidth = (constraints.maxWidth - end).coerceAtLeast(0))
+                            } else {
+                                constraints
+                            },
+                        )
+                    layout(placeable.width, placeable.height) { placeable.place(0, 0) }
+                },
+            style = style,
+            softWrap = false,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+        )
     }
 }
 

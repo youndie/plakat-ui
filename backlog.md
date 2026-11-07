@@ -55,20 +55,18 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 
 <!-- BEGIN INDEX -->
 
-## Open (8)
+## Open (6)
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-63](docs/backlog/B-63-overlay-focus-and-input.md) `[ ]` | Overlays and the screen change: where the keyboard and clicks go | P2 | M | - |
-| [B-64](docs/backlog/B-64-textfield-semantics-jolt-selection.md) `[ ]` | TextField: label and error on the editable node, the jolt, the selection colour | P2 | S | - |
 | [B-65](docs/backlog/B-65-long-content.md) `[ ]` | Long content: what a component does with text that does not fit | P2 | L | - |
-| [B-66](docs/backlog/B-66-hostile-values.md) `[ ]` | Values a consumer can compute: NaN, zero, out of range | P2 | S | - |
 | [B-43](docs/backlog/B-43-re-import-the-design.md) `[ ]` | Re-import the design project on a branch of its own | P3 | S | B-05, B-08 |
 | [B-67](docs/backlog/B-67-qa-polish.md) `[ ]` | Small remainders of the QA pass | P3 | S | - |
 | [B-68](docs/backlog/B-68-release-ink-question.md) `[?]` | On release a word is ink on ink for its first frames: keep it? | P3 | XS | - |
 | [B-69](docs/backlog/B-69-real-window-pass.md) `[?]` | Check what only a real window shows | P3 | S | - |
+| [B-70](docs/backlog/B-70-fixed-sheets-under-a-large-font.md) `[ ]` | Fixed sheets under a large font and a long title: TopAppBar and Poster | P3 | M | - |
 
-## Closed (61)
+## Closed (64)
 
 **Goldens and references regenerate deterministically; the generator and raskat ports match them on every target; the floor and the frame cost have measured numbers**
 
@@ -130,6 +128,9 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 - [B-60](docs/backlog/B-60-visible-keyboard-focus.md) `[x]` - Keyboard focus shows on every control it lands on
 - [B-61](docs/backlog/B-61-hidden-snackbar-takes-no-input.md) `[x]` - A hidden Snackbar takes no input
 - [B-62](docs/backlog/B-62-dialog-long-text.md) `[x]` - Dialog: long text scrolls and the actions stay reachable
+- [B-63](docs/backlog/B-63-overlay-focus-and-input.md) `[x]` - Overlays and the screen change: where the keyboard and clicks go
+- [B-64](docs/backlog/B-64-textfield-semantics-jolt-selection.md) `[x]` - TextField: label and error on the editable node, the jolt, the selection colour
+- [B-66](docs/backlog/B-66-hostile-values.md) `[x]` - Values a consumer can compute: NaN, zero, out of range
 
 **The three demo screens within the floor in both themes; contrast holds with the textures on**
 

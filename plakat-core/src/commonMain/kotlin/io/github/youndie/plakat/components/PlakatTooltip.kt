@@ -129,10 +129,19 @@ internal fun tooltipPlacement(
             val rad = if (tilted) -PlakatShape.AXIS * PI.toFloat() / 180f else 0f
             val dx = leader * cos(rad)
             val dy = leader * sin(rad)
-            val right = anchor.right + dx + plate.width <= window.width
+            val roomRight = window.width - (anchor.right + dx + plate.width)
+            val roomLeft = anchor.left - dx - plate.width
+            // Where neither side has room, the side with more, and the plate held in the window over its leader's end.
+            val right = roomRight >= 0 || roomRight >= roomLeft
             start = Offset((if (right) anchor.right else anchor.left).toFloat(), centreY)
             end = if (right) Offset(start.x + dx, start.y - dy) else Offset(start.x - dx, start.y + dy)
-            plateLeft = if (right) end.x else end.x - plate.width
+            val reach = if (right) end.x else end.x - plate.width
+            plateLeft =
+                if (roomRight >= 0 || roomLeft >= 0) {
+                    reach
+                } else {
+                    reach.coerceIn(0f, (window.width - plate.width).coerceAtLeast(0).toFloat())
+                }
             plateTop = end.y - plate.height / 2f
             from = if (right) TooltipFrom.Left else TooltipFrom.Right
         }

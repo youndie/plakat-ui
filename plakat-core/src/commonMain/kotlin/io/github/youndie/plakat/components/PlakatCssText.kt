@@ -24,6 +24,7 @@ import io.github.youndie.plakat.theme.PlakatFaceMetrics
 import io.github.youndie.plakat.theme.cssLine
 import kotlin.math.floor
 import kotlin.math.max
+import kotlin.math.min
 
 // Text placed as Blink places it, for what a Compose paragraph cannot: lines of a fractional height, which Skia
 // lays on whole pixels, and lines shorter than their face. B-19 (the posters) and B-28 (the dialog).
@@ -73,7 +74,10 @@ internal fun DrawScope.drawOnBaseline(
     drawText(layout, color, Offset(x, (if (snap) floor(at + .5f) else at) - ascent))
 }
 
-/** [text] broken to [width] as one paragraph, then each line drawn in its own CSS line box of [lineHeight] × the size. */
+/**
+ * [text] broken to [width] as one paragraph, then each line drawn in its own CSS line box of [lineHeight] × the size. Past
+ * [maxLines] it stops, with an ellipsis on the last line it draws.
+ */
 internal fun DrawScope.drawParagraph(
     measurer: TextMeasurer,
     text: String,
@@ -83,13 +87,19 @@ internal fun DrawScope.drawParagraph(
     color: Color,
     lineHeight: Float,
     face: FaceMetrics = PlakatFaceMetrics.Body,
+    maxLines: Int = Int.MAX_VALUE,
 ) {
     val px = style.fontSize.toPx()
     val line = px * lineHeight
     val baseline = cssBaseline(face, px, line)
     val whole = measurer.measure(text, style, constraints = Constraints(maxWidth = max(1, width.toInt())))
-    for (i in 0 until whole.lineCount) {
-        val part = text.substring(whole.getLineStart(i), whole.getLineEnd(i, visibleEnd = true))
+    val lines = min(whole.lineCount, maxLines.coerceAtLeast(1))
+    for (i in 0 until lines) {
+        var part = text.substring(whole.getLineStart(i), whole.getLineEnd(i, visibleEnd = true))
+        if (i == lines - 1 && lines < whole.lineCount) {
+            while (part.isNotEmpty() && measurer.measure("$part…", style).size.width > width) part = part.dropLast(1)
+            part = "${part.trimEnd()}…"
+        }
         drawOnBaseline(
             measurer.line(part, style, face),
             face,

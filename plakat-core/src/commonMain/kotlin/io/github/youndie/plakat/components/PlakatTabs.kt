@@ -30,6 +30,7 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
@@ -45,6 +46,7 @@ import io.github.youndie.plakat.tokens.PlakatSizes
 import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.max
+import kotlin.math.min
 
 /** A word's margin on each side, designed here (D13), when equal slots are given no width to divide (B-58). */
 private val SlotMargin = PlakatGrid.Margin
@@ -64,6 +66,9 @@ internal fun Density.equalSlotsWidth(
         val slot = max(PlakatSizes.Touch.roundToPx(), ceil(widest).toInt() + SlotMargin.roundToPx() * 2)
         (slot * count).coerceAtLeast(constraints.minWidth)
     }
+
+/** What a word may take of a slot [wide] across: it ends short of the next slot's, with an ellipsis if it must. */
+internal fun Density.slotWord(wide: Int) = Constraints(maxWidth = (wide - PlakatGrid.Step.roundToPx()).coerceAtLeast(0))
 
 /**
  * The mark of a row of choices (the tabs' bar, the navigation's square, the segments' fill): where it stands, and whether
@@ -165,6 +170,8 @@ public fun PlakatTabs(
                     Modifier.clearAndSetSemantics {},
                     style = style.copy(color = if (tab.enabled) colors.ink else colors.inkMuted),
                     softWrap = false,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
         },
@@ -191,12 +198,16 @@ public fun PlakatTabs(
             measurables.chunked(2).mapIndexed { i, (target, word) ->
                 val left = floor(i * slot + .5f).toInt()
                 val right = floor((i + 1) * slot + .5f).toInt()
-                Triple(target.measure(Constraints.fixed(right - left, row)), left, word.measure(Constraints()))
+                Triple(
+                    target.measure(Constraints.fixed(right - left, row)),
+                    left,
+                    word.measure(slotWord(right - left)),
+                )
             }
         layout(width, height) {
             placed.forEachIndexed { i, (target, left, word) ->
                 target.placeRelative(left, 0)
-                val x = (i + .5f) * slot - widths[i] / 2f
+                val x = (i + .5f) * slot - min(widths[i], word.width.toFloat()) / 2f
                 word.placeRelative(floor(x + .5f).toInt(), floor((row - word.height) / 2f + .5f).toInt())
             }
         }
