@@ -289,6 +289,23 @@ class PlakatDialogTest {
         }
 
     @Test
+    fun `the screen shows through the cut corner, and the sheet is paper past it`() =
+        runComposeUiTest {
+            stage({ true }, reduce = true)
+            mainClock.autoAdvance = true
+            waitForIdle()
+            val px = frame()
+            // The sheet's corner stands at (24, 96); the cut runs from (24, 110) to (70, 96).
+            val corner = (24..30).flatMap { x -> (96..99).map { y -> px[x, y] } }
+            assertTrue(
+                corner.none { it == paper.paper || it == paper.red },
+                "neither paper nor plate in the cut: $corner",
+            )
+            assertTrue(corner.any { it.red < .5f }, "the screen's dots: $corner")
+            assertEquals(paper.red, px[30, 112], "the plate past the cut")
+        }
+
+    @Test
     fun `closed from the start it draws and says nothing`() =
         runComposeUiTest {
             val heard = mutableListOf<PlakatEvent>()

@@ -28,6 +28,7 @@ import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.captureToImage
+import androidx.compose.ui.test.click
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performMouseInput
@@ -293,6 +294,95 @@ class PlakatPullToRefreshTest {
             onNodeWithTag("list").performMouseInput { scroll(-40f) }
             waitForIdle()
             assertEquals(0, frame().wedge())
+        }
+
+    @Test
+    fun `a mouse pressed and dragged down pulls, and counts when let go`() =
+        runComposeUiTest {
+            var asked = 0
+            pull(onRefresh = { asked++ })
+            onNodeWithTag("list").performMouseInput {
+                moveTo(Offset(200f, 100f))
+                press()
+                moveBy(Offset(0f, 40f))
+                moveBy(Offset(0f, 100f))
+            }
+            waitForIdle()
+            assertTrue(frame().wedge() >= 80, "${frame().wedge()}")
+            assertEquals(0, asked, "not until it is let go")
+            onNodeWithTag("list").performMouseInput { release() }
+            waitForIdle()
+            assertEquals(1, asked)
+            assertEquals(0, frame().wedge())
+        }
+
+    @Test
+    fun `a mouse dragged back up takes the wedge back, and let go short nothing is asked`() =
+        runComposeUiTest {
+            var asked = 0
+            pull(onRefresh = { asked++ })
+            onNodeWithTag("list").performMouseInput {
+                moveTo(Offset(200f, 100f))
+                press()
+                moveBy(Offset(0f, 40f))
+                moveBy(Offset(0f, 100f))
+            }
+            waitForIdle()
+            val h = frame().wedge()
+            onNodeWithTag("list").performMouseInput { moveBy(Offset(0f, -60f)) }
+            waitForIdle()
+            // The wedge is read off its antialiased tip, a row either way.
+            assertTrue(abs(frame().wedge() - (h - 60)) <= 1, "${frame().wedge()} against ${h - 60}")
+            onNodeWithTag("list").performMouseInput { release() }
+            waitForIdle()
+            assertEquals(0, asked)
+        }
+
+    @Test
+    fun `a mouse drag on a list away from its top makes no pull`() =
+        runComposeUiTest {
+            pull()
+            onNodeWithTag("list").performMouseInput {
+                moveTo(center)
+                scroll(3f)
+            }
+            waitForIdle()
+            onNodeWithTag("list").performMouseInput {
+                moveTo(Offset(200f, 100f))
+                press()
+                moveBy(Offset(0f, 40f))
+                moveBy(Offset(0f, 100f))
+            }
+            waitForIdle()
+            assertEquals(0, frame().wedge())
+            onNodeWithTag("list").performMouseInput { release() }
+        }
+
+    @Test
+    fun `a mouse drag that pulls is no click on what it was pressed on`() =
+        runComposeUiTest {
+            var clicks = 0
+            setContent {
+                PlakatTheme(colors = paper, reduceMotion = true) {
+                    PlakatPullToRefreshBox(false, {}, Modifier.size(390.dp, 400.dp)) {
+                        Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
+                            PlakatListItem("Row", Modifier.testTag("row"), onClick = { clicks++ })
+                        }
+                    }
+                }
+            }
+            onNodeWithTag("row").performMouseInput {
+                moveTo(Offset(100f, 10f))
+                press()
+                moveBy(Offset(0f, 40f))
+                moveBy(Offset(0f, 60f))
+                release()
+            }
+            waitForIdle()
+            assertEquals(0, clicks)
+            onNodeWithTag("row").performMouseInput { click(Offset(100f, 10f)) }
+            waitForIdle()
+            assertEquals(1, clicks, "a click is still a click")
         }
 
     @Test
