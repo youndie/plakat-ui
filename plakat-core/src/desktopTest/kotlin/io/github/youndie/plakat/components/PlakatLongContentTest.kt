@@ -19,12 +19,12 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.getBoundsInRoot
 import androidx.compose.ui.test.getUnclippedBoundsInRoot
-import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.v2.runComposeUiTest
 import androidx.compose.ui.text.TextLayoutResult
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import io.github.youndie.plakat.icons.PlakatIcons
 import io.github.youndie.plakat.theme.PlakatTheme
 import io.github.youndie.plakat.tokens.PlakatPalettes
+import kotlin.math.abs
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -39,13 +40,6 @@ import kotlin.test.assertTrue
 /** B-65: what a component does with content that does not fit: nothing overlaps a neighbour or leaves its plate. */
 @OptIn(ExperimentalTestApi::class)
 class PlakatLongContentTest {
-    /**
-     * What is on one line of a text that does not wrap stops short of its end only for an ellipsis, as a clip keeps it all on
-     * the line and runs it past the box. `isLineEllipsized` always answers false on Skiko.
-     */
-    private fun TextLayoutResult.endsInAnEllipsis() =
-        getLineEnd(0) < layoutInput.text.length && getLineRight(0) <= size.width
-
     private fun ComposeUiTest.on(content: @Composable () -> Unit) {
         mainClock.autoAdvance = false
         setContent {
@@ -57,6 +51,30 @@ class PlakatLongContentTest {
     }
 
     private val longWord = "NOTIFICATIONS AND ANNOUNCEMENTS"
+
+    private val archive = "SUBSCRIBE TO THE WHOLE ARCHIVE"
+
+    /**
+     * That [word] is set to end in an ellipsis and is short of its end on the one line it has. `isLineEllipsized` always answers
+     * false on Skiko, and a cut at a space stops short too, so the setting itself is read from the laid-out text; that the
+     * dots are then drawn was looked at on both papers.
+     */
+    private fun endsInAnEllipsis(
+        word: String,
+        draw: @Composable (String, Modifier) -> Unit,
+    ) = runComposeUiTest {
+        on { draw(word, Modifier) }
+        val results = mutableListOf<TextLayoutResult>()
+        onNodeWithText(word)
+            .fetchSemanticsNode()
+            .config[SemanticsActions.GetTextLayoutResult]
+            .action
+            ?.invoke(results)
+        val layout = results.single()
+        assertEquals(TextOverflow.Ellipsis, layout.layoutInput.overflow, "$word is cut with no sign")
+        assertEquals(1, layout.lineCount)
+        assertTrue(layout.getLineEnd(0) < word.length, "$word was not long enough to test this")
+    }
 
     @Test
     fun `a list row's number of three digits is whole`() =
@@ -136,7 +154,7 @@ class PlakatLongContentTest {
     }
 
     @Test
-    fun `two long dialog actions keep to the sheet`() =
+    fun `two long dialog actions keep to the sheet, each whole on its own line`() =
         runComposeUiTest {
             on {
                 Box(Modifier.size(390.dp, 600.dp)) {
@@ -146,56 +164,39 @@ class PlakatLongContentTest {
                     }
                 }
             }
-            for (word in listOf("A VERY LONG FIRST ACTION", "A VERY LONG SECOND ACTION")) {
-                val action = onNodeWithText(word).assertIsDisplayed().getBoundsInRoot()
-                assertTrue(action.left >= 24.dp && action.right <= 366.dp, "$word at ${action.left}..${action.right}")
+            val first = onNodeWithText("A VERY LONG FIRST ACTION").assertIsDisplayed().getBoundsInRoot()
+            val second = onNodeWithText("A VERY LONG SECOND ACTION").assertIsDisplayed().getBoundsInRoot()
+            for (action in listOf(first, second)) {
+                assertTrue(action.left >= 24.dp && action.right <= 366.dp, "at ${action.left}..${action.right}")
+                assertTrue(action.right - action.left > 240.dp, "squeezed to ${action.right - action.left}")
             }
+            assertTrue(second.top >= first.bottom, "on one line")
         }
 
     @Test
-    fun `a button's long word ends in an ellipsis, on one line, in every kind`() {
-        val layouts = mutableListOf<TextLayoutResult>()
-        val kinds: List<@Composable (Modifier) -> Unit> =
-            listOf(
-                { PlakatButton("SUBSCRIBE TO THE WHOLE ARCHIVE", {}, it) },
-                { PlakatOutlinedButton("SUBSCRIBE TO THE WHOLE ARCHIVE", {}, it) },
-                { PlakatTextButton("SUBSCRIBE TO THE WHOLE ARCHIVE", {}, it) },
-                { PlakatDangerButton("SUBSCRIBE TO THE WHOLE ARCHIVE", {}, it) },
-            )
-        for (kind in kinds) {
-            runComposeUiTest {
-                on { kind(Modifier.width(200.dp).testTag("b")) }
-                val results = mutableListOf<TextLayoutResult>()
-                onNode(hasText("SUBSCRIBE TO THE WHOLE ARCHIVE"))
-                    .fetchSemanticsNode()
-                    .config[
-                    SemanticsActions.GetTextLayoutResult,
-                ].action
-                    ?.invoke(results)
-                val layout = results.single()
-                assertEquals(1, layout.lineCount)
-                assertTrue(layout.endsInAnEllipsis(), "cut with no sign")
-                layouts += layout
-            }
-        }
-        assertEquals(4, layouts.size)
-    }
+    fun `a filled button's long word ends in an ellipsis`() =
+        endsInAnEllipsis(archive) { w, m -> PlakatButton(w, {}, m.width(200.dp)) }
+
+    @Test
+    fun `an outlined button's long word ends in an ellipsis`() =
+        endsInAnEllipsis(archive) { w, m -> PlakatOutlinedButton(w, {}, m.width(200.dp)) }
+
+    @Test
+    fun `a text button's long word ends in an ellipsis`() =
+        endsInAnEllipsis(archive) { w, m -> PlakatTextButton(w, {}, m.width(200.dp)) }
+
+    @Test
+    fun `a danger button's long word ends in an ellipsis, on its plate`() =
+        endsInAnEllipsis(archive) { w, m -> PlakatDangerButton(w, {}, m.width(200.dp)) }
 
     @Test
     fun `an empty state's slogan grows past 200 rather than losing words`() =
         runComposeUiTest {
             on { PlakatEmptyState("TITLE", "Body.", "CREATE ONE MORE LIST", {}, Modifier.width(390.dp)) }
-            val results = mutableListOf<TextLayoutResult>()
-            onNode(hasText("CREATE ONE MORE LIST"))
-                .fetchSemanticsNode()
-                .config[
-                SemanticsActions.GetTextLayoutResult,
-            ].action
-                ?.invoke(results)
-            assertEquals(false, results.single().endsInAnEllipsis())
+            val button = onNodeWithText("CREATE ONE MORE LIST").getBoundsInRoot()
+            assertTrue(button.right - button.left > 200.dp, "a slogan ${button.right - button.left} wide")
         }
 
-    /** The words a row of slots draws: their boxes, clearing each other, or the row overlaps. */
     private fun ComposeUiTest.wordsClear(words: List<String>) {
         val rights =
             words.map { word ->
@@ -243,54 +244,36 @@ class PlakatLongContentTest {
     @Test
     fun `a masthead's two long labels do not run together`() =
         runComposeUiTest {
-            on {
-                PlakatMasthead(
-                    "SHEET",
-                    Modifier.width(390.dp),
-                    startLabel = "A LONG LABEL AT THE START OF THE LINE",
-                    endLabel = "A LONG LABEL AT THE END OF THE LINE",
-                )
-            }
-            val start =
-                onNodeWithText(
-                    "A LONG LABEL AT THE START OF THE LINE",
-                    ignoreCase = true,
-                ).getUnclippedBoundsInRoot()
-            val end =
-                onNodeWithText(
-                    "A LONG LABEL AT THE END OF THE LINE",
-                    ignoreCase = true,
-                ).getUnclippedBoundsInRoot()
+            val startWord = "A LONG LABEL AT THE START OF THE LINE"
+            val endWord = "A LONG LABEL AT THE END OF THE LINE"
+            on { PlakatMasthead("SHEET", Modifier.width(390.dp), startLabel = startWord, endLabel = endWord) }
+            val start = onNodeWithText(startWord, ignoreCase = true).getUnclippedBoundsInRoot()
+            val end = onNodeWithText(endWord, ignoreCase = true).getUnclippedBoundsInRoot()
             assertTrue(start.right <= end.left, "${start.right} runs into ${end.left}")
+            assertTrue(start.right - start.left >= 120.dp, "the start has ${start.right - start.left}")
+            assertTrue(end.right - end.left >= 120.dp, "the end has ${end.right - end.left}")
         }
 
     @Test
-    fun `a long chip word stops short of the frame`() =
-        runComposeUiTest {
-            on { PlakatChip("A CHIP WORD MUCH TOO LONG", true, {}, Modifier.width(120.dp).testTag("c")) }
-            val results = mutableListOf<TextLayoutResult>()
-            onNode(hasText("A CHIP WORD MUCH TOO LONG", ignoreCase = true))
-                .fetchSemanticsNode()
-                .config[
-                SemanticsActions.GetTextLayoutResult,
-            ].action
-                ?.invoke(results)
-            assertTrue(results.single().endsInAnEllipsis())
-        }
+    fun `a long chip word ends in an ellipsis`() =
+        endsInAnEllipsis("A CHIP WORD MUCH TOO LONG") { w, m -> PlakatChip(w, true, {}, m.width(120.dp)) }
 
     @Test
     fun `a long body stops above the slogan with an ellipsis`() =
         runComposeUiTest {
             val long = (1..30).joinToString(" ") { "Sentence $it." }
-            on {
-                PlakatPoster(listOf("READ"), "GO", {}, Modifier.testTag("p"), body = long, seed = 1, print = false)
-            }
+            on { PlakatPoster(listOf("READ"), "GO", {}, Modifier.testTag("p"), body = long, seed = 1, print = false) }
             val button = onNodeWithText("GO").getBoundsInRoot()
             val image = onNodeWithTag("p").captureToImage().toPixelMap()
-            val y = button.top.value.toInt() - 1
+            // Under the slogan, where twelve lines of it would run on to: nothing of its ink.
+            val y = button.bottom.value.toInt() + 8
             val ink = PlakatPalettes.Paper.ink
-            val inkRow = (0 until image.width).count { image[it, y] == ink }
-            assertEquals(0, inkRow, "the body's ink right above the slogan")
+            val inked =
+                (16 until 306).count {
+                    abs(image[it, y].red - ink.red) < .02f &&
+                        abs(image[it, y].green - ink.green) < .02f
+                }
+            assertEquals(0, inked, "the body's ink under the slogan")
         }
 
     @Test
