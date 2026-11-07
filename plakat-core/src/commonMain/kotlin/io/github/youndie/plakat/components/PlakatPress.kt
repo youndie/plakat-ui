@@ -36,7 +36,7 @@ import kotlinx.coroutines.launch
 /**
  * The stamp every pressable control shares (the spec rows `stamp` and `release`): [press] is 1 the
  * frame the finger lands and returns to 0 on the hard-stop in 60 ms, at once under reduced motion;
- * [held] is the finger itself, for what is no CSS transition and so changes the moment it lifts.
+ * [held] is the finger itself; [inked] says which ink a word on the ground is in.
  */
 @Stable
 internal class PlakatPress {
@@ -46,7 +46,23 @@ internal class PlakatPress {
 
     /** A pointer over it: never under a finger, which presses at once (B-39). */
     var hovered: Boolean by mutableStateOf(false)
+
+    /** Whether what stands on the ground is in its pressed ink: see [inkPressed]. */
+    val inked: Boolean get() = inkPressed(press.value, held)
 }
+
+/**
+ * A word's ink on a press: pressed at once while the finger is down, and on the way back until the
+ * ground has come halfway (B-68). The design's CSS changes the word the moment the finger lifts, which
+ * leaves it ink on ink for the first frames; a word blended along with its ground would meet it at the
+ * same grey, so it turns over in one frame at the middle, where it reads on both sides.
+ */
+internal fun inkPressed(
+    press: Float,
+    held: Boolean,
+): Boolean = held || press >= INK_TURNS_AT
+
+private const val INK_TURNS_AT = .5f
 
 /**
  * Follows [source], reporting `stamp` and `release` once per gesture. [sameUnderReducedMotion] keeps

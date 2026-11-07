@@ -1,7 +1,7 @@
 ---
 id: B-68
 title: "On release a word is ink on ink for its first frames: keep it?"
-status: question
+status: wip
 priority: P3
 size: XS
 stage: stage-2-components

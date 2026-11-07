@@ -245,8 +245,7 @@ private fun DrawerRow(
     val source = remember { MutableInteractionSource() }
     val state = rememberPlakatPress(source)
     val press = if (forcePressed) 1f else state.press.value
-    val held = forcePressed || state.held
-    val word = if (held) navigationGround(colors) else colors.onRed
+    val word = if (forcePressed || state.inked) navigationGround(colors) else colors.onRed
     val type = PlakatTheme.typography
     val ring = forceFocused || state.focusShown()
     Box(

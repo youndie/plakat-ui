@@ -112,10 +112,10 @@ class PlakatListItemTest {
                     }
                 }
             assertTrue(fits, "the ground per frame: $way")
-            // The words change the moment the finger lifts: while the ground is under way they are ink already.
+            // The words turn over in one frame with the ground halfway back (B-68).
             val underWay = frames.filter { it.first in .05..0.95 }
             assertTrue(underWay.isNotEmpty(), "the ground was seen under way: $way")
-            for ((_, words) in underWay) assertEquals(paper.ink, words)
+            for ((ground, words) in underWay) assertEquals(if (ground >= .5) paper.paper else paper.ink, words, "over $ground")
             assertEquals(listOf(PlakatEvent.Stamp, PlakatEvent.Release), heard)
         }
 
