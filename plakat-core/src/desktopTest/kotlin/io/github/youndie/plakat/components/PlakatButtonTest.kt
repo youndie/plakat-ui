@@ -97,7 +97,11 @@ class PlakatButtonTest {
         val outlined = buttonPaint(PlakatButtonKind.Outlined, dark, true, pressed = .49f, held = false)
         assertEquals(dark.ink, outlined.ink)
         assertEquals(dark.paper, buttonPaint(PlakatButtonKind.Outlined, dark, true, pressed = 1f, held = true).ink)
-        assertEquals(dark.paper, buttonPaint(PlakatButtonKind.Outlined, dark, true, pressed = 0f, held = true).ink, "under the finger")
+        assertEquals(
+            dark.paper,
+            buttonPaint(PlakatButtonKind.Outlined, dark, true, pressed = 0f, held = true).ink,
+            "under the finger",
+        )
     }
 
     @Test

@@ -3,10 +3,12 @@ package io.github.youndie.plakat.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PixelMap
 import androidx.compose.ui.graphics.compositeOver
@@ -133,6 +135,41 @@ class PlakatReleaseInkTest {
     fun `a FAB on black paper`() =
         releases(PlakatPalettes.BlackPaper, "FAB", { w, h -> w / 8 to h / 2 }) {
             PlakatFab(PlakatIcons.Search, "Найти", {}, it, rideIn = false)
+        }
+
+    @Test
+    fun `a drawer row on either paper`() =
+        papers.forEach { colors ->
+            runComposeUiTest {
+                mainClock.autoAdvance = false
+                val items =
+                    listOf(PlakatIcons.Home to "ЛЕНТА", PlakatIcons.Search to "ПОИСК").map { (i, w) ->
+                        PlakatNavigationItem(i, w)
+                    }
+                setContent {
+                    CompositionLocalProvider(LocalDensity provides Density(1f)) {
+                        PlakatTheme(colors = colors, reduceMotion = false) {
+                            Box(Modifier.size(390.dp, 400.dp).testTag("c")) {
+                                PlakatNavigationDrawer(true, items, 0, {}, {})
+                            }
+                        }
+                    }
+                }
+                mainClock.advanceTimeBy(1_000)
+                // The second row, not chosen: 56 high from 72, in a panel 280 wide.
+                onNodeWithTag("c").performTouchInput { down(Offset(140f, 100f)) }
+                mainClock.advanceTimeByFrame()
+                mainClock.advanceTimeByFrame()
+                onNodeWithTag("c").performTouchInput { up() }
+                val frames =
+                    (0 until 7).map {
+                        mainClock.advanceTimeByFrame()
+                        val px = onNodeWithTag("c").captureToImage().toPixelMap()
+                        val ground = px[270, 100]
+                        (80 until 120).maxOf { y -> (8 until 262).maxOf { x -> contrast(px[x, y], ground) } }
+                    }
+                assertTrue(frames.all { it >= WORST_CONTRAST }, "drawer row per frame: $frames")
+            }
         }
 
     private companion object {
