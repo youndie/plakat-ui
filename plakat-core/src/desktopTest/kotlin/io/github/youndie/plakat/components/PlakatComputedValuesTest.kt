@@ -162,6 +162,14 @@ class PlakatComputedValuesTest {
         }
 
     @Test
+    fun `a drawer with no choice in it shows no square`() =
+        noMark { i ->
+            Box(Modifier.size(300.dp, 300.dp)) {
+                PlakatNavigationDrawer(true, two.map { PlakatNavigationItem(PlakatIcons.Home, it) }, i, {}, {})
+            }
+        }
+
+    @Test
     fun `an empty row shows no mark`() =
         runComposeUiTest {
             on {

@@ -63,6 +63,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.ScrollAxisRange
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.dialog
+import androidx.compose.ui.semantics.dismiss
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.paneTitle
 import androidx.compose.ui.semantics.semantics
@@ -148,7 +149,8 @@ private val DarkScreen = Color(0xFF0E0D0B)
  * background by a diagonal wipe from the left and the sheet rides down from above, on one clock of 320 ms,
  * linear; set false it goes back the same way, and is gone from the composition after. Under reduced motion
  * both fade, 100 ms. A click on the screen, Escape or the system back gesture calls [onDismissRequest]; the sheet takes
- * its own clicks, and focus stays in the dialog while it is open.
+ * its own clicks, and focus stays in the dialog while it is open. On closing, focus goes to [returnFocusTo], a requester on
+ * whatever opened it, or with none is left to the window.
  */
 @Composable
 public fun PlakatDialog(
@@ -157,9 +159,10 @@ public fun PlakatDialog(
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
     text: String? = null,
+    returnFocusTo: FocusRequester? = null,
     actions: @Composable RowScope.() -> Unit,
 ) {
-    PlakatDialogFrame(visible, title, onDismissRequest, modifier, text, actions)
+    PlakatDialogFrame(visible, title, onDismissRequest, modifier, text, actions, returnFocusTo = returnFocusTo)
 }
 
 @Composable
@@ -171,7 +174,9 @@ internal fun PlakatDialogFrame(
     text: String?,
     actions: @Composable RowScope.() -> Unit,
     playIn: Boolean = true,
+    returnFocusTo: FocusRequester? = null,
 ) {
+    ReturnFocus(visible, returnFocusTo)
     val colors = PlakatTheme.colors
     val reduce = PlakatTheme.reduceMotion
     val events by rememberUpdatedState(PlakatTheme.events)
@@ -224,6 +229,10 @@ internal fun PlakatDialogFrame(
                 .semantics {
                     dialog()
                     paneTitle = title
+                    dismiss {
+                        dismiss()
+                        true
+                    }
                 },
         ) {
             Box(Modifier.fillMaxWidth().background(colors.red, PlakatCutShape())) {
@@ -250,6 +259,27 @@ internal fun PlakatDialogFrame(
                 horizontalArrangement = Arrangement.spacedBy(PlakatGrid.Step, Alignment.End),
                 content = actions,
             )
+        }
+    }
+}
+
+/**
+ * Gives focus to [target] when an overlay that held it closes. Compose offers no way to read where focus stood before the
+ * overlay took it, so the opener has to be named, or focus goes nowhere. A [target] that has left the composition with the
+ * overlay is passed over.
+ */
+@Composable
+internal fun ReturnFocus(
+    visible: Boolean,
+    target: FocusRequester?,
+) {
+    var opened by remember { mutableStateOf(visible) }
+    LaunchedEffect(visible) {
+        if (visible) {
+            opened = true
+        } else if (opened) {
+            opened = false
+            runCatching { target?.requestFocus() }
         }
     }
 }
@@ -331,7 +361,10 @@ internal fun BoxScope.PlakatDotScreen(
                 } else {
                     Modifier.plakatWipe(PlakatWipe.Diagonal(ScreenSlant), open)
                 },
-            ).clickable(remember { MutableInteractionSource() }, indication = null, onClick = onClick)
+            )
+            // A target for the pointer and no stop for the keyboard: what cannot be seen as a control takes no focus.
+            .focusProperties { canFocus = false }
+            .clickable(remember { MutableInteractionSource() }, indication = null, onClick = onClick)
             .drawBehind { drawRect(brush, Offset.Zero, Size(size.width, size.height)) },
     )
 }

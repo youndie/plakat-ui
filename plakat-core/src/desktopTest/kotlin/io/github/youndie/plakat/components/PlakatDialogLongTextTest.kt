@@ -95,11 +95,8 @@ class PlakatDialogLongTextTest {
     fun `the arrows and page keys scroll the text once Tab reaches it`() =
         runComposeUiTest {
             dialog()
-            // The screen is still the first stop: B-63.
-            repeat(2) {
-                onRoot().performKeyInput { pressKey(Key.Tab) }
-                mainClock.advanceTimeBy(50)
-            }
+            onRoot().performKeyInput { pressKey(Key.Tab) }
+            mainClock.advanceTimeBy(50)
             onRoot().performKeyInput { pressKey(Key.DirectionDown) }
             mainClock.advanceTimeBy(100)
             val line = scrolled()
@@ -116,11 +113,8 @@ class PlakatDialogLongTextTest {
     fun `the text shows the keyboard's frame when Tab reaches it`() =
         runComposeUiTest {
             dialog()
-            // The screen is still the first stop: B-63.
-            repeat(2) {
-                onRoot().performKeyInput { pressKey(Key.Tab) }
-                mainClock.advanceTimeBy(50)
-            }
+            onRoot().performKeyInput { pressKey(Key.Tab) }
+            mainClock.advanceTimeBy(50)
             val text =
                 onNode(SemanticsMatcher.keyIsDefined(SemanticsProperties.VerticalScrollAxisRange))
                     .captureToImage()
@@ -172,11 +166,9 @@ class PlakatDialogLongTextTest {
     fun `text that fits is no stop for the keyboard`() =
         runComposeUiTest {
             dialog(text = "Short.")
-            // The screen is still the first stop: B-63. The next is the first action, with no stop between.
-            repeat(2) {
-                onRoot().performKeyInput { pressKey(Key.Tab) }
-                mainClock.advanceTimeBy(50)
-            }
+            // The first stop is the first action, with no stop before it.
+            onRoot().performKeyInput { pressKey(Key.Tab) }
+            mainClock.advanceTimeBy(50)
             onNodeWithText("LATER").assertIsFocused()
         }
 

@@ -28,6 +28,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
@@ -360,9 +362,10 @@ fun KitComponents(beat: Int) {
         }
         KitGroup("Dialog") {
             var open by remember { mutableStateOf(false) }
-            PlakatOutlinedButton("OPEN", { open = true }, Modifier.testTag("open-dialog"))
+            val opener = remember { FocusRequester() }
+            PlakatOutlinedButton("OPEN", { open = true }, Modifier.focusRequester(opener).testTag("open-dialog"))
             Box(Modifier.width(Width).height(if (open) 420.dp else 1.dp)) {
-                PlakatDialog(open, "DELETE", { open = false }, text = "It can be restored.") {
+                PlakatDialog(open, "DELETE", { open = false }, text = "It can be restored.", returnFocusTo = opener) {
                     PlakatDialogAction("CANCEL", { open = false })
                     PlakatDialogAction("DELETE", { open = false }, danger = true)
                 }
@@ -370,9 +373,10 @@ fun KitComponents(beat: Int) {
         }
         KitGroup("Bottom sheet") {
             var open by remember { mutableStateOf(false) }
-            PlakatOutlinedButton("OPEN", { open = true }, Modifier.testTag("open-sheet"))
+            val opener = remember { FocusRequester() }
+            PlakatOutlinedButton("OPEN", { open = true }, Modifier.focusRequester(opener).testTag("open-sheet"))
             Box(Modifier.width(Width).height(if (open) 420.dp else 1.dp)) {
-                PlakatBottomSheet(open, { open = false }, paneTitle = "Actions") {
+                PlakatBottomSheet(open, { open = false }, paneTitle = "Actions", returnFocusTo = opener) {
                     PlakatListItem("Save", onClick = { open = false })
                     PlakatListItem("Share", onClick = { open = false }, divider = false)
                 }
@@ -381,7 +385,8 @@ fun KitComponents(beat: Int) {
         KitGroup("Navigation drawer") {
             var open by remember { mutableStateOf(false) }
             var place by remember { mutableIntStateOf(0) }
-            PlakatOutlinedButton("OPEN", { open = true }, Modifier.testTag("open-drawer"))
+            val opener = remember { FocusRequester() }
+            PlakatOutlinedButton("OPEN", { open = true }, Modifier.focusRequester(opener).testTag("open-drawer"))
             Box(Modifier.width(Width).height(if (open) 420.dp else 1.dp)) {
                 PlakatNavigationDrawer(
                     open,
@@ -392,6 +397,7 @@ fun KitComponents(beat: Int) {
                     { place = it },
                     { open = false },
                     paneTitle = "Sections",
+                    returnFocusTo = opener,
                 )
             }
         }

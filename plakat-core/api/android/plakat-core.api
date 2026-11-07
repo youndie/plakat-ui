@@ -58,7 +58,7 @@ public final class io/github/youndie/plakat/components/PlakatBadgeKt {
 }
 
 public final class io/github/youndie/plakat/components/PlakatBottomSheetKt {
-	public static final fun PlakatBottomSheet (ZLkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Lio/github/youndie/plakat/components/PlakatSheetGround;Ljava/lang/String;Landroidx/compose/foundation/layout/WindowInsets;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PlakatBottomSheet (ZLkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Lio/github/youndie/plakat/components/PlakatSheetGround;Ljava/lang/String;Landroidx/compose/foundation/layout/WindowInsets;Landroidx/compose/ui/focus/FocusRequester;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class io/github/youndie/plakat/components/PlakatBoxFold : java/lang/Enum {
@@ -94,7 +94,7 @@ public final class io/github/youndie/plakat/components/PlakatCounterKt {
 }
 
 public final class io/github/youndie/plakat/components/PlakatDialogKt {
-	public static final fun PlakatDialog (ZLjava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Ljava/lang/String;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PlakatDialog (ZLjava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Ljava/lang/String;Landroidx/compose/ui/focus/FocusRequester;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 	public static final fun PlakatDialogAction (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZZLandroidx/compose/runtime/Composer;II)V
 }
 
@@ -143,7 +143,7 @@ public final class io/github/youndie/plakat/components/PlakatNavigationBarKt {
 }
 
 public final class io/github/youndie/plakat/components/PlakatNavigationDrawerKt {
-	public static final fun PlakatNavigationDrawer (ZLjava/util/List;ILkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Ljava/lang/String;Landroidx/compose/foundation/layout/WindowInsets;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PlakatNavigationDrawer (ZLjava/util/List;ILkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Ljava/lang/String;Landroidx/compose/foundation/layout/WindowInsets;Landroidx/compose/ui/focus/FocusRequester;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class io/github/youndie/plakat/components/PlakatNavigationItem {
