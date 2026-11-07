@@ -266,7 +266,7 @@ internal fun PlakatDialogFrame(
 /**
  * Gives focus to [target] when an overlay that held it closes. Compose offers no way to read where focus stood before the
  * overlay took it, so the opener has to be named, or focus goes nowhere. A [target] that has left the composition with the
- * overlay is passed over.
+ * overlay is passed over, as `requestFocus` does nothing without a node.
  */
 @Composable
 internal fun ReturnFocus(
@@ -279,7 +279,7 @@ internal fun ReturnFocus(
             opened = true
         } else if (opened) {
             opened = false
-            runCatching { target?.requestFocus() }
+            target?.requestFocus()
         }
     }
 }

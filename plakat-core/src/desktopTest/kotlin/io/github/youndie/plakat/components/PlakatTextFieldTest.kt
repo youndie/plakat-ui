@@ -18,9 +18,14 @@ import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertHeightIsEqualTo
 import androidx.compose.ui.test.captureToImage
+import androidx.compose.ui.test.hasSetTextAction
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextInputSelection
+import androidx.compose.ui.test.requestFocus
 import androidx.compose.ui.test.v2.runComposeUiTest
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import io.github.youndie.plakat.theme.PlakatEvent
@@ -29,6 +34,7 @@ import io.github.youndie.plakat.tokens.PlakatPalettes
 import kotlin.math.abs
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 /** B-14: the TextField's motion row (underline, hatch, caret) at its timestamps, reduced motion, target. */
@@ -133,7 +139,7 @@ class PlakatTextFieldTest {
             assertTrue(2 in shift, "the field jolts 2 dp: $shift")
             assertEquals(0, shift.last(), "and comes back: $shift")
             assertEquals(listOf(PlakatEvent.Hatch), heard)
-            onNodeWithTag("f").assert(SemanticsMatcher.keyIsDefined(SemanticsProperties.Error))
+            onNode(hasSetTextAction()).assert(SemanticsMatcher.keyIsDefined(SemanticsProperties.Error))
         }
 
     @Test
@@ -165,4 +171,60 @@ class PlakatTextFieldTest {
             setContent { PlakatTheme { PlakatTextField("", {}, Modifier.testTag("f")) } }
             onNodeWithTag("f").assertHeightIsEqualTo(56.dp)
         }
+
+    @Test
+    fun `the editable node carries the label and the error, and the label is not read twice`() =
+        runComposeUiTest {
+            setContent {
+                PlakatTheme(reduceMotion = true) {
+                    PlakatTextField("x", {}, Modifier.width(200.dp), label = "Name", error = "Bad")
+                }
+            }
+            val config = onNode(hasSetTextAction()).fetchSemanticsNode().config
+            assertEquals(listOf("Name"), config[SemanticsProperties.ContentDescription])
+            assertEquals("Bad", config[SemanticsProperties.Error])
+            assertEquals(0, onAllNodesWithText("NAME").fetchSemanticsNodes().size)
+        }
+
+    @Test
+    fun `a field with no error says none`() =
+        runComposeUiTest {
+            setContent { PlakatTheme(reduceMotion = true) { PlakatTextField("x", {}, Modifier.width(200.dp)) } }
+            assertFalse(SemanticsProperties.Error in onNode(hasSetTextAction()).fetchSemanticsNode().config)
+        }
+
+    @Test
+    fun `a jolt cut short by the error clearing leaves nothing shifted`() =
+        runComposeUiTest {
+            var error by mutableStateOf<String?>(null)
+            field(reduce = false, error = { error }, value = "Words")
+            val rest = shot()
+            error = "Bad"
+            mainClock.advanceTimeBy(64)
+            error = null
+            mainClock.advanceTimeBy(1000)
+            val after = shot()
+            val moved =
+                (0 until rest.height).sumOf { y -> (0 until rest.width).count { x -> rest[x, y] != after[x, y] } }
+            assertEquals(0, moved, "pixels away from where the field stood")
+        }
+
+    @Test
+    fun `selected text is on the palette's concrete and not the toolkit's blue`() {
+        for (colors in listOf(PlakatPalettes.Paper, PlakatPalettes.BlackPaper)) {
+            runComposeUiTest {
+                setContent {
+                    PlakatTheme(colors = colors, reduceMotion = true) {
+                        PlakatTextField("Words", {}, Modifier.width(200.dp).testTag("f"))
+                    }
+                }
+                onNode(hasSetTextAction()).requestFocus()
+                onNode(hasSetTextAction()).performTextInputSelection(TextRange(0, 5))
+                waitForIdle()
+                val map = shot()
+                val found = (0 until map.width).count { close(map[it, 28], colors.concrete) }
+                assertTrue(found > 5, "$found pixels of concrete across the selected words")
+            }
+        }
+    }
 }

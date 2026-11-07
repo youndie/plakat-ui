@@ -38,6 +38,8 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.error
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.SpanStyle
@@ -196,6 +198,8 @@ internal fun PlakatTextFieldFrame(
     LaunchedEffect(failing, reduce) {
         val appeared = failing && !errorSeen
         errorSeen = failing
+        // A jolt cut short by the error clearing, the next keystroke's validation, leaves nothing shifted.
+        shake.snapTo(0f)
         if (!failing) {
             hatch.snapTo(0f)
             return@LaunchedEffect
@@ -253,11 +257,17 @@ internal fun PlakatTextFieldFrame(
             .cssLine(PlakatFaceMetrics.Body)
 
     Column(
-        modifier.maxContentWidth().semantics { if (error != null) error(error) },
+        modifier.maxContentWidth(),
         verticalArrangement = Arrangement.spacedBy(PlakatGrid.Step),
     ) {
         if (label != null) {
-            BasicText(type.label.text(label), style = type.label.style.copy(color = ink), maxLines = 1)
+            // Read with the editable node, which it names, and not again as a text beside it.
+            BasicText(
+                type.label.text(label),
+                Modifier.clearAndSetSemantics {},
+                style = type.label.style.copy(color = ink),
+                maxLines = 1,
+            )
         }
         Box(
             Modifier
@@ -277,7 +287,10 @@ internal fun PlakatTextFieldFrame(
                     // The whole field takes the finger, not only the line of text in its middle (B-36).
                     Modifier
                         .fillMaxHeight()
-                        .drawWithContent {
+                        .semantics {
+                            if (label != null) contentDescription = label
+                            if (error != null) error(error)
+                        }.drawWithContent {
                             drawContent()
                             if (focused && caretOn && enabled && caretAt != null) {
                                 val h = CaretHeight.toPx()
