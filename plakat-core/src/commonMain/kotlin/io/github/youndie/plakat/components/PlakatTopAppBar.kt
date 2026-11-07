@@ -214,6 +214,11 @@ internal fun PlakatTopAppBarFrame(
             .collect { events.onEvent(PlakatEvent.Fold) }
     }
     val cells = remember(seed) { plakatStrip(seed, MAX_STRIP_COLUMNS) }
+    // Its title stands at a fixed place on a sheet that folds by a fixed range of pixels, with the rapport a fixed distance
+    // under it, so it keeps the design's size whatever the system's font size, as a poster's does.
+    val density = LocalDensity.current
+    val titleSize = with(density) { TITLE_SP.dp.toSp() }
+    val collapsedSize = with(density) { COLLAPSED_TITLE_SP.dp.toSp() }
     // Both titles are drawn at any fold, but a reader hears one: whichever shows more.
     val folded by remember(state) { derivedStateOf { state.fraction >= .5f } }
     CompositionLocalProvider(LocalPlakatContentColor provides colors.ink) {
@@ -252,7 +257,7 @@ internal fun PlakatTopAppBarFrame(
                         Modifier.weight(1f, fill = false).then(barTitleSemantics(!folded)),
                         style =
                             type.displayL.style
-                                .copy(fontSize = TITLE_SP.sp, color = colors.ink)
+                                .copy(fontSize = titleSize, color = colors.ink)
                                 .cssLine(PlakatFaceMetrics.Display),
                         softWrap = false,
                         maxLines = 1,
@@ -305,7 +310,7 @@ internal fun PlakatTopAppBarFrame(
                             .then(barTitleSemantics(folded)),
                         style =
                             type.displayL.style
-                                .copy(fontSize = COLLAPSED_TITLE_SP.sp, color = colors.ink)
+                                .copy(fontSize = collapsedSize, color = colors.ink)
                                 .cssLine(PlakatFaceMetrics.Display),
                         softWrap = false,
                         maxLines = 1,

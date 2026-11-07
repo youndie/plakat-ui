@@ -218,6 +218,8 @@ not run it, because the output is committed and pinned by the metrics test.
   and unrotated arcs only, and `scripts/icons.mjs` refuses an icon with anything else.
 - A button's pressed and focused cells are fixtures with the look forced (`ButtonLook`), since the
   page draws them as static pictures; the behaviour behind them is held by `PlakatButtonTest`.
+- A poster's title fits itself to its sheet (`posterTitleFit`, B-70) and the bar's stays at its size in dp: these are drawn
+  sheets, not boxes that grow, so neither follows the system's font size past its room.
 - On release a word turns over in one frame with its ground halfway back (`inkPressed`, B-68) on a
   button, a list item, an icon button, a FAB and a drawer row. This departs from the CSS, which
   transitions `background-color` and `transform` only and left the word ink on ink for the first frames.
