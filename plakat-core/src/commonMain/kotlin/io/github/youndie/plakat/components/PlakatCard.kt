@@ -32,6 +32,7 @@ import androidx.compose.ui.input.InputMode
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalInputModeManager
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
@@ -185,7 +186,13 @@ internal fun PlakatCardFrame(
 
     val click =
         if (onClick != null) {
-            Modifier.clickable(source, indication = null, enabled = enabled, role = Role.Button, onClick = onClick)
+            Modifier.clickable(
+                source,
+                indication = null,
+                enabled = enabled && !dismissed,
+                role = Role.Button,
+                onClick = onClick,
+            )
         } else {
             Modifier
         }
@@ -205,8 +212,15 @@ internal fun PlakatCardFrame(
                     translationX = ride() * TEAR_RIDE * size.width
                     alpha = fade.value
                 }.plakatWipe(PlakatWipe.Diagonal(PrintSlant)) { wipe.value }
-                .semantics { this.selected = selected }
-                .then(click)
+                .then(
+                    // Torn, it leaves the Tab order and the reader at once, though it stays composed until the caller removes it.
+                    if (dismissed) {
+                        Modifier.clearAndSetSemantics {
+                        }
+                    } else {
+                        Modifier.semantics { this.selected = selected }
+                    },
+                ).then(click)
                 .drawBehind { drawCard(colors, pressed, bar.toPx(), ring) }
                 .defaultMinSize(minHeight = PlakatSizes.Touch)
                 .padding(

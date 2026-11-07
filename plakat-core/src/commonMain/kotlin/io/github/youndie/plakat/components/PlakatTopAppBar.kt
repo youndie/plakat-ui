@@ -40,6 +40,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
@@ -185,6 +186,10 @@ public fun PlakatTopAppBar(
     PlakatTopAppBarFrame(title, modifier, subtitle, collapsedTitle, seed, own, navigationIcon, actions, windowInsets)
 }
 
+/** A title a reader hears as the bar's heading, or one it does not. */
+private fun barTitleSemantics(heard: Boolean): Modifier =
+    if (heard) Modifier.semantics { heading() } else Modifier.clearAndSetSemantics { }
+
 @Composable
 internal fun PlakatTopAppBarFrame(
     title: String,
@@ -209,6 +214,8 @@ internal fun PlakatTopAppBarFrame(
             .collect { events.onEvent(PlakatEvent.Fold) }
     }
     val cells = remember(seed) { plakatStrip(seed, MAX_STRIP_COLUMNS) }
+    // Both titles are drawn at any fold, but a reader hears one: whichever shows more.
+    val folded by remember(state) { derivedStateOf { state.fraction >= .5f } }
     CompositionLocalProvider(LocalPlakatContentColor provides colors.ink) {
         Box(
             modifier
@@ -242,7 +249,7 @@ internal fun PlakatTopAppBarFrame(
                     // A long title gives way, and the subtitle keeps its place beside it.
                     BasicText(
                         title,
-                        Modifier.weight(1f, fill = false).semantics { heading() },
+                        Modifier.weight(1f, fill = false).then(barTitleSemantics(!folded)),
                         style =
                             type.displayL.style
                                 .copy(fontSize = TITLE_SP.sp, color = colors.ink)
@@ -291,7 +298,11 @@ internal fun PlakatTopAppBarFrame(
                     navigationIcon?.invoke()
                     BasicText(
                         collapsedTitle,
-                        Modifier.weight(1f).plakatWipe(PlakatWipe.Left) { state.fraction },
+                        Modifier
+                            .weight(
+                                1f,
+                            ).plakatWipe(PlakatWipe.Left) { state.fraction }
+                            .then(barTitleSemantics(folded)),
                         style =
                             type.displayL.style
                                 .copy(fontSize = COLLAPSED_TITLE_SP.sp, color = colors.ink)
@@ -466,7 +477,7 @@ public fun PlakatMasthead(
                     Modifier
                         .fillMaxWidth()
                         .height(MastheadTitleHeight)
-                        .semantics { heading() },
+                        .then(barTitleSemantics(!arriving)),
                 )
                 Spacer(Modifier.height(MastheadBarGap))
                 Spacer(
@@ -502,7 +513,7 @@ public fun PlakatMasthead(
                         navigationIcon?.invoke()
                         BasicText(
                             collapsedTitle,
-                            Modifier.weight(1f),
+                            Modifier.weight(1f).semantics { heading() },
                             style =
                                 type.displayL.style
                                     .copy(fontSize = COLLAPSED_TITLE_SP.sp, color = colors.ink)

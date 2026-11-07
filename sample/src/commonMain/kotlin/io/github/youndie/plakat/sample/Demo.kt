@@ -389,7 +389,11 @@ private fun SwitchRow(
 ) {
     val colors = PlakatTheme.colors
     // The whole row toggles, as the page's `role="switch"` does.
-    Column(Modifier.clickable(enabled = onChange != null) { onChange?.invoke(!checked) }) {
+    Column(
+        Modifier.clickable(interactionSource = null, indication = null, enabled = onChange != null) {
+            onChange?.invoke(!checked)
+        },
+    ) {
         Row(
             Modifier.fillMaxWidth().heightIn(min = 56.dp),
             horizontalArrangement = Arrangement.SpaceBetween,

@@ -8,10 +8,12 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.verticalScroll
@@ -141,7 +143,7 @@ private fun Header(
         BasicText(
             label.text(if (texture) "Texture: on" else "Texture: off"),
             Modifier
-                .clickable(onClick = onTexture)
+                .clickable(interactionSource = null, indication = null, onClick = onTexture)
                 .heightIn(min = 48.dp)
                 .padding(16.dp)
                 .testTag("sample-texture"),
@@ -159,6 +161,12 @@ private fun Page(content: @Composable () -> Unit) {
 @Composable
 private fun Phone(content: @Composable () -> Unit) {
     Box(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp)) {
-        Box(Modifier.size(390.dp, 844.dp)) { content() }
+        Box(
+            Modifier
+                .widthIn(max = 390.dp)
+                .fillMaxWidth()
+                .height(844.dp)
+                .testTag("sample-phone"),
+        ) { content() }
     }
 }

@@ -1,6 +1,11 @@
 package io.github.youndie.plakat.sample
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toPixelMap
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.ComposeUiTest
@@ -8,12 +13,17 @@ import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.captureToImage
+import androidx.compose.ui.test.down
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.up
 import androidx.compose.ui.test.v2.runComposeUiTest
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.dp
 import io.github.youndie.plakat.theme.PlakatEvent
 import io.github.youndie.plakat.theme.PlakatEventListener
 import io.github.youndie.plakat.tokens.PlakatPalettes
@@ -48,6 +58,33 @@ class SampleAppTest {
             )
             onNodeWithText("TEXTURE: OFF").performClick()
             assertTrue(paperRow().size > 3, "textured again")
+        }
+
+    @Test
+    fun `a demo screen stays inside a phone's width and the sample's own controls draw no grey`() =
+        runComposeUiTest {
+            setContent {
+                CompositionLocalProvider(LocalDensity provides Density(1f)) {
+                    Box(Modifier.size(390.dp, 844.dp)) { PlakatUiSample(autoplay = false) }
+                }
+            }
+            onNodeWithTag("section-Feed").performClick()
+            waitForIdle()
+            val right =
+                onNodeWithTag("sample-phone")
+                    .fetchSemanticsNode()
+                    .boundsInRoot.right
+            assertTrue(right <= 390f, "the phone's right edge in a window of 390: $right")
+
+            val word = onNodeWithTag("sample-texture")
+            val before = word.captureToImage().toPixelMap()
+            word.performTouchInput { down(center) }
+            mainClock.advanceTimeBy(200)
+            val pressed = word.captureToImage().toPixelMap()
+            word.performTouchInput { up() }
+            for (y in 0 until before.height) {
+                for (x in 0 until before.width) assertEquals(before[x, y], pressed[x, y], "at $x, $y")
+            }
         }
 
     /** Every section in each theme and both ways of moving, with the clock paused so nothing waits on a loop. */
