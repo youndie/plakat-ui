@@ -31,6 +31,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.liveRegion
@@ -38,6 +39,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -55,6 +57,7 @@ import io.github.youndie.plakat.tokens.PlakatLines
 import io.github.youndie.plakat.tokens.PlakatSizes
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlin.math.min
 
 /** The message's size: the Core page's `font-size: 15px`, Golos 400, line `normal`. */
 private const val MESSAGE_SP = 15
@@ -211,7 +214,7 @@ internal fun PlakatSnackbarFrame(
                     }
                     append(message)
                 },
-                Modifier.weight(1f).then(wipe),
+                Modifier.weight(1f).padding(vertical = PlakatGrid.Step).then(wipe),
                 style = text,
             )
             if (actionLabel != null) SnackbarAction(actionLabel, onAction, visible, wipe, forcePressed)
@@ -236,8 +239,19 @@ private fun SnackbarAction(
     Box(
         Modifier
             .height(PlakatSizes.Field)
-            .widthIn(min = ActionMinWidth)
-            .then(wipe)
+            // At most half of what the row has, so the message always has the rest; the 96 can give way on a narrow one.
+            .layout { measurable, constraints ->
+                val least = ActionMinWidth.roundToPx()
+                val inner =
+                    if (constraints.hasBoundedWidth) {
+                        val most = constraints.maxWidth / 2
+                        constraints.copy(minWidth = min(least, most), maxWidth = most)
+                    } else {
+                        constraints.copy(minWidth = least)
+                    }
+                val placeable = measurable.measure(inner)
+                layout(placeable.width, placeable.height) { placeable.place(0, 0) }
+            }.then(wipe)
             .plakatFocusFrame(source, colors.paper)
             .clickable(source, indication = null, enabled = enabled, role = Role.Button, onClick = onClick)
             .drawBehind { if (pressed) drawRect(colors.paper) },
@@ -254,6 +268,9 @@ private fun SnackbarAction(
                 PlakatTheme.typography.button.style
                     .copy(fontSize = ACTION_SP.sp, letterSpacing = 0.sp, color = ink)
                     .cssLine(PlakatFaceMetrics.Display),
+            overflow = TextOverflow.Ellipsis,
+            softWrap = false,
+            maxLines = 1,
         )
     }
 }

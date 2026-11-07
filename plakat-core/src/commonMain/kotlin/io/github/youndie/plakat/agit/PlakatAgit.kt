@@ -47,6 +47,7 @@ import kotlin.math.roundToInt
 
 /** The rapport's grid: `rapport(seed, cell = 24)`. */
 private val RapportCell = 24.dp
+private val RapportCellLeast = 1.dp
 
 /** The skeleton: `6 шагов, цикл 1200 мс`, a step being a sixth of a cell. */
 private const val SKELETON_CYCLE_MS = 1200L
@@ -165,12 +166,15 @@ public fun PlakatGeneratedImage(
     titleZone: PlakatTitleZone = PlakatTitleZone.Generated,
     ground: Color = PlakatTheme.colors.paper,
 ) {
+    // A frame turned inside out by a computed size is an empty one.
+    val frameW = if (frameWidth >= 0.dp) frameWidth else 0.dp
+    val frameH = if (frameHeight >= 0.dp) frameHeight else 0.dp
     val composition =
-        remember(seed, frameWidth, frameHeight, titleZone) {
+        remember(seed, frameW, frameH, titleZone) {
             generate(
                 seed,
-                frameWidth.value.toDouble(),
-                frameHeight.value.toDouble(),
+                frameW.value.toDouble(),
+                frameH.value.toDouble(),
                 head =
                     titleZone.rect?.let {
                         PlakatZone(
@@ -186,7 +190,7 @@ public fun PlakatGeneratedImage(
                 noHead = titleZone == PlakatTitleZone.None,
             )
         }
-    Frame(composition.shapes, frameWidth, frameHeight, modifier, contentDescription, ground)
+    Frame(composition.shapes, frameW, frameH, modifier, contentDescription, ground)
 }
 
 /** What a [PlakatGeneratedImage] keeps clear of ink and red. */
@@ -233,8 +237,8 @@ private fun DrawScope.drawRapport(
 
 /**
  * A geometric rapport for [seed], seamless, filling the box its [modifier] gives it: a divider of 24 dp, or a section's
- * ground, on a grid of [cell]. Text goes on a plate of paper, never on the pattern. Take the seed from the content, as for
- * a composition.
+ * ground, on a grid of [cell], 1 dp at the least. Text goes on a plate of paper, never on the pattern. Take the seed from
+ * the content, as for a composition.
  */
 @Composable
 public fun PlakatRapportFill(
@@ -243,7 +247,9 @@ public fun PlakatRapportFill(
     cell: Dp = RapportCell,
 ) {
     val colors = PlakatTheme.colors
-    val tile = remember(seed, cell) { rapport(seed, cell.value.toDouble()) }
+    // A cell of nothing would fill the box with tiles for ever; 1 dp is as fine as it goes.
+    val held = if (cell >= RapportCellLeast) cell else RapportCellLeast
+    val tile = remember(seed, held) { rapport(seed, held.value.toDouble()) }
     Spacer(modifier.clipToBounds().drawBehind { drawRapport(tile, colors, 0f) })
 }
 

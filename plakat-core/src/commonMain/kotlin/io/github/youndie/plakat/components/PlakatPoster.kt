@@ -173,6 +173,14 @@ private const val STRETCH_ELEMENTS = 2
 /** The body's line, `line-height: 1.4`, both layouts. */
 private const val BODY_LINE = 1.4f
 
+/** How many lines of a body [px] large fit from [top] to the top of a slogan standing [foot] off the poster's bottom. */
+private fun DrawScope.bodyLines(
+    top: Float,
+    posterHeight: Float,
+    px: Float,
+    foot: Dp = CircleButtonBottom,
+): Int = ((posterHeight - foot.toPx() - PlakatSizes.Button.toPx() - top) / (px * BODY_LINE)).toInt()
+
 /** Баннер: the composition's window, `left: 214px; width: 176px`, and the title `font-size: 32px; line-height: 1`. */
 private val BannerWindowLeft = 214.dp
 private const val BANNER_TITLE_SP = 32
@@ -207,6 +215,10 @@ private const val BUTTON_AT_MS = 180
  * and the raskat rolls in (`roll`), 320 ms hard-stop. Under reduced motion it is printed and rolled
  * at once. A new [seed] reprints at once. [print] false shows it printed, for a poster that scrolls
  * back into a lazy list.
+ *
+ * A layout is a fixed sheet, as a printed poster is, so what it is given has to suit it. A [body] too long for its place
+ * stops above the slogan, with an ellipsis; a [title] is drawn at the design's size, and one too long for its sheet runs off
+ * it or under the slogan, so choose its words for the layout, and Растяжка takes only its first three lines.
  */
 @Composable
 public fun PlakatPoster(
@@ -337,6 +349,7 @@ public fun PlakatPoster(
                                 origin,
                                 colors.ink,
                                 BODY_LINE,
+                                maxLines = bodyLines(origin.y, size.height, CIRCLE_BODY_SP.sp.toPx()),
                             )
                         }
                     }
@@ -429,6 +442,13 @@ public fun PlakatPoster(
                                 origin,
                                 colors.ink,
                                 BODY_LINE,
+                                maxLines =
+                                    bodyLines(
+                                        origin.y,
+                                        size.height,
+                                        BACKGROUND_BODY_SP.sp.toPx(),
+                                        PlakatGrid.Margin,
+                                    ),
                             )
                         }
                     }
@@ -497,6 +517,7 @@ public fun PlakatPoster(
                                 Offset(PlakatGrid.Margin.toPx(), top),
                                 colors.ink,
                                 BODY_LINE,
+                                maxLines = bodyLines(top, size.height, CIRCLE_BODY_SP.sp.toPx()),
                             )
                         }
                     }
@@ -565,6 +586,7 @@ public fun PlakatPoster(
                                 Offset(PlakatGrid.Margin.toPx(), StretchLowerTop.toPx()),
                                 colors.ink,
                                 BODY_LINE,
+                                maxLines = bodyLines(StretchLowerTop.toPx(), size.height, CIRCLE_BODY_SP.sp.toPx()),
                             )
                         }
                     }

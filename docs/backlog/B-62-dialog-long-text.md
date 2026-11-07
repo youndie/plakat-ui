@@ -25,7 +25,7 @@ The Dialog's body sits in a plain Column with no scroll. Long text overprints th
 
 Designed here (D13), as the page's sheet has no foot: a tall sheet stops `SheetInset`, 24 dp, short of the window's foot, as its sides do. The clipped last line is the only sign there is more, as the design draws no bar and no fade; between that line and the actions there is no gap of its own, as the text's padding has scrolled away. A title taller than the window is not handled: it would push the actions out as before, and only the text scrolls.
 
-Text that overflows is a stop for the keyboard, with the kit's frame, and the arrows move it a line; PageUp and PageDown come from `scrollable`. The screen behind is still the first stop, which is [B-63](B-63-overlay-focus-and-input.md).
+Text that overflows is a stop for the keyboard, with the kit's frame, and the arrows move it a line; PageUp and PageDown come from `scrollable`.
 
 Rendered and looked at on both papers: tall, a window 360 high and short text. `./gradlew check`: 859 tests, 0 failed, `viddikVerify` included.
 

@@ -87,14 +87,14 @@ private val SquareHeight = 32.dp
  * A navigation drawer, from the brief's row and designed here (D13): place it last in a screen-filling box. A panel of 280 dp
  * from the left, ink in the light theme and concrete in the dark as the navigation bar is, of [items] on rows of 56, each a
  * stencil and its word in capitals in on-red. The active one has the bar's red square behind its stencil, and a new
- * [selectedIndex] sends the square along in 120 ms hard-stop (`lock`).
+ * [selectedIndex] sends the square along in 120 ms hard-stop (`lock`); an index outside them, -1 for none, shows no square.
  *
  * With [visible] true, whether from the start or set later, it opens (`rail`): it rides in from the left to a hard stop in
  * 200 ms while the dialog's screen closes the rest; set false it goes back the same way, and is gone from the composition
  * after. Under reduced motion all of it is at once. A click on the screen, Escape, the system back gesture and the screen
- * reader's dismiss call [onDismissRequest], and focus stays in the panel while it is open. [paneTitle] is what a screen
- * reader calls it, for there is no title drawn. Its ground runs the box's whole height, and its rows stand inside
- * [windowInsets], the system's bars by default.
+ * reader's dismiss call [onDismissRequest], and focus stays in the panel while it is open, going on closing to
+ * [returnFocusTo], a requester on whatever opened it. [paneTitle] is what a screen reader calls it, for there is no title
+ * drawn. Its ground runs the box's whole height, and its rows stand inside [windowInsets], the system's bars by default.
  */
 @Composable
 public fun PlakatNavigationDrawer(
@@ -106,6 +106,7 @@ public fun PlakatNavigationDrawer(
     modifier: Modifier = Modifier,
     paneTitle: String? = null,
     windowInsets: WindowInsets = WindowInsets.systemBars.only(WindowInsetsSides.Vertical),
+    returnFocusTo: FocusRequester? = null,
 ) {
     PlakatNavigationDrawerFrame(
         visible,
@@ -116,6 +117,7 @@ public fun PlakatNavigationDrawer(
         modifier,
         paneTitle,
         windowInsets = windowInsets,
+        returnFocusTo = returnFocusTo,
     )
 }
 
@@ -132,7 +134,9 @@ internal fun PlakatNavigationDrawerFrame(
     forcePressed: Int? = null,
     forceFocused: Int? = null,
     windowInsets: WindowInsets = NoInsets,
+    returnFocusTo: FocusRequester? = null,
 ) {
+    ReturnFocus(visible, returnFocusTo)
     val colors = PlakatTheme.colors
     val reduce = PlakatTheme.reduceMotion
     val events by rememberUpdatedState(PlakatTheme.events)
@@ -156,18 +160,15 @@ internal fun PlakatNavigationDrawerFrame(
             }
         }
     }
-    val square = remember { Animatable(selectedIndex.toFloat()) }
-    var seenIndex by remember { mutableStateOf(selectedIndex) }
-    LaunchedEffect(selectedIndex, reduce) {
-        if (selectedIndex != seenIndex) events.onEvent(PlakatEvent.Lock)
-        seenIndex = selectedIndex
-        val to = selectedIndex.toFloat()
-        if (reduce) {
-            square.snapTo(to)
-        } else {
-            square.animateTo(to, tween(PlakatDurations.QUICK, easing = PlakatEasings.HardStop))
-        }
-    }
+    val square =
+        rememberPlakatChoiceMark(
+            selectedIndex,
+            items.size,
+            PlakatEvent.Lock,
+            PlakatDurations.QUICK,
+            PlakatEasings.HardStop,
+        )
+    val chosen = selectedIndex in items.indices
     if (!visible && ride.value == 0f && screen.value == 0f) return
     val focus = remember { FocusRequester() }
     LaunchedEffect(visible) { if (visible) focus.requestFocus() }
@@ -207,13 +208,15 @@ internal fun PlakatNavigationDrawerFrame(
                 .windowInsetsPadding(windowInsets)
                 .padding(vertical = PlakatGrid.Margin)
                 .drawBehind {
-                    val row = RowHeight.toPx()
-                    val h = SquareHeight.toPx()
-                    drawRect(
-                        colors.red,
-                        Offset(PlakatGrid.Margin.toPx(), square.value * row + (row - h) / 2),
-                        Size(SquareWidth.toPx(), h),
-                    )
+                    if (chosen && square.placed) {
+                        val row = RowHeight.toPx()
+                        val h = SquareHeight.toPx()
+                        drawRect(
+                            colors.red,
+                            Offset(PlakatGrid.Margin.toPx(), square.at.value * row + (row - h) / 2),
+                            Size(SquareWidth.toPx(), h),
+                        )
+                    }
                 },
         ) {
             items.forEachIndexed { i, item ->

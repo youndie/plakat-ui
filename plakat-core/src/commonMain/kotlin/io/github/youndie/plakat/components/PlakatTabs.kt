@@ -1,6 +1,7 @@
 package io.github.youndie.plakat.components
 
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -9,6 +10,7 @@ import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -28,6 +30,7 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
@@ -43,6 +46,7 @@ import io.github.youndie.plakat.tokens.PlakatSizes
 import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.max
+import kotlin.math.min
 
 /** A word's margin on each side, designed here (D13), when equal slots are given no width to divide (B-58). */
 private val SlotMargin = PlakatGrid.Margin
@@ -63,6 +67,52 @@ internal fun Density.equalSlotsWidth(
         (slot * count).coerceAtLeast(constraints.minWidth)
     }
 
+/** What a word may take of a slot [wide] across: it ends short of the next slot's, with an ellipsis if it must. */
+internal fun Density.slotWord(wide: Int) = Constraints(maxWidth = (wide - PlakatGrid.Step.roundToPx()).coerceAtLeast(0))
+
+/**
+ * The mark of a row of choices (the tabs' bar, the navigation's square, the segments' fill): where it stands, and whether
+ * to draw it. An index outside the row, -1 for none, is nothing chosen: no mark, until an index in the row brings it back
+ * at its place, as there is nothing for it to run from.
+ */
+@Stable
+internal class PlakatChoiceMark(
+    selected: Int,
+    placed: Boolean,
+) {
+    val at = Animatable(selected.toFloat())
+    var seen by mutableStateOf(selected)
+    var placed by mutableStateOf(placed)
+}
+
+@Composable
+internal fun rememberPlakatChoiceMark(
+    selected: Int,
+    count: Int,
+    event: PlakatEvent,
+    durationMs: Int,
+    easing: Easing,
+): PlakatChoiceMark {
+    val reduce = PlakatTheme.reduceMotion
+    val events by rememberUpdatedState(PlakatTheme.events)
+    val mark = remember { PlakatChoiceMark(selected, selected in 0 until count) }
+    LaunchedEffect(selected, count, reduce) {
+        val runs = mark.placed && mark.seen in 0 until count
+        val chosen = selected in 0 until count
+        if (runs && chosen && selected != mark.seen) events.onEvent(event)
+        mark.seen = selected
+        if (!chosen) {
+            mark.placed = false
+        } else if (reduce || !runs) {
+            mark.at.snapTo(selected.toFloat())
+            mark.placed = true
+        } else {
+            mark.at.animateTo(selected.toFloat(), tween(durationMs, easing = easing))
+        }
+    }
+    return mark
+}
+
 /** One tab of [PlakatTabs]: a rubric; disabled, it is muted and takes no click. */
 @Immutable
 public class PlakatTab(
@@ -73,8 +123,8 @@ public class PlakatTab(
 /**
  * Rubric tabs in equal slots, 48 dp over a 1 dp ink hairline, the words in capitals. A red 8 dp bar stands
  * under the selected one, overlapping the hairline; a new [selectedIndex] sends it across linearly in
- * 200 ms (`rail`), at once under reduced motion. Put what the tabs choose in [PlakatTabContent], which moves
- * on the same switch.
+ * 200 ms (`rail`), at once under reduced motion. An index outside them, -1 for none, shows no bar. Put what the tabs
+ * choose in [PlakatTabContent], which moves on the same switch.
  */
 @Composable
 public fun PlakatTabs(
@@ -84,20 +134,15 @@ public fun PlakatTabs(
     modifier: Modifier = Modifier,
 ) {
     val colors = PlakatTheme.colors
-    val reduce = PlakatTheme.reduceMotion
-    val events by rememberUpdatedState(PlakatTheme.events)
-    val bar = remember { Animatable(selectedIndex.toFloat()) }
-    var seen by remember { mutableStateOf(selectedIndex) }
-    LaunchedEffect(selectedIndex, reduce) {
-        if (selectedIndex != seen) events.onEvent(PlakatEvent.Rail)
-        seen = selectedIndex
-        val target = selectedIndex.toFloat()
-        if (reduce) {
-            bar.snapTo(target)
-        } else {
-            bar.animateTo(target, tween(PlakatDurations.NORMAL, easing = PlakatEasings.Linear))
-        }
-    }
+    val bar =
+        rememberPlakatChoiceMark(
+            selectedIndex,
+            tabs.size,
+            PlakatEvent.Rail,
+            PlakatDurations.NORMAL,
+            PlakatEasings.Linear,
+        )
+    val chosen = selectedIndex in tabs.indices
     val label = PlakatTheme.typography.label
     val style = label.style.cssLine(PlakatFaceMetrics.Body)
     // A word is centred by its real width: a layout's own is ceiled, which leaves it up to a pixel left of the page's.
@@ -125,6 +170,8 @@ public fun PlakatTabs(
                     Modifier.clearAndSetSemantics {},
                     style = style.copy(color = if (tab.enabled) colors.ink else colors.inkMuted),
                     softWrap = false,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
         },
@@ -133,11 +180,13 @@ public fun PlakatTabs(
                 val hair = PlakatLines.Hair.toPx()
                 drawRect(colors.ink, Offset(0f, size.height - hair), Size(size.width, hair))
                 // The page's `bottom: -1px`: over the hairline. Blink snaps the box to the pixel as `left` moves it.
-                val slot = size.width / count
-                val h = PlakatLines.Bar.toPx()
-                val left = floor(bar.value * slot + .5f)
-                val right = floor((bar.value + 1) * slot + .5f)
-                drawRect(colors.red, Offset(left, size.height - h), Size(right - left, h))
+                if (chosen && bar.placed) {
+                    val slot = size.width / count
+                    val h = PlakatLines.Bar.toPx()
+                    val left = floor(bar.at.value * slot + .5f)
+                    val right = floor((bar.at.value + 1) * slot + .5f)
+                    drawRect(colors.red, Offset(left, size.height - h), Size(right - left, h))
+                }
             },
     ) { measurables, constraints ->
         val width = equalSlotsWidth(constraints, widths.maxOrNull() ?: 0f, count)
@@ -149,12 +198,16 @@ public fun PlakatTabs(
             measurables.chunked(2).mapIndexed { i, (target, word) ->
                 val left = floor(i * slot + .5f).toInt()
                 val right = floor((i + 1) * slot + .5f).toInt()
-                Triple(target.measure(Constraints.fixed(right - left, row)), left, word.measure(Constraints()))
+                Triple(
+                    target.measure(Constraints.fixed(right - left, row)),
+                    left,
+                    word.measure(slotWord(right - left)),
+                )
             }
         layout(width, height) {
             placed.forEachIndexed { i, (target, left, word) ->
                 target.placeRelative(left, 0)
-                val x = (i + .5f) * slot - widths[i] / 2f
+                val x = (i + .5f) * slot - min(widths[i], word.width.toFloat()) / 2f
                 word.placeRelative(floor(x + .5f).toInt(), floor((row - word.height) / 2f + .5f).toInt())
             }
         }
@@ -174,9 +227,11 @@ public fun PlakatTabContent(
     page: @Composable (Int) -> Unit,
 ) {
     val reduce = PlakatTheme.reduceMotion
-    val shift = remember { Animatable(selectedIndex.toFloat()) }
-    LaunchedEffect(selectedIndex, reduce) {
-        val target = selectedIndex.toFloat()
+    // Outside the pages, -1 for a tab bar with nothing chosen, the nearest page stands rather than nothing.
+    val held = selectedIndex.coerceIn(0, (pageCount - 1).coerceAtLeast(0))
+    val shift = remember { Animatable(held.toFloat()) }
+    LaunchedEffect(held, reduce) {
+        val target = held.toFloat()
         if (reduce) {
             shift.snapTo(target)
         } else {

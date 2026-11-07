@@ -4,7 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.absoluteOffset
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -68,7 +70,8 @@ public fun PlakatBadge(
             with(density) { (floor(text + 2 * BadgePadding.toPx() + .5f)).toDp() }.coerceAtLeast(BadgeSize)
         }
     Box(
-        modifier.size(width, BadgeSize).background(colors.red),
+        // The page's 20, and more only where a large font's number would not fit in it.
+        modifier.width(width).heightIn(min = BadgeSize).background(colors.red),
         contentAlignment = Alignment.Center,
     ) {
         BasicText(ticker.tick.textAt(ticker.ms), style = style, softWrap = false)

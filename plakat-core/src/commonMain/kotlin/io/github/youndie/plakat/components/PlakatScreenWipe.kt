@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import io.github.youndie.plakat.theme.PlakatEvent
@@ -110,7 +111,8 @@ internal fun DrawScope.drawWipeStrip(
  * from the right; a smaller [depth] is a pop, and the strip goes back the other way, taking the screen on top with it.
  * Under reduced motion the new screen fades in, 100 ms, with no strip. [content] is called for a screen for as long as it
  * shows, and keeps its state through the change; a screen that has left is composed anew if it comes back, so what must
- * outlive that is the host's to keep. A change in the middle of a change finishes that one at once.
+ * outlive that is the host's to keep. A change in the middle of a change finishes that one at once. While a change runs,
+ * neither screen takes the pointer.
  */
 @Composable
 public fun <S> PlakatScreenWipe(
@@ -170,10 +172,11 @@ public fun <S> PlakatScreenWipe(
                 Box(Modifier.fillMaxSize().then(layer).background(colors.paper)) { content(s) }
             }
         }
-        if (moving && !reduce) {
+        // Over both screens for as long as the change runs: a second tap on what is leaving would navigate twice.
+        if (moving) {
             Spacer(
-                Modifier.matchParentSize().drawBehind {
-                    drawWipeStrip(if (pop) 1 - at() else at(), colors.red)
+                Modifier.matchParentSize().pointerInput(Unit) {}.drawBehind {
+                    if (!reduce) drawWipeStrip(if (pop) 1 - at() else at(), colors.red)
                 },
             )
         }

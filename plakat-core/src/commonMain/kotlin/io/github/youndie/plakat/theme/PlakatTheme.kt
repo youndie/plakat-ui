@@ -1,5 +1,7 @@
 package io.github.youndie.plakat.theme
 
+import androidx.compose.foundation.text.selection.LocalTextSelectionColors
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
@@ -59,6 +61,9 @@ public fun PlakatTheme(
     content: @Composable () -> Unit,
 ) {
     CompositionLocalProvider(
+        // Designed here (D13), as no page draws a selection: concrete under the words, which stay legible on it on both
+        // papers, and the caret's red for the handles.
+        LocalTextSelectionColors provides TextSelectionColors(colors.red, colors.concrete),
         LocalPlakatColors provides colors,
         LocalPlakatTypography provides plakatTypography(),
         LocalPlakatReduceMotion provides (reduceMotion ?: platformReducedMotion()),

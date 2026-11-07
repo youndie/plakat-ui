@@ -89,8 +89,9 @@ public enum class PlakatSheetGround {
  * the composition after. Under reduced motion both are at once. The handle follows a finger down the rail, and never above
  * its stop: let go over halfway, or flicked, it calls [onDismissRequest]; else it settles back in 120 ms hard-stop. A click
  * on the screen, Escape, the system back gesture and the screen reader's dismiss call [onDismissRequest] too, and focus stays
- * in the sheet while it is open. [paneTitle] is what a screen reader calls it, for there is no title drawn. Its ground runs
- * to the foot of the box, and [content] stops above [windowInsets], the system's bar by default.
+ * in the sheet while it is open, going on closing to [returnFocusTo], a requester on whatever opened it. [paneTitle] is what a
+ * screen reader calls it, for there is no title drawn. Its ground runs to the foot of the box, and [content] stops above
+ * [windowInsets], the system's bar by default.
  */
 @Composable
 public fun PlakatBottomSheet(
@@ -100,9 +101,19 @@ public fun PlakatBottomSheet(
     ground: PlakatSheetGround = PlakatSheetGround.Paper,
     paneTitle: String? = null,
     windowInsets: WindowInsets = WindowInsets.navigationBars,
+    returnFocusTo: FocusRequester? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    PlakatBottomSheetFrame(visible, onDismissRequest, modifier, ground, paneTitle, content, windowInsets = windowInsets)
+    PlakatBottomSheetFrame(
+        visible,
+        onDismissRequest,
+        modifier,
+        ground,
+        paneTitle,
+        content,
+        windowInsets = windowInsets,
+        returnFocusTo = returnFocusTo,
+    )
 }
 
 @Composable
@@ -115,7 +126,9 @@ internal fun PlakatBottomSheetFrame(
     content: @Composable ColumnScope.() -> Unit,
     playIn: Boolean = true,
     windowInsets: WindowInsets = NoInsets,
+    returnFocusTo: FocusRequester? = null,
 ) {
+    ReturnFocus(visible, returnFocusTo)
     val colors = PlakatTheme.colors
     val reduce = PlakatTheme.reduceMotion
     val events by rememberUpdatedState(PlakatTheme.events)

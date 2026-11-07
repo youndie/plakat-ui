@@ -42,6 +42,7 @@ import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -238,14 +239,17 @@ internal fun PlakatTopAppBarFrame(
                         .padding(start = PlakatGrid.Margin, top = TitleTop, end = PlakatGrid.Margin),
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
+                    // A long title gives way, and the subtitle keeps its place beside it.
                     BasicText(
                         title,
-                        Modifier.semantics { heading() },
+                        Modifier.weight(1f, fill = false).semantics { heading() },
                         style =
                             type.displayL.style
                                 .copy(fontSize = TITLE_SP.sp, color = colors.ink)
                                 .cssLine(PlakatFaceMetrics.Display),
                         softWrap = false,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                     )
                     if (subtitle != null) {
                         BasicText(
@@ -293,6 +297,8 @@ internal fun PlakatTopAppBarFrame(
                                 .copy(fontSize = COLLAPSED_TITLE_SP.sp, color = colors.ink)
                                 .cssLine(PlakatFaceMetrics.Display),
                         softWrap = false,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                     )
                     actions()
                 }
@@ -436,8 +442,23 @@ public fun PlakatMasthead(
                     .padding(start = PlakatGrid.Margin, top = MastheadTop, end = PlakatGrid.Margin),
             ) {
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                    BasicText(type.label.text(startLabel.orEmpty()), style = label, softWrap = false)
-                    BasicText(type.label.text(endLabel.orEmpty()), style = label, softWrap = false)
+                    // Each gives way to half of the row rather than running into the other.
+                    BasicText(
+                        type.label.text(startLabel.orEmpty()),
+                        Modifier.weight(1f, fill = false),
+                        style = label,
+                        softWrap = false,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    BasicText(
+                        type.label.text(endLabel.orEmpty()),
+                        Modifier.weight(1f, fill = false),
+                        style = label,
+                        softWrap = false,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
                 }
                 Spacer(Modifier.height(MastheadTitleGap))
                 PlakatStretch(

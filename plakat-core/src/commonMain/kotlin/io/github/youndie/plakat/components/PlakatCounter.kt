@@ -60,6 +60,12 @@ private val PictogramGap = 3.dp
 private const val REMAINDER_SP = 11
 private const val REMAINDER_LINE = 12
 
+/**
+ * The most pictograms a tile draws, designed here (D13): eight rows of the widest kind, and what is over goes into the
+ * remainder's word. The default of one pictogram apiece, given a real number, would otherwise make a composable for each.
+ */
+private const val PICTOGRAM_MOST = 100
+
 /** The legend: `font-size: 12px`, line `normal`. */
 private const val LEGEND_SP = 12
 
@@ -98,7 +104,8 @@ public enum class PlakatPictogram {
  * a word, then [caption] and a [legend] that opens with the pictogram (`■ = 5 статей`). A new value ticks (`tick`):
  * digit by digit, the lowest first, 40 ms a step and at most 400 ms in all, the pictograms added one by one across it;
  * at once under reduced motion. [accentLast] puts the last pictogram in red (`красный — сегодня`): the word says it too.
- * [stretched] sets the number as [PlakatCounterColumn] does, 104 high and 56 wide a place, in [numberColor].
+ * [stretched] sets the number as [PlakatCounterColumn] does, 104 high and 56 wide a place, in [numberColor]. A tile draws
+ * at most 100 pictograms, the rest in the remainder's word: give a large number a larger [perPictogram].
  */
 @Composable
 public fun PlakatCounter(
@@ -132,9 +139,16 @@ public fun PlakatCounter(
             )
         }
         Spacer(Modifier.height(TileGap))
+        val units = tick.unitsAt(ticker.ms, per)
         PictogramRow(
-            tick.unitsAt(ticker.ms, per),
-            tick.valueAt(ticker.ms) % per,
+            min(units, PICTOGRAM_MOST),
+            if (units >
+                PICTOGRAM_MOST
+            ) {
+                tick.valueAt(ticker.ms) - PICTOGRAM_MOST * per
+            } else {
+                tick.valueAt(ticker.ms) % per
+            },
             pictogram,
             accentLast,
             body.copy(fontSize = REMAINDER_SP.sp, fontWeight = FontWeight.SemiBold).cssLine(PlakatFaceMetrics.Body),

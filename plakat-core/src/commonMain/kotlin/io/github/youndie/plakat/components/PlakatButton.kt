@@ -393,8 +393,9 @@ internal fun PlakatButtonFrame(
                         .drawBehind { drawRect(paint.ground) }
                         .padding(horizontal = metrics.dangerPlate, vertical = DangerPlateVertical),
                     style = style,
-                    softWrap = wordPx == null,
-                    overflow = if (wordPx == null) TextOverflow.Clip else TextOverflow.Visible,
+                    softWrap = false,
+                    maxLines = 1,
+                    overflow = if (wordPx == null) TextOverflow.Ellipsis else TextOverflow.Visible,
                 )
             }
 
@@ -403,7 +404,9 @@ internal fun PlakatButtonFrame(
                     label.text(text),
                     Modifier.then(wiped).then(shifted),
                     style = style.copy(textAlign = TextAlign.Center),
+                    softWrap = false,
                     maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
         }
@@ -484,8 +487,8 @@ private fun UnderlinedLabel(
             text,
             style = style,
             maxLines = 1,
-            softWrap = !wordWide,
-            overflow = if (wordWide) TextOverflow.Visible else TextOverflow.Clip,
+            softWrap = false,
+            overflow = if (wordWide) TextOverflow.Visible else TextOverflow.Ellipsis,
             onTextLayout = { advance = it.getLineRight(0) },
         )
         Spacer(Modifier.height(gap + thickness))

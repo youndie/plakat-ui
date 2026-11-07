@@ -113,14 +113,16 @@ public fun PlakatWindow(
     val type = PlakatTheme.typography
     val reduce = PlakatTheme.reduceMotion
     val events by rememberUpdatedState(PlakatTheme.events)
-    val shift = remember { Animatable(page.toFloat()) }
+    // Outside the panels the nearest one stands, rather than an empty window.
+    val held = page.coerceIn(0, panels.lastIndex.coerceAtLeast(0))
+    val shift = remember { Animatable(held.toFloat()) }
     val words = remember { Animatable(1f) }
-    var seen by remember { mutableStateOf(page) }
-    LaunchedEffect(page, reduce) {
-        val changed = page != seen
+    var seen by remember { mutableStateOf(held) }
+    LaunchedEffect(held, reduce) {
+        val changed = held != seen
         if (changed) events.onEvent(PlakatEvent.Rail)
-        seen = page
-        val target = page.toFloat()
+        seen = held
+        val target = held.toFloat()
         if (reduce) {
             shift.snapTo(target)
             words.snapTo(1f)

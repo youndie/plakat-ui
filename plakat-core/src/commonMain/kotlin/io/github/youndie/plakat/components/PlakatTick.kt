@@ -48,8 +48,16 @@ internal class PlakatTick(
     /** The digits shown [ms] in: as many as the target has, as the page's columns are. */
     fun textAt(ms: Double): String = digitsAt(ms).joinToString("").takeLast(digits(target).size)
 
-    /** The whole number under way [ms] in, the digits the target hides included. */
-    fun valueAt(ms: Double): Int = digitsAt(ms).joinToString("").toInt()
+    /**
+     * The whole number under way [ms] in, the digits the target hides included. Digit by digit it may pass over the largest
+     * Int on the way from one number under it to another: 2 000 000 000 to 1 999 999 999 goes through 2 399 999 999.
+     */
+    fun valueAt(ms: Double): Int =
+        digitsAt(ms)
+            .joinToString("")
+            .toLong()
+            .coerceAtMost(Int.MAX_VALUE.toLong())
+            .toInt()
 
     /**
      * How many whole [per]s stand [ms] in: from the old number's to the new one's, one at a time and evenly across

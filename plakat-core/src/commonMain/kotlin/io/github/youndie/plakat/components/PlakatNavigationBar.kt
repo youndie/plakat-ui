@@ -31,6 +31,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
@@ -45,6 +46,8 @@ import io.github.youndie.plakat.tokens.PlakatColors
 import io.github.youndie.plakat.tokens.PlakatDurations
 import io.github.youndie.plakat.tokens.PlakatEasings
 import kotlin.math.floor
+import kotlin.math.max
+import kotlin.math.min
 
 /** The strip: the MVP page's `height: 64px`. */
 private val BarHeight = 64.dp
@@ -73,7 +76,7 @@ public class PlakatNavigationItem(
  * of [items], each a stencil over its word, in on-red. The active one is told by a red square behind its
  * icon rather than by a red icon, which would fail contrast on the strip (the Icons page: on-red on red
  * is 4.64:1). A new [selectedIndex] sends the square across in 120 ms hard-stop (`lock`), at once under
- * reduced motion. Each item's target is its whole slot. Its ground runs under [windowInsets], the system's bar by default,
+ * reduced motion; an index outside them, -1 for none, shows no square. Each item's target is its whole slot. Its ground runs under [windowInsets], the system's bar by default,
  * with the strip inside them.
  */
 @Composable
@@ -85,20 +88,15 @@ public fun PlakatNavigationBar(
     windowInsets: WindowInsets = WindowInsets.navigationBars,
 ) {
     val colors = PlakatTheme.colors
-    val reduce = PlakatTheme.reduceMotion
-    val events by rememberUpdatedState(PlakatTheme.events)
-    val square = remember { Animatable(selectedIndex.toFloat()) }
-    var seen by remember { mutableStateOf(selectedIndex) }
-    LaunchedEffect(selectedIndex, reduce) {
-        if (selectedIndex != seen) events.onEvent(PlakatEvent.Lock)
-        seen = selectedIndex
-        val target = selectedIndex.toFloat()
-        if (reduce) {
-            square.snapTo(target)
-        } else {
-            square.animateTo(target, tween(PlakatDurations.QUICK, easing = PlakatEasings.HardStop))
-        }
-    }
+    val square =
+        rememberPlakatChoiceMark(
+            selectedIndex,
+            items.size,
+            PlakatEvent.Lock,
+            PlakatDurations.QUICK,
+            PlakatEasings.HardStop,
+        )
+    val chosen = selectedIndex in items.indices
     val strip = navigationGround(colors)
     val word: Color = colors.onRed
     val type = PlakatTheme.typography
@@ -135,23 +133,30 @@ public fun PlakatNavigationBar(
                     Modifier.clearAndSetSemantics {},
                     style = style,
                     softWrap = false,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
         },
         modifier =
             modifier.background(strip).windowInsetsPadding(windowInsets).drawBehind {
                 drawRect(strip)
-                val slot = size.width / items.size.coerceAtLeast(1)
-                val w = SquareWidth.toPx()
-                // Blink snaps the box to the pixel as `left: n × 25%` moves it.
-                val x = floor(square.value * slot + (slot - w) / 2 + .5f)
-                val y = floor((size.height - contentHeight().toPx()) / 2 + .5f)
-                drawRect(colors.red, Offset(x, y), Size(w, SquareHeight.toPx()))
+                if (chosen && square.placed) {
+                    val slot = size.width / items.size.coerceAtLeast(1)
+                    val w = SquareWidth.toPx()
+                    // Blink snaps the box to the pixel as `left: n × 25%` moves it.
+                    val x = floor(square.at.value * slot + (slot - w) / 2 + .5f)
+                    val y = floor((size.height - contentHeight().toPx()) / 2 + .5f)
+                    drawRect(colors.red, Offset(x, y), Size(w, SquareHeight.toPx()))
+                }
             },
     ) { measurables, constraints ->
         val count = items.size.coerceAtLeast(1)
         val width = equalSlotsWidth(constraints, widths.maxOrNull() ?: 0f, count)
-        val height = BarHeight.roundToPx()
+        // The page's 64, and more only where a large font's label would not fit in it.
+        val tall =
+            measurables.chunked(3).maxOfOrNull { (_, _, label) -> label.maxIntrinsicHeight(Constraints.Infinity) } ?: 0
+        val height = max(BarHeight.roundToPx(), ((SquareHeight + LabelGap).toPx() + tall + 2 * LabelGap.toPx()).toInt())
         // Equal slots keep their half pixels, as the page's grid does: each child is placed from the true slot.
         val slot = width.toFloat() / count
         val top = (height - contentHeight().toPx()) / 2
@@ -163,7 +168,7 @@ public fun PlakatNavigationBar(
                 Triple(
                     target.measure(Constraints.fixed(right - left, height)) to left,
                     icon.measure(Constraints()),
-                    label.measure(Constraints()),
+                    label.measure(slotWord(right - left)),
                 )
             }
         layout(width, height) {
@@ -173,7 +178,8 @@ public fun PlakatNavigationBar(
                 val iconTop = top + (iconBoxHeight - icon.height) / 2
                 icon.placeRelative(floor(centre - icon.width / 2f + .5f).toInt(), floor(iconTop + .5f).toInt())
                 val labelTop = top + iconBoxHeight + LabelGap.toPx()
-                label.placeRelative(floor(centre - widths[i] / 2f + .5f).toInt(), floor(labelTop + .5f).toInt())
+                val across = min(widths[i], label.width.toFloat())
+                label.placeRelative(floor(centre - across / 2f + .5f).toInt(), floor(labelTop + .5f).toInt())
             }
         }
     }
