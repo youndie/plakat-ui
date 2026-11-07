@@ -55,6 +55,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.isSpecified
+import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
 import io.github.youndie.plakat.print.PlakatCutShape
 import io.github.youndie.plakat.print.plakatHatch
@@ -299,7 +300,8 @@ internal fun PlakatButtonFrame(
                 metrics.inset.takeIf { kind != PlakatButtonKind.Danger }
                     ?: (DangerInset + metrics.dangerPlate)
             )
-            with(density) { Modifier.width(floor(wordPx + 2 * around.toPx() + .5f).toDp()) }
+            // A short word on a narrow target: the fitted width gives way to the 48 a touch needs.
+            with(density) { Modifier.width(max(floor(wordPx + 2 * around.toPx() + .5f).toDp(), PlakatSizes.Touch)) }
         } else {
             Modifier
         }
@@ -408,7 +410,7 @@ internal fun PlakatButtonFrame(
                 )
             }
         }
-        if (loading) Spinner(colors.onRed, reduce, spinnerAtMs)
+        if (loading) Spinner(paint.ink, reduce, spinnerAtMs)
     }
 }
 

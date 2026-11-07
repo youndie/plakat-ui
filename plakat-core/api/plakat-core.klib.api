@@ -269,28 +269,14 @@ final class io.github.youndie.plakat.theme/PlakatPrintSwitches { // io.github.yo
 }
 
 final class io.github.youndie.plakat.theme/PlakatStrings { // io.github.youndie.plakat.theme/PlakatStrings|null[0]
-    constructor <init>(kotlin/String = ..., kotlin/String = ..., kotlin/String = ..., kotlin/String = ..., kotlin/String = ..., kotlin/String = ..., kotlin/String = ..., kotlin/String = ..., kotlin/String = ..., kotlin/String = ...) // io.github.youndie.plakat.theme/PlakatStrings.<init>|<init>(kotlin.String;kotlin.String;kotlin.String;kotlin.String;kotlin.String;kotlin.String;kotlin.String;kotlin.String;kotlin.String;kotlin.String){}[0]
+    constructor <init>(kotlin/String = ..., kotlin/String = ..., kotlin/String = ...) // io.github.youndie.plakat.theme/PlakatStrings.<init>|<init>(kotlin.String;kotlin.String;kotlin.String){}[0]
 
-    final val back // io.github.youndie.plakat.theme/PlakatStrings.back|{}back[0]
-        final fun <get-back>(): kotlin/String // io.github.youndie.plakat.theme/PlakatStrings.back.<get-back>|<get-back>(){}[0]
-    final val clear // io.github.youndie.plakat.theme/PlakatStrings.clear|{}clear[0]
-        final fun <get-clear>(): kotlin/String // io.github.youndie.plakat.theme/PlakatStrings.clear.<get-clear>|<get-clear>(){}[0]
-    final val close // io.github.youndie.plakat.theme/PlakatStrings.close|{}close[0]
-        final fun <get-close>(): kotlin/String // io.github.youndie.plakat.theme/PlakatStrings.close.<get-close>|<get-close>(){}[0]
-    final val dismiss // io.github.youndie.plakat.theme/PlakatStrings.dismiss|{}dismiss[0]
-        final fun <get-dismiss>(): kotlin/String // io.github.youndie.plakat.theme/PlakatStrings.dismiss.<get-dismiss>|<get-dismiss>(){}[0]
     final val error // io.github.youndie.plakat.theme/PlakatStrings.error|{}error[0]
         final fun <get-error>(): kotlin/String // io.github.youndie.plakat.theme/PlakatStrings.error.<get-error>|<get-error>(){}[0]
-    final val info // io.github.youndie.plakat.theme/PlakatStrings.info|{}info[0]
-        final fun <get-info>(): kotlin/String // io.github.youndie.plakat.theme/PlakatStrings.info.<get-info>|<get-info>(){}[0]
     final val loading // io.github.youndie.plakat.theme/PlakatStrings.loading|{}loading[0]
         final fun <get-loading>(): kotlin/String // io.github.youndie.plakat.theme/PlakatStrings.loading.<get-loading>|<get-loading>(){}[0]
-    final val menu // io.github.youndie.plakat.theme/PlakatStrings.menu|{}menu[0]
-        final fun <get-menu>(): kotlin/String // io.github.youndie.plakat.theme/PlakatStrings.menu.<get-menu>|<get-menu>(){}[0]
     final val refresh // io.github.youndie.plakat.theme/PlakatStrings.refresh|{}refresh[0]
         final fun <get-refresh>(): kotlin/String // io.github.youndie.plakat.theme/PlakatStrings.refresh.<get-refresh>|<get-refresh>(){}[0]
-    final val warning // io.github.youndie.plakat.theme/PlakatStrings.warning|{}warning[0]
-        final fun <get-warning>(): kotlin/String // io.github.youndie.plakat.theme/PlakatStrings.warning.<get-warning>|<get-warning>(){}[0]
 }
 
 final class io.github.youndie.plakat.theme/PlakatText { // io.github.youndie.plakat.theme/PlakatText|null[0]

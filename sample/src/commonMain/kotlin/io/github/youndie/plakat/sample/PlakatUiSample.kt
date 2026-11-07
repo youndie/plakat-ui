@@ -3,6 +3,7 @@ package io.github.youndie.plakat.sample
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -141,7 +142,7 @@ private fun Header(
         BasicText(
             label.text(if (texture) "Texture: on" else "Texture: off"),
             Modifier
-                .clickable(onClick = onTexture)
+                .clickable(interactionSource = null, indication = null, onClick = onTexture)
                 .heightIn(min = 48.dp)
                 .padding(16.dp)
                 .testTag("sample-texture"),
@@ -158,7 +159,16 @@ private fun Page(content: @Composable () -> Unit) {
 /** A screen of the Demo page, at its size. */
 @Composable
 private fun Phone(content: @Composable () -> Unit) {
-    Box(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp)) {
-        Box(Modifier.size(390.dp, 844.dp)) { content() }
+    BoxWithConstraints(Modifier.fillMaxSize()) {
+        // The screens are drawn for 390: in a window of about that width the margin gives way to them.
+        val margin = if (maxWidth >= 390.dp + 32.dp) 16.dp else 0.dp
+        Box(
+            Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = margin, vertical = 16.dp),
+        ) {
+            Box(Modifier.size(390.dp, 844.dp).testTag("sample-phone")) { content() }
+        }
     }
 }
