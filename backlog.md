@@ -61,10 +61,10 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 |---|---|---|---|---|
 | [B-43](docs/backlog/B-43-re-import-the-design.md) `[ ]` | Re-import the design project on a branch of its own | P3 | S | B-05, B-08 |
 | [B-67](docs/backlog/B-67-qa-polish.md) `[ ]` | Small remainders of the QA pass | P3 | S | - |
-| [B-69](docs/backlog/B-69-real-window-pass.md) `[?]` | Check what only a real window shows | P3 | S | - |
 | [B-70](docs/backlog/B-70-fixed-sheets-under-a-large-font.md) `[ ]` | Fixed sheets under a large font and a long title: TopAppBar and Poster | P3 | M | - |
+| [B-72](docs/backlog/B-72-tooltip-plate-takes-a-press.md) `[ ]` | A tooltip's plate takes a press meant for what is under it | P3 | S | - |
 
-## Closed (67)
+## Closed (68)
 
 **Goldens and references regenerate deterministically; the generator and raskat ports match them on every target; the floor and the frame cost have measured numbers**
 
@@ -131,6 +131,7 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 - [B-65](docs/backlog/B-65-long-content.md) `[x]` - Long content: what a component does with text that does not fit
 - [B-66](docs/backlog/B-66-hostile-values.md) `[x]` - Values a consumer can compute: NaN, zero, out of range
 - [B-68](docs/backlog/B-68-release-ink-question.md) `[x]` - On release a word was ink on ink for its first frame
+- [B-69](docs/backlog/B-69-real-window-pass.md) `[x]` - Check what only a real window shows
 
 **The three demo screens within the floor in both themes; contrast holds with the textures on**
 
