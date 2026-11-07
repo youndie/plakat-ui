@@ -24,6 +24,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
@@ -77,9 +78,13 @@ import io.github.youndie.plakat.tokens.PlakatGrid
 import io.github.youndie.plakat.tokens.PlakatPrint
 import io.github.youndie.plakat.tokens.PlakatShape
 import io.github.youndie.plakat.tokens.PlakatSizes
+import kotlin.math.PI
+import kotlin.math.cos
 import kotlin.math.floor
 import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.roundToInt
+import kotlin.math.sin
 
 /** The poster's three layouts, as the Core page draws them; each has its fixed size. */
 public enum class PlakatPosterLayout(
@@ -173,6 +178,9 @@ private const val STRETCH_ELEMENTS = 2
 /** The body's line, `line-height: 1.4`, both layouts. */
 private const val BODY_LINE = 1.4f
 
+/** What is left of a title on a sheet with no room at all, too small to see. */
+private const val MIN_TITLE_FIT = .01f
+
 /** How many lines of a body [px] large fit from [top] to the top of a slogan standing [foot] off the poster's bottom. */
 private fun DrawScope.bodyLines(
     top: Float,
@@ -216,9 +224,10 @@ private const val BUTTON_AT_MS = 180
  * at once. A new [seed] reprints at once. [print] false shows it printed, for a poster that scrolls
  * back into a lazy list.
  *
- * A layout is a fixed sheet, as a printed poster is, so what it is given has to suit it. A [body] too long for its place
- * stops above the slogan, with an ellipsis; a [title] is drawn at the design's size, and one too long for its sheet runs off
- * it or under the slogan, so choose its words for the layout, and Растяжка takes only its first three lines.
+ * A layout is a fixed sheet, as a printed poster is. A [body] too long for its place stops above the slogan, with an
+ * ellipsis. A [title] is drawn at the design's size, and one that would leave its room, by its length or by the system's
+ * font size, is set smaller as a block until it stays on the sheet and clear of what stands under it: the body's place or
+ * the slogan, or on Широкий its own half. Растяжка stretches each line across its width and takes the first three.
  */
 @Composable
 public fun PlakatPoster(
@@ -317,11 +326,29 @@ public fun PlakatPoster(
                 Box(Modifier.matchParentSize().plakatWipe(PlakatWipe.Left, wipe(TITLE_AT_MS)).title(title)) {
                     Canvas(Modifier.matchParentSize()) {
                         val origin = Offset(PlakatGrid.Margin.toPx(), CircleTitleTop.toPx())
+                        val style = display.copy(fontSize = CIRCLE_TITLE_SP.sp)
+                        val foot =
+                            if (body !=
+                                null
+                            ) {
+                                CircleBodyTop
+                            } else {
+                                layout.height - CircleButtonBottom - PlakatSizes.Button
+                            }
+                        val fit =
+                            measurer.linesFit(
+                                title,
+                                style,
+                                CIRCLE_TITLE_LINE * style.fontSize.toPx(),
+                                origin,
+                                PlakatShape.AXIS,
+                                Rect(0f, 0f, size.width, foot.toPx()),
+                            )
                         rotate(PlakatShape.AXIS, origin) {
                             drawLines(
                                 measurer,
                                 title,
-                                display.copy(fontSize = CIRCLE_TITLE_SP.sp),
+                                style.scaledBy(fit),
                                 PlakatFaceMetrics.Display,
                                 CIRCLE_TITLE_LINE,
                                 origin,
@@ -409,14 +436,38 @@ public fun PlakatPoster(
                 Box(Modifier.matchParentSize().plakatWipe(PlakatWipe.Left, wipe(TITLE_AT_MS)).title(title)) {
                     Canvas(Modifier.matchParentSize()) {
                         val origin = Offset(PlakatGrid.Margin.toPx(), StripeTitleTop.toPx())
+                        val style = display.copy(fontSize = STRIPE_SP.sp)
+                        val px = style.fontSize.toPx()
+                        val padY = 2 * StripePadY.toPx()
+                        val foot =
+                            if (body !=
+                                null
+                            ) {
+                                BackgroundBodyTop
+                            } else {
+                                layout.height - PlakatGrid.Margin - PlakatSizes.Button
+                            }
+                        val fit =
+                            posterTitleFit(
+                                title.map {
+                                    measurer.line(it, style, PlakatFaceMetrics.Display).getLineRight(0) +
+                                        2 * StripePadX.toPx()
+                                },
+                                px + padY + StripeGap.toPx(),
+                                px + padY,
+                                origin,
+                                PlakatShape.AXIS,
+                                Rect(0f, 0f, size.width, foot.toPx()),
+                            )
                         rotate(PlakatShape.AXIS, origin) {
                             drawStripes(
                                 measurer,
                                 title,
-                                display.copy(fontSize = STRIPE_SP.sp),
+                                style.scaledBy(fit),
                                 origin,
                                 colors,
                                 registration,
+                                fit,
                             )
                         }
                     }
@@ -486,10 +537,11 @@ public fun PlakatPoster(
                 Box(Modifier.matchParentSize().plakatWipe(PlakatWipe.Left, wipe(TITLE_AT_MS)).title(title)) {
                     Canvas(Modifier.matchParentSize()) {
                         val origin = Offset(PlakatGrid.Margin.toPx(), WideTitleTop.toPx())
+                        val style = display.copy(fontSize = CIRCLE_TITLE_SP.sp)
                         drawLines(
                             measurer,
                             title,
-                            display.copy(fontSize = CIRCLE_TITLE_SP.sp),
+                            style.scaledBy(wideTitleFit(measurer, title, style, body != null)),
                             PlakatFaceMetrics.Display,
                             CIRCLE_TITLE_LINE,
                             origin,
@@ -506,8 +558,15 @@ public fun PlakatPoster(
                         },
                     ) {
                         Canvas(Modifier.matchParentSize()) {
+                            val fit =
+                                wideTitleFit(
+                                    measurer,
+                                    title,
+                                    display.copy(fontSize = CIRCLE_TITLE_SP.sp),
+                                    withBody = true,
+                                )
                             val top =
-                                WideTitleTop.toPx() + title.size * CIRCLE_TITLE_SP.sp.toPx() * CIRCLE_TITLE_LINE +
+                                WideTitleTop.toPx() + title.size * fit * CIRCLE_TITLE_SP.sp.toPx() * CIRCLE_TITLE_LINE +
                                     WideBodyGap.toPx()
                             drawParagraph(
                                 measurer,
@@ -620,10 +679,25 @@ public fun PlakatPoster(
                 Box(Modifier.matchParentSize().plakatWipe(PlakatWipe.Left, wipe(TITLE_AT_MS)).title(title)) {
                     Canvas(Modifier.matchParentSize()) {
                         val origin = Offset(PlakatGrid.Margin.toPx(), PlakatGrid.Margin.toPx())
+                        val style = display.copy(fontSize = BANNER_TITLE_SP.sp)
+                        val fit =
+                            measurer.linesFit(
+                                title,
+                                style,
+                                style.fontSize.toPx(),
+                                origin,
+                                0f,
+                                Rect(
+                                    0f,
+                                    0f,
+                                    size.width - PlakatGrid.Margin.toPx(),
+                                    (layout.height - PlakatGrid.Margin - PlakatSizes.Button).toPx(),
+                                ),
+                            )
                         drawLines(
                             measurer,
                             title,
-                            display.copy(fontSize = BANNER_TITLE_SP.sp),
+                            style.scaledBy(fit),
                             PlakatFaceMetrics.Display,
                             1f,
                             origin,
@@ -661,6 +735,85 @@ internal fun posterPrintMs(
         BUTTON_AT_MS + WIPE_MS,
         if (rolls) PlakatDurations.SCENE else 0,
     )
+
+/**
+ * How much of its size a title keeps so that its block stays in [room]: 1 when it fits, as the design's titles do, and
+ * otherwise as far as the first corner reaches the room's edge. Each line is [widths]' width and [high] high, [pitch] apart,
+ * the block turned [degrees] about its corner [origin] and scaled about it, so every corner moves in proportion.
+ */
+internal fun posterTitleFit(
+    widths: List<Float>,
+    pitch: Float,
+    high: Float,
+    origin: Offset,
+    degrees: Float,
+    room: Rect,
+): Float {
+    val a = degrees * PI.toFloat() / 180f
+    val cos = cos(a)
+    val sin = sin(a)
+    var fit = 1f
+
+    fun corner(
+        x: Float,
+        y: Float,
+    ) {
+        val across = x * cos - y * sin
+        val down = x * sin + y * cos
+        if (across > 0f) fit = min(fit, (room.right - origin.x) / across)
+        if (across < 0f) fit = min(fit, (room.left - origin.x) / across)
+        if (down > 0f) fit = min(fit, (room.bottom - origin.y) / down)
+        if (down < 0f) fit = min(fit, (room.top - origin.y) / down)
+    }
+    widths.forEachIndexed { i, width ->
+        val top = i * pitch
+        corner(0f, top)
+        corner(width, top)
+        corner(0f, top + high)
+        corner(width, top + high)
+    }
+    // A poster squeezed to nothing has its corner outside its room, and text cannot be set at a negative size.
+    return fit.coerceAtLeast(MIN_TITLE_FIT)
+}
+
+/** [posterTitleFit] for lines of the display face set [pitch] apart, each a [pitch] high. */
+private fun TextMeasurer.linesFit(
+    lines: List<String>,
+    style: TextStyle,
+    pitch: Float,
+    origin: Offset,
+    degrees: Float,
+    room: Rect,
+): Float =
+    posterTitleFit(
+        lines.map { line(it, style, PlakatFaceMetrics.Display).getLineRight(0) },
+        pitch,
+        pitch,
+        origin,
+        degrees,
+        room,
+    )
+
+/** Широкий's title on its half, clear of the slogan, and with a body of the gap and one line of it as well. */
+private fun DrawScope.wideTitleFit(
+    measurer: TextMeasurer,
+    lines: List<String>,
+    style: TextStyle,
+    withBody: Boolean,
+): Float {
+    val button = (PlakatPosterLayout.Wide.height - CircleButtonBottom - PlakatSizes.Button).toPx()
+    val reserved = if (withBody) WideBodyGap.toPx() + CIRCLE_BODY_SP.sp.toPx() * BODY_LINE else 0f
+    return measurer.linesFit(
+        lines,
+        style,
+        CIRCLE_TITLE_LINE * style.fontSize.toPx(),
+        Offset(PlakatGrid.Margin.toPx(), WideTitleTop.toPx()),
+        0f,
+        Rect(0f, 0f, size.width / 2 - PlakatGrid.Margin.toPx(), button - reserved),
+    )
+}
+
+private fun TextStyle.scaledBy(fit: Float) = copy(fontSize = fontSize * fit)
 
 private fun TextStyle.plain() =
     copy(letterSpacing = 0.sp, lineHeight = TextUnit.Unspecified, lineHeightStyle = LineHeightStyle.Default)
@@ -800,14 +953,15 @@ private fun DrawScope.drawStripes(
     origin: Offset,
     colors: PlakatColors,
     registered: Boolean,
+    scale: Float,
 ) {
     val px = style.fontSize.toPx()
-    val padX = StripePadX.toPx()
-    val padY = StripePadY.toPx()
+    val padX = StripePadX.toPx() * scale
+    val padY = StripePadY.toPx() * scale
     val baseline = cssBaseline(PlakatFaceMetrics.Display, px, px)
     val reg = Offset(PlakatPrint.RegistrationX.toPx(), PlakatPrint.RegistrationY.toPx())
     val layouts = lines.map { measurer.line(it, style, PlakatFaceMetrics.Display) }
-    val pitch = px + 2 * padY + StripeGap.toPx()
+    val pitch = px + 2 * padY + StripeGap.toPx() * scale
     val boxes = layouts.mapIndexed { i, l -> Size(l.getLineRight(0) + 2 * padX, px + 2 * padY) to origin.y + i * pitch }
     if (registered) {
         boxes.forEach { (size, top) -> drawRect(colors.red, Offset(origin.x, top) + reg, size) }
