@@ -65,7 +65,7 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 | [B-69](docs/backlog/B-69-real-window-pass.md) `[?]` | Check what only a real window shows | P3 | S | - |
 | [B-70](docs/backlog/B-70-fixed-sheets-under-a-large-font.md) `[ ]` | Fixed sheets under a large font and a long title: TopAppBar and Poster | P3 | M | - |
 
-## Closed (65)
+## Closed (66)
 
 **Goldens and references regenerate deterministically; the generator and raskat ports match them on every target; the floor and the frame cost have measured numbers**
 
@@ -144,6 +144,7 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 - [B-40](docs/backlog/B-40-licence.md) `[x]` - Licence: MIT
 - [B-41](docs/backlog/B-41-registration-unit.md) `[x]` - Registration offset: 1 dp
 - [B-42](docs/backlog/B-42-v1-components-designed-here.md) `[x]` - v1 components: designed here, one item each
+- [B-71](docs/backlog/B-71-wasm-test-time-limit.md) `[x]` - Wasm browser tests go red on a runner's speed: Mocha's limit of 2 s
 
 **stage-3-demo**
 
