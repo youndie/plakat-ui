@@ -61,7 +61,7 @@ class SampleAppTest {
         }
 
     @Test
-    fun `a demo screen stays inside a phone's width and the sample's own controls draw no grey`() =
+    fun `a demo screen keeps its 390 in a window of 390 and the sample's own controls draw no grey`() =
         runComposeUiTest {
             setContent {
                 CompositionLocalProvider(LocalDensity provides Density(1f)) {
@@ -70,11 +70,9 @@ class SampleAppTest {
             }
             onNodeWithTag("section-Feed").performClick()
             waitForIdle()
-            val right =
-                onNodeWithTag("sample-phone")
-                    .fetchSemanticsNode()
-                    .boundsInRoot.right
-            assertTrue(right <= 390f, "the phone's right edge in a window of 390: $right")
+            val phone = onNodeWithTag("sample-phone").fetchSemanticsNode().boundsInRoot
+            assertEquals(0f, phone.left, "the margin gives way")
+            assertEquals(390f, phone.right, "the screen at its size")
 
             val word = onNodeWithTag("sample-texture")
             val before = word.captureToImage().toPixelMap()

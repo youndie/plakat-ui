@@ -3,17 +3,16 @@ package io.github.youndie.plakat.sample
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.verticalScroll
@@ -160,13 +159,16 @@ private fun Page(content: @Composable () -> Unit) {
 /** A screen of the Demo page, at its size. */
 @Composable
 private fun Phone(content: @Composable () -> Unit) {
-    Box(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp)) {
+    BoxWithConstraints(Modifier.fillMaxSize()) {
+        // The screens are drawn for 390: in a window of about that width the margin gives way to them.
+        val margin = if (maxWidth >= 390.dp + 32.dp) 16.dp else 0.dp
         Box(
             Modifier
-                .widthIn(max = 390.dp)
-                .fillMaxWidth()
-                .height(844.dp)
-                .testTag("sample-phone"),
-        ) { content() }
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = margin, vertical = 16.dp),
+        ) {
+            Box(Modifier.size(390.dp, 844.dp).testTag("sample-phone")) { content() }
+        }
     }
 }
