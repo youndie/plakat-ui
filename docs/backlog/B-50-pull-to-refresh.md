@@ -39,7 +39,7 @@ Brief v1: "красный клин растёт сверху за пальцем
 
 **No displacement.** The wedge and plate lie over the list, which stays where it is: a list moved down would be a second thing moving.
 
-**A wheel makes no pull.** A wheel past the list's top has a remainder as a finger does but no letting go, so the wedge would have stuck there. A pull is only taken while a pointer is down.
+**A wheel makes no pull.** A wheel past the list's top has a remainder as a finger does but no letting go, so the wedge would have stuck there. A pull is only taken while a pointer is down. A mouse, which scrolls nothing by dragging, pulls by a drag of its own from the content's top ([B-73](B-73-pull-by-a-mouse.md)).
 
 **Not built:** a pull from a list that is not a nested-scroll child; a determinate wedge the caller drives.
 

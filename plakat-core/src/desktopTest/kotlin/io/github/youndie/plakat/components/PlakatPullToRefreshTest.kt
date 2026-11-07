@@ -366,7 +366,8 @@ class PlakatPullToRefreshTest {
                 PlakatTheme(colors = paper, reduceMotion = true) {
                     PlakatPullToRefreshBox(false, {}, Modifier.size(390.dp, 400.dp)) {
                         Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
-                            PlakatListItem("Row", Modifier.testTag("row"), onClick = { clicks++ })
+                            // Tall, so that the drag stays on the row, and only taking it keeps the click from coming.
+                            PlakatListItem("Row", Modifier.testTag("row").height(300.dp), onClick = { clicks++ })
                         }
                     }
                 }
