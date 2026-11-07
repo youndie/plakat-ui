@@ -60,7 +60,8 @@ line in `.github/workflows/check.yaml` pins. The first `make check` fetches that
 
 `reference/design-system/` is a snapshot of claude.ai/design project
 `d99820b8-b707-4cf2-83fc-4ba96e771c30`, taken on 2026-11-03 (tokens version 0.2.0). A newer version
-is taken on a branch of its own, never by overwriting ([B-43](docs/backlog/B-43-re-import-the-design.md)):
+is taken on a branch of its own, never by overwriting. None is planned, and it starts only when the owner starts it
+([B-43](docs/backlog/B-43-re-import-the-design.md), dropped on 2026-11-07):
 
 1. **Fetch** with the DesignSync tool (`list_files`, then `get_file` per path), which needs the
    signed-in session; a script cannot do it. Skip `screenshots/`, `.thumbnail` and
