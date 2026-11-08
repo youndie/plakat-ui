@@ -295,6 +295,9 @@ does not state. Everything the design does draw stays held to the design.
 
 One thing it draws was changed on purpose: a word's ink on release ([B-68](../backlog/B-68-release-ink-question.md),
 the owner's delegated decision of 2026-11-07). It moves no cell, as the design draws rest and pressed, not the frames between.
+A second, at the owner's remark of 2026-11-07: the dialog's sheet is cut at its corner with its title plate, so the
+screen shows through where the design leaves paper ([B-74](../backlog/B-74-dialog-cut-shows-the-screen.md)); its parity
+moves by that triangle, 0.16 %.
 
 ### D14. The registration offset is 1 dp
 

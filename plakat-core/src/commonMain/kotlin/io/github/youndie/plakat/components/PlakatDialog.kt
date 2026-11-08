@@ -226,7 +226,9 @@ internal fun PlakatDialogFrame(
                         translationY = (open.value - 1f) * RideFrom.toPx()
                     }
                 }.pointerInput(Unit) {}
-                .background(colors.paper)
+                // The sheet is cut as its title plate is, so the screen shows through the corner: the design leaves
+                // paper there, under a plate that only looks cut (the owner's remark of 2026-11-07, research D13).
+                .background(colors.paper, PlakatCutShape())
                 .semantics {
                     dialog()
                     paneTitle = title

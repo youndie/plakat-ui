@@ -3,6 +3,8 @@ package io.github.youndie.plakat.components
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.size
@@ -25,6 +27,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.PointerType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.CustomAccessibilityAction
@@ -58,7 +61,8 @@ private val PlateSize = 56.dp
  * short, it does not; either way the wedge goes back in 120 ms hard-stop, at once under reduced motion. While [refreshing],
  * the circular progress's stepped sector stands on a plate of paper in that corner (`engage`), over the list.
  *
- * A pull only comes from a finger on the scroll of [content]: a wheel has no letting go. A reader has the same as an action,
+ * A pull comes from a finger on the scroll of [content], or from a mouse pressed on it and dragged down while it stands at
+ * its top, let go with the button. A wheel or a trackpad's scroll makes none: it has no letting go. A reader has the same as an action,
  * named by the theme's `refresh`, and the sector says the theme's `loading`.
  */
 @Composable
@@ -93,6 +97,10 @@ internal fun PlakatPullToRefreshFrame(
     var pull by remember { mutableFloatStateOf(0f) }
     var fingers by remember { mutableStateOf(false) }
     var motion by remember { mutableStateOf<Job?>(null) }
+
+    // Whether the content stands at its top, as its scrolls have told: a mouse does not scroll it, so a mouse drag has to
+    // know. A scroll that never passed through here, by the keys or by code, it does not see.
+    var atTop by remember { mutableStateOf(true) }
 
     fun letGo() {
         if (pull >= counts) refresh()
@@ -133,6 +141,8 @@ internal fun PlakatPullToRefreshFrame(
                     available: Offset,
                     source: NestedScrollSource,
                 ): Offset {
+                    if (consumed.y < 0f) atTop = false
+                    if (available.y > 0f) atTop = true
                     if (available.y <= 0f || !allowed || !fingers) return Offset.Zero
                     motion?.cancel()
                     val before = pull
@@ -174,6 +184,32 @@ internal fun PlakatPullToRefreshFrame(
                         val event = awaitPointerEvent(PointerEventPass.Initial)
                         fingers = event.changes.any { it.pressed }
                     }
+                }
+            }.pointerInput(Unit) {
+                // A mouse scrolls nothing by dragging, so a drag down from the content's top pulls here, and letting go
+                // of the button is letting go. Past the slop the drag is taken, and what it was pressed on is not clicked.
+                awaitEachGesture {
+                    val press = awaitFirstDown(requireUnconsumed = false)
+                    if (press.type != PointerType.Mouse || !allowed || !atTop) return@awaitEachGesture
+                    var travel = 0f
+                    var pulling = false
+                    while (true) {
+                        val event = awaitPointerEvent()
+                        val change = event.changes.firstOrNull { it.id == press.id } ?: break
+                        if (!change.pressed) break
+                        val dy = change.position.y - change.previousPosition.y
+                        if (!pulling) {
+                            travel += dy
+                            if (travel < -viewConfiguration.touchSlop) return@awaitEachGesture
+                            if (travel <= viewConfiguration.touchSlop || !allowed) continue
+                            pulling = true
+                            motion?.cancel()
+                        } else {
+                            pull = (pull + dy).coerceIn(0f, most)
+                        }
+                        change.consume()
+                    }
+                    if (pulling) letGo()
                 }
             }.nestedScroll(connection)
             .drawWithContent {

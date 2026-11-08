@@ -59,7 +59,7 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 
 No open tasks.
 
-## Closed (72)
+## Closed (74)
 
 **Goldens and references regenerate deterministically; the generator and raskat ports match them on every target; the floor and the frame cost have measured numbers**
 
@@ -130,6 +130,8 @@ No open tasks.
 - [B-69](docs/backlog/B-69-real-window-pass.md) `[x]` - Check what only a real window shows
 - [B-70](docs/backlog/B-70-fixed-sheets-under-a-large-font.md) `[x]` - Fixed sheets under a large font and a long title: TopAppBar and Poster
 - [B-72](docs/backlog/B-72-tooltip-plate-takes-a-press.md) `[x]` - A tooltip's plate takes a press meant for what is under it
+- [B-73](docs/backlog/B-73-pull-by-a-mouse.md) `[x]` - Pull-to-refresh does nothing with a mouse
+- [B-74](docs/backlog/B-74-dialog-cut-shows-the-screen.md) `[x]` - The dialog's cut corner shows paper, not the screen
 
 **The three demo screens within the floor in both themes; contrast holds with the textures on**
 
