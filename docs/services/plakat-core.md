@@ -164,7 +164,7 @@ rendered with reduced motion, so parity sees none of these.
 |---|---|---|
 | Library | Compose runtime, foundation, ui (from `wip`) | everything drawn |
 | Library | compose resources (`compose.components.resources`) | the bundled fonts, package `io.github.youndie.plakat.resources` |
-| Build | sborka 0.4.0.111 | conventions and the `wip` catalog, the same build as toon-ui |
+| Build | sborka 0.5.0.135 | conventions and the `wip` catalog, the same build as toon-ui |
 | Test | Compose ui-test, `compose.desktop.currentOs` (desktopTest only) | off-screen composition on the host's Skia |
 | Test | viddik 0.7.0 with KSP | screenshot goldens (verified by `check`) and design parity (`viddikDesignParity`, a report) |
 

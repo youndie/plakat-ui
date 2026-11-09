@@ -1,7 +1,7 @@
 [versions]
 # The shared build conventions. The compiler, AGP and Compose Multiplatform are NOT here: they come
 # from `wip`, the catalog a sborka release publishes. The same build toon-ui runs on.
-sborka = "0.4.0.111"
+sborka = "0.5.0.135"
 # Screenshots and design parity (B-05), the release on Maven Central; toon-ui's version.
 viddik = "0.7.0"
 # The system back gesture for an open dialog (B-36); Compose 1.12's own `BackHandler` is deprecated for it, and this
