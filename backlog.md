@@ -59,7 +59,7 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-81](docs/backlog/B-81-banner.md) `[ ]` | PlakatBanner: a warning that stays in the screen until its condition passes | P2 | S | B-75 |
+| [B-81](docs/backlog/B-81-banner.md) `[~]` | PlakatBanner: a warning that stays in the screen until its condition passes | P2 | S | B-75 |
 
 ## Closed (80)
 
