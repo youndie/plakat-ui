@@ -4,7 +4,8 @@ package io.github.youndie.plakat.icons
 
 /**
  * The sixteen stencil icons (`plakat/icon`): a fill, never an outline, one path each on a 24 dp grid.
- * Draw one with [PlakatIcon], which takes its colour from the parent.
+ * Draw one with [PlakatIcon], which takes its colour from the parent. After them, the kit's own stencils
+ * (B-77), which the design does not draw.
  */
 public object PlakatIcons {
     /** Меню (Навигация). */
@@ -107,7 +108,17 @@ public object PlakatIcons {
             "M2 12a10 10 0 1 1 20 0a10 10 0 1 1 -20 0zM10.5 5V13.5H17V10.5H13.5V5z",
         )
 
-    /** Every icon, in the design's order. */
+    /** Ещё (the kit's own, B-77). */
+    public val More: PlakatStencil = PlakatStencil("plakat/icon/more", "M10 3H14V7H10ZM10 10H14V14H10ZM10 17H14V21H10Z")
+
+    /** Открыть снаружи (the kit's own, B-77). */
+    public val OpensElsewhere: PlakatStencil =
+        PlakatStencil(
+            "plakat/icon/opensElsewhere",
+            "M13 2.5L21.5 2.5L21.5 11L18.5 11L18.5 5.5L13 5.5ZM21.061 5.061L11.061 15.061L8.939 12.939L18.939 2.939ZM18.5 15L18.5 21.5L2.5 21.5L2.5 5.5L9 5.5L9 8.5L5.5 8.5L5.5 18.5L15.5 18.5L15.5 15Z",
+        )
+
+    /** Every icon of the design, in its order; not the kit's own. */
     public val All: List<PlakatStencil> =
         listOf(
             Menu,

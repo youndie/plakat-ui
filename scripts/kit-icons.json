@@ -1,0 +1,16 @@
+[
+  {
+    "name": "plakat/icon/more",
+    "ru": "Ещё",
+    "group": "kit",
+    "note": "B-77, designed here (D13): three 4-unit squares, as pyatiletka's board canvas draws its header's menu.",
+    "d": "M10 3H14V7H10ZM10 10H14V14H10ZM10 17H14V21H10Z"
+  },
+  {
+    "name": "plakat/icon/opensElsewhere",
+    "ru": "Открыть снаружи",
+    "group": "kit",
+    "note": "B-77, designed here (D13): the board canvas's stroke, outlined to a fill by scripts/icons.mjs.",
+    "stroke": { "d": "M13 4H20V11M20 4L10 14M17 15V20H4V7H9", "width": 3, "cap": "butt", "join": "miter" }
+  }
+]

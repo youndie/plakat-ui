@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 // B-11: generate PlakatIcons.kt from the vendored plakat-icons.json.
+// B-77: and from scripts/kit-icons.json, the kit's own stencils (D13), which the design does not draw: the
+// vendored file is never edited. A kit icon given as a stroke (straight segments, butt caps, miter joins)
+// is outlined here to the fill a stencil is, once, and the outline is what the Kotlin carries.
 //
 //   node scripts/icons.mjs [--check]
 //
@@ -19,14 +22,57 @@ const FIXTURES = join(ROOT, 'plakat-core/src/desktopTest/kotlin/io/github/youndi
 // The sizes the Icons page draws each icon at: 48 (twice), 24 (nominal), 16 (legibility).
 const SIZES = [48, 24, 16];
 
-const icons = JSON.parse(readFileSync(join(DESIGN, 'plakat-icons.json'), 'utf8'));
+const design = JSON.parse(readFileSync(join(DESIGN, 'plakat-icons.json'), 'utf8'));
 // plakat-icons.js is an ES module without a package.json saying so; read it as a data: URL.
 const js = await import(`data:text/javascript;base64,${readFileSync(join(DESIGN, 'plakat-icons.js')).toString('base64')}`);
-const drift = icons.filter((icon, i) => js.ICONS[i]?.d !== icon.d || icon.name !== `plakat/icon/${js.ICONS[i]?.id}`);
-if (drift.length || js.ICONS.length !== icons.length) {
+const drift = design.filter((icon, i) => js.ICONS[i]?.d !== icon.d || icon.name !== `plakat/icon/${js.ICONS[i]?.id}`);
+if (drift.length || js.ICONS.length !== design.length) {
   console.error(`plakat-icons.json and plakat-icons.js disagree: ${drift.map((i) => i.name).join(', ') || 'in count'}`);
   process.exit(1);
 }
+
+// The polyline points of a path of moves and straight lines (absolute M, L, H, V), one list per subpath.
+function polylines(d) {
+  const lines = [];
+  let at = [0, 0];
+  for (const [, c, args] of d.matchAll(/([MLHV])([^MLHVZ]*)/g)) {
+    const n = args.trim().split(/[\s,]+/).filter(Boolean).map(Number);
+    if (c === 'M') { at = [n[0], n[1]]; lines.push([at]); continue; }
+    at = c === 'H' ? [n[0], at[1]] : c === 'V' ? [at[0], n[0]] : [n[0], n[1]];
+    lines.at(-1).push(at);
+  }
+  return lines;
+}
+
+// A stroke of [width] along each polyline as a polygon: each side offset by half the width, butt caps at
+// the ends, miter joins between segments (no limit is reached: the kit's corners are 45° and 90°). Every
+// polygon is turned the same way, so where two overlap the nonzero rule fills both.
+function outline(stroke) {
+  if (stroke.cap !== 'butt' || stroke.join !== 'miter') throw new Error(`only butt caps and miter joins: ${JSON.stringify(stroke)}`);
+  const h = stroke.width / 2;
+  const fmt = (v) => String(Math.round(v * 1000) / 1000);
+  return polylines(stroke.d).map((pts) => {
+    const normals = pts.slice(1).map((p, i) => {
+      const [dx, dy] = [p[0] - pts[i][0], p[1] - pts[i][1]];
+      const len = Math.hypot(dx, dy);
+      return [(-dy / len) * h, (dx / len) * h];
+    });
+    const side = (sign) => pts.map((p, k) => {
+      const a = normals[Math.max(0, k - 1)], b = normals[Math.min(normals.length - 1, k)];
+      // The miter: v·n̂₁ = v·n̂₂ = h.
+      const scale = (h * h) / (h * h + a[0] * b[0] + a[1] * b[1]);
+      return [p[0] + sign * (a[0] + b[0]) * scale, p[1] + sign * (a[1] + b[1]) * scale];
+    });
+    let poly = [...side(1), ...side(-1).reverse()];
+    const area = poly.reduce((s, p, i) => { const q = poly[(i + 1) % poly.length]; return s + p[0] * q[1] - q[0] * p[1]; }, 0);
+    if (area < 0) poly = poly.reverse();
+    return 'M' + poly.map((p) => `${fmt(p[0])} ${fmt(p[1])}`).join('L') + 'Z';
+  }).join('');
+}
+
+const kit = JSON.parse(readFileSync(join(ROOT, 'scripts/kit-icons.json'), 'utf8')).map((icon) =>
+  ({ ...icon, kit: true, d: icon.d ?? outline(icon.stroke) }));
+const icons = [...design, ...kit];
 
 // A stencil draws moves, lines and unrotated arcs (PlakatIcon.kt's stencilPath); refuse anything else
 // here, where a new icon enters, rather than at its first draw.
@@ -58,15 +104,16 @@ package io.github.youndie.plakat.icons
 
 /**
  * The sixteen stencil icons (\`plakat/icon\`): a fill, never an outline, one path each on a 24 dp grid.
- * Draw one with [PlakatIcon], which takes its colour from the parent.
+ * Draw one with [PlakatIcon], which takes its colour from the parent. After them, the kit's own stencils
+ * (B-77), which the design does not draw.
  */
 public object PlakatIcons {
-${icons.map((icon) => `    /** ${icon.ru} (${icon.group}). */\n${entry(icon)}`).join('\n\n')}
+${icons.map((icon) => `    /** ${icon.ru} (${icon.kit ? "the kit's own, B-77" : icon.group}). */\n${entry(icon)}`).join('\n\n')}
 
-    /** Every icon, in the design's order. */
+    /** Every icon of the design, in its order; not the kit's own. */
     public val All: List<PlakatStencil> =
         listOf(
-${icons.map((icon) => `            ${property(icon)},`).join('\n')}
+${design.map((icon) => `            ${property(icon)},`).join('\n')}
         )
 }
 `;
@@ -113,8 +160,8 @@ if (process.argv.includes('--check')) {
     console.error(`${stale.map(([f]) => f.split('/').pop()).join(', ')} differ from what plakat-icons.json makes; run node scripts/icons.mjs`);
     process.exit(1);
   }
-  console.log(`${icons.length} icons and their fixtures are up to date`);
+  console.log(`${design.length} icons, ${kit.length} of the kit's own and their fixtures are up to date`);
 } else {
   for (const [file, text] of outputs) writeFileSync(file, text);
-  console.log(`${icons.length} icons and ${icons.length * SIZES.length} fixtures written`);
+  console.log(`${design.length} icons, ${kit.length} of the kit's own and ${icons.length * SIZES.length} fixtures written`);
 }

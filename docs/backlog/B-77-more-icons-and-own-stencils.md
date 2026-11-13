@@ -1,7 +1,7 @@
 ---
 id: B-77
 title: "Icons: More and Opens elsewhere, and stencils a consumer can make"
-status: open
+status: done
 priority: P2
 size: S
 stage: stage-4-product
@@ -31,3 +31,29 @@ a `Canvas` and loses `PlakatIcon`'s sizing, tint and pressed state.
   is within a pixel of the stroke it came from; the icons page of the sample shows both, marked as the kit's own; the ABI
   dump changes by the constructor and the two values; #21 is closed by the pull request.
 - Anchors: `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/icons/PlakatIcon.kt`, `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/icons/PlakatIcons.kt`, `scripts/icons.mjs`
+
+## Findings (2026-11-13)
+
+- **Built.** `PlakatStencil`'s constructor is public, its KDoc stating the contract: a fill on the 24-unit grid, nonzero,
+  holes counter-clockwise, of moves, lines and unrotated arcs, anything else refused when first drawn.
+  `PlakatIcons.More` and `PlakatIcons.OpensElsewhere` follow the design's sixteen; `PlakatIcons.All` stays the design's
+  sixteen, so no list was added and the ABI changes by the constructor and the two values only.
+- **Where the kit's own live.** `scripts/kit-icons.json`, beside the script that reads it; the vendored
+  `plakat-icons.json` is untouched. Each entry is a path, or a stroke the script outlines. Its fixtures are generated
+  with the design's (`Icon/More_*`, `Icon/OpensElsewhere_*` at 48, 24, 16, ink on concrete), with no reference, as the
+  design draws neither.
+- **Every number designed here (D13):**
+  | Stencil | Path | Source |
+  |---|---|---|
+  | More | `M10 3H14V7H10Z`, `M10 10H14V14H10Z`, `M10 17H14V21H10Z` | pyatiletka's board canvas (`MoreGlyph`: squares of 4 at x 10, y 3, 10, 17) |
+  | OpensElsewhere | the stroke `M13 4H20V11M20 4L10 14M17 15V20H4V7H9`, 3 wide, butt caps, miter joins, outlined | the issue's comment, from the repository card's canvas |
+- **The outline.** `scripts/icons.mjs` offsets each polyline by half the width on both sides, butt caps at the ends,
+  miter joins between (the arrow's corners are 45° and 90°, under any miter limit), and turns every polygon the same way
+  so the nonzero rule fills where the head meets the shaft. The result agrees with the outline worked by hand. At 48 dp
+  every filled pixel is within a pixel of the stroke drawn by Skia with the same caps and joins, and the other way round,
+  and the two cover within 5 % of each other (`PlakatKitIconsTest`).
+- **The sample's kit** has a group «Icons: the kit's own» with both in icon buttons and More on a FAB.
+- **Mutants**, each through the generator: the miter not extended and the stroke half a unit thinner (the outline
+  test), a square of More moved (`more is three squares…`). Dropping the line that turns every polygon one way changes
+  nothing for this arrow — its three polygons already come out turned alike — so that line guards a later stroke, not
+  this one.

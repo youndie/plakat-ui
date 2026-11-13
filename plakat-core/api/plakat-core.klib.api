@@ -271,6 +271,8 @@ final class io.github.youndie.plakat.components/PlakatWindowPanel { // io.github
 }
 
 final class io.github.youndie.plakat.icons/PlakatStencil { // io.github.youndie.plakat.icons/PlakatStencil|null[0]
+    constructor <init>(kotlin/String, kotlin/String) // io.github.youndie.plakat.icons/PlakatStencil.<init>|<init>(kotlin.String;kotlin.String){}[0]
+
     final val name // io.github.youndie.plakat.icons/PlakatStencil.name|{}name[0]
         final fun <get-name>(): kotlin/String // io.github.youndie.plakat.icons/PlakatStencil.name.<get-name>|<get-name>(){}[0]
     final val pathData // io.github.youndie.plakat.icons/PlakatStencil.pathData|{}pathData[0]
@@ -655,6 +657,10 @@ final object io.github.youndie.plakat.icons/PlakatIcons { // io.github.youndie.p
         final fun <get-Info>(): io.github.youndie.plakat.icons/PlakatStencil // io.github.youndie.plakat.icons/PlakatIcons.Info.<get-Info>|<get-Info>(){}[0]
     final val Menu // io.github.youndie.plakat.icons/PlakatIcons.Menu|{}Menu[0]
         final fun <get-Menu>(): io.github.youndie.plakat.icons/PlakatStencil // io.github.youndie.plakat.icons/PlakatIcons.Menu.<get-Menu>|<get-Menu>(){}[0]
+    final val More // io.github.youndie.plakat.icons/PlakatIcons.More|{}More[0]
+        final fun <get-More>(): io.github.youndie.plakat.icons/PlakatStencil // io.github.youndie.plakat.icons/PlakatIcons.More.<get-More>|<get-More>(){}[0]
+    final val OpensElsewhere // io.github.youndie.plakat.icons/PlakatIcons.OpensElsewhere|{}OpensElsewhere[0]
+        final fun <get-OpensElsewhere>(): io.github.youndie.plakat.icons/PlakatStencil // io.github.youndie.plakat.icons/PlakatIcons.OpensElsewhere.<get-OpensElsewhere>|<get-OpensElsewhere>(){}[0]
     final val Refresh // io.github.youndie.plakat.icons/PlakatIcons.Refresh|{}Refresh[0]
         final fun <get-Refresh>(): io.github.youndie.plakat.icons/PlakatStencil // io.github.youndie.plakat.icons/PlakatIcons.Refresh.<get-Refresh>|<get-Refresh>(){}[0]
     final val Search // io.github.youndie.plakat.icons/PlakatIcons.Search|{}Search[0]
