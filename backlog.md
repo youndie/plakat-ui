@@ -59,7 +59,7 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-77](docs/backlog/B-77-more-icons-and-own-stencils.md) `[ ]` | Icons: More and Opens elsewhere, and stencils a consumer can make | P2 | S | - |
+| [B-77](docs/backlog/B-77-more-icons-and-own-stencils.md) `[~]` | Icons: More and Opens elsewhere, and stencils a consumer can make | P2 | S | - |
 | [B-79](docs/backlog/B-79-dialog-content-slot.md) `[ ]` | PlakatDialog: a content slot between the text and the actions | P2 | S | - |
 | [B-80](docs/backlog/B-80-public-scrim.md) `[ ]` | The dot screen under the kit's overlays, public for a consumer's own | P2 | S | - |
 | [B-81](docs/backlog/B-81-banner.md) `[ ]` | PlakatBanner: a warning that stays in the screen until its condition passes | P2 | S | B-75 |
