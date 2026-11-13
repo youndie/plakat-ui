@@ -431,12 +431,18 @@ private class BringIntoViewNode(
     }
 }
 
-/** The screen over the background: a click on it asks to dismiss, and nothing under it is reached. */
+/**
+ * The screen over the background: a click on it asks to dismiss, and nothing under it is reached. The kit's overlays
+ * draw it on their own clock and give it no semantics, their sheet carrying the dismiss; [PlakatScrim] draws it on its
+ * own and, with [dismiss], gives it the action (B-80).
+ */
 @Composable
 internal fun BoxScope.PlakatDotScreen(
     colors: PlakatColors,
     reduce: Boolean,
     open: () -> Float,
+    modifier: Modifier = Modifier,
+    dismiss: (() -> Unit)? = null,
     onClick: () -> Unit,
 ) {
     val density = LocalDensity.current
@@ -444,10 +450,16 @@ internal fun BoxScope.PlakatDotScreen(
     val tile = remember(ink, density) { screenTile(ink, density) }
     val brush = remember(tile) { ShaderBrush(ImageShader(tile, TileMode.Repeated, TileMode.Repeated)) }
     Box(
-        Modifier
+        modifier
             .matchParentSize()
-            .clearAndSetSemantics {}
-            .then(
+            .clearAndSetSemantics {
+                if (dismiss != null) {
+                    dismiss {
+                        dismiss()
+                        true
+                    }
+                }
+            }.then(
                 if (reduce) {
                     Modifier.graphicsLayer { alpha = open() }
                 } else {
