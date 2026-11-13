@@ -344,6 +344,8 @@ private fun DialogBody(
     val source = remember { MutableInteractionSource() }
     val line = with(LocalDensity.current) { style.fontSize.toPx() * BODY_LINE }
     var high by remember { mutableIntStateOf(0) }
+    // Under the text, the content starts where the text's own padding ends; alone, it is padded as the text would be.
+    val contentTop = if (text == null) PartY else 0.dp
     Box(
         modifier
             .plakatFocusFrame(source, colors.ink)
@@ -389,14 +391,7 @@ private fun DialogBody(
                     Modifier.padding(
                         start = PartX,
                         end = PartX,
-                        top =
-                            if (text ==
-                                null
-                            ) {
-                                PartY
-                            } else {
-                                0.dp
-                            },
+                        top = contentTop,
                         bottom = PartY,
                     ),
                     content = content,
