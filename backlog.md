@@ -55,9 +55,17 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 
 <!-- BEGIN INDEX -->
 
-## Open (0)
+## Open (7)
 
-No open tasks.
+| Task | | Priority | Size | Blocked by |
+|---|---|---|---|---|
+| [B-78](docs/backlog/B-78-public-css-text.md) `[ ]` | A consumer's text in the kit's styles sits where Blink puts it | P1 | M | - |
+| [B-75](docs/backlog/B-75-status-mark.md) `[ ]` | PlakatStatus: a word with its sign, for the semantic kinds | P2 | S | - |
+| [B-76](docs/backlog/B-76-table.md) `[ ]` | PlakatTable: rows of fixed columns under a header | P2 | M | - |
+| [B-77](docs/backlog/B-77-more-icons-and-own-stencils.md) `[ ]` | Icons: More and Opens elsewhere, and stencils a consumer can make | P2 | S | - |
+| [B-79](docs/backlog/B-79-dialog-content-slot.md) `[ ]` | PlakatDialog: a content slot between the text and the actions | P2 | S | - |
+| [B-80](docs/backlog/B-80-public-scrim.md) `[ ]` | The dot screen under the kit's overlays, public for a consumer's own | P2 | S | - |
+| [B-81](docs/backlog/B-81-banner.md) `[ ]` | PlakatBanner: a warning that stays in the screen until its condition passes | P2 | S | B-75 |
 
 ## Closed (74)
 
