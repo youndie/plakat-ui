@@ -166,6 +166,7 @@ over the pixels either image inks).
 | Pinning `FontRasterizationSettings` (subpixel positioning on, hinting off — oldge-ui's `PortableTextStyle`) changes no pixel of a viddik 0.7.0 fixture | the caption rendered both ways, byte-identical |
 | macOS text smoothing thickens Chrome's stems, light-on-dark most (the dark caption 10.21 % with it, 6.99 % without); Skia draws the outline on every platform Compose runs on, so references are taken with `-webkit-font-smoothing: antialiased` | the renderer, both ways |
 | The pages are drawn by their runtime from unpkg (React 18.3.1, Babel 7.29.0) with Google Fonts answered by the repository's files; every cell the references use falls on whole pixels once the page is pushed down by the fraction its 14.4 px text lines leave; two renders are byte-identical | `scripts/design-references.mjs` |
+| The type scale set by `PlakatParagraph` (B-78), each role against the Tokens page's specimen: 0.58 % (displayL) to 6.96 % (bodyM), all within the text floor; `BasicText` in a display role lands lower (displayM 8 rows in one scene) | `plakat-core/src/desktopTest/kotlin/io/github/youndie/plakat/components/PlakatParagraphTest.kt`, the parity report |
 | Mutants on the scale: the hair rule 1 px thicker 0.00 → 5.88 %; the caption in 600 7.05 → 11.99 %; the caption a pixel low 7.05 → 11.16 % | the parity report under each mutant |
 
 **Consequence 11.** A component is read against two floors: its shapes against 0.00 % (any

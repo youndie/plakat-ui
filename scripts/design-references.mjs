@@ -72,6 +72,14 @@ export const REFERENCES = [
   ...cells('Divider', MVP, 'above', [['Hair', 'Divider / Hair 1'], ['Rule', 'Divider / Rule 3'], ['Bar', 'Divider / Bar 8 — раздел']]),
   // The text floor: one 12 px Golos caption alone.
   ...cells('TextFloor', MVP, 'caption', [['Caption', 'Divider / Hair 1']]),
+  // The type scale (B-78): each role's specimen on the Tokens page, the element after its caption, set as
+  // `PlakatParagraph` sets it. The page leaves label and button on a `normal` line, so their specimens are
+  // given the role's line height from the tokens (1.2, 1) before the shot; the page draws no body/l. Lines of
+  // a fractional height (56 × 0.95) are floored, as the fixture's whole-pixel block is.
+  ...[
+    ['DisplayL', 'display/l56'], ['DisplayM', 'display/m48'], ['Headline', 'headline32'], ['Title', 'title20'],
+    ['BodyM', 'body/m16'], ['BodyS', 'body/s14'], ['Label', 'label12', 'line-height:1.2'], ['Button', 'button14', 'line-height:1'],
+  ].map(([name, caption, css]) => ({ group: 'Type', name: `${name}_Light`, page: TOKENS, caption, prefix: true, card: 0, part: 'next', floor: true, css })),
   // The print primitives (B-10): the cut alone (the left 40 px of a filled plate, no text), the danger
   // hatch alone (the right of the Tokens page's danger swatch, past its word), registration («ЛИСТ»).
   ...cells('Cut', CORE, 'first', [['Plate', 'Filled / Default']]).map((r) => ({ ...r, crop: { x: 0, y: 0, w: 40, h: 48 } })),
@@ -297,6 +305,7 @@ const LOCATE = `(ref) => {
   const captions = [...document.querySelectorAll('div')].filter(d => matches(d) && ![...d.querySelectorAll('div')].some(matches));
   const caption = captions[ref.card];
   if (!caption) return { error: 'caption ' + JSON.stringify(ref.caption) + ' #' + ref.card + ' not found (' + captions.length + ' on the page)' };
+  if (ref.css && !caption.nextElementSibling.style.cssText.includes(ref.css)) caption.nextElementSibling.style.cssText += ';' + ref.css;
   const cell = caption.parentElement, c = cell.getBoundingClientRect(), t = caption.getBoundingClientRect();
   window.plakatCell = cell;
   const r = ref.part === 'panel' ? cell.nextElementSibling.getBoundingClientRect() : ref.part === 'cell' ? c : ref.part === 'caption' ? t : ref.part === 'next' ? caption.nextElementSibling.getBoundingClientRect() : ref.part === 'prev' ? caption.previousElementSibling.getBoundingClientRect() : ref.part === 'first' ? cell.firstElementChild.getBoundingClientRect()

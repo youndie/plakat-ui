@@ -153,6 +153,10 @@ public final class io/github/youndie/plakat/components/PlakatNavigationItem {
 	public final fun getLabel ()Ljava/lang/String;
 }
 
+public final class io/github/youndie/plakat/components/PlakatParagraphKt {
+	public static final fun PlakatParagraph-uk7xEsk (Ljava/lang/String;Lio/github/youndie/plakat/theme/PlakatText;Landroidx/compose/ui/Modifier;JIILandroidx/compose/runtime/Composer;II)V
+}
+
 public final class io/github/youndie/plakat/components/PlakatPictogram : java/lang/Enum {
 	public static final field Circle Lio/github/youndie/plakat/components/PlakatPictogram;
 	public static final field Square Lio/github/youndie/plakat/components/PlakatPictogram;
