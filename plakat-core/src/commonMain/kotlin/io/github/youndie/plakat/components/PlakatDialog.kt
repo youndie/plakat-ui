@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -41,6 +42,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
@@ -59,8 +61,12 @@ import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.node.ModifierNodeElement
+import androidx.compose.ui.node.requireLayoutCoordinates
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.relocation.BringIntoViewModifierNode
 import androidx.compose.ui.semantics.ScrollAxisRange
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.dialog
@@ -74,6 +80,7 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.toSize
 import androidx.navigationevent.NavigationEventInfo
 import androidx.navigationevent.compose.NavigationBackHandler
 import androidx.navigationevent.compose.rememberNavigationEventState
@@ -152,6 +159,11 @@ private val DarkScreen = Color(0xFF0E0D0B)
  * both fade, 100 ms. A click on the screen, Escape or the system back gesture calls [onDismissRequest]; the sheet takes
  * its own clicks, and focus stays in the dialog while it is open. On closing, focus goes to [returnFocusTo], a requester on
  * whatever opened it, or with none is left to the window.
+ *
+ * [content], when given, stands between the text and the actions, padded at its sides as the text is (B-79): a choice
+ * the dialog asks for, such as groups of radio rows. It scrolls together with the text where the two are taller than the
+ * sheet leaves them, the title and the actions staying in place. Focus then enters at its first control, and a control
+ * the keyboard reaches below the fold is scrolled into view.
  */
 @Composable
 public fun PlakatDialog(
@@ -161,9 +173,19 @@ public fun PlakatDialog(
     modifier: Modifier = Modifier,
     text: String? = null,
     returnFocusTo: FocusRequester? = null,
+    content: (@Composable ColumnScope.() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit,
 ) {
-    PlakatDialogFrame(visible, title, onDismissRequest, modifier, text, actions, returnFocusTo = returnFocusTo)
+    PlakatDialogFrame(
+        visible,
+        title,
+        onDismissRequest,
+        modifier,
+        text,
+        actions,
+        returnFocusTo = returnFocusTo,
+        content = content,
+    )
 }
 
 @Composable
@@ -176,6 +198,7 @@ internal fun PlakatDialogFrame(
     actions: @Composable RowScope.() -> Unit,
     playIn: Boolean = true,
     returnFocusTo: FocusRequester? = null,
+    content: (@Composable ColumnScope.() -> Unit)? = null,
 ) {
     ReturnFocus(visible, returnFocusTo)
     val colors = PlakatTheme.colors
@@ -254,7 +277,7 @@ internal fun PlakatDialogFrame(
                             .cssLine(PlakatFaceMetrics.Display),
                 )
             }
-            if (text != null) DialogText(text, Modifier.weight(1f, fill = false))
+            if (text != null || content != null) DialogBody(text, content, Modifier.weight(1f, fill = false))
             // Actions too long for one line go onto a next, each with its own width, and neither leaves the sheet.
             FlowRow(
                 Modifier
@@ -290,14 +313,18 @@ internal fun ReturnFocus(
 }
 
 /**
- * The text between the title and the actions, which keep their height: longer than what they leave, it scrolls by wheel,
- * finger and keys, and only then is it a stop for the keyboard. No bar and no fade, which the design draws neither of,
- * and no stretch, as it has no overshoot. It clips only when it overflows, and so is not a `verticalScroll`: a clip moves
- * the edges of the letters off the reference's (B-62), and a text that fits needs none.
+ * The text and the content between the title and the actions, which keep their height: longer than what they leave, the
+ * two scroll by wheel, finger and keys. No bar and no fade, which the design draws neither of, and no stretch, as it has no
+ * overshoot. It clips only when it overflows, and so is not a `verticalScroll`: a clip moves the edges of the letters off
+ * the reference's (B-62), and a text that fits needs none.
+ *
+ * Text alone that overflows is a stop for the keyboard, so the arrows can move it. With [content], its controls are the
+ * stops (B-79), and the one the keyboard reaches is brought inside the visible part.
  */
 @Composable
-private fun DialogText(
-    text: String,
+private fun DialogBody(
+    text: String?,
+    content: (@Composable ColumnScope.() -> Unit)?,
     modifier: Modifier,
 ) {
     val colors = PlakatTheme.colors
@@ -316,6 +343,7 @@ private fun DialogText(
     val scope = rememberCoroutineScope()
     val source = remember { MutableInteractionSource() }
     val line = with(LocalDensity.current) { style.fontSize.toPx() * BODY_LINE }
+    var high by remember { mutableIntStateOf(0) }
     Box(
         modifier
             .plakatFocusFrame(source, colors.ink)
@@ -334,13 +362,77 @@ private fun DialogText(
                 if (most > 0) clipRect { this@drawWithContent.drawContent() } else drawContent()
             }.layout { measurable, constraints ->
                 val placeable = measurable.measure(constraints.copy(maxHeight = Constraints.Infinity))
-                val high = placeable.height.coerceAtMost(constraints.maxHeight)
+                high = placeable.height.coerceAtMost(constraints.maxHeight)
                 most = placeable.height - high
                 offset = offset.coerceIn(0f, most.toFloat())
                 layout(placeable.width, high) { placeable.place(0, -offset.roundToInt()) }
-            }.focusable(most > 0, source),
+            }.focusable(most > 0 && content == null, source),
     ) {
-        CssParagraph(text, style, BODY_LINE, colors.ink, Modifier.padding(horizontal = PartX, vertical = PartY))
+        Column(
+            Modifier.then(
+                BringIntoView { top, bottom ->
+                    // The control the keyboard reached, kept inside the visible part: `scrollable` brings nothing into view.
+                    offset =
+                        when {
+                            top < offset -> top
+                            bottom > offset + high -> bottom - high
+                            else -> offset
+                        }.coerceIn(0f, most.toFloat())
+                },
+            ),
+        ) {
+            if (text != null) {
+                CssParagraph(text, style, BODY_LINE, colors.ink, Modifier.padding(horizontal = PartX, vertical = PartY))
+            }
+            if (content != null) {
+                Column(
+                    Modifier.padding(
+                        start = PartX,
+                        end = PartX,
+                        top =
+                            if (text ==
+                                null
+                            ) {
+                                PartY
+                            } else {
+                                0.dp
+                            },
+                        bottom = PartY,
+                    ),
+                    content = content,
+                )
+            }
+        }
+    }
+}
+
+/**
+ * Answers a child's request to be seen (a control taking focus asks for it) with the top and bottom of what it asks to
+ * show, in the coordinates of the node this modifier stands on.
+ */
+private data class BringIntoView(
+    val show: (top: Float, bottom: Float) -> Unit,
+) : ModifierNodeElement<BringIntoViewNode>() {
+    override fun create() = BringIntoViewNode(show)
+
+    override fun update(node: BringIntoViewNode) {
+        node.show = show
+    }
+}
+
+private class BringIntoViewNode(
+    var show: (top: Float, bottom: Float) -> Unit,
+) : Modifier.Node(),
+    BringIntoViewModifierNode {
+    override suspend fun bringIntoView(
+        childCoordinates: LayoutCoordinates,
+        boundsProvider: () -> Rect?,
+    ) {
+        val self = requireLayoutCoordinates()
+        if (!childCoordinates.isAttached) return
+        val rect = boundsProvider() ?: Rect(Offset.Zero, childCoordinates.size.toSize())
+        val top = self.localPositionOf(childCoordinates, rect.topLeft).y
+        show(top, top + rect.height)
     }
 }
 
