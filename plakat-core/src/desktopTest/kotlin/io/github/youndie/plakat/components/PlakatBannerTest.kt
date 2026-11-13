@@ -108,8 +108,9 @@ class PlakatBannerTest {
                         Box(Modifier.width(390.dp)) {
                             PlakatBanner(
                                 PlakatStatusKind.Warning,
-                                "The board was built from a snapshot taken before the last three merges, so the numbers " +
-                                    "below are older than the repository and will catch up once the connection returns",
+                                "The board was built from a snapshot taken before the last three merges, " +
+                                    "so the numbers below are older than the repository " +
+                                    "and will catch up once the connection returns",
                                 Modifier.testTag("b"),
                                 action = "Retry",
                             )
