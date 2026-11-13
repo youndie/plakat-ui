@@ -1,7 +1,7 @@
 ---
 id: B-76
 title: "PlakatTable: rows of fixed columns under a header"
-status: open
+status: wip
 priority: P2
 size: M
 stage: stage-4-product
