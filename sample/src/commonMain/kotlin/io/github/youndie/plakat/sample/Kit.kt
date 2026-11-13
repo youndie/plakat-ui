@@ -89,6 +89,8 @@ import io.github.youndie.plakat.components.PlakatScreenWipe
 import io.github.youndie.plakat.components.PlakatSegmentedButton
 import io.github.youndie.plakat.components.PlakatSlider
 import io.github.youndie.plakat.components.PlakatSnackbar
+import io.github.youndie.plakat.components.PlakatStatus
+import io.github.youndie.plakat.components.PlakatStatusKind
 import io.github.youndie.plakat.components.PlakatStretch
 import io.github.youndie.plakat.components.PlakatSwitch
 import io.github.youndie.plakat.components.PlakatTab
@@ -242,6 +244,15 @@ fun KitComponents(beat: Int) {
                 }
                 PlakatBadgedBox(beat) { PlakatIconButton(PlakatIcons.Share, "Share", {}) }
                 PlakatBadge(null)
+            }
+        }
+        KitGroup("Status") {
+            Wrap {
+                PlakatStatus(PlakatStatusKind.Primary, "Open")
+                PlakatStatus(PlakatStatusKind.Danger, "Failing")
+                PlakatStatus(PlakatStatusKind.Success, "Merged")
+                PlakatStatus(PlakatStatusKind.Warning, "Stale")
+                PlakatStatus(PlakatStatusKind.Info, "Draft")
             }
         }
         KitGroup("Progress") {
