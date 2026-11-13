@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.platform.testTag
@@ -40,6 +41,16 @@ import kotlin.test.assertTrue
 @OptIn(ExperimentalTestApi::class)
 class PlakatKeyboardFocusTest {
     private val papers = listOf(PlakatPalettes.Paper, PlakatPalettes.BlackPaper)
+
+    /** The darker of the paper's two inks: a warning banner's words on either paper. */
+    private fun darker(colors: PlakatColors) =
+        if (colors.ink.luminance() <
+            colors.paper.luminance()
+        ) {
+            colors.ink
+        } else {
+            colors.paper
+        }
 
     private fun near(
         a: Color,
@@ -118,6 +129,12 @@ class PlakatKeyboardFocusTest {
             PlakatTable(listOf(PlakatColumn("Item")), Modifier.width(240.dp)) {
                 row(onClick = {}) { cell("Ploughing") }
             }
+        }
+
+    @Test
+    fun `a banner's action shows the frame`() =
+        check("a banner's action", { onNodeWithText("RETRY") }, ::darker) {
+            PlakatBanner(PlakatStatusKind.Warning, "No connection", Modifier.width(390.dp), action = "Retry")
         }
 
     @Test

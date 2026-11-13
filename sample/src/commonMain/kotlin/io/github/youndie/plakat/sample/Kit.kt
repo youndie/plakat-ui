@@ -53,6 +53,7 @@ import io.github.youndie.plakat.agit.PlakatSkeleton
 import io.github.youndie.plakat.agit.plakatHalftone
 import io.github.youndie.plakat.components.PlakatBadge
 import io.github.youndie.plakat.components.PlakatBadgedBox
+import io.github.youndie.plakat.components.PlakatBanner
 import io.github.youndie.plakat.components.PlakatBottomSheet
 import io.github.youndie.plakat.components.PlakatButton
 import io.github.youndie.plakat.components.PlakatCard
@@ -256,6 +257,17 @@ fun KitComponents(beat: Int) {
                 }
                 PlakatBadgedBox(beat) { PlakatIconButton(PlakatIcons.Share, "Share", {}) }
                 PlakatBadge(null)
+            }
+        }
+        KitGroup("Banner") {
+            Column(Modifier.width(Width), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                PlakatBanner(
+                    PlakatStatusKind.Warning,
+                    "Snapshot of 11 November, 21:17: no connection",
+                    action = "Retry",
+                )
+                PlakatBanner(PlakatStatusKind.Danger, "Two checks failed on main")
+                PlakatBanner(PlakatStatusKind.Info, "A new version is published")
             }
         }
         KitGroup("Status") {

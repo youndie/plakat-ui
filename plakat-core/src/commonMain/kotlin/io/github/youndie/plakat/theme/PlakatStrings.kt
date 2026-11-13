@@ -14,4 +14,8 @@ public class PlakatStrings(
     public val refresh: String = "Refresh",
     public val loading: String = "Loading",
     public val error: String = "Error",
+    /** A warning banner's word, the Tokens page's «ВНИМАНИЕ» (B-81). */
+    public val warning: String = "Warning",
+    /** An info banner's word, the Tokens page's «ИНФО» (B-81). */
+    public val info: String = "Info",
 )

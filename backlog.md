@@ -55,13 +55,11 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 
 <!-- BEGIN INDEX -->
 
-## Open (1)
+## Open (0)
 
-| Task | | Priority | Size | Blocked by |
-|---|---|---|---|---|
-| [B-81](docs/backlog/B-81-banner.md) `[ ]` | PlakatBanner: a warning that stays in the screen until its condition passes | P2 | S | B-75 |
+No open tasks.
 
-## Closed (80)
+## Closed (81)
 
 **Goldens and references regenerate deterministically; the generator and raskat ports match them on every target; the floor and the frame cost have measured numbers**
 
@@ -155,6 +153,7 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 - [B-78](docs/backlog/B-78-public-css-text.md) `[x]` - A consumer's text in the kit's styles sits where Blink puts it
 - [B-79](docs/backlog/B-79-dialog-content-slot.md) `[x]` - PlakatDialog: a content slot between the text and the actions
 - [B-80](docs/backlog/B-80-public-scrim.md) `[x]` - The dot screen under the kit's overlays, public for a consumer's own
+- [B-81](docs/backlog/B-81-banner.md) `[x]` - PlakatBanner: a warning that stays in the screen until its condition passes
 
 **stage-3-demo**
 
