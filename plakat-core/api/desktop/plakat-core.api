@@ -395,6 +395,21 @@ public final class io/github/youndie/plakat/components/PlakatSnackbarKt {
 	public static final fun PlakatSnackbar (Ljava/lang/String;Landroidx/compose/ui/Modifier;ZLjava/lang/String;Lkotlin/jvm/functions/Function0;ZLkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class io/github/youndie/plakat/components/PlakatStatusKind : java/lang/Enum {
+	public static final field Danger Lio/github/youndie/plakat/components/PlakatStatusKind;
+	public static final field Info Lio/github/youndie/plakat/components/PlakatStatusKind;
+	public static final field Primary Lio/github/youndie/plakat/components/PlakatStatusKind;
+	public static final field Success Lio/github/youndie/plakat/components/PlakatStatusKind;
+	public static final field Warning Lio/github/youndie/plakat/components/PlakatStatusKind;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lio/github/youndie/plakat/components/PlakatStatusKind;
+	public static fun values ()[Lio/github/youndie/plakat/components/PlakatStatusKind;
+}
+
+public final class io/github/youndie/plakat/components/PlakatStatusKt {
+	public static final fun PlakatStatus (Lio/github/youndie/plakat/components/PlakatStatusKind;Ljava/lang/String;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
 public final class io/github/youndie/plakat/components/PlakatStretchKt {
 	public static final fun PlakatStretch-FNF3uiM (Ljava/lang/String;Landroidx/compose/ui/Modifier;JLandroidx/compose/runtime/Composer;II)V
 	public static final fun plakatStretchFactor-VpY3zN4 (Ljava/lang/String;FF)F
