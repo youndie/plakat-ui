@@ -223,9 +223,8 @@ private fun TableRowLine(
                         cell.content()
                     }
 
-                    null -> {
-                        Unit
-                    }
+                    // A row with fewer cells than columns leaves the rest empty.
+                    null -> {}
                 }
             }
             if (divider) Spacer(Modifier.fillMaxWidth().height(PlakatLines.Hair).background(colors.concrete))
