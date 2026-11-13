@@ -84,6 +84,14 @@ private val Subjects: List<Pair<String, @Composable () -> Unit>> =
             PlakatListItem("Row", supporting = "Support", trailing = { PlakatSwitch(true, {}) }, onClick = {})
         },
         "Divider" to { PlakatDivider() },
+        "Table" to {
+            PlakatTable(listOf(PlakatColumn("#", 32.dp, numeric = true), PlakatColumn("ITEM"))) {
+                row(onClick = {}) {
+                    cell("12")
+                    cell("Ploughing")
+                }
+            }
+        },
         "Menu" to {
             Box {
                 BasicText("A")
