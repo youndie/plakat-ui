@@ -1,7 +1,7 @@
 ---
 id: B-75
 title: "PlakatStatus: a word with its sign, for the semantic kinds"
-status: wip
+status: done
 priority: P2
 size: S
 stage: stage-4-product
@@ -30,3 +30,33 @@ and an item's status draws its own hatch, wedge and plate from the kit's colours
   without colour (a grayscale test, as B-36 has); a reader hears the word; the sample's kit shows all five; goldens
   recorded and looked at; a mutant per kind's sign is caught; #19 is closed by the pull request.
 - Anchors: `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatBadge.kt`, `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/print/PlakatHatch.kt`, `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatTick.kt`, `sample/src/commonMain/kotlin/io/github/youndie/plakat/sample/Kit.kt`
+
+## Findings (2026-11-13)
+
+- **The item named the wrong primitive.** `PlakatTick` is the number's tick (B-30), not a wedge; the kit had no
+  wedge-check. The Tokens page draws it: the success swatch's 20 × 20 ink square cut by
+  `clip-path: polygon(0 55%, 30% 55%, 40% 75%, 100% 0, 100% 30%, 40% 100%)`, which the sign takes as it is.
+- **Built.** `PlakatStatus(kind: PlakatStatusKind, word, modifier)` in `components/PlakatStatus.kt`; `PlakatStatusKind`
+  has the five kinds, for B-81 to share. The word is set by `PlakatParagraph` (B-78) in `label`, upper-cased by the role.
+- **Every number designed here (D13):**
+  | What | Value | Why |
+  |---|---|---|
+  | sign | 20 × 20 dp | the Tokens page's wedge, and `PlakatBadge`'s height |
+  | status height | 20 dp at the least | as tall as a badge; taller only when a large font's word needs it |
+  | sign to word | 8 dp, `PlakatGrid.Step` | one step of the grid |
+  | primary | red fill | `plakat/semantic/primary`: «заливка» |
+  | danger | 45° hatch, red and paper, 6 dp period (3 and 3) | `plakat/semantic/danger` and the Tokens page's `repeating-linear-gradient(45deg, red 0 3px, paper 3px 6px)`, through `plakatHatchBrush` |
+  | success | the ink wedge-check | `plakat/semantic/success`: «клин-галочка» |
+  | warning | ocher fill | `plakat/semantic/warning` |
+  | info | slate fill | `plakat/semantic/info` |
+  | word | `label`, the content colour in place, else ink | a status is a word in a line |
+- **What the forms do not settle.** Primary, warning and info are each a fill, as the tokens' plates are, so without
+  colour they are told apart by the word, which is the caller's. Danger against primary — both red — differs by its
+  hatch: in grey the primary sign is one level and danger's stripes span more than 60 of 255 (`PlakatStatusTest`).
+- **A reader** hears the caller's word only (the row's semantics are cleared and set to it); the sign is drawn.
+- **Goldens** `Status/Kinds_Light`, `Status/Kinds_Dark`: the five beside a board's words, looked at. The sample's kit
+  has a «Status» group with all five.
+- **Mutants**, one per kind's sign, each caught: primary drawn ocher, warning slate, info ocher (`a fill fills…`),
+  danger a plain red fill (`danger is the hatch…`, `danger is told from primary…`), success a full ink square
+  (`success is the ink wedge-check…`).
+- **ABI**: `PlakatStatus` and `PlakatStatusKind` added.
