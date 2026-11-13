@@ -59,7 +59,7 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-75](docs/backlog/B-75-status-mark.md) `[ ]` | PlakatStatus: a word with its sign, for the semantic kinds | P2 | S | - |
+| [B-75](docs/backlog/B-75-status-mark.md) `[~]` | PlakatStatus: a word with its sign, for the semantic kinds | P2 | S | - |
 | [B-76](docs/backlog/B-76-table.md) `[ ]` | PlakatTable: rows of fixed columns under a header | P2 | M | - |
 | [B-77](docs/backlog/B-77-more-icons-and-own-stencils.md) `[ ]` | Icons: More and Opens elsewhere, and stencils a consumer can make | P2 | S | - |
 | [B-79](docs/backlog/B-79-dialog-content-slot.md) `[ ]` | PlakatDialog: a content slot between the text and the actions | P2 | S | - |

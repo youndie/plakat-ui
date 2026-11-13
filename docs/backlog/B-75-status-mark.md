@@ -1,7 +1,7 @@
 ---
 id: B-75
 title: "PlakatStatus: a word with its sign, for the semantic kinds"
-status: open
+status: wip
 priority: P2
 size: S
 stage: stage-4-product
