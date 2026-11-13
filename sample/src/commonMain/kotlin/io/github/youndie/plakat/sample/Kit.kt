@@ -26,6 +26,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
@@ -58,6 +59,7 @@ import io.github.youndie.plakat.components.PlakatCard
 import io.github.youndie.plakat.components.PlakatCheckbox
 import io.github.youndie.plakat.components.PlakatChip
 import io.github.youndie.plakat.components.PlakatCircularProgress
+import io.github.youndie.plakat.components.PlakatColumn
 import io.github.youndie.plakat.components.PlakatCounter
 import io.github.youndie.plakat.components.PlakatCounterColumn
 import io.github.youndie.plakat.components.PlakatDangerButton
@@ -95,6 +97,7 @@ import io.github.youndie.plakat.components.PlakatStretch
 import io.github.youndie.plakat.components.PlakatSwitch
 import io.github.youndie.plakat.components.PlakatTab
 import io.github.youndie.plakat.components.PlakatTabContent
+import io.github.youndie.plakat.components.PlakatTable
 import io.github.youndie.plakat.components.PlakatTabs
 import io.github.youndie.plakat.components.PlakatTextButton
 import io.github.youndie.plakat.components.PlakatTextField
@@ -253,6 +256,26 @@ fun KitComponents(beat: Int) {
                 PlakatStatus(PlakatStatusKind.Success, "Merged")
                 PlakatStatus(PlakatStatusKind.Warning, "Stale")
                 PlakatStatus(PlakatStatusKind.Info, "Draft")
+            }
+        }
+        KitGroup("Table") {
+            PlakatTable(
+                listOf(
+                    PlakatColumn("#", width = 32.dp, align = Alignment.End, numeric = true),
+                    PlakatColumn("Item"),
+                    PlakatColumn("Done", width = 72.dp),
+                    PlakatColumn("Days", width = 40.dp, align = Alignment.End, numeric = true),
+                ),
+                Modifier.width(Width),
+            ) {
+                for ((i, item) in listOf("Ploughing", "Canal", "Turbine").withIndex()) {
+                    row(onClick = {}) {
+                        cell("${i + 1}")
+                        cell(item)
+                        cell { PlakatLinearProgress(((beat + i) % 5) / 4f) }
+                        cell("${beat * (i + 1) % 30}")
+                    }
+                }
             }
         }
         KitGroup("Progress") {
