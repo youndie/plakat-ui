@@ -198,6 +198,22 @@ class PlakatParagraphTest {
             assertTrue(bounds.width > 600.dp, "one line: ${bounds.width}")
         }
 
+    @Test
+    fun `in a wider box it is as wide as its words, as BasicText is`() =
+        runComposeUiTest {
+            setContent {
+                CompositionLocalProvider(LocalDensity provides Density(1f)) {
+                    PlakatTheme {
+                        Box(Modifier.size(400.dp, 100.dp)) {
+                            PlakatParagraph("ИНФО", PlakatTheme.typography.label, Modifier.testTag("p"))
+                        }
+                    }
+                }
+            }
+            val width = onNodeWithTag("p").getUnclippedBoundsInRoot().width
+            assertTrue(width in 1.dp..80.dp, "a word's width, not the box's: $width")
+        }
+
     private companion object {
         const val FRAMES = 8
         const val FRAME_NANOS = 16_000_000L
