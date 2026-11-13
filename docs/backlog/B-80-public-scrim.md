@@ -1,7 +1,7 @@
 ---
 id: B-80
 title: "The dot screen under the kit's overlays, public for a consumer's own"
-status: open
+status: wip
 priority: P2
 size: S
 stage: stage-4-product
