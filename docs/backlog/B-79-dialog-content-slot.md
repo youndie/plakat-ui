@@ -1,7 +1,7 @@
 ---
 id: B-79
 title: "PlakatDialog: a content slot between the text and the actions"
-status: wip
+status: done
 priority: P2
 size: S
 stage: stage-4-product
@@ -28,3 +28,23 @@ content between them, so the consumer draws its own surface and its own scrim; o
   scrolls and the actions stay reachable; Tab starts at the first radio; `Dialog/*` goldens do not move with no content;
   a golden with content recorded and looked at; the ABI dump changes by the parameter; #23 is closed by the pull request.
 - Anchors: `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatDialog.kt`
+
+## Findings (2026-11-13)
+
+- **Built.** `content: (@Composable ColumnScope.() -> Unit)? = null` on `PlakatDialog`, before the trailing `actions`, so
+  a call with a trailing lambda still means the actions. The body between the title and the actions is now the text and
+  the content together (`DialogBody`), one scroll region as B-62 built it: it clips only when it overflows, so
+  `Dialog/Danger_*` did not move.
+- **Every number designed here (D13):** the content is padded 20 dp at its sides (`PartX`, the text's `0 20px`) and
+  16 dp below (`PartY`), so the actions stand as far under it as under the text; alone, it gets the text's 16 dp above
+  too, and under the text it starts where the text's padding ends.
+- **Focus.** Text alone that overflows stays a stop for the keyboard (B-62, its arrows); with content, the region is not
+  a stop and its controls are, so the first Tab lands on the first radio. `scrollable` brings nothing into view, so the
+  region answers a focused control's `bringIntoView` itself (a `BringIntoViewModifierNode`) and scrolls it inside the
+  visible part; `onFocusedBoundsChanged`, the first try, is deprecated and refused by `-Werror`.
+- **The ABI.** `PlakatDialog`'s signature gains the parameter: source-compatible, a binary break for a library compiled
+  against the old one, which on the `0.1.0.<run>` line is a rebuild.
+- **Goldens** `Dialog/Content_Light`, `Dialog/Content_Dark`: «VIEW» with a skin and a theme, each a group of two radio
+  rows under its label, then DONE, over the stage's concrete rows; looked at.
+- **Mutants**, each caught: the content not drawn (all three tests), the region a stop with content and nothing brought
+  into view (`tall content scrolls…`), no side padding (`the content stands between…`).
