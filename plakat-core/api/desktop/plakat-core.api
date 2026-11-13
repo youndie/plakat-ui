@@ -88,6 +88,17 @@ public final class io/github/youndie/plakat/components/PlakatChipKt {
 	public static final fun PlakatChip (Ljava/lang/String;ZLkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class io/github/youndie/plakat/components/PlakatColumn {
+	public static final field $stable I
+	public synthetic fun <init> (Ljava/lang/String;FFLandroidx/compose/ui/Alignment$Horizontal;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;FFLandroidx/compose/ui/Alignment$Horizontal;ZLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getAlign ()Landroidx/compose/ui/Alignment$Horizontal;
+	public final fun getLabel ()Ljava/lang/String;
+	public final fun getNumeric ()Z
+	public final fun getWeight ()F
+	public final fun getWidth-D9Ej5fM ()F
+}
+
 public final class io/github/youndie/plakat/components/PlakatCounterKt {
 	public static final fun PlakatCounter-VRxQTpk (ILjava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/String;Lio/github/youndie/plakat/components/PlakatPictogram;IZZJLandroidx/compose/runtime/Composer;II)V
 	public static final fun PlakatCounterColumn-ww6aTOc (ILjava/lang/String;Landroidx/compose/ui/Modifier;JLandroidx/compose/runtime/Composer;II)V
@@ -371,6 +382,11 @@ public final class io/github/youndie/plakat/components/PlakatRadioButtonKt {
 	public static final fun PlakatRadioButton (ZLkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLandroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
 }
 
+public abstract interface class io/github/youndie/plakat/components/PlakatRowScope {
+	public abstract fun cell (Ljava/lang/String;)V
+	public abstract fun cell (Lkotlin/jvm/functions/Function2;)V
+}
+
 public final class io/github/youndie/plakat/components/PlakatScreenWipeKt {
 	public static final fun PlakatScreenWipe (Ljava/lang/Object;ILandroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
@@ -425,6 +441,19 @@ public final class io/github/youndie/plakat/components/PlakatTab {
 	public synthetic fun <init> (Ljava/lang/String;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun getEnabled ()Z
 	public final fun getLabel ()Ljava/lang/String;
+}
+
+public final class io/github/youndie/plakat/components/PlakatTableKt {
+	public static final fun PlakatTable (Ljava/util/List;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+}
+
+public abstract interface class io/github/youndie/plakat/components/PlakatTableScope {
+	public abstract fun row (Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun row$default (Lio/github/youndie/plakat/components/PlakatTableScope;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+}
+
+public final class io/github/youndie/plakat/components/PlakatTableScope$DefaultImpls {
+	public static synthetic fun row$default (Lio/github/youndie/plakat/components/PlakatTableScope;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
 }
 
 public final class io/github/youndie/plakat/components/PlakatTabsKt {

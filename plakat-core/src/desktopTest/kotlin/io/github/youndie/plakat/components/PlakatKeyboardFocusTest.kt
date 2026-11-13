@@ -113,6 +113,14 @@ class PlakatKeyboardFocusTest {
         }
 
     @Test
+    fun `a table row shows the frame`() =
+        check("a table row", { onNodeWithText("Ploughing") }, { it.ink }) {
+            PlakatTable(listOf(PlakatColumn("Item")), Modifier.width(240.dp)) {
+                row(onClick = {}) { cell("Ploughing") }
+            }
+        }
+
+    @Test
     fun `a snackbar's action shows the frame`() =
         check("a snackbar's action", { onNodeWithText("UNDO") }, { it.paper }) {
             PlakatSnackbar("Saved", Modifier.width(300.dp), actionLabel = "UNDO")
