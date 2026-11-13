@@ -55,15 +55,14 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 
 <!-- BEGIN INDEX -->
 
-## Open (3)
+## Open (2)
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-79](docs/backlog/B-79-dialog-content-slot.md) `[ ]` | PlakatDialog: a content slot between the text and the actions | P2 | S | - |
 | [B-80](docs/backlog/B-80-public-scrim.md) `[ ]` | The dot screen under the kit's overlays, public for a consumer's own | P2 | S | - |
 | [B-81](docs/backlog/B-81-banner.md) `[ ]` | PlakatBanner: a warning that stays in the screen until its condition passes | P2 | S | B-75 |
 
-## Closed (78)
+## Closed (79)
 
 **Goldens and references regenerate deterministically; the generator and raskat ports match them on every target; the floor and the frame cost have measured numbers**
 
@@ -155,6 +154,7 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 - [B-76](docs/backlog/B-76-table.md) `[x]` - PlakatTable: rows of fixed columns under a header
 - [B-77](docs/backlog/B-77-more-icons-and-own-stencils.md) `[x]` - Icons: More and Opens elsewhere, and stencils a consumer can make
 - [B-78](docs/backlog/B-78-public-css-text.md) `[x]` - A consumer's text in the kit's styles sits where Blink puts it
+- [B-79](docs/backlog/B-79-dialog-content-slot.md) `[x]` - PlakatDialog: a content slot between the text and the actions
 
 **stage-3-demo**
 
