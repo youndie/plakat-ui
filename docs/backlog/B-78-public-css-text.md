@@ -1,7 +1,7 @@
 ---
 id: B-78
 title: "A consumer's text in the kit's styles sits where Blink puts it"
-status: open
+status: wip
 priority: P1
 size: M
 stage: stage-4-product
