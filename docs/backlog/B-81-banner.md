@@ -1,7 +1,7 @@
 ---
 id: B-81
 title: "PlakatBanner: a warning that stays in the screen until its condition passes"
-status: wip
+status: done
 priority: P2
 size: S
 stage: stage-4-product
@@ -32,3 +32,31 @@ Issue [#25](https://github.com/youndie/plakat-ui/issues/25), from pyatiletka. Th
   target with the keyboard's frame; danger is told from warning without colour; the theme's strings carry the kinds'
   words; the sample's kit shows all three; goldens recorded and looked at; #25 is closed by the pull request.
 - Anchors: `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatSnackbar.kt`, `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/theme/PlakatStrings.kt`
+
+## Findings (2026-11-13)
+
+- **Built.** `PlakatBanner(kind: PlakatStatusKind, text, modifier, action: String? = null, onAction: () -> Unit = {})` in
+  `components/PlakatBanner.kt`. A kind that does not warn — primary, success — is refused with an
+  `IllegalArgumentException`, stated in the KDoc: the item names warning, danger and info, and inventing a word and a
+  ground for the others would be inventing two banners nobody asked for.
+- **The words.** `PlakatStrings` gains `warning = "Warning"` and `info = "Info"`; danger uses the existing `error`, as
+  the snackbar's error does. An app localises all three through the theme.
+- **Every number designed here (D13):**
+  | What | Value | Why |
+  |---|---|---|
+  | height | 40 dp at the least; 48 with an action | the issue's canvas; the action's target is 48 (CLAUDE.md) |
+  | sides | 16 dp (`PlakatGrid.Margin`); 8 at the end beside an action | the snackbar's |
+  | word, sentence, action | 8 dp apart (`PlakatGrid.Step`); 8 dp above and below the words | a grid step |
+  | word | the theme's word in `label`, one line | as the Tokens page's swatches print «ВНИМАНИЕ», «ИНФО» |
+  | sentence | `bodyS`, wraps, never cut | a warning is read whole (B-65) |
+  | warning | ocher fill, words in the darker of ink and paper | `plakat/semantic/warning`; ink on both papers, since the dark theme's ink is light |
+  | info | slate fill, words in the lighter of the two | `plakat/semantic/info`: «текст paper», for the same reason |
+  | danger | an ink plate under an 8 dp hatch of red and ink, period 6, words in paper | the snackbar's error plate (B-18); hatch and word, never red alone |
+  | action | its word in `button` over a 3 dp rule, 3 dp gap, 12 dp each side, a 48 × 48 target at the least, at most half the row; pressed, the two inks trade places | the dialog's plain action; the snackbar's half (B-65) |
+- **No motion of its own**: it is in the layout, and the screen it stands in moves.
+- **Goldens** `Banner/Kinds_Light`, `Banner/Kinds_Dark`: warning with the issue's sentence and RETRY, danger, info, and a
+  warning whose sentence wraps to five lines; looked at. The sample's kit has a «Banner» group with the three.
+- **Mutants**, each caught: no hatch on danger (the ground test and `danger is told from warning without colour`), a word
+  not the theme's (the ground test), the action unbounded (`a long action takes at most half…`), every kind accepted
+  (`a kind that does not warn…`), warning's words in the light ink (`a banner's action shows the frame`).
+- **ABI**: `PlakatBanner` and the two words of `PlakatStrings` (its constructor gains two defaulted parameters).
