@@ -76,7 +76,7 @@ internal fun DrawScope.drawOnBaseline(
 
 /**
  * [text] broken to [width] as one paragraph, then each line drawn in its own CSS line box of [lineHeight] × the size. Past
- * [maxLines] it stops, with an ellipsis on the last line it draws.
+ * [maxLines] it stops, with an ellipsis on the last line it draws unless [ellipsis] is false.
  */
 internal fun DrawScope.drawParagraph(
     measurer: TextMeasurer,
@@ -88,6 +88,7 @@ internal fun DrawScope.drawParagraph(
     lineHeight: Float,
     face: FaceMetrics = PlakatFaceMetrics.Body,
     maxLines: Int = Int.MAX_VALUE,
+    ellipsis: Boolean = true,
 ) {
     val px = style.fontSize.toPx()
     val line = px * lineHeight
@@ -96,7 +97,7 @@ internal fun DrawScope.drawParagraph(
     val lines = min(whole.lineCount, maxLines.coerceAtLeast(1))
     for (i in 0 until lines) {
         var part = text.substring(whole.getLineStart(i), whole.getLineEnd(i, visibleEnd = true))
-        if (i == lines - 1 && lines < whole.lineCount) {
+        if (ellipsis && i == lines - 1 && lines < whole.lineCount) {
             while (part.isNotEmpty() && measurer.measure("$part…", style).size.width > width) part = part.dropLast(1)
             part = "${part.trimEnd()}…"
         }
@@ -115,7 +116,8 @@ internal fun DrawScope.drawParagraph(
 /**
  * [text] as a paragraph of CSS line boxes of [lineHeight] × the size, each line on its own: its height is theirs,
  * rounded to the nearest, so what stands under it falls on the pixel Blink snaps it to. A block as wide as what it is
- * given; given no limit, as wide as its text.
+ * given ([fill]), or as its widest line; given no limit, as wide as its text. Past [maxLines] it stops, as
+ * [drawParagraph] does.
  */
 @Composable
 internal fun CssParagraph(
@@ -125,6 +127,9 @@ internal fun CssParagraph(
     color: Color,
     modifier: Modifier = Modifier,
     face: FaceMetrics = PlakatFaceMetrics.Body,
+    maxLines: Int = Int.MAX_VALUE,
+    ellipsis: Boolean = true,
+    fill: Boolean = true,
 ) {
     val measurer = rememberTextMeasurer()
     val plain = remember(style) { style.copy(lineHeight = TextUnit.Unspecified) }
@@ -133,11 +138,29 @@ internal fun CssParagraph(
             .semantics { this.text = AnnotatedString(text) }
             .layout { measurable, constraints ->
                 val whole = measurer.measure(text, plain, constraints = Constraints(maxWidth = constraints.maxWidth))
-                val height = floor(whole.lineCount * plain.fontSize.toPx() * lineHeight + .5f).toInt()
-                val width = if (constraints.hasBoundedWidth) constraints.maxWidth else whole.size.width
+                val lines = min(whole.lineCount, maxLines.coerceAtLeast(1))
+                val height = floor(lines * plain.fontSize.toPx() * lineHeight + .5f).toInt()
+                val width =
+                    when {
+                        fill && constraints.hasBoundedWidth -> constraints.maxWidth
+                        else -> whole.size.width.coerceIn(constraints.minWidth, constraints.maxWidth)
+                    }
                 val placeable = measurable.measure(Constraints.fixed(width, height))
                 layout(width, height) { placeable.place(0, 0) }
-            }.drawBehind { drawParagraph(measurer, text, plain, size.width, Offset.Zero, color, lineHeight, face) },
+            }.drawBehind {
+                drawParagraph(
+                    measurer,
+                    text,
+                    plain,
+                    size.width,
+                    Offset.Zero,
+                    color,
+                    lineHeight,
+                    face,
+                    maxLines,
+                    ellipsis,
+                )
+            },
     )
 }
 
