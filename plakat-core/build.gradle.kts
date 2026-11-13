@@ -99,6 +99,11 @@ tasks.withType<Test>().configureEach {
         .dir(rootProject.layout.projectDirectory.dir("reference/design-system"))
         .withPropertyName("designSystem")
         .withPathSensitivity(org.gradle.api.tasks.PathSensitivity.RELATIVE)
+    // The kit's own stencils (B-77): the icon test reads the stroke an outline came from.
+    inputs
+        .file(rootProject.layout.projectDirectory.file("scripts/kit-icons.json"))
+        .withPropertyName("kitIcons")
+        .withPathSensitivity(org.gradle.api.tasks.PathSensitivity.RELATIVE)
     // The same for the goldens and the design references viddik reads (oldge-ui and toon-ui both learnt this).
     inputs
         .dir(layout.projectDirectory.dir("src/desktopTest/snapshots"))

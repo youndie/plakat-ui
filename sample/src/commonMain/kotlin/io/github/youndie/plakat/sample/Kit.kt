@@ -239,6 +239,13 @@ fun KitComponents(beat: Int) {
                 PlakatFab(PlakatIcons.Add, "Add", {})
             }
         }
+        KitGroup("Icons: the kit's own") {
+            Wrap {
+                PlakatIconButton(PlakatIcons.More, PlakatIcons.More.name, {})
+                PlakatIconButton(PlakatIcons.OpensElsewhere, PlakatIcons.OpensElsewhere.name, {})
+                PlakatFab(PlakatIcons.More, "More", {})
+            }
+        }
         KitGroup("Chips and badges") {
             Wrap {
                 var selected by remember { mutableIntStateOf(0) }

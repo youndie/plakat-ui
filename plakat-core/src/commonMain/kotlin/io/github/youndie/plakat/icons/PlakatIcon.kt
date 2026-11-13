@@ -30,8 +30,15 @@ import kotlin.math.sqrt
 private const val GRID = 24f
 
 /**
- * One icon of [PlakatIcons], a stencil: [pathData], an SVG path on the 24-unit grid, filled nonzero,
- * holes counter-clockwise. [name] is its token, `plakat/icon/<id>`.
+ * A stencil icon: [pathData], an SVG path on the 24-unit grid, filled nonzero, holes counter-clockwise.
+ * [name] names it, `plakat/icon/<id>` for the kit's; an app's own is any name of its own
+ * (`app/icon/<id>`). [PlakatIcons] holds the kit's; an app makes one more with this constructor and
+ * draws it with [PlakatIcon] or a [io.github.youndie.plakat.components.PlakatIconButton], which size,
+ * tint and press it as the kit's own (B-77).
+ *
+ * The path is a fill, never a stroke, of absolute or relative moves, lines (`M L H V Z`) and arcs with
+ * no rotation; anything else is refused when it is first drawn. A stroke is outlined to a fill first,
+ * as `scripts/icons.mjs` does for the kit's `OpensElsewhere`.
  *
  * Not an `ImageVector`: Compose's vector parser turns an SVG arc into cubics, which Skia flattens
  * differently from the conics Chrome draws an arc with, and every round icon then differed from its
@@ -39,7 +46,7 @@ private const val GRID = 24f
  * (B-11).
  */
 @Immutable
-public class PlakatStencil internal constructor(
+public class PlakatStencil(
     public val name: String,
     public val pathData: String,
 ) {

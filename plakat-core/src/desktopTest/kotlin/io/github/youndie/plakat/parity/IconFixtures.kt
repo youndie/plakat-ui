@@ -217,3 +217,27 @@ fun IconTime24() = IconCell(PlakatIcons.Time, 24)
 @ViddikScreenshot(group = "Icon", name = "Time_16", width = 16, height = 16)
 @Composable
 fun IconTime16() = IconCell(PlakatIcons.Time, 16)
+
+@ViddikScreenshot(group = "Icon", name = "More_48", width = 48, height = 48)
+@Composable
+fun IconMore48() = IconCell(PlakatIcons.More, 48)
+
+@ViddikScreenshot(group = "Icon", name = "More_24", width = 24, height = 24)
+@Composable
+fun IconMore24() = IconCell(PlakatIcons.More, 24)
+
+@ViddikScreenshot(group = "Icon", name = "More_16", width = 16, height = 16)
+@Composable
+fun IconMore16() = IconCell(PlakatIcons.More, 16)
+
+@ViddikScreenshot(group = "Icon", name = "OpensElsewhere_48", width = 48, height = 48)
+@Composable
+fun IconOpensElsewhere48() = IconCell(PlakatIcons.OpensElsewhere, 48)
+
+@ViddikScreenshot(group = "Icon", name = "OpensElsewhere_24", width = 24, height = 24)
+@Composable
+fun IconOpensElsewhere24() = IconCell(PlakatIcons.OpensElsewhere, 24)
+
+@ViddikScreenshot(group = "Icon", name = "OpensElsewhere_16", width = 16, height = 16)
+@Composable
+fun IconOpensElsewhere16() = IconCell(PlakatIcons.OpensElsewhere, 16)

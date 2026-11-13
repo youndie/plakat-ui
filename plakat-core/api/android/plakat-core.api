@@ -522,6 +522,8 @@ public final class io/github/youndie/plakat/icons/PlakatIcons {
 	public final fun getHome ()Lio/github/youndie/plakat/icons/PlakatStencil;
 	public final fun getInfo ()Lio/github/youndie/plakat/icons/PlakatStencil;
 	public final fun getMenu ()Lio/github/youndie/plakat/icons/PlakatStencil;
+	public final fun getMore ()Lio/github/youndie/plakat/icons/PlakatStencil;
+	public final fun getOpensElsewhere ()Lio/github/youndie/plakat/icons/PlakatStencil;
 	public final fun getRefresh ()Lio/github/youndie/plakat/icons/PlakatStencil;
 	public final fun getSearch ()Lio/github/youndie/plakat/icons/PlakatStencil;
 	public final fun getSettings ()Lio/github/youndie/plakat/icons/PlakatStencil;
@@ -532,6 +534,7 @@ public final class io/github/youndie/plakat/icons/PlakatIcons {
 
 public final class io/github/youndie/plakat/icons/PlakatStencil {
 	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
 	public final fun getName ()Ljava/lang/String;
 	public final fun getPathData ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
