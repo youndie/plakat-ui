@@ -73,7 +73,8 @@ class PlakatTableTest {
                                 row {
                                     for (c in 0 until 5) {
                                         cell {
-                                            Box(Modifier.size(if (c == 1) (10 + r * 3).dp else 8.dp).testTag("r$r-c$c"))
+                                            // Each row's cells a different width, so only an aligned column lines them up.
+                                            Box(Modifier.size((8 + r).dp).testTag("r$r-c$c"))
                                         }
                                     }
                                 }
