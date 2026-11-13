@@ -79,6 +79,7 @@ import io.github.youndie.plakat.components.PlakatNavigationBar
 import io.github.youndie.plakat.components.PlakatNavigationDrawer
 import io.github.youndie.plakat.components.PlakatNavigationItem
 import io.github.youndie.plakat.components.PlakatOutlinedButton
+import io.github.youndie.plakat.components.PlakatParagraph
 import io.github.youndie.plakat.components.PlakatPictogram
 import io.github.youndie.plakat.components.PlakatPoster
 import io.github.youndie.plakat.components.PlakatPosterLayout
@@ -88,6 +89,7 @@ import io.github.youndie.plakat.components.PlakatProjectionForm
 import io.github.youndie.plakat.components.PlakatPullToRefreshBox
 import io.github.youndie.plakat.components.PlakatRadioButton
 import io.github.youndie.plakat.components.PlakatScreenWipe
+import io.github.youndie.plakat.components.PlakatScrim
 import io.github.youndie.plakat.components.PlakatSegmentedButton
 import io.github.youndie.plakat.components.PlakatSlider
 import io.github.youndie.plakat.components.PlakatSnackbar
@@ -409,6 +411,25 @@ fun KitComponents(beat: Int) {
                 PlakatDialog(open, "DELETE", { open = false }, text = "It can be restored.", returnFocusTo = opener) {
                     PlakatDialogAction("CANCEL", { open = false })
                     PlakatDialogAction("DELETE", { open = false }, danger = true)
+                }
+            }
+        }
+        KitGroup("Scrim, under an overlay of the app's own") {
+            var open by remember { mutableStateOf(false) }
+            val opener = remember { FocusRequester() }
+            PlakatOutlinedButton("OPEN", { open = true }, Modifier.focusRequester(opener).testTag("open-scrim"))
+            Box(Modifier.width(Width).height(if (open) 240.dp else 1.dp)) {
+                PlakatScrim(open, { open = false })
+                if (open) {
+                    PlakatCard(
+                        { open = false },
+                        Modifier.align(Alignment.Center).width(240.dp),
+                    ) {
+                        PlakatParagraph(
+                            "Not the kit's dialog: a card of the app's, over the kit's scrim.",
+                            PlakatTheme.typography.bodyM,
+                        )
+                    }
                 }
             }
         }

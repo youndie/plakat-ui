@@ -1,7 +1,7 @@
 ---
 id: B-80
 title: "The dot screen under the kit's overlays, public for a consumer's own"
-status: open
+status: done
 priority: P2
 size: S
 stage: stage-4-product
@@ -30,3 +30,25 @@ An overlay the kit does not draw gets a scrim of the consumer's invention; the d
   never lands on it; the sample shows a consumer's overlay over it; the ABI dump changes by the one function; #24 is
   closed by the pull request.
 - Anchors: `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatDialog.kt`, `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatBottomSheet.kt`, `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatNavigationDrawer.kt`
+
+## Findings (2026-11-13)
+
+- **Built.** `BoxScope.PlakatScrim(visible, onClick: (() -> Unit)? = null, modifier)` in `components/PlakatScrim.kt`, over
+  the internal `PlakatDotScreen` the dialog, the bottom sheet and the drawer already shared, so there is one screen. It
+  keeps its own clock — an `Animatable` to 1 over `PlakatDurations.SCENE`, linear, or the 100 ms fade under reduced
+  motion — and leaves the composition once closed, as the dialog does. `PlakatDotScreen` gains a `modifier` and an
+  optional reader's dismiss; the kit's overlays pass neither, their sheets carrying the dismiss, so their goldens and
+  tests did not move.
+- **No number is new.** The pitch, the dots of 1.6 and 1.8, the diagonal's 120 dp lean and the dark theme's
+  `#0E0D0B` stay the dialog's named constants with their comments; no token was invented (the design's tokens hold no
+  scrim).
+- **Held to the dialog.** In a 390 × 700 window, the strip under where the dialog's sheet ever reaches (y 560–700) is
+  the same, pixel for pixel, for `PlakatScrim(true)` and for an opening `PlakatDialog`, at 0, 16, 107, 160, 213, 304, 320
+  and 400 ms, on both papers (`PlakatScrimTest`).
+- **Keyboard and reader.** A click calls `onClick`; with it, the screen carries a Dismiss action. Tab never lands on
+  it: with one button over it, Tab after Tab comes back to the button. The screen's semantics are cleared, so its own
+  focus cannot be asked, which is why the test asks the button.
+- **The sample's kit** has «Scrim, under an overlay of the app's own»: a card of the app's over the kit's scrim.
+- **Mutants**, each caught: a scene of 200 ms and the wipe replaced by the fade (the frame test), no reader's dismiss
+  (the click test), the screen a keyboard stop (the Tab test), the scrim never leaving (the close test).
+- **ABI**: `PlakatScrim` added.
