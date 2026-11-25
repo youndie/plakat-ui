@@ -281,7 +281,8 @@ fun KitComponents(beat: Int) {
             }
         }
         KitGroup("Table") {
-            // A click selects a row, as a list beside its open card does; the second table is for a pointer surface.
+            // A click selects a row, as a list beside its open card does. The second table is for a pointer surface: its
+            // rows of 36 dp mirror the selection and take no click, as the sample holds every control to 48 dp (B-36).
             var open by remember { mutableIntStateOf(-1) }
             for (density in PlakatDensity.entries) {
                 PlakatTable(
@@ -295,7 +296,8 @@ fun KitComponents(beat: Int) {
                     density = density,
                 ) {
                     for ((i, item) in listOf("Ploughing", "Canal", "Turbine").withIndex()) {
-                        row(onClick = { open = if (open == i) -1 else i }, selected = open == i) {
+                        val click = { open = if (open == i) -1 else i }
+                        row(onClick = click.takeIf { density == PlakatDensity.Touch }, selected = open == i) {
                             cell("${i + 1}")
                             cell(item)
                             cell { PlakatLinearProgress(((beat + i) % 5) / 4f) }

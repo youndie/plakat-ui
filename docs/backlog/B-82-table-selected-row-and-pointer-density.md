@@ -60,7 +60,8 @@ pointer.
   ground (a card), so it is the progress's, not the table's, and the board's own canvas draws it so.
 - **Goldens** `Table/Pointer_Light`, `Table/Pointer_Dark`: the board's twelve rows of 36 with the fourth selected, 476 dp
   high (33 + 12 × 36 + 11 hairs); looked at. `Table/Board_*` and `Table/TooLong_Light` did not move. The sample's kit shows
-  the table under both densities, a click selecting a row.
+  the table under both densities, a click on the touch table selecting a row in both; the pointer table takes no click,
+  as the sample's sweep holds every control to 48 dp (B-36), and a clickable pointer row is 36 by design.
 - **Mutants**, each caught by the test aimed at it: the concrete not drawn (`a selected row stands on concrete…`, `a row
   turns selected in one frame`), the concrete drawn over the press (`a press on a selected row inks over its concrete`),
   the semantics dropped (`a selected row stands on concrete…`), the pointer row with the touch padding (`a tall cell grows
