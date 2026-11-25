@@ -111,6 +111,7 @@ import io.github.youndie.plakat.components.PlakatWindow
 import io.github.youndie.plakat.components.PlakatWindowPanel
 import io.github.youndie.plakat.icons.PlakatIcons
 import io.github.youndie.plakat.theme.LocalPlakatContentColor
+import io.github.youndie.plakat.theme.PlakatDensity
 import io.github.youndie.plakat.theme.PlakatTheme
 import kotlinx.coroutines.delay
 
@@ -280,21 +281,26 @@ fun KitComponents(beat: Int) {
             }
         }
         KitGroup("Table") {
-            PlakatTable(
-                listOf(
-                    PlakatColumn("#", width = 32.dp, align = Alignment.End, numeric = true),
-                    PlakatColumn("Item"),
-                    PlakatColumn("Done", width = 72.dp),
-                    PlakatColumn("Days", width = 40.dp, align = Alignment.End, numeric = true),
-                ),
-                Modifier.width(Width),
-            ) {
-                for ((i, item) in listOf("Ploughing", "Canal", "Turbine").withIndex()) {
-                    row(onClick = {}) {
-                        cell("${i + 1}")
-                        cell(item)
-                        cell { PlakatLinearProgress(((beat + i) % 5) / 4f) }
-                        cell("${beat * (i + 1) % 30}")
+            // A click selects a row, as a list beside its open card does; the second table is for a pointer surface.
+            var open by remember { mutableIntStateOf(-1) }
+            for (density in PlakatDensity.entries) {
+                PlakatTable(
+                    listOf(
+                        PlakatColumn("#", width = 32.dp, align = Alignment.End, numeric = true),
+                        PlakatColumn("Item"),
+                        PlakatColumn("Done", width = 72.dp),
+                        PlakatColumn("Days", width = 40.dp, align = Alignment.End, numeric = true),
+                    ),
+                    Modifier.width(Width),
+                    density = density,
+                ) {
+                    for ((i, item) in listOf("Ploughing", "Canal", "Turbine").withIndex()) {
+                        row(onClick = { open = if (open == i) -1 else i }, selected = open == i) {
+                            cell("${i + 1}")
+                            cell(item)
+                            cell { PlakatLinearProgress(((beat + i) % 5) / 4f) }
+                            cell("${beat * (i + 1) % 30}")
+                        }
                     }
                 }
             }

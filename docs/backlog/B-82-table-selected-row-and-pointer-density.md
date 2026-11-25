@@ -27,7 +27,7 @@ pointer.
 - **Rejected.** A row height in dp: it would take any number, and the kit's rule is that sizes are the kit's; two named
   densities say what each is for, and are the names oldge-ui gives the same choice (`OldgeDensity`). A density in the
   theme, as oldge-ui has it: every component would then claim a pointer size, and the design draws none; the enum is
-  public so that the theme can carry it later without a second type. The card's red bar for a selected row (B-21): a bar
+  public so that the theme can carry it later without a second type. The card's red bar for a selected row (B-17): a bar
   on the row's edge would stand against the table's first column and its words, and the canvas draws a ground.
 - **Not covered.** Hover on a row, which B-76 left out for its hairs; a selected row that is not the open one (a
   multi-select table).

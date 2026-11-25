@@ -11,13 +11,15 @@ import androidx.compose.ui.unit.dp
 import io.github.youndie.plakat.components.PlakatColumn
 import io.github.youndie.plakat.components.PlakatLinearProgress
 import io.github.youndie.plakat.components.PlakatTable
+import io.github.youndie.plakat.theme.PlakatDensity
 import io.github.youndie.plakat.theme.PlakatTheme
 import io.github.youndie.plakat.tokens.PlakatColors
 import io.github.youndie.plakat.tokens.PlakatPalettes
 import io.github.youndie.viddik.annotations.ViddikScreenshot
 
 // B-76: designed here (D13), so no reference: a board's twelve rows of five columns on each paper, and a table whose
-// words and numbers are too long for their columns, for the owner's review at the end.
+// words and numbers are too long for their columns, for the owner's review at the end. B-82: the same board on a pointer
+// surface, its fourth row the selected one.
 
 /** A board's columns: a number, the item, its state, its progress, its days. */
 internal val BOARD_COLUMNS =
@@ -48,12 +50,15 @@ internal val BOARD_ROWS =
 private val STATES = listOf("open", "done", "late", "draft")
 
 @Composable
-private fun Board(colors: PlakatColors) =
-    PlakatTheme(colors = colors) {
+private fun Board(
+    colors: PlakatColors,
+    density: PlakatDensity = PlakatDensity.Touch,
+    selected: Int = -1,
+) = PlakatTheme(colors = colors) {
         Box(Modifier.fillMaxSize().background(PlakatTheme.colors.paper)) {
-            PlakatTable(BOARD_COLUMNS, Modifier.fillMaxWidth()) {
+            PlakatTable(BOARD_COLUMNS, Modifier.fillMaxWidth(), density = density) {
                 BOARD_ROWS.forEachIndexed { i, item ->
-                    row {
+                    row(onClick = if (selected >= 0) ({}) else null, selected = i == selected) {
                         cell("${i + 1}")
                         cell(item)
                         cell(STATES[i % STATES.size])
@@ -72,6 +77,14 @@ fun TableBoardLight() = Board(PlakatPalettes.Paper)
 @ViddikScreenshot(group = "Table", name = "Board_Dark", width = 390, height = 620)
 @Composable
 fun TableBoardDark() = Board(PlakatPalettes.BlackPaper)
+
+@ViddikScreenshot(group = "Table", name = "Pointer_Light", width = 390, height = 476)
+@Composable
+fun TablePointerLight() = Board(PlakatPalettes.Paper, PlakatDensity.Pointer, selected = 3)
+
+@ViddikScreenshot(group = "Table", name = "Pointer_Dark", width = 390, height = 476)
+@Composable
+fun TablePointerDark() = Board(PlakatPalettes.BlackPaper, PlakatDensity.Pointer, selected = 3)
 
 @Composable
 private fun TooLong(colors: PlakatColors) =

@@ -22,11 +22,14 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.github.youndie.plakat.theme.LocalPlakatContentColor
+import io.github.youndie.plakat.theme.PlakatDensity
 import io.github.youndie.plakat.theme.PlakatTheme
 import io.github.youndie.plakat.tokens.PlakatGrid
 import io.github.youndie.plakat.tokens.PlakatLines
@@ -54,10 +57,12 @@ public class PlakatColumn(
 public interface PlakatTableScope {
     /**
      * A row of cells, one per column in order, added in [cells]. With [onClick] the row is a button: it takes the kit's
-     * press and the keyboard's frame.
+     * press and the keyboard's frame. A [selected] row, such as the one whose details stand open beside the table, is on
+     * concrete with its words in ink, and says so to a reader; it changes in one frame.
      */
     public fun row(
         onClick: (() -> Unit)? = null,
+        selected: Boolean = false,
         cells: PlakatRowScope.() -> Unit,
     )
 }
@@ -83,6 +88,7 @@ private sealed interface Cell {
 
 private class TableRow(
     val onClick: (() -> Unit)?,
+    val selected: Boolean,
     val cells: List<Cell>,
 )
 
@@ -94,11 +100,12 @@ private class Rows :
 
     override fun row(
         onClick: (() -> Unit)?,
+        selected: Boolean,
         cells: PlakatRowScope.() -> Unit,
     ) {
         this.cells = mutableListOf()
         cells()
-        rows += TableRow(onClick, this.cells)
+        rows += TableRow(onClick, selected, this.cells)
     }
 
     override fun cell(text: String) {
@@ -121,6 +128,13 @@ private val RowHeight = PlakatSizes.Touch
 /** Around a row's cells: the grid's step at each side, and above and below where the words grow past the row. */
 private val CellPadding = PlakatGrid.Step
 
+/**
+ * A row on a pointer surface (B-82): 36 dp at the least, the issue's canvas, and half a step above and below its cells
+ * where they grow, so a line of `bodyM` (22) stands in it with room to spare.
+ */
+private val PointerRowHeight = 36.dp
+private val PointerCellPadding = PlakatGrid.Step / 2
+
 /** Between two columns. */
 private val Gutter = PlakatGrid.Gutter
 
@@ -130,24 +144,26 @@ private val Gutter = PlakatGrid.Gutter
  *
  * Given a width, the fixed columns take theirs, the numeric ones at least their widest number, and the flexible ones share
  * the rest; given none, a flexible column is as wide as its widest text cell. A row is 48 dp at the least and grows with
- * its tallest cell.
+ * its tallest cell, 8 dp above and below it. With [density] [PlakatDensity.Pointer], for a surface driven by a mouse, a
+ * row is 36 dp at the least and 4 dp above and below; the header and the keyboard's frame are the same in both.
  */
 @Composable
 public fun PlakatTable(
     columns: List<PlakatColumn>,
     modifier: Modifier = Modifier,
+    density: PlakatDensity = PlakatDensity.Touch,
     content: PlakatTableScope.() -> Unit,
 ) {
     val rows = Rows().apply(content).rows
     val colors = PlakatTheme.colors
     val type = PlakatTheme.typography
     val measurer = rememberTextMeasurer()
-    val density = LocalDensity.current
+    val screen = LocalDensity.current
     // What a numeric column needs, and what a flexible column wants when nothing bounds it: its widest text, measured
     // once in the cells' own style.
     val texts = columns.indices.map { c -> rows.mapNotNull { (it.cells.getOrNull(c) as? Cell.Text)?.text } }
     val widest =
-        remember(texts, type, density) {
+        remember(texts, type, screen) {
             texts.map { column ->
                 column.maxOfOrNull {
                     ceil(
@@ -170,7 +186,7 @@ public fun PlakatTable(
                 Spacer(Modifier.fillMaxWidth().height(PlakatLines.Rule).background(colors.ink))
             }
             rows.forEachIndexed { i, row ->
-                TableRowLine(columns, widest, row, divider = i < rows.lastIndex)
+                TableRowLine(columns, widest, row, density, divider = i < rows.lastIndex)
             }
         },
     ) { measurables, constraints ->
@@ -191,6 +207,7 @@ private fun TableRowLine(
     columns: List<PlakatColumn>,
     widest: List<Int>,
     row: TableRow,
+    density: PlakatDensity,
     divider: Boolean,
 ) {
     val colors = PlakatTheme.colors
@@ -201,15 +218,24 @@ private fun TableRowLine(
     val focus = row.onClick != null && state.focusShown()
     val click =
         row.onClick?.let { Modifier.clickable(source, indication = null, role = Role.Button, onClick = it) } ?: Modifier
+    val selected = row.selected
+    val (height, padding) =
+        when (density) {
+            PlakatDensity.Touch -> RowHeight to CellPadding
+            PlakatDensity.Pointer -> PointerRowHeight to PointerCellPadding
+        }
     CompositionLocalProvider(LocalPlakatContentColor provides ink) {
         Column(
             Modifier
+                .semantics { if (selected) this.selected = true }
                 .drawBehind {
+                    // Selected, the row stands on concrete, in one frame; a press inks over it as over paper.
+                    if (selected) drawRect(colors.concrete)
                     drawRect(srgbLerp(colors.ink.copy(alpha = 0f), colors.ink, press))
                     if (focus) drawFocusFrame(colors.ink)
                 }.then(click),
         ) {
-            TableLine(columns, widest, Modifier.heightIn(min = RowHeight).padding(vertical = CellPadding)) { c ->
+            TableLine(columns, widest, Modifier.heightIn(min = height).padding(vertical = padding)) { c ->
                 when (val cell = row.cells.getOrNull(c)) {
                     is Cell.Text -> {
                         PlakatParagraph(
