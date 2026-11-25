@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -107,6 +108,12 @@ private val SheetTop = 96.dp
 /** How close a tall sheet comes to the foot of the window, designed here (D13) as its sides stand: B-62. */
 private val SheetFoot = SheetInset
 
+/**
+ * The sheet at its widest, centred beyond it (B-83), designed here (D13) from the issue's canvas: a phone's sheet does not
+ * reach it, and a desktop window's announcement stays a sheet rather than a band across the window.
+ */
+private val SheetMaxWidth = 480.dp
+
 /** The padding of its three parts: `16px 20px`, `16px 20px` and `0 20px 20px`. */
 private val PartX = 20.dp
 private val PartY = 16.dp
@@ -151,7 +158,8 @@ private val DarkScreen = Color(0xFF0E0D0B)
 /**
  * A dialog, the announcement: place it last in a screen-filling box. A red title plate with the cut corner,
  * [text] under it, and [actions] at the end, usually [PlakatDialogAction]s; the background is closed by a
- * screen of ink dots, a danger's distinction being the hatch and word of its action.
+ * screen of ink dots, a danger's distinction being the hatch and word of its action. The sheet stands 24 dp off each side
+ * of the box and is 480 dp at its widest, centred in a wider one; the screen fills the box whatever its width.
  *
  * With [visible] true, whether from the start or set later, it opens (`announce`): the screen closes the
  * background by a diagonal wipe from the left and the sheet rides down from above, on one clock of 320 ms,
@@ -240,7 +248,9 @@ internal fun PlakatDialogFrame(
         PlakatDotScreen(colors, reduce, { open.value }) { if (visible) dismiss() }
         Column(
             Modifier
+                .align(Alignment.TopCenter)
                 .padding(start = SheetInset, top = SheetTop, end = SheetInset, bottom = SheetFoot)
+                .widthIn(max = SheetMaxWidth)
                 .fillMaxWidth()
                 .graphicsLayer {
                     if (reduce) {
