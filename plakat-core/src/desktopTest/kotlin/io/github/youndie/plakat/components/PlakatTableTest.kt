@@ -17,8 +17,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.captureToImage
@@ -226,33 +226,33 @@ class PlakatTableTest {
     ): Pair<Color, Color> {
         var seen = Color.Unspecified to Color.Unspecified
         runComposeUiTest {
-        mainClock.autoAdvance = false
-        setContent {
-            CompositionLocalProvider(LocalDensity provides Density(1f)) {
-                PlakatTheme(colors = colors) {
-                    Box(Modifier.size(200.dp, 160.dp).background(colors.paper).testTag("t")) {
-                        PlakatTable(listOf(PlakatColumn("A"), PlakatColumn("B")), Modifier.width(200.dp)) {
-                            row(onClick = {}) {
-                                cell("one")
-                                cell("1")
-                            }
-                            row(onClick = {}, selected = selected()) {
-                                cell("two")
-                                cell("2")
+            mainClock.autoAdvance = false
+            setContent {
+                CompositionLocalProvider(LocalDensity provides Density(1f)) {
+                    PlakatTheme(colors = colors) {
+                        Box(Modifier.size(200.dp, 160.dp).background(colors.paper).testTag("t")) {
+                            PlakatTable(listOf(PlakatColumn("A"), PlakatColumn("B")), Modifier.width(200.dp)) {
+                                row(onClick = {}) {
+                                    cell("one")
+                                    cell("1")
+                                }
+                                row(onClick = {}, selected = selected()) {
+                                    cell("two")
+                                    cell("2")
+                                }
                             }
                         }
                     }
                 }
             }
-        }
-        mainClock.advanceTimeBy(16)
-        if (pressSecond) {
-            onNodeWithText("two").performTouchInput { down(center) }
-            mainClock.advanceTimeBy(200)
-        }
-        val map = onNodeWithTag("t").captureToImage().toPixelMap()
-        // The header is 33, the first row 48 and its hair 1: the rows' middles are at 57 and 106.
-        seen = map[100, 57] to map[100, 106]
+            mainClock.advanceTimeBy(16)
+            if (pressSecond) {
+                onNodeWithText("two").performTouchInput { down(center) }
+                mainClock.advanceTimeBy(200)
+            }
+            val map = onNodeWithTag("t").captureToImage().toPixelMap()
+            // The header is 33, the first row 48 and its hair 1: the rows' middles are at 57 and 106.
+            seen = map[100, 57] to map[100, 106]
         }
         return seen
     }

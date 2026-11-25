@@ -55,20 +55,20 @@ private fun Board(
     density: PlakatDensity = PlakatDensity.Touch,
     selected: Int = -1,
 ) = PlakatTheme(colors = colors) {
-        Box(Modifier.fillMaxSize().background(PlakatTheme.colors.paper)) {
-            PlakatTable(BOARD_COLUMNS, Modifier.fillMaxWidth(), density = density) {
-                BOARD_ROWS.forEachIndexed { i, item ->
-                    row(onClick = if (selected >= 0) ({}) else null, selected = i == selected) {
-                        cell("${i + 1}")
-                        cell(item)
-                        cell(STATES[i % STATES.size])
-                        cell { PlakatLinearProgress((i % 5) / 4f) }
-                        cell("${(i * 7) % 30}")
-                    }
+    Box(Modifier.fillMaxSize().background(PlakatTheme.colors.paper)) {
+        PlakatTable(BOARD_COLUMNS, Modifier.fillMaxWidth(), density = density) {
+            BOARD_ROWS.forEachIndexed { i, item ->
+                row(onClick = if (selected >= 0) ({}) else null, selected = i == selected) {
+                    cell("${i + 1}")
+                    cell(item)
+                    cell(STATES[i % STATES.size])
+                    cell { PlakatLinearProgress((i % 5) / 4f) }
+                    cell("${(i * 7) % 30}")
                 }
             }
         }
     }
+}
 
 @ViddikScreenshot(group = "Table", name = "Board_Light", width = 390, height = 620)
 @Composable
