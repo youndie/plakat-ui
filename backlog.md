@@ -55,9 +55,11 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 
 <!-- BEGIN INDEX -->
 
-## Open (0)
+## Open (1)
 
-No open tasks.
+| Task | | Priority | Size | Blocked by |
+|---|---|---|---|---|
+| [B-82](docs/backlog/B-82-table-selected-row-and-pointer-density.md) `[~]` | PlakatTable: a selected row, and rows of 36 dp on a pointer surface | P2 | S | B-76 |
 
 ## Closed (81)
 
