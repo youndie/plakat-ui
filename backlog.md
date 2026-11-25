@@ -59,7 +59,7 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-86](docs/backlog/B-86-release-0-1-0-on-central.md) `[?]` | Release plakat-core 0.1.0 on Maven Central | P2 | XS | B-85 |
+| [B-86](docs/backlog/B-86-release-0-1-0-on-central.md) `[?]` | Release plakat-core 0.1.0 on Maven Central | P2 | XS | B-82, B-83, B-85 |
 | [B-84](docs/backlog/B-84-progress-on-concrete.md) `[ ]` | A linear progress on concrete loses the end of its track | P3 | S | - |
 
 ## Closed (84)
