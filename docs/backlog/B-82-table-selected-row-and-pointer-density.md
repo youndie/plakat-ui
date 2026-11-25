@@ -1,7 +1,7 @@
 ---
 id: B-82
 title: "PlakatTable: a selected row, and rows of 36 dp on a pointer surface"
-status: wip
+status: done
 priority: P2
 size: S
 stage: stage-4-product
@@ -38,3 +38,33 @@ pointer.
   goldens do not move with the defaults; goldens for a pointer board with a selected row recorded and looked at; the
   sample's kit shows both; #34 is closed by the pull request.
 - Anchors: `plakat-core/src/commonMain/kotlin/io/github/youndie/plakat/components/PlakatTable.kt`, `sample/src/commonMain/kotlin/io/github/youndie/plakat/sample/Kit.kt`
+
+## Findings (2026-11-25)
+
+- **Built.** `row(onClick, selected = false, cells)` and `PlakatTable(columns, modifier, density = PlakatDensity.Touch,
+  content)`, with `PlakatDensity { Touch, Pointer }` in `theme/`. A call written as `row(onClick) { … }` or
+  `row { … }` reads as before.
+- **The selected row** draws concrete under its press, so a press inks over it, and its semantics carry `selected`. A row
+  with no click merges nothing, so its words stand below the node that says selected. The change is a cut: the
+  ground is a plain function of `selected`, with no clock.
+- **Every number designed here (D13):**
+  | What | Value | Why |
+  |---|---|---|
+  | selected ground | concrete, words in ink | the issue's canvas; ink on concrete is 11.0:1 (light) and 10.3:1 (dark) |
+  | selection's change | one frame, under reduced motion too | as the radio's `lock` and B-39's hover |
+  | pointer row | 36 dp at the least | the issue's canvas: twelve rows where 48 fits nine |
+  | pointer cells | 4 dp above and below where they grow (half `PlakatGrid.Step`) | a line of `bodyM` (22) stands in 36 with 7 each side; 8 would make it 38 |
+  | header, rule, hairs, sides, gutters | unchanged under both densities | the header is no button; the canvas's 32 dp header is the kit's 30 over its rule, left as B-76 set it |
+- **A finding, filed as [B-84](B-84-progress-on-concrete.md).** A `PlakatLinearProgress` in a selected row loses the end of
+  its track, which is concrete on concrete; the red part reads, the remainder does not. It is the same on any concrete
+  ground (a card), so it is the progress's, not the table's, and the board's own canvas draws it so.
+- **Goldens** `Table/Pointer_Light`, `Table/Pointer_Dark`: the board's twelve rows of 36 with the fourth selected, 476 dp
+  high (33 + 12 × 36 + 11 hairs); looked at. `Table/Board_*` and `Table/TooLong_Light` did not move. The sample's kit shows
+  the table under both densities, a click selecting a row.
+- **Mutants**, each caught by the test aimed at it: the concrete not drawn (`a selected row stands on concrete…`, `a row
+  turns selected in one frame`), the concrete drawn over the press (`a press on a selected row inks over its concrete`),
+  the semantics dropped (`a selected row stands on concrete…`), the pointer row with the touch padding (`a tall cell grows
+  a pointer row by 4 dp each side`, and the 36 test), the pointer row 48 high (`a pointer table's rows are 36…`). The
+  keyboard's frame on a selected pointer row is held in `PlakatKeyboardFocusTest`.
+- **ABI**: `PlakatDensity` added; `PlakatTable` gains `density` and `PlakatTableScope.row` gains `selected`, both defaulted:
+  source-compatible, a rebuild for a library compiled against the old signature, as on the `0.1.0.<run>` line before.

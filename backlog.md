@@ -59,9 +59,9 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
-| [B-82](docs/backlog/B-82-table-selected-row-and-pointer-density.md) `[~]` | PlakatTable: a selected row, and rows of 36 dp on a pointer surface | P2 | S | B-76 |
+| [B-84](docs/backlog/B-84-progress-on-concrete.md) `[ ]` | A linear progress on concrete loses the end of its track | P3 | S | - |
 
-## Closed (81)
+## Closed (82)
 
 **Goldens and references regenerate deterministically; the generator and raskat ports match them on every target; the floor and the frame cost have measured numbers**
 
@@ -156,6 +156,7 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 - [B-79](docs/backlog/B-79-dialog-content-slot.md) `[x]` - PlakatDialog: a content slot between the text and the actions
 - [B-80](docs/backlog/B-80-public-scrim.md) `[x]` - The dot screen under the kit's overlays, public for a consumer's own
 - [B-81](docs/backlog/B-81-banner.md) `[x]` - PlakatBanner: a warning that stays in the screen until its condition passes
+- [B-82](docs/backlog/B-82-table-selected-row-and-pointer-density.md) `[x]` - PlakatTable: a selected row, and rows of 36 dp on a pointer surface
 
 **stage-3-demo**
 

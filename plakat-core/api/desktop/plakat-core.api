@@ -452,16 +452,16 @@ public final class io/github/youndie/plakat/components/PlakatTab {
 }
 
 public final class io/github/youndie/plakat/components/PlakatTableKt {
-	public static final fun PlakatTable (Ljava/util/List;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PlakatTable (Ljava/util/List;Landroidx/compose/ui/Modifier;Lio/github/youndie/plakat/theme/PlakatDensity;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
 }
 
 public abstract interface class io/github/youndie/plakat/components/PlakatTableScope {
-	public abstract fun row (Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;)V
-	public static synthetic fun row$default (Lio/github/youndie/plakat/components/PlakatTableScope;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public abstract fun row (Lkotlin/jvm/functions/Function0;ZLkotlin/jvm/functions/Function1;)V
+	public static synthetic fun row$default (Lio/github/youndie/plakat/components/PlakatTableScope;Lkotlin/jvm/functions/Function0;ZLkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
 }
 
 public final class io/github/youndie/plakat/components/PlakatTableScope$DefaultImpls {
-	public static synthetic fun row$default (Lio/github/youndie/plakat/components/PlakatTableScope;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+	public static synthetic fun row$default (Lio/github/youndie/plakat/components/PlakatTableScope;Lkotlin/jvm/functions/Function0;ZLkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
 }
 
 public final class io/github/youndie/plakat/components/PlakatTabsKt {
@@ -626,6 +626,14 @@ public final class io/github/youndie/plakat/print/PlakatWipe$Top : io/github/you
 public final class io/github/youndie/plakat/print/PlakatWipeKt {
 	public static final fun plakatWipe (Landroidx/compose/ui/Modifier;Lio/github/youndie/plakat/print/PlakatWipe;Lkotlin/jvm/functions/Function0;)Landroidx/compose/ui/Modifier;
 	public static final fun plakatWipePath-x_KDEd0 (Lio/github/youndie/plakat/print/PlakatWipe;JFLandroidx/compose/ui/unit/Density;)Landroidx/compose/ui/graphics/Path;
+}
+
+public final class io/github/youndie/plakat/theme/PlakatDensity : java/lang/Enum {
+	public static final field Pointer Lio/github/youndie/plakat/theme/PlakatDensity;
+	public static final field Touch Lio/github/youndie/plakat/theme/PlakatDensity;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lio/github/youndie/plakat/theme/PlakatDensity;
+	public static fun values ()[Lio/github/youndie/plakat/theme/PlakatDensity;
 }
 
 public final class io/github/youndie/plakat/theme/PlakatEvent : java/lang/Enum {
