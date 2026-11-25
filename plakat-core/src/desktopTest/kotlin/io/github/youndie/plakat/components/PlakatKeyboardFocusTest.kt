@@ -28,6 +28,7 @@ import androidx.compose.ui.test.pressKey
 import androidx.compose.ui.test.v2.runComposeUiTest
 import androidx.compose.ui.unit.dp
 import io.github.youndie.plakat.icons.PlakatIcons
+import io.github.youndie.plakat.theme.PlakatDensity
 import io.github.youndie.plakat.theme.PlakatTheme
 import io.github.youndie.plakat.tokens.PlakatColors
 import io.github.youndie.plakat.tokens.PlakatPalettes
@@ -128,6 +129,14 @@ class PlakatKeyboardFocusTest {
         check("a table row", { onNodeWithText("Ploughing") }, { it.ink }) {
             PlakatTable(listOf(PlakatColumn("Item")), Modifier.width(240.dp)) {
                 row(onClick = {}) { cell("Ploughing") }
+            }
+        }
+
+    @Test
+    fun `a selected row on a pointer table shows the frame`() =
+        check("a selected pointer row", { onNodeWithText("Ploughing") }, { it.ink }) {
+            PlakatTable(listOf(PlakatColumn("Item")), Modifier.width(240.dp), density = PlakatDensity.Pointer) {
+                row(onClick = {}, selected = true) { cell("Ploughing") }
             }
         }
 

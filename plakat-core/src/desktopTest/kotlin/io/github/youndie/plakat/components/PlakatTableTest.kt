@@ -9,17 +9,26 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.getUnclippedBoundsInRoot
+import androidx.compose.ui.test.hasAnyDescendant
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.v2.runComposeUiTest
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
@@ -29,14 +38,19 @@ import androidx.compose.ui.unit.height
 import androidx.compose.ui.unit.width
 import io.github.youndie.plakat.parity.BOARD_COLUMNS
 import io.github.youndie.plakat.parity.BOARD_ROWS
+import io.github.youndie.plakat.theme.PlakatDensity
 import io.github.youndie.plakat.theme.PlakatTheme
+import io.github.youndie.plakat.tokens.PlakatColors
 import io.github.youndie.plakat.tokens.PlakatPalettes
 import kotlin.math.abs
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-/** B-76: columns that stay aligned, the header's rule and the rows' hairs, and what does not fit. */
+/**
+ * B-76: columns that stay aligned, the header's rule and the rows' hairs, and what does not fit. B-82: a selected row, and
+ * rows on a pointer surface.
+ */
 @OptIn(ExperimentalTestApi::class)
 class PlakatTableTest {
     private val px: (Dp) -> Int = { it.value.toInt() }
@@ -198,4 +212,155 @@ class PlakatTableTest {
             onNodeWithText("Ploughing").performClick()
             assertEquals(1, clicks)
         }
+
+    private fun near(
+        a: Color,
+        b: Color,
+    ) = abs(a.red - b.red) < .02f && abs(a.green - b.green) < .02f && abs(a.blue - b.blue) < .02f
+
+    /** Two rows of two columns, the second [selected]; what x = 100 (the gutter's middle, no words) shows in each row. */
+    private fun selectedRows(
+        colors: PlakatColors,
+        selected: () -> Boolean,
+        pressSecond: Boolean = false,
+    ): Pair<Color, Color> {
+        var seen = Color.Unspecified to Color.Unspecified
+        runComposeUiTest {
+            mainClock.autoAdvance = false
+            setContent {
+                CompositionLocalProvider(LocalDensity provides Density(1f)) {
+                    PlakatTheme(colors = colors) {
+                        Box(Modifier.size(200.dp, 160.dp).background(colors.paper).testTag("t")) {
+                            PlakatTable(listOf(PlakatColumn("A"), PlakatColumn("B")), Modifier.width(200.dp)) {
+                                row(onClick = {}) {
+                                    cell("one")
+                                    cell("1")
+                                }
+                                row(onClick = {}, selected = selected()) {
+                                    cell("two")
+                                    cell("2")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            mainClock.advanceTimeBy(16)
+            if (pressSecond) {
+                onNodeWithText("two").performTouchInput { down(center) }
+                mainClock.advanceTimeBy(200)
+            }
+            val map = onNodeWithTag("t").captureToImage().toPixelMap()
+            // The header is 33, the first row 48 and its hair 1: the rows' middles are at 57 and 106.
+            seen = map[100, 57] to map[100, 106]
+        }
+        return seen
+    }
+
+    @Test
+    fun `a selected row stands on concrete and says so, on both papers`() {
+        for (colors in listOf(PlakatPalettes.Paper, PlakatPalettes.BlackPaper)) {
+            val (first, second) = selectedRows(colors, { true })
+            assertTrue(near(first, colors.paper), "${colors.paper}: the first row $first")
+            assertTrue(near(second, colors.concrete), "${colors.paper}: the selected row $second")
+        }
+        runComposeUiTest {
+            setContent {
+                PlakatTheme {
+                    PlakatTable(listOf(PlakatColumn("A")), Modifier.width(200.dp)) {
+                        row { cell("one") }
+                        row(selected = true) { cell("two") }
+                    }
+                }
+            }
+            // One node says selected, and it is the second row's: a row with no click merges nothing, so its words are
+            // below it.
+            val selected = SemanticsMatcher.expectValue(SemanticsProperties.Selected, true)
+            assertEquals(1, onAllNodes(selected).fetchSemanticsNodes().size)
+            onNode(selected).assert(hasAnyDescendant(hasText("two"))).assert(hasAnyDescendant(hasText("one")).not())
+        }
+    }
+
+    @Test
+    fun `a row turns selected in one frame`() =
+        runComposeUiTest {
+            mainClock.autoAdvance = false
+            val colors = PlakatPalettes.Paper
+            var selected by mutableStateOf(false)
+            setContent {
+                CompositionLocalProvider(LocalDensity provides Density(1f)) {
+                    PlakatTheme(colors = colors) {
+                        Box(Modifier.size(200.dp, 100.dp).background(colors.paper).testTag("t")) {
+                            PlakatTable(listOf(PlakatColumn("A")), Modifier.width(200.dp)) {
+                                row(selected = selected) { cell("one") }
+                            }
+                        }
+                    }
+                }
+            }
+            mainClock.advanceTimeBy(100)
+            assertTrue(near(onNodeWithTag("t").captureToImage().toPixelMap()[150, 57], colors.paper))
+            selected = true
+            mainClock.advanceTimeBy(16)
+            assertTrue(near(onNodeWithTag("t").captureToImage().toPixelMap()[150, 57], colors.concrete), "one frame on")
+            selected = false
+            mainClock.advanceTimeBy(16)
+            assertTrue(near(onNodeWithTag("t").captureToImage().toPixelMap()[150, 57], colors.paper), "one frame off")
+        }
+
+    @Test
+    fun `a press on a selected row inks over its concrete`() {
+        val colors = PlakatPalettes.Paper
+        val (_, pressed) = selectedRows(colors, { true }, pressSecond = true)
+        assertTrue(near(pressed, colors.ink), "$pressed")
+    }
+
+    @Test
+    fun `a pointer table's rows are 36 and a touch table's 48`() {
+        fun height(density: PlakatDensity): Dp {
+            var high = 0.dp
+            runComposeUiTest {
+                setContent {
+                    PlakatTheme {
+                        PlakatTable(BOARD_COLUMNS, Modifier.width(390.dp).testTag("t"), density = density) {
+                            BOARD_ROWS.forEachIndexed { i, item ->
+                                row(onClick = {}) {
+                                    cell("${i + 1}")
+                                    cell(item)
+                                    cell("open")
+                                    cell { PlakatLinearProgress(.5f) }
+                                    cell("3")
+                                }
+                            }
+                        }
+                    }
+                }
+                high = onNodeWithTag("t").getUnclippedBoundsInRoot().height
+            }
+            return high
+        }
+        // The header (8 + 14 + 8 and the rule of 3), twelve rows and eleven hairs.
+        assertEquals(33.dp + 36.dp * 12 + 11.dp, height(PlakatDensity.Pointer))
+        assertEquals(33.dp + 48.dp * 12 + 11.dp, height(PlakatDensity.Touch))
+    }
+
+    @Test
+    fun `a tall cell grows a pointer row by 4 dp each side`() {
+        fun height(density: PlakatDensity): Dp {
+            var high = 0.dp
+            runComposeUiTest {
+                setContent {
+                    PlakatTheme {
+                        PlakatTable(listOf(PlakatColumn("A")), Modifier.width(200.dp).testTag("t"), density = density) {
+                            row { cell { Box(Modifier.size(40.dp)) } }
+                        }
+                    }
+                }
+                high = onNodeWithTag("t").getUnclippedBoundsInRoot().height
+            }
+            return high
+        }
+        assertEquals(33.dp + 40.dp + 4.dp * 2, height(PlakatDensity.Pointer))
+        assertEquals(33.dp + 40.dp + 8.dp * 2, height(PlakatDensity.Touch))
+    }
 }
