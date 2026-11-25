@@ -5,7 +5,7 @@ status: question
 priority: P2
 size: XS
 stage: stage-4-product
-blocked_by: [B-85]
+blocked_by: [B-82, B-83, B-85]
 ---
 
 # B-86 — Release plakat-core 0.1.0 on Maven Central
@@ -25,7 +25,12 @@ or withdrawn, so the release is the owner's to start, after the verdict of pyati
   rasteriser of `macos-latest`, macOS 26 now (research D12); `central.yaml` offers `macos-15` or Linux. The gate
   is the green `check.yaml` and `publish.yaml` on the tagged commit, read before the dispatch. A Mac host, because the
   snapshots are published from one; Linux would be the first publication of this tree from Linux, unrehearsed.
-- **The question.** Release 0.1.0? Who decides: the owner, after pyatiletka's B-20 verdict.
+- **What it waited for.** pyatiletka's B-20 verdict (2026-11-25): plakat-ui is ready once #34 and #35 are out and the
+  board has taken them, as both widen a public API. They are [B-82](B-82-table-selected-row-and-pointer-density.md) and
+  [B-83](B-83-dialog-wide-window.md). [B-84](B-84-progress-on-concrete.md), a progress bar's track on concrete, changes no
+  signature and does not hold the release.
+- **The question.** Release 0.1.0 once the board runs on the snapshot carrying B-82 and B-83? Who decides: the owner,
+  answering B-20's question in pyatiletka too.
 
 - AC: every coordinate answers on `repo1.maven.org`; a consumer with only `mavenCentral()` and `google()` resolves
   `io.github.youndie:plakat-core:0.1.0` and builds the README's snippet; the head is 0.1.1.
