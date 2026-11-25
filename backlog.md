@@ -55,13 +55,14 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 
 <!-- BEGIN INDEX -->
 
-## Open (1)
+## Open (2)
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
+| [B-86](docs/backlog/B-86-release-0-1-0-on-central.md) `[?]` | Release plakat-core 0.1.0 on Maven Central | P2 | XS | B-85 |
 | [B-84](docs/backlog/B-84-progress-on-concrete.md) `[ ]` | A linear progress on concrete loses the end of its track | P3 | S | - |
 
-## Closed (83)
+## Closed (84)
 
 **Goldens and references regenerate deterministically; the generator and raskat ports match them on every target; the floor and the frame cost have measured numbers**
 
@@ -158,6 +159,7 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 - [B-81](docs/backlog/B-81-banner.md) `[x]` - PlakatBanner: a warning that stays in the screen until its condition passes
 - [B-82](docs/backlog/B-82-table-selected-row-and-pointer-density.md) `[x]` - PlakatTable: a selected row, and rows of 36 dp on a pointer surface
 - [B-83](docs/backlog/B-83-dialog-wide-window.md) `[x]` - PlakatDialog: a sheet 480 dp at its widest, centred in a wide window
+- [B-85](docs/backlog/B-85-central-release-preflight.md) `[x]` - The tree can publish plakat-core to Maven Central: the pre-flight of the first release
 
 **stage-3-demo**
 

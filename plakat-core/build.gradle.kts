@@ -53,9 +53,11 @@ kotlin {
     // `foundation` and nothing above it (research D1).
     sourceSets {
         commonMain.dependencies {
-            implementation(wip.compose.runtime)
-            implementation(wip.compose.foundation)
-            implementation(wip.compose.ui)
+            // `api`: the public signatures hand out Compose's types (`Modifier`, `Color`, `Dp`, `TextStyle`), and a
+            // consumer compiling against plakat-core alone has to be able to name them (B-85).
+            api(wip.compose.runtime)
+            api(wip.compose.foundation)
+            api(wip.compose.ui)
             // The system back gesture for an open dialog (B-36). Not in `wip`.
             implementation(libs.navigationevent.compose)
             // The bundled fonts (B-02). Not in `wip`, and the plugin's accessor is the one place its
