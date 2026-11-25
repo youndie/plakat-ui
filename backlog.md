@@ -55,10 +55,11 @@ through pull requests and merges its own on green (`CLAUDE.md`, «Workflow»).
 
 <!-- BEGIN INDEX -->
 
-## Open (1)
+## Open (2)
 
 | Task | | Priority | Size | Blocked by |
 |---|---|---|---|---|
+| [B-83](docs/backlog/B-83-dialog-wide-window.md) `[~]` | PlakatDialog: a sheet 480 dp at its widest, centred in a wide window | P2 | S | B-28 |
 | [B-84](docs/backlog/B-84-progress-on-concrete.md) `[ ]` | A linear progress on concrete loses the end of its track | P3 | S | - |
 
 ## Closed (82)
