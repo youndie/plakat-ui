@@ -162,7 +162,7 @@ rendered with reduced motion, so parity sees none of these.
 
 | Kind | Name | What for |
 |---|---|---|
-| Library | Compose runtime, foundation, ui (from `wip`) | everything drawn |
+| Library | Compose runtime, foundation, ui (from `wip`), `api` | everything drawn; their types are in the public API (B-85) |
 | Library | compose resources (`compose.components.resources`) | the bundled fonts, package `io.github.youndie.plakat.resources` |
 | Build | sborka 0.5.0.135 | conventions and the `wip` catalog, the same build as toon-ui |
 | Test | Compose ui-test, `compose.desktop.currentOs` (desktopTest only) | off-screen composition on the host's Skia |
@@ -174,7 +174,8 @@ Every push to `main` publishes `io.github.youndie:plakat-core:<head>.<run>` to t
 (`.github/workflows/publish.yaml`, sborka's `publish-wip.yaml` on macOS: the whole check, the publish,
 and a consumer probe), and deploys the sample's wasm build to
 [GitHub Pages](https://youndie.github.io/plakat-ui/) (`.github/workflows/pages.yaml`). The head in
-`gradle.properties` names the next release. There is no release on Central yet.
+`gradle.properties` names the next release. The tree can publish to Maven Central (`sborka.central=true`, B-85): a
+release is a tag and a dispatch of sborka's `central.yaml`, never a publish from a machine, and there is none yet (B-86).
 
 ## 6. Local setup
 
